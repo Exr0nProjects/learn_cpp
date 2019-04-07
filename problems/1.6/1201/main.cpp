@@ -18,7 +18,7 @@ using namespace std;
 
 const int max_inq =  1000000;
 //const int num_primes_under_max = 78500; // https://primes.utm.edu/howmany.html section 1.2
-const int max_inq = 500000; // apparently we cant use a better approximation
+const int num_primes_under_max = 500000; // apparently we cant use a better approximation
 
 int numbers[max_inq/2+2] = { }; // the +2 is to get a buffer to avoid array index out of range
 int primes[num_primes_under_max]; // so that the biggest is bigger than the max inquery
