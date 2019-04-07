@@ -51,7 +51,7 @@ you can use multiple namespaces. its handy. I assume that you can also do someth
 
 ############################################################### now visiting their own website 115.236.49.52:83, http://www.hzxjhs.com:83
 login: XC1900105AH
-pass: tempPASS1984
+pass: ****
 
 
 after logging in, we see the problems. see the problems folder for my solutions
