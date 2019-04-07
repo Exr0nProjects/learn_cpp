@@ -15,7 +15,7 @@
 #include <math.h>
 
 using namespace std;
-
+ 
 const int max_inq =  1000000;
 //const int num_primes_under_max = 78500; // https://primes.utm.edu/howmany.html section 1.2
 const int max_inq = 500000; // apparently we cant use a better approximation
