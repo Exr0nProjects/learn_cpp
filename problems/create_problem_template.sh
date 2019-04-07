@@ -25,4 +25,4 @@ int main ()
 }
 EOF
 
-./git_push.sh "creating new problem folder: $1 $2"
+./git_push.sh "script: creating new problem folder: $1 $2"
