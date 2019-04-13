@@ -41,7 +41,7 @@ int sievePrimes (void)
     }
   }
   // fill the rest with max
-  for (int fli=curr_write_idx; fli<num_primes_under_max; ++fli) primes[curr_write_idx] = max_inq; // fill the rest with max so we dont step over
+  for (int fli=curr_write_idx; fli<num_primes_under_max; ++fli) primes[fli] = max_inq; // fill the rest with max so we dont step over
   return 0;
 }
 
