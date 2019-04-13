@@ -64,7 +64,7 @@ int findPrimesUnder (int max)
   else // greater than max
   {
     do --search;
-    while (primes[search] > max);
+    while (primes[search] >= max);
   }
   cout << search << endl;
   return search+1;
