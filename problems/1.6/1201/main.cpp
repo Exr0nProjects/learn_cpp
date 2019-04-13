@@ -52,6 +52,7 @@ int findPrimesUnder (int max)
 
   if (max < 2) return 0;
   else if (max == 2) return 1;
+  else if (max == 3) return 2; // otherwise my binary search breaks
 
   /* old stepping algorithm
   if (primes[search] <= max)
@@ -74,15 +75,20 @@ int findPrimesUnder (int max)
 
   int lower = 0, upper = max;
 
-  while ( !(primes[search] < max && primes[search+1] >= max) )
+  while ( !(primes[search] <= max && primes[search+1] > max) )
   {
-    if (primes[search] < max) {
+    //cout << lower << " < " << search << " < " << upper << endl;
+    if (primes[search] < max)
+    {
       lower = search;
       search += (upper - lower) / 2;
-    } else {
+    }
+    else if (primes[search] > max)
+    {
       upper = search;
       search -= (upper - lower) / 2;
     }
+    else break; // equal
   }
 
 
