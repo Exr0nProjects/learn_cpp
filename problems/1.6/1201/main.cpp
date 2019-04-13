@@ -53,7 +53,7 @@ int findPrimesUnder (int max)
   if (max < 2) return 0;
   else if (max == 2) return 1;
 
-  //cout << max << endl;
+  /* old stepping algorithm
   if (primes[search] <= max)
   {
     while (primes[search+1] < max) {
@@ -70,7 +70,23 @@ int findPrimesUnder (int max)
     }
     while (primes[search] > max);
   }
-  //cout << search << endl;
+  */
+
+  int lower = 0, upper = max;
+
+  while ( !(primes[search] < max && primes[search+1] >= max) )
+  {
+    if (primes[search] < max) {
+      lower = search;
+      search += (upper - lower) / 2;
+    } else {
+      upper = search;
+      search -= (upper - lower) / 2;
+    }
+  }
+
+
+
   return search+1;
 }
 
