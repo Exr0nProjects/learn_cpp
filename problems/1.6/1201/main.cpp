@@ -47,7 +47,8 @@ int sievePrimes (void)
 
 int findPrimesUnder (int max)
 {
-  int search = (int) max/(log(max)-1); // approximate number of primes under max according to science
+  //int search = (int) max/(log(max)-1); // approximate number of primes under max according to science
+  int search = max/2; // really bad approximation
 
   if (max < 2) return 0;
   else if (max == 2) return 1;
