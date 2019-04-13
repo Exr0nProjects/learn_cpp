@@ -27,7 +27,7 @@ int coutPop (int * array, int size, int find)
     }
   }
 
-  cout << endl;
+  //cout << endl;
 
   return 0;
 }
