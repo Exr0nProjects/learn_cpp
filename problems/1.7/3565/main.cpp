@@ -9,7 +9,7 @@
 
 using namespace std;
 
-int place (int * count_arr; int * index_arr; int amnt; int num)
+int place (int * count_arr, int * index_arr, int amnt, int num)
 {
   for (int i=0; i<amnt; ++i)
   {
@@ -31,12 +31,12 @@ int place (int * count_arr; int * index_arr; int amnt; int num)
 int main ()
 {
   int amnt, temp;
-  cin >> num;
+  cin >> amnt;
 
   int * count_arr = new int [amnt] {}; // up to 20 different numbers
   int * index_arr = new int [amnt] {-1}; // same as above
 
-  for (int i=0; i<num; ++i)
+  for (int i=0; i<amnt; ++i)
   {
     cin >> temp;
     place(count_arr, index_arr, amnt, temp);
