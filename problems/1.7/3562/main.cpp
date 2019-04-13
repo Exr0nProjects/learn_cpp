@@ -18,7 +18,8 @@ int coutPop (int * array, int size, int find)
   {
     if (array[i] != find || contains)
     {
-      cout << array[i] << " ";
+      cout << array[i];
+      if (i != size - 1) cout << " ";
     }
     else
     {
