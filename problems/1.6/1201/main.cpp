@@ -53,11 +53,11 @@ int findPrimesUnder (int max)
   if (max < 2) return 0;
   else if (max == 2) return 1;
 
-  cout << max << endl;
+  //cout << max << endl;
   if (primes[search] < max)
   {
     while (primes[search+1] < max) {
-      cout << search << ": next is " << primes[search+1] << endl;
+      //cout << search << ": next is " << primes[search+1] << endl;
       ++search;
     }
   }
@@ -66,18 +66,18 @@ int findPrimesUnder (int max)
     do
     {
       --search;
-      cout << search << endl;
+      //cout << search << endl;
     }
     while (primes[search] >= max);
   }
-  cout << search << endl;
+  //cout << search << endl;
   return search+1;
 }
 
 int main ()
 {
   sievePrimes();
-  cout << "finished sieving!" << endl;
+  //cout << "finished sieving!" << endl;
   int num_inqs, temp;
   cin >> num_inqs;
 
