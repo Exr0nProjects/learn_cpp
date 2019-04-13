@@ -54,7 +54,7 @@ int findPrimesUnder (int max)
   else if (max == 2) return 1;
 
   cout << max << endl;
-  if (primes[search] <= max)
+  if (primes[search] < max)
   {
     while (primes[search+1] < max) {
       cout << search << ": next is " << primes[search+1] << endl;
@@ -63,7 +63,11 @@ int findPrimesUnder (int max)
   }
   else // greater than max
   {
-    do --search;
+    do
+    {
+      --search;
+      cout << search << endl;
+    }
     while (primes[search] >= max);
   }
   cout << search << endl;
