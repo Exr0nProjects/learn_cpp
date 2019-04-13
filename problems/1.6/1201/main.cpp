@@ -51,7 +51,7 @@ int findPrimesUnder (int max)
   int search = max/2; // really bad approximation
 
   if (max < 2) return 0;
-  else if (max == 2) return 1;
+  else if (max == 2) return 1; 
 
   if (primes[search] <= max)
   {
