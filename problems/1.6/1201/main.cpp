@@ -18,7 +18,7 @@ using namespace std;
 
 const int max_inq =  1000000;
 //const int num_primes_under_max = 78500; // https://primes.utm.edu/howmany.html section 1.2
-const int num_primes_under_max = 500000; // apparently we cant use a better approximation
+const int num_primes_under_max = 500002; // apparently we cant use a better approximation
 
 int numbers[max_inq/2+2] = { }; // the +2 is to get a buffer to avoid array index out of range
 int primes[num_primes_under_max]; // so that the biggest is bigger than the max inquery
@@ -51,23 +51,29 @@ int findPrimesUnder (int max)
   int search = max/2; // really bad approximation
 
   if (max < 2) return 0;
-  else if (max == 2) return 1; 
+  else if (max == 2) return 1;
 
+  cout << max << endl;
   if (primes[search] <= max)
   {
-    while (primes[search+1] < max) ++search;
+    while (primes[search+1] < max) {
+      cout << search << ": next is " << primes[search+1] << endl;
+      ++search;
+    }
   }
   else // greater than max
   {
     do --search;
     while (primes[search] > max);
   }
+  cout << search << endl;
   return search+1;
 }
 
 int main ()
 {
   sievePrimes();
+  cout << "finished sieving!" << endl;
   int num_inqs, temp;
   cin >> num_inqs;
 
