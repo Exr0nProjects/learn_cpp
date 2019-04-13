@@ -33,8 +33,9 @@ int main ()
   int amnt, temp;
   cin >> amnt;
 
-  int * count_arr = new int [amnt] {}; // up to 20 different numbers
-  int * index_arr = new int [amnt] {-1}; // same as above
+  int * count_arr = new int [amnt]; // up to 20 different numbers
+  int * index_arr = new int [amnt]; // same as above
+  for (int i=0; i<amnt; ++i) index_arr[i] = -1;
 
   for (int i=0; i<amnt; ++i)
   {
