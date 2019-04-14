@@ -16,7 +16,7 @@ int main ()
   cin >> size;
 
   int **matrix =  new int * [size];
-  for (int i=0; i<size; ++i) matrix[i] = new int [size]
+  for (int i=0; i<size; ++i) matrix[i] = new int [size];
 
   int pointx=0, pointy=0, dir=1; // dir: 0: up 1:right 2:bot 3:left
   for (int count=0; count<size*size; ++count)
@@ -24,9 +24,9 @@ int main ()
     matrix[pointy][pointx] = count;
 
     // change direction
-    if (pointy+pointx+1 == size
-    || (y==x   && x>=size/2)
-    || (y==x+1 && x< size/2) ) ++ dir;
+    if (pointy + pointx+1 == size
+    || (pointy==pointx   && pointx>=size/2)
+    || (pointy==pointx+1 && pointx< size/2) ) dir = (dir+1) % 4;
 
     // move direction
     switch (dir)
