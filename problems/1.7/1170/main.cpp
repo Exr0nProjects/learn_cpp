@@ -19,7 +19,7 @@ int main ()
   for (int i=0; i<size; ++i) matrix[i] = new int [size];
 
   int pointx=0, pointy=0, dir=1; // dir: 0: up 1:right 2:bot 3:left
-  for (int count=0; count<size*size; ++count)
+  for (int count=1; count<=size*size; ++count)
   {
     matrix[pointy][pointx] = count;
 
