@@ -12,7 +12,7 @@ using namespace std;
 
 int main ()
 {
-  int size;
+  int size, tempstore;
   cin >> size;
 
   int ** matrix = new int * [size];
@@ -23,7 +23,9 @@ int main ()
   for (int i=1; i<=size*size; ++i)
   {
     matrix[posy][posx] = i;
-    if (posx == 0 || posy == 0 || posx == size-1 || posy == size-1)
+    tempstore = posy + posx;
+    cout << posx << " " << posy << endl;
+    if ( posx == 0 || posy == 0 || posx == size-1 || posy == size-1 )
     {
       if (posy == size-1 && posx == 0 && size%2 == 0) // corner
       {
@@ -44,7 +46,10 @@ int main ()
         if (posy == size-1) ++ posx;
       }
       diagup = !diagup;
-    } else {
+    }
+    if ( !(posy + posx == tempstore) )
+    {
+      cout << "no edges\n";
       if (diagup)
       {
         ++ posx;
@@ -52,23 +57,25 @@ int main ()
       }
       else
       {
+        cout << "traveling diagdown\n";
         -- posx;
         ++ posy;
       }
     }
+    cout << posx << " " << posy << "\n\n";
   }
 
   cout << "coolio\n";
 
-    for (int i=0; i<size; ++i)
+  for (int i=0; i<size; ++i)
+  {
+    for (int j=0; j<size; ++j)
     {
-      for (int j=0; j<size; ++j)
-      {
-        cout << matrix[i][j];
-        if (!(j == size-1)) cout << " ";
-      }
-      if (!(i == size-1)) cout << endl;
+      cout << matrix[i][j];
+      if (!(j == size-1)) cout << " ";
     }
+    if (!(i == size-1)) cout << endl;
+  }
 
   return 0;
 }
