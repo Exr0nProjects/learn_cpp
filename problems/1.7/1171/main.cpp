@@ -23,35 +23,40 @@ int main ()
   for (int i=1; i<=size*size; ++i)
   {
     matrix[posy][posx] = i;
-    tempstore = posy + posx;
-    cout << posx << " " << posy << endl;
+    tempstore = diagup;
+    cout << posx << " " << posy << " and diagup: " << diagup << endl;
     if ( posx == 0 || posy == 0 || posx == size-1 || posy == size-1 )
     {
+      cout << "on edge\n";
       if (posy == size-1 && posx == 0 && size%2 == 0) // corner
       {
         ++ posx;
+        diagup = !diagup;
       }
       else if (size%2 == 1 && posx == size-1 && posy == 0) // corner
       {
         ++ posy;
+        diagup = !diagup;
       }
       else if ((posx + posy) % 2 == 0) // top right edges
       {
         if (posy == 0) ++ posx;
         if (posx == size-1) ++ posy;
+        diagup = !diagup;
       }
       else if ((posx + posy) % 2 == 1) // bottom left edges
       {
         if (posx == 0) ++ posy;
         if (posy == size-1) ++ posx;
+        diagup = !diagup;
       }
-      diagup = !diagup;
     }
-    if ( !(posy + posx == tempstore) )
+    if ( (diagup != tempstore) )
     {
       cout << "no edges\n";
       if (diagup)
       {
+        cout << "traveling diagup\n";
         ++ posx;
         -- posy;
       }
