@@ -9,16 +9,16 @@
 
 using namespace std;
 
-int coutPop (int * array, int size, int find)
+int coutPop (int * arr, int size, int find)
 {
   int * end_array = new int [size];
   bool contains = false;
 
   for (int i=0; i<size; ++i)
   {
-    if (array[i] != find || contains)
+    if (arr[i] != find || contains)
     {
-      cout << array[i];
+      cout << arr[i];
       if (i != size - 1) cout << " ";
     }
     else
@@ -27,7 +27,7 @@ int coutPop (int * array, int size, int find)
     }
   }
 
-  //cout << endl;
+  cout << endl; // this is needed, which seems like it should be bad
 
   return 0;
 }
@@ -35,14 +35,17 @@ int coutPop (int * array, int size, int find)
 int main ()
 {
   int size, find;
-  cin >> size;
+//  string line;
 
-  int * arr = new int[size];
-  for (int i=0; i<size; ++i) cin >> arr[i];
+  while (cin >> size)
+  {
+    int * arr = new int[size];
+    for (int i=0; i<size; ++i) cin >> arr[i];
 
-  cin >> find;
+    cin >> find;
 
-  coutPop(arr, size, find);
+    coutPop(arr, size, find);
+  }
 
   return 0;
 }
