@@ -38,17 +38,11 @@ int main ()
   getline(cin, temp);
   for (int i=0; i<h; ++i)
   {
-    char * tempa = new char [w];
-    cout << "on row " << i << endl;
+    matrix[i] = new char [w];
 
     getline(cin, temp);
-    cout << "got line: " << temp << endl;
-    for (int j=0; i<w; ++j) tempa[j] = temp[j];
-
-    matrix[i] = tempa;
-    cout << "finished inserting" << endl;
+    for (int j=0; j<w; ++j) matrix[i][j] = temp[j];
   }
-  cout << "input complete" << endl;
 
   int valid_places = 0;
   for (int i=1; i<h; ++i) for (int j=1; j<w; ++j) if ( checkPos(matrix, i, j) ) ++ valid_places;
