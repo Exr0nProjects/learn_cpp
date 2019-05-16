@@ -29,7 +29,7 @@ int main ()
   return 0;
 }
 
-/*
+/* other old system
 #include <iostream>
 #include <string>
 #include <math.h>
@@ -56,4 +56,19 @@ int main ()
 
   return 0;
 }
+*/
+
+/* test data
+tacoo
+tango
+mango
+
+jump2
+jump3
+jump4
+
+hires
+buyer
+fires
+
 */
