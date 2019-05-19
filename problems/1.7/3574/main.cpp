@@ -9,7 +9,7 @@
 
 using namespace std;
 
-// test
+// TODO: main problem: input can be like 4x9 array instead of 3x5
 
 int main ()
 {
