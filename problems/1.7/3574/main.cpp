@@ -1,6 +1,6 @@
 /*
  * Problem #3574
- * Multiple sets of test data in a two-dimensional character array
+ * 3x5 array
  */
 
 #include <iostream>
@@ -9,8 +9,57 @@
 
 using namespace std;
 
-// TODO: main problem: input can be like 4x9 array instead of 3x5
 
+int main ()
+{
+  string line;
+  bool gone = 0;
+  while (getline(cin, line))
+  {
+    for (int i=0; i<3; ++i)
+    {
+      if (gone) cout << endl;
+      else gone = true;
+
+      for (int j=0; j<5; ++j) cout << line[j]; // only output 5 characters max, todo this can break if the line is shorter than expected
+
+      if (!getline(cin, line) || line == "") break; // break if the array is shorter than expected
+    }
+    while (line != "") getline(cin, line); // remove until we get a blank line
+  }
+
+  return 0;
+}
+
+/* test data
+*****
+abcdf
+abcdg
+
+*****e
+abcdff
+abcdgg
+
+****
+abcd
+abcd
+
+*****
+inele
+nbutt
+oohii
+hetun
+
+*****
+short
+
+*****
+abcde
+abcde
+
+*/
+
+/* old code
 int main ()
 {
   string line;
@@ -29,14 +78,6 @@ int main ()
 
   return 0;
 }
-
-/* other old system
-#include <iostream>
-#include <string>
-#include <math.h>
-
-using namespace std;
-
 
 int main ()
 {
@@ -57,41 +98,4 @@ int main ()
 
   return 0;
 }
-*/
-
-/* test data
-tacoo
-tango
-mango
-badboi
-
-jump2
-jump3
-jump4
-
-hires
-buyer
-fires
-
-*****
-00000
-00001
-00002
-
-00010
-00011
-00012
-
-00020
-00021
-00022
-
-00030
-00031
-00032
-
-00040
-00041
-00042
-
 */
