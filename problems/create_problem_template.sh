@@ -12,7 +12,7 @@ cat >> main.cpp <<EOF
 
 #include <iostream>
 #include <string>
-#include <math.h>
+#include <cmath>
 
 using namespace std;
 
