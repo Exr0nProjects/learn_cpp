@@ -1,5 +1,6 @@
 /*
  * Problem #1182
+ * list prime numbers
  */
 
 #include <iostream>
