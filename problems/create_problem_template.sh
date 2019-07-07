@@ -13,7 +13,7 @@ cat >> main.cpp <<EOF
 #include <bits/stdc++.h> // includes "everything"
 
 using namespace std;
-
+typedef long long ll;
 
 int main ()
 {
