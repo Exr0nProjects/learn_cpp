@@ -10,10 +10,7 @@ cat >> main.cpp <<EOF
  *
  */
 
-#include <iostream>
-#include <string>
-#include <cmath>
-#include <vector>
+#include <bits/stdc++.h> // includes "everything"
 
 using namespace std;
 
