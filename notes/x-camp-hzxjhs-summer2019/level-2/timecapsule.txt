@@ -1,0 +1,2 @@
+this directory contains notes from Teacher Wang's class on recursion, functions, and various other techniques.
+The class started on 8 July 2019, and took place in room 607 of the primary school building (near the cafeteria).
