@@ -7,13 +7,15 @@ cd $2
 cat >> main.cpp <<EOF
 /*
  * Problem #$2
- *
+ * 
  */
 
 #include <bits/stdc++.h> // includes "everything"
+#define ll long long
+#define dl double
 
 using namespace std;
-typedef long long ll;
+
 
 int main ()
 {
