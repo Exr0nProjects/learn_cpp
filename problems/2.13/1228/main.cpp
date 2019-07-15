@@ -13,6 +13,7 @@ const int MAXSZ = 10;
 
 inline void printarr (const bool board[][MAXSZ], const int size)
 {
+  return; // remove for debug
   for (int i=0; i<size; ++i)
   {
     for  (int j=0; j<size; ++j)
@@ -35,20 +36,22 @@ int place (bool board[][MAXSZ], const int size, int queens)
     {
       if (board[i][j] == 0)
       {
+        bool newbd[MAXSZ][MAXSZ];
+        for (int i=0; i<size; ++i) for (int j=0; j<size; ++j) newbd[i][j] = board[i][j];
         -- queens;
 
         for (int k=0; k<size; ++k)
         {
-          board[i][k] = 1;
-          board[k][j] = 1;
-          if (i-k >= 0 && j-k >= 0) board[i-k][j-k] =1;
-          if (i+k < size && j+k < size) board[i-k][j-k] =1;
-          if (i-k >= 0 && j+k < size) board[i-k][j+k] =1;
-          if (i+k < size && j-k >= 0) board[i+k][j-k] =1;
+          newbd[i][k] = 1;
+          newbd[k][j] = 1;
+          if (i-k >= 0 && j-k >= 0) newbd[i-k][j-k] =1;
+          if (i+k < size && j+k < size) newbd[i-k][j-k] =1;
+          if (i-k >= 0 && j+k < size) newbd[i-k][j+k] =1;
+          if (i+k < size && j-k >= 0) newbd[i+k][j-k] =1;
         }
-        printarr(board, size);
+        printarr(newbd, size);
 
-        place(board, size, queens);
+        place(newbd, size, queens);
       }
     }
   }
