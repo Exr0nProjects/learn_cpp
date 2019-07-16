@@ -1,6 +1,9 @@
 /*
  * Problem #1227
  * connected reigons
+ *
+ * todo: it seems to be counting the things that aren't valid reigons as reigons, for some reason? should we just swap the input?
+ *
  */
 
 #include <bits/stdc++.h> // includes "everything"
@@ -17,13 +20,13 @@ struct square
 
 const int MAXSZ = 110;
 
-int floodfill (square& curr, square grid[][MAXSZ]);
+int floodfill (square grid[][MAXSZ], const int n, const int m, int y, int x, const bool set=true);
 
 int main ()
 {
     square grid[MAXSZ][MAXSZ];
     
-    int n, m;
+    int n, m, ans;
     cin >>n >>m;
     for (int i=0; i<n; ++i)
     {
@@ -36,43 +39,50 @@ int main ()
             grid[i][j].x = j; grid[i][j].y = i;
         }
     }
-
-    square * curr;
+    
+    for (int i=0; i<n; ++i)
+	{
+		for (int j=0; j<m; ++j) printf("%2c", (grid[i][j].group == -1 ? '.' : '#'));
+		printf("\n");
+	}
     for (int i=0; i<n; ++i)
     {
         for (int j=0; j<m; ++j)
         {
-            curr = &(grid[i][j]);
-            if (curr->group == 0) floodfill (*curr, grid);
-            
-            printf("%2c", (curr->group==0 ? '#' : '.'));
+            if (grid[i][j].group == 0)
+			{
+				printf("  new empty reigon found!! (%d, %d)\n", j, i);
+				ans = floodfill (grid, n, m, i, j);
+				printf("  floodfill complete: we have found %d reigons so far...\n", ans);
+			}
+         //   printf("%2c", (curr->group==0 ? '#' : '.'));
         }
-        printf("\n");
     }
     
+    printf("%d", ans);
     
     return 0;
 }
 
-inline int floodfill (square& curr, square grid[][MAXSZ])
+inline int floodfill (square grid[][MAXSZ], const int n, const int m, int y, int x, const bool set)
 {
-    static int reigons = 0;
-    static stack<square> mstk;
+	static int reigons = 0;
     
-    if (curr.group != 0) {
-        mstk.pop();
-        return reigons;
-    }
+    // exit cases
+    if (y < 0 || x < 0 || y > n || x > m) return reigons;
+    if (grid[y][x].group != 0) return reigons;
     
-    if (mstk.empty()) ++reigons; // entry case
-    mstk.pop();
-    curr.group = reigons; 
+    if (set) ++reigons; // entry case
+    
+    printf("    floodfill called with %d reigons and on grid space (%d, %d)\n", reigons, x, y);
+    
+    grid[y][x].group = reigons; 
     
     for (int i=-1; i<2; ++i) for (int j=-1; j<2; ++j)
     {
-        mstk.push(grid[curr.x+i][curr.y+j]);
+        floodfill(grid, n, m, x+i, y+j, false);
     }
-    
-    while (!mstk.empty()) floodfill(mstk.top(), grid);
     return reigons;
 }
+
+
