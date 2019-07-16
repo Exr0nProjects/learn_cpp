@@ -13,6 +13,7 @@ cat >> main.cpp <<EOF
 #include <bits/stdc++.h> // includes "everything"
 #define ll long long
 #define dl double
+#define i32x 2147483647
 
 using namespace std;
 
