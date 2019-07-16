@@ -7,35 +7,31 @@
 using namespace std;
 
 const int MAXSZ = 110;
-int factorial[MAXSZ] = {1, 1};
+ll factorial[MAXSZ] = {1, 1};
 
-string reduce (int digits[], const int num, const int upto)
+string reduce (ll digits[], const ll num, const ll upto)
 {
-    
-    printf("  %d: ", num); for (int i=0; i<num; ++i) printf("%3d ", digits[i]); printf("\n");
-    
-    
     if (num == 1) return to_string(digits[0]);
     
-    int idx = upto/factorial[num-1];
+    ll idx = upto/factorial[num-1];
     string ret = to_string( digits[idx] ) + " ";
     // shift
-    for (int i=idx; i<num-1; ++i)
+    for (ll i=idx; i<num-1; ++i)
         digits[i] = digits[i+1];
     // propogate
-    return ret + reduce(digits, num-1, upto);
+    return ret + reduce(digits, num-1, upto%factorial[num-1]);
 }
 
 int main ()
 {
-    int num, upto;
+    ll num, upto;
     cin >> num >> upto;
-    --upto;
+    -- upto; // fencepost
     
-    for (int i=2; i<=num; ++i) factorial[i] = factorial[i-1] * i;
+    for (ll i=2; i<=num; ++i) factorial[i] = factorial[i-1] * i;
     
-    int digits[MAXSZ];
-    for (int i=0; i<num; ++i) digits[i] = i+1;
+    ll digits[MAXSZ];
+    for (ll i=0; i<num; ++i) digits[i] = i+1;
     
     cout << reduce(digits, num, upto);
     
