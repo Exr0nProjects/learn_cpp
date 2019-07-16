@@ -1,8 +1,9 @@
 16 July 2019: Day 8
 
 Problems worked on today:
+
 Page | PID | Summary | Status
-------------------------------
+-----|------|--------|--------
 2.13 | 1228 | n queens problem | WA
 2.13 | 1227 | connected reigons | WA
 2.13 | 7084 | binary tree encoding | AC
@@ -21,4 +22,5 @@ New concepts:
 * **struct vs classes**: are actually basically the same thing, because the only technical language differences are that
     1. struct member variables are public by default (can be overridden to make it the same as a class and vise versa)
     1. struct inheritance "connection?" (i dunno what that should be called) is also public by default, which means by default you can access a parent class private data member through the child struct. Again, this can be overridden with the `private` keyword, and a class can achive struct default behavior in the same way but with a `public` keyword. 
-this means that `struct` and `class` are actually pretty much exactly the same thing, (both can have member methods, etc), so they are used as a naming convention. Usually, people use `struct`s when they are grouping together related variables to abstract the primitive types away, while they use `class`es as an "interface" to abstract entire methods or private variables away. The rule of thumb seems to be to use `classes` if there are private data members or methods, because that means that you are creating an "interface" for other pieces of code to interact with, and if you are simply grouping together data then you should use a `truct`
+
+    this means that `struct` and `class` are actually pretty much exactly the same thing, (both can have member methods, etc), so they are used as a naming convention. Usually, people use `struct`s when they are grouping together related variables to abstract the primitive types away, while they use `class`es as an "interface" to abstract entire methods or private variables away. The rule of thumb seems to be to use `classes` if there are private data members or methods, because that means that you are creating an "interface" for other pieces of code to interact with, and if you are simply grouping together data then you should use a `truct`
