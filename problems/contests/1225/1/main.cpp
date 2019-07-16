@@ -5,70 +5,39 @@
 #define dl double
   
 using namespace std;
- 
-int num, upto;
- 
-struct anagram_exit{
-    int type;
-};
- 
-void anagram (const int rem_[], const int app_[], int rlen, int alen)
+
+const int MAXSZ = 110;
+int factorial[MAXSZ] = {1, 1};
+
+string reduce (int digits[], const int num, const int upto)
 {
-//   cout << "  : anagram called, rlen: " << rlen << " and alen: " << alen << " and rem: ["; for (int i=0; i<num; ++i) cout << rem_[i] << " "; cout << "]" << endl;
-    static int counter = 0;
-    if (rlen == 0)
-    {
-  //      cout << " " << counter << ": "; for (int i=0; i<alen; ++i) cout << app_[i]; cout << ", throw? " << (counter == upto) << endl;
-        if (counter == upto)
-        {
-            for (int i=0; i<alen; ++i) printf("%d ", app_[i]);
-            anagram_exit exitcode;
-            exitcode.type = 0;
-            throw exitcode;
-        }
-        ++ counter;
-        return;
-    }
-     
-    for (int i=0; i<num; ++i)
-    {
- //       cout << "  :    (" << rlen << ", " << alen << ") i: " << i << " rem[i]: " << rem_[i] << endl;
-        if (rem_[i] > 0)
-        {
-            int rem[11], app[11];
-            for (int i=0; i<num; ++i) { rem[i] = rem_[i]; app[i] = app_[i]; }
-//            cout << "  :!   " << i << ": " << rem[i] << ", rlen: " << rlen << "; alen: " << alen << endl;
-            app[alen] = rem[i];
-            rem[i] = 0;
-            anagram(rem, app, rlen - 1, alen + 1);
-        }
-    }
+    
+    printf("  %d: ", num); for (int i=0; i<num; ++i) printf("%3d ", digits[i]); printf("\n");
+    
+    
+    if (num == 1) return to_string(digits[0]);
+    
+    int idx = upto/factorial[num-1];
+    string ret = to_string( digits[idx] ) + " ";
+    // shift
+    for (int i=idx; i<num-1; ++i)
+        digits[i] = digits[i+1];
+    // propogate
+    return ret + reduce(digits, num-1, upto);
 }
- 
+
 int main ()
 {
-    int gram[11], app[11];
+    int num, upto;
     cin >> num >> upto;
-     
-    -- upto; // fencepost
-     
-    for (int i=1; i<=num; ++i)
-    {
-        gram[i-1] = i;
-    }
-     
-    //cout << "num: " << num << " upto: " << upto << endl;
- //   for (int i=0; i<num; ++i) cout << gram[i] << " "; cout << endl;
-     
-    try
-    {
-        anagram (gram, app, num, 0);
-    }
-    catch (anagram_exit exitcode)
-    {
-       // cout << "exitcode thrown, exitting now.";
-        if (exitcode.type == 0) return 0; // anagram was found, exiting safely
-    }
-     
+    --upto;
+    
+    for (int i=2; i<=num; ++i) factorial[i] = factorial[i-1] * i;
+    
+    int digits[MAXSZ];
+    for (int i=0; i<num; ++i) digits[i] = i+1;
+    
+    cout << reduce(digits, num, upto);
+    
     return 0;
 }
