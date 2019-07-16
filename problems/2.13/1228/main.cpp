@@ -11,14 +11,15 @@ using namespace std;
 
 const int MAXSZ = 10;
 
-inline void printarr (const bool board[][MAXSZ], const int size)
+inline void printarr (const bool board[][MAXSZ], const int size, string prefix=" ")
 {
   return; // remove for debug
   for (int i=0; i<size; ++i)
   {
+    cout << prefix;
     for  (int j=0; j<size; ++j)
     {
-      printf("%4d", board[i][j]);
+      printf("%2c", (board[i][j] ? '#' : '.'));
     }
     printf("\n");
   }
@@ -34,24 +35,23 @@ int place (bool board[][MAXSZ], const int size, int queens)
   {
     for (int j=0; j<size; ++j)
     {
-      if (board[i][j] == 0)
+      if (board[i][j] == 0) // placeable
       {
         bool newbd[MAXSZ][MAXSZ];
-        for (int i=0; i<size; ++i) for (int j=0; j<size; ++j) newbd[i][j] = board[i][j];
-        -- queens;
+        for (int l=0; l<size; ++l) for (int m=0; m<size; ++m) newbd[l][m] = board[l][m];
 
         for (int k=0; k<size; ++k)
         {
           newbd[i][k] = 1;
           newbd[k][j] = 1;
-          if (i-k >= 0 && j-k >= 0) newbd[i-k][j-k] =1;
-          if (i+k < size && j+k < size) newbd[i-k][j-k] =1;
-          if (i-k >= 0 && j+k < size) newbd[i-k][j+k] =1;
-          if (i+k < size && j-k >= 0) newbd[i+k][j-k] =1;
+          try { newbd[i-k][j-k] = 1; } catch (exception& e) {}
+          try { newbd[i+k][j+k] = 1; } catch (exception& e) {}
         }
-        printarr(newbd, size);
+        for (int k=0; k<=i+j; ++k) try { newbd[i+j-k][k] = 1; } catch (exception& e) {}
+        
+        printarr(newbd, size, to_string(queens-1) + ": ");
 
-        place(newbd, size, queens);
+        place(newbd, size, queens-1);
       }
     }
   }
@@ -66,7 +66,7 @@ int main ()
   bool board[MAXSZ][MAXSZ];
   for (int i=0; i<num; ++i) for (int j=0; j<num; ++j) board[i][j] = 0;
 
-  printarr(board, num);
+  printarr(board, num, "");
 
   printf("%d", place(board, num, num));
 
