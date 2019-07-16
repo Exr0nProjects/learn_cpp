@@ -7,7 +7,9 @@
 using namespace std;
  
 int num, upto;
- 
+
+const int MAXSZ = 510;
+
 struct anagram_exit{
     int type;
 };
@@ -35,7 +37,7 @@ void anagram (const int rem_[], const int app_[], int rlen, int alen)
 //d        cout << "  :    (" << rlen << ", " << alen << ") i: " << i << " rem[i]: " << rem_[i] << endl;
         if (rem_[i] > 0 && (abs(rem_[i]-app_[alen-1]) > 1 || alen == 0))
         {
-            int rem[11], app[11];
+            int rem[MAXSZ], app[MAXSZ];
             for (int i=0; i<num; ++i) { rem[i] = rem_[i]; app[i] = app_[i]; }
  //d           cout << "  :!   " << i << ": " << rem[i] << ", rlen: " << rlen << "; alen: " << alen << endl;
             app[alen] = rem[i];
@@ -47,7 +49,7 @@ void anagram (const int rem_[], const int app_[], int rlen, int alen)
  
 int main ()
 {
-    int gram[11], app[11];
+    int gram[MAXSZ], app[MAXSZ];
     cin >> num >> upto;
      
     -- upto; // fencepost
