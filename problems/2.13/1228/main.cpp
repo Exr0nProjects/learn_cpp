@@ -31,7 +31,7 @@ int place (bool board[][MAXSZ], const int size, int queens)
   static int success = 0;
   if (queens == 0) ++success; // found successful solution
 
-  for (int i=0; i<size; ++i)
+  for (int i=0; i<size; ++i) // todo: start at non (0, 0) in future iterations because we don't need to check for filling past gridspaces
   {
     for (int j=0; j<size; ++j)
     {
