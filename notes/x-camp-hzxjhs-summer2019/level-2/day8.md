@@ -1,8 +1,15 @@
 16 July 2019: Day 8
 
 Problems worked on today:
-1. 2.13 1228 - n queens problem
-1. 2.13 1227 - connected reigons
+Page | PID | Summary | Status
+------------------------------
+2.13 | 1228 | n queens problem | WA
+2.13 | 1227 | connected reigons | WA
+2.13 | 7084 | binary tree encoding | AC
+2.13 | 7998 | dp work distribution | WA
+c1225|    1 | counting permutations (similar to 7977) | TLE
+c1225|    2 | permutations with identical digits | WA
+c1225|    3 | permutations without consecutive numbers | TLE
 
 New concepts:
 * **inline**: function that is placed in line at compile time so there is less jumping around? this causes less calling and function jumps which makes it faster but also more space required for the compiled binary (i think). usage: `inline void myfunc (int arg)`
