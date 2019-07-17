@@ -4,16 +4,18 @@
  */
 
 #include <bits/stdc++.h> // includes "everything"
+#include <iostream>
+#include <cstdio>
 #define ll long long
 #define dl double
 
 using namespace std;
 
-const int MAXSZ = 10;
+const int MAXSZ = 100;
 
-inline void printarr (const bool board[][MAXSZ], const int size, string prefix=" ")
+inline void printarr (const bool board[][MAXSZ], const int size, const int rem, string prefix=" ")
 {
-  return; // remove for debug
+  //return; // remove for debug
   for (int i=0; i<size; ++i)
   {
     cout << prefix;
@@ -23,20 +25,24 @@ inline void printarr (const bool board[][MAXSZ], const int size, string prefix="
     }
     printf("\n");
   }
+  printf("  to place: %d\n", rem);
   puts("");
 }
 
-int place (bool board[][MAXSZ], const int size, int queens)
+int place (bool board[][MAXSZ], const int size, const int queens, const int sy_=0, const int sx_=0)
 {
+	char _del; scanf("%c",&_del);
+	printf("  called, seed: (%d, %d)\n", sy_, sx_);
   static int success = 0;
-  if (queens == 0) ++success; // found successful solution
+  if (queens == 0) { return ++success; printf("\n\n\n\n\nsuccess\n\n\n\n\n"); } // found successful solution
 
-  for (int i=0; i<size; ++i) // todo: start at non (0, 0) in future iterations because we don't need to check for filling past gridspaces
+  for (int i=sy_; i<size; ++i)
   {
-    for (int j=0; j<size; ++j)
+    for (int j=sx_; j<size; ++j)
     {
       if (board[i][j] == 0) // placeable
       {
+      	printf("found placable at (%d, %d), rem: %d, scs %d\n", i, j, queens, success);
         bool newbd[MAXSZ][MAXSZ];
         for (int l=0; l<size; ++l) for (int m=0; m<size; ++m) newbd[l][m] = board[l][m];
 
@@ -44,14 +50,14 @@ int place (bool board[][MAXSZ], const int size, int queens)
         {
           newbd[i][k] = 1;
           newbd[k][j] = 1;
-          try { newbd[i-k][j-k] = 1; } catch (exception& e) {}
-          try { newbd[i+k][j+k] = 1; } catch (exception& e) {}
+          if (i-k>0 && j-k>0) newbd[i-k][j-k] = 1;
+          if (i+k<size && j+k<size) newbd[i+k][j+k] = 1;
         }
-        for (int k=0; k<=i+j; ++k) try { newbd[i+j-k][k] = 1; } catch (exception& e) {}
+        for (int k=max(i+j-size+1, 0); k<min(i+j+1, size); ++k) newbd[i+j-k][k] = 1; 
         
-        printarr(newbd, size, to_string(queens-1) + ": ");
+        printarr(newbd, size, queens-1, ": ");
 
-        place(newbd, size, queens-1);
+        place(newbd, size, queens-1, i, j);
       }
     }
   }
@@ -61,14 +67,14 @@ int place (bool board[][MAXSZ], const int size, int queens)
 int main ()
 {
   int num;
-  scanf("%d", &num);
+  scanf("%3d", &num);
 
   bool board[MAXSZ][MAXSZ];
-  for (int i=0; i<num; ++i) for (int j=0; j<num; ++j) board[i][j] = 0;
+  for (int i=0; i<num; ++i) for (int j=0; j<num; ++j) board[i][j] = false;
 
-  printarr(board, num, "");
+  printarr(board, num, num, "");
 
-  printf("%d", place(board, num, num));
+  printf("%d", place(board, num, num, 0, 0));
 
   return 0;
 }
