@@ -30,18 +30,18 @@ void printarr (const unsigned ll board, const int size)
 inline unsigned long long place (unsigned ll board, unsigned ll pos) 
 {
 	unsigned ll lp = log2(pos);
-	board |= 255 << ((lp >> 3) << 4); // horizontal
-	board |= 72340172838076673 << (lp % 8); // vertical
-	for (int i=7; i<8; ++i) // todo: change int i=7 to int i=1
+//	board |= 255 << ((lp >> 3) << 4); // horizontal
+//	board |= 72340172838076673 << (lp % 8); // vertical
+	for (int i=1; i<=4; ++i) // todo: change int i=7 to int i=1
 	{
-//		board |= pos << i << 1;
-//		board |= pos << i >> 1;
-//		board |= pos >> i << 1;
-//		board |= pos >> i >> 1;
-		printf("\n\n");
+		board |= pos << (i << 3) << i;
+		board |= pos >> (i << 3) << i;
+		board |= pos << (i << 3) >> i;
+		board |= pos >> (i << 3) >> i;
+	}
+	printf("\n\n");
 		cout << board << endl;
 		printarr(board, 8);
-	}
 }
 
 inline int backtrack (unsigned ll board, const int siz, const short rem, unsigned ll pos=1) // can we get away with this being inline?
@@ -67,7 +67,7 @@ int main ()
 
   printarr(0, num);
   
-  for (unsigned long long i = 1 << 20; i; i <<= 1) { printf("\n\n%d\n", (int) log2(i)); printarr(i, num); place(0, i); }
+  for (unsigned long long i = 1 << 16; i; i <<= 1) { printf("\n\n%d\n", (int) log2(i)); printarr(i, num); place(0, i); }
 
   //printf("%d", backtrack(0, num, num));
 
