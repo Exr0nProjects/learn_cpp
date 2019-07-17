@@ -6,7 +6,8 @@
  2.13 | 1227 | connected reigons | AC
  "    | 1228 | n queens | TLE
  "    | 7998 | work division | AC
- "    | 7999 | work division v2 | TLE
+ "    | 7999 | work division v2 | AC
+ "    | 7087 | tree conversion | TLE
 
 #### Concepts:
 - **recursion**: use when possible
@@ -35,4 +36,4 @@
 #### Reflection:
 |  Type  |  Score (/12)  |
 |--------|:-------------:|
-Productivity | 9
+Productivity | 8
