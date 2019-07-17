@@ -18,20 +18,21 @@ int totmin = 1000000000; // 1 billion;
 
 void dfs (const int jobs, const int ppls, int tmax)
 {
+	if (tmax >= totmin) return; // this shouldn't be needed, but for some reason it makes it significantly faster.
     if (jobs == 0)
     {
-        totmin = tmax; // base case 
-		return;	
+		  totmin = tmax; // base case 
+		  return;	
 	}
 	
     for (int j=0; j<ppls; ++j)
     {
-	    if (ppltime[j] + jobtime[jobs-1] < totmin) // optimization
-		{
-		    ppltime[j] += jobtime[jobs-1];
-            dfs( jobs-1, ppls, max(ppltime[j], tmax) );
-            ppltime[j] -= jobtime[jobs-1];	
-		}
+		  if (ppltime[j] + jobtime[jobs-1] < totmin) // optimization
+		  {
+			  ppltime[j] += jobtime[jobs-1];
+              dfs( jobs-1, ppls, max(ppltime[j], tmax) );
+              ppltime[j] -= jobtime[jobs-1];	
+		  }
     }
     return;
 }
