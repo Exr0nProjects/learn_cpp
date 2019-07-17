@@ -1,59 +1,52 @@
 /*
- * Problem #7998
- * work distribution: todo not accepted;
+ * Problem #7988
+ * work division
  */
 
 #include <bits/stdc++.h> // includes "everything"
+#include <iostream>
+#include <cstdio>
 #define ll long long
 #define dl double
-#define i32x 2147483647
 
 using namespace std;
 
-const int MAXSZ = 25; // can be up to 31, otherwise the i32 snowflake doesn't work
+const int MAXSZ = 30;
+
+int dfs (const int cost[][MAXSZ], bool able[], const int siz, const int sum, const int rem)
+{
+    static int mmin = 1000000000;
+    
+    if (rem == 0 && sum < mmin) mmin = sum; // exit case
+    if (sum > mmin || rem == 0) return mmin; // returns, the first part is an optimization (we cant get better if the sum is already over)
+    
+ //d   printf("    rem: %d, sum: %d\n", rem, sum);
+    
+    for (int i=0; i<siz; ++i)
+    {
+        if (!able[i])
+        {
+ //d           printf("       propogating with rem: %d, wrk: %d\n", rem-1, i);
+            able[i] = true;
+            dfs (cost, able, siz, sum+cost[rem-1][i], rem-1);
+            able[i] = false;
+        }
+    }
+    return mmin;
+}
+
 
 int main ()
 {
-	int num;
-	cin >> num;
-	
-	int dp[MAXSZ][MAXSZ][2] = {};
-	for (int i=0; i<num; ++i) for (int j=0; j<num; ++j)
-	{
-		cin >> dp[i][j][0];
-		dp[i][j][1] = 1 << j; // init snowflake
-	}
-	
-	// dp
-	for (int i=1; i<num; ++i)
-	{
-		for (int j=0; j<num; ++j)
-		{
-			int mmin = 1000000, jdx = 0;
-			for (int k=0; k<num; ++k) if (dp[i-1][k][0] < mmin && !(dp[i-1][k][1] >> j)&1)
-			{
-				printf("(%d, %d) k: %d ?%d\n", j, i, k, !(dp[i-1][k][1] >> j)&1);
-				mmin = i;
-				jdx = k;
-			}
-			
-			dp[i][j][0] += mmin;
-			dp[i][j][1] |= dp[i-1][i][1];
-		}
-	}
-	
-	for (int i=0; i<num; ++i)
-	{
-		for (int j=0; j<num; ++j)
-		{
-			printf("%3d", dp[i][j][0]);
-		}
-		printf("\n");
-	}
-	
-	int mmin = 1000000;
-	for (int i=0; i<num; ++i) if (dp[num-1][i][0] < mmin) mmin = dp[num-1][i][0];
-	printf("%d", mmin);
-		
-    return 0;
+    int cost[MAXSZ][MAXSZ];
+    bool able[MAXSZ] = { };
+    
+    int size, temp; 
+    scanf("%2d", &size);
+    
+    for (int i=0; i<size; ++i) 
+        for (int j=0; j<size; ++j)
+            cin >> cost[i][j];
+    
+    printf("%d", dfs(cost, able, size, 0, size));
 }
