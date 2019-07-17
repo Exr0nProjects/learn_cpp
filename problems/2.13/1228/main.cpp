@@ -15,7 +15,7 @@ const int MAXSZ = 100;
 
 inline void printarr (const bool board[][MAXSZ], const int size, const int rem, string prefix=" ")
 {
-  //return; // remove for debug
+  return; // remove for debug
   for (int i=0; i<size; ++i)
   {
     cout << prefix;
@@ -29,22 +29,22 @@ inline void printarr (const bool board[][MAXSZ], const int size, const int rem, 
   puts("");
 }
 
-int place (bool board[][MAXSZ], const int size, const int queens, const int sy_=0, const int sx_=0)
+int place (bool board[][MAXSZ], const int size, const int queens, const int sy_=0, const int sx_=0) // todo: sx_ is not used
 {
-	char _del; scanf("%c",&_del);
-	printf("  called, seed: (%d, %d)\n", sy_, sx_);
+//	char _del; scanf("%c",&_del);
+//d	printf("  called, seed: (%d, %d)\n", sy_, sx_);
   static int success = 0;
-  if (queens == 0) { return ++success; printf("\n\n\n\n\nsuccess\n\n\n\n\n"); } // found successful solution
-
+  if (queens == 0) { return ++success; } // found successful solution
+  
   for (int i=sy_; i<size; ++i)
   {
-    for (int j=sx_; j<size; ++j)
+    for (int j=0; j<size; ++j)
     {
-      if (board[i][j] == 0) // placeable
+      if (!board[i][j]) // placeable
       {
-      	printf("found placable at (%d, %d), rem: %d, scs %d\n", i, j, queens, success);
+//d      	printf("found placable at (%d, %d), rem: %d, scs %d\n", i, j, queens, success);
         bool newbd[MAXSZ][MAXSZ];
-        for (int l=0; l<size; ++l) for (int m=0; m<size; ++m) newbd[l][m] = board[l][m];
+        for (int l=0; l<size; ++l) for (int m=0; m<size; ++m) newbd[l][m] = board[l][m]; // todo: slow
 
         for (int k=0; k<size; ++k)
         {
