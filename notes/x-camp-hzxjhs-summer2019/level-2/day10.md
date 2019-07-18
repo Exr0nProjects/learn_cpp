@@ -63,7 +63,7 @@
     Notably, `scanf` has some quirks with characters and invisibles in the input stream. Best to explicitly remove newlines from the input stream when inputting characters with `scanf`, with something like `scanf("%c\n", &mychar);`. If something is really broken, try replacing `scanf` with `cin` to see if the problem gets fixed. If so, maybe some speed reduction is worth a working program. 
 
 - **Dijkstra Basics**: An algorithm to find the shortest route on a weighted undirected graph
-    Dijkstra's algorithm is often an effective one for finding a route on a graph. Here is a summary of [an article about it on Brilliant] (https://brilliant.org/wiki/dijkstras-short-path-finder/) about it. 
+    Dijkstra's algorithm is often an effective one for finding a route on a graph. Here is a summary of [an article about it on Brilliant](https://brilliant.org/wiki/dijkstras-short-path-finder/) about it. 
     
     Basically, the algorithm entails visiting the shortest unvisited node from the origin and checking if going to a neighboring node from that node is less costly than whatever was previously stored in the node. If it is, then the neighboring node is updated. 
     
@@ -86,8 +86,14 @@
     
     Notably, Dijkstra is gaurenteed to find the shortest path from the start to any node, however it is a "blind" search which means it does not consider where the objective is. This makes it useful for computing things like vector fields, but it runs rather slowly for computing the shortest distance to a specific node. There are other algorithms, such as a "greedy best first search" algorithm which tries to estimate the distance between a candidate test node and the objective, and searches in the "direction" of the objective. This means it can get trapped in concave obstacles, but for the most part it runs much faster than Dijkstra.
     
-    Additionally, A* is a combination of Dijkstra and greedy search algorithms. It tends to perform very well in real world applications because it is fast and versatile. A good A* resource can be found [here] (http://theory.stanford.edu/~amitp/GameProgramming/index.html).
+    Additionally, A* is a combination of Dijkstra and greedy search algorithms. It tends to perform very well in real world applications because it is fast and versatile. A good A* resource can be found [here](http://theory.stanford.edu/~amitp/GameProgramming/index.html).
 
+- **File I/O**: `freopen`, `fin`, `fout`, `cerr`
+    File opening with `freopen` is similar to other programming languages. There are filemodes, and the function returns a pointer to a file stream? It is a little confusing. Some extra sources:
+    - [freopen](http://www.cplusplus.com/reference/cstdio/freopen/)
+    - [fopen](https://en.cppreference.com/w/cpp/io/c/fopen)
+    - [fprintf](http://www.cplusplus.com/reference/cstdio/fprintf/)
+    - [cerr](http://www.cplusplus.com/reference/iostream/cerr/)
 
 #### Reflection:
 |  Type  |  Score (/12)  |
