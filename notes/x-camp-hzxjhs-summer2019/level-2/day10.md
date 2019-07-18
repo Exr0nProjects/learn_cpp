@@ -73,7 +73,20 @@
       1. Create 2 arrays \<int\> `dist` and \<bool\> `visit`, each capable of holding all elements. 
       1. Initialize all values of `dist` with `infinity`.
       1. Initialize all values of `visit` with `false`. 
+      1. Initialize `dist[start]` with `0`.
     - Execute
+      1. For each `idx` in `visit`
+        1. If `visit[idx]` is `false` and `dist[idx]` is the minimum of `dist`
+          1. `visit[idx]` = false;
+          1. For each `idy` of neighbors
+            1. If `dist[idy]` more than `dist[idx]` + `inbetween` (the distance between nodes `idx` and `idy`)
+              1. `dist[idy]` = `dist[idx]` + `inbetween`;
+        1. If there are no more `false` values in `visit`
+          1. Return `dist`
+    
+    Notably, Dijkstra is gaurenteed to find the shortest path from the start to any node, however it is a "blind" search which means it does not consider where the objective is. This makes it useful for computing things like vector fields, but it runs rather slowly for computing the shortest distance to a specific node. There are other algorithms, such as a "greedy best first search" algorithm which tries to estimate the distance between a candidate test node and the objective, and searches in the "direction" of the objective. This means it can get trapped in concave obstacles, but for the most part it runs much faster than Dijkstra.
+    
+    Additionally, A* is a combination of Dijkstra and greedy search algorithms. It tends to perform very well in real world applications because it is fast and versatile. 
 
 
 #### Reflection:
