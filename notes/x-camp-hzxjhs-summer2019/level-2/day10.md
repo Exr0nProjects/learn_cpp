@@ -3,7 +3,7 @@
 #### Problems:
 |  Page  |  PID  |  Description  |  Status  |
 |-------:|-------|---------------|:--------:|
-2.13 | 1228 | n queens | AC
+2.13 | [1228](../../../problems/2.13/x1228/main.cpp) | n queens | AC
 2.14 | 7939 | File I/O | AC
 "    | 7940 | File I/O | AC
 "    | 7941 | File I/O | AC
