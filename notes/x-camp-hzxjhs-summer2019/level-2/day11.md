@@ -44,4 +44,6 @@
 |--------|:-------------:|
 Productivity | <score>
 
-We should probably try and get a computer to share
+We should probably try and get a computer to share so that we can see what the teacher broadcasts onto peoples screens. Maybe we can squeeze in by the other Alexes?
+
+What is "Cha1 Lu4"??
