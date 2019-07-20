@@ -19,28 +19,21 @@ Node& go_left (Node& base);
 
 Node& go_right (Node& base)
 {
-  while (base.left.right != NULL) go_left(base.left);
-
-  Node* ret;
-  ret = &base.left;
-
+  Node* ret = &base.left;
+  base.left = &(ret->right);
   ret->right = &base;
-  base.left = NULL;
 
-  return ret;
+  return *ret;
 }
 
 Node& go_left (Node& base)
 {
-  while (base.right.left != NULL) go_right(base.right);
 
-  Node* ret;
-  ret = &base.right;
-
+  Node* ret = &base.right;
+  base.right = &(ret->left);
   ret->left = &base;
-  base.right = NULL;
 
-  return ret;
+  return *ret;
 }
 
 int main ()
@@ -48,7 +41,7 @@ int main ()
   const int siz = 20;
   Node nodes[20];
   nodes[0].value = 1;
-  
+
 
   return 0;
 }
