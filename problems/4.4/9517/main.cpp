@@ -3,7 +3,8 @@
  * guard the palace
  */
 
-#include <bits/stdc++.h> // includes "everything"
+#include <cstdio>
+#include <algorithm>
 #define ll long long
 #define dl double
 #define i32x 2147483647
@@ -14,34 +15,61 @@ const int MAXSZ = 1600;
 
 struct Path
 {
-  int from=0, to=0, next=0, cost=-1;
+  int from=0, to=0, next=0;
 } paths[MAXSZ];
 
-int head[MAXSIZE] = { };
-int hend[MAXSIZE] = { };
+int head[MAXSZ] = { };
+int hend[MAXSZ] = { };
+int cost[MAXSZ] = { };
+
+int mincost(int cur)
+{
+//  printf("    curr: %d, calculating...\n", cur);
+  if (head[cur] == 0) return cost[cur];
+  int sum = 0;
+  for (int pt=head[cur]; pt != 0; pt = paths[pt].next)
+    sum += mincost(paths[pt].to);
+
+//  printf("    cur: %d, sum = %d\n", cur, sum);
+
+  return min(cost[cur], sum);
+}
 
 int main ()
 {
-  int n, q;
-  scanf("%d %d", &n, &q);
-  for (int i=0; i<n; ++i)
-  {
-    int a, b;
-    scanf("%d %d", &a, &b);
-    if (head[b] != 0) { int t=a; a=b; b=t; }
-    head[b] = -1;
+  paths[0].next = 1;
+  paths[0].from = 0;
+  paths[0].to = 1;
 
-    if (head[a] > 0)
+  int n, pt=1;
+  scanf("%d", &n);
+  for (int i=1; i<=n; ++i)
+  {
+    int idx, c, _n;
+    scanf("%d %d %d", &idx, &c, &_n);
+
+    // create all the branching paths
+    for (int j=0; j<_n; ++j)
     {
-      paths[hend[a]].next = i;
-      hend[a] = i;
+      int target;
+      scanf("%d", &target);
+
+      if (head[idx] > 0)
+        paths[hend[idx]].next = pt;
+      else
+        head[idx] = pt;
+      hend[idx] = pt;
+
+      paths[pt].from = idx;
+      paths[pt].to = target;
+      ++pt;
     }
-    else if (head[a] == -1)
-    {
-      head[a] = hend[a] = i;
-      
-    }
+
+    cost[idx] = c;
   }
+
+  int cost = mincost(1);
+  printf("%d", cost);
 
   return 0;
 }
