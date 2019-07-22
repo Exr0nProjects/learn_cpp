@@ -1,6 +1,6 @@
 /*
- * c1204-1
- * gcd
+ * c1204-2
+ * merge sorted arrays
  */
 
 #include <cstdio>

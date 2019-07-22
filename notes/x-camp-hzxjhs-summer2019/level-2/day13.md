@@ -1,9 +1,19 @@
 ## Summary for Day 13 (22 July 2019)
 
 #### Problems:
-|  Page  |  PID  |  Description  |  Status  |
-|-------:|-------|---------------|:--------:|
-<page> | <pid> | <pdesc a few words> | <stat>
+|  Page  |  PID  |  Description  |  Status  | Notes |
+|-------:|-------|---------------|:--------:|-------|
+vjudge.net contest 313134 | A | Contest questions listing | AC | N/A
+"" | B | Circle surround radius | AC | N/A
+"" | C | Chess rooks and king | WA | Don't know how to do
+c1204 | 1 | Euclid GCD | AC | N/A
+"" | 2 | Merge Sorted Arrays | AC | N/A
+"" | 5 | Number Statistics | WIP | Can do, the number limits were written wrong and actually only need to worry about ints up to 10e7.
+"" | 6 | Tree Depth and Width | CE | Not sure why it doesn't work
+"" | 7 | Maximize Customer Calls | WA | DP got messed up, test case `1 10 2 4 6 9` doesn't work.
+"" | 8 | Hamster Whacking Game | WA | Greedy algorithm doesn't work, should probably use DP.
+
+
 
 #### Concepts:
 - **Trie**: Multi-level overlapping storage for segment-able types
@@ -31,10 +41,9 @@
 
     More resources on tries: { [Geeks for Geeks](https://www.geeksforgeeks.org/advantages-trie-data-structure/), [Boston University CS](https://www.cs.bu.edu/teaching/c/tree/trie/) }
 
-
-    more explanation
-
 #### Reflection:
 |  Type  |  Score (/12)  |
 |--------|:-------------:|
 Productivity | 9
+
+There was no lecture today, we just did a bunch of contest problems. I think I am too slow at debugging still so I need to spend some time grinding earlier pages. I should get more familiar with C++ syntax and practice debugging more simple structures so that I can more efficiently do problems that require more thinking and a deeper understanding of the underlying algorithms.

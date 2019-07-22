@@ -1,6 +1,6 @@
 /*
- * c1204-5
- * count sort
+ * c1204-6
+ * tree depth/width
  */
 
 #include <cstdio>
