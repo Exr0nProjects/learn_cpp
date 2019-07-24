@@ -6,7 +6,7 @@ cd $1
 mkdir $2
 cd $2
 
-cat ../../meta/template.cpp | sed -E "s/\[meta\:pid\]$/$2/g" | sed -E "s/\[meta\:date\]/$(date "$dateformat")">> main.cpp
+cat ../../meta/template.cpp | sed -E "s/\[meta\:pid\]$/$2/g" | sed -E "s/\[meta\:date\]$/$(date "$dateformat")">> main.cpp
 
 cd ../..
 
