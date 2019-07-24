@@ -75,8 +75,10 @@ In contests, don't spend too much time debugging one problem. It is mostly not w
 I really need to work on debugging, and writing code quickly. The thinking will come later when I become more familiar with writing code. It is difficult to focus on what you are trying to do if the syntax is not unconscious, so that will have to happen before I am able to quickly do contests. Until then, I will keep practicing and trying to learn about different data structures and algorithms.
 
 Further reading:
-Priority Queue
-Fibonacci Heap
-Shell Sort
-Radix Sort
-Function Pointers
+- Priority Queue
+- Fibonacci Heap
+- Shell Sort
+- Radix Sort
+- Function Pointers
+- Map
+- Unordered Map (hashmap)
