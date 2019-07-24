@@ -32,7 +32,7 @@ string equation;
 
 string cparse (int l, int r)
 {
-  for (;)
+  for (char t=equation[l]; t > )
 }
 
 int main ()

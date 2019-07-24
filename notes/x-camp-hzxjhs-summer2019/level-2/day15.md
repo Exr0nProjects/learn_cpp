@@ -4,6 +4,9 @@
 |  Page  |  PID  |  Description  |  Status  | Notes |
 |-------:|-------|---------------|:--------:|-------|
 c1204 | 8 | Hampster Whakamole | AC | ACd using heaps after explained in class
+VJudge313606| A | Resturaunt Dishes | WIP | Spend a long time debugging, still doesn't work
+"" | B | Min sum of squares pairs | AC | Simply make max different pairs, pattern matching
+"" | C | Wandering in park | WIP | Ran out of time after debugging problem A for too long
 
 ##### Review of problems from dev.xjoi.net contest 1204 (day 13)
 1. Problem 10: traveller's budget (we get some distances and costs of gas stations, ask how much money to get to target)
@@ -54,14 +57,26 @@ c1204 | 8 | Hampster Whakamole | AC | ACd using heaps after explained in class
 
     To delete, we remove the top/root node (that's the whole point of a heap anyways, and if for some reason you want to remove something else then just find it first and call it the root of that subtree, the rest of the heap doesn't care.) and fill it's place with the last node, which is one of  the smallest. Then, take the maximum of { the new root `root`, and the original `left` and `right` children }. The `root` is swapped with the largest of those and the process repeats with `root` as the root of the affected subtree.
 
+    Heaps can be used in many places, (at least that's what it looks like from the past few days because we have been doing heap problems). Usually, when you need to continually find the least or most of something with limited other restrictions, then you want to use a heap. Especially when there is an order to the information you receive or some kind of ordering to when some actions can be performed, we can take advantage of an "intermediate" heap with limited information to find the least/most value with that particular set of information that is available in that stage of solving the problem. For example, the whackamole problem from Monday was heapable because we could make limited information heaps for each frame of time and only insert hamsters into the heap that would expire in that frame of time. This is one way to make the problem smaller and divide and conquer.
+
+    In summary, _heaps are good for maintaining a global min/max, because the min/max can be accessed in `O(1)` and this can be maintained upon insertion/deletion in `O(log n)`. Thus, heaps are good for maintaining a global min/max relatively cheaply._
+
 - **Storing Binary Trees/Heaps**: Basically just shove them in an array
     Because they are always the same size, if we number the nodes starting at the root going layer by layer left to right, then the child of any node will always be `node*2` and `node*2+1` in the array, and the parent of that node will always be `node/2`. This is much more convenient than storing pointers to the children, or storing edges or some shenanigans like that.
-
-- **Stream EDit (bash)**: Edit files with bash to make my problem template more portable
-
-
 
 #### Reflection:
 |  Type  |  Score (/12)  |
 |--------|:-------------:|
-Productivity | <score>
+Productivity | 10
+
+Reflection:
+In contests, don't spend too much time debugging one problem. It is mostly not worth it. There is probably a fence post error somewhere. Instead, take a break, look at some of the other problems. Fifteen minutes is not enough to fully write and finish a problem. You should leave at least an hour to finish a relatively simple problem.
+
+I really need to work on debugging, and writing code quickly. The thinking will come later when I become more familiar with writing code. It is difficult to focus on what you are trying to do if the syntax is not unconscious, so that will have to happen before I am able to quickly do contests. Until then, I will keep practicing and trying to learn about different data structures and algorithms.
+
+Further reading:
+Priority Queue
+Fibonacci Heap
+Shell Sort
+Radix Sort
+Function Pointers
