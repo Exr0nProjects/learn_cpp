@@ -23,64 +23,57 @@
 #define i32x 2147483647
 #define PI 3.14159265358979323846264338
 
+typedef int node;
+typedef int edid;
+
 using namespace std;
 
-const int MAXSZ = 10000010; // todo
+const int MAXSZ = 100010; // todo
 
 struct Edges
 {
-  int to=0, next=0;
-} edges[MAXSZ];
+  node to=0;
+  edid next=0;
+} edges[2*MAXSZ];
 
-int head[MAXSZ];
-int tail[MAXSZ];
+edid head[MAXSZ] = { };
+bool vis[MAXSZ] = { };
 
-inline void addEdge (int a, int b)
+inline void addEdge (const node a, const node b, const bool con=true)
 {
-  if (head[a] > 0) edges[tail[a]].next = b;
-  else head[a] = b;
-  tail[a] = b;
-  edges[b].to = b;
+  static int cur = 0;
 
-  if (head[b] > 0) edges[tail[b]].next = a;
-  else tail[b] = a;
-  tail[b] = a;
-  edges[a].to = a;
+  edges[++cur].to = b;
+  edges[cur].next = head[a];
+  head[a] = cur;
+
+  //if (con) addEdge(b, a, false);
 }
 
-int mheap[MAXSZ], mhpt = 1;
-void hadd (int id)
+inline void bfc ()
 {
-  mheap[mhpt] = id;
-  int temp = mhpt;
-  for (; temp != 1 && mheap[temp/2] > mheap[temp];)
+  static priority_queue< node, vector<node>, greater<node> > que;
+  que.push(1);
+  vis[1] = true;
+
+
+  for (; !que.empty();)
   {
-    swap(mheap[temp/2], mheap[temp]);
-  }
-  ++ mhpt;
-}
-void hdel (int id)
-{
-  -- mhpt;
-  swap(mheap[1], mheap[mhpt]);
+    // we need this because pushing to the queue can change the top element, so we need to store it and pop it immedietly before we push anything.
+    int top = que.top();
+    que.pop();
 
-  for (int temp = mhpt; mheap[temp*2] > 0 || mheap[temp*2+1];)
-  {
-    if (mheap[temp] > mheap[temp*2] && mheap[temp*2] > 0 && mheap[temp*2] > mheap[temp*2+1])
+    printf("%d ", top);
+
+    for (edid i=head[top]; i; i = edges[i].next)
     {
-      swap( mheap[temp], mheap[temp*2] );
+      if (!vis[edges[i].to])
+      {
+        que.push(edges[i].to);
+        vis[edges[i].to] = true;
+      }
     }
-    else if (mheap[temp] > mheap[temp*2+1] && mheap[temp*2+1] > 0)
-    {
-      swap( mheap[temp], mheap[temp*2] );
-    }
-    else break;
   }
-}
-
-inline void dfc (int cur, int pre)
-{
-
 }
 
 
@@ -89,14 +82,17 @@ int main ()
   int n, m;
   scanf("%d%d", &n, &m);
 
-  for (int i=0; i<n; ++i)
+  for (int i=0; i<m; ++i)
   {
     int a, b;
     scanf("%d%d", &a, &b);
     addEdge(a, b);
+    addEdge(b, a);
   }
 
-  dfc(1, 0);
+//  printf("%d %d\n\n", edges[0].to, head[0]);
+
+  bfc();
 
   return 0;
 }

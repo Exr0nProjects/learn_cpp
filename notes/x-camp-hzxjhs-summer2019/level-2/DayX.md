@@ -3,7 +3,7 @@
 #### Problems:
 |  Page  |  PID  |  Description  |  Status  | Notes |
 |-------:|-------|---------------|:--------:|-------|
-<page> | <pid> | <pdesc a few words> | <stat>
+<page> | <pid> | <pdesc a few words> | <stat> | <notes>
 
 #### Concepts:
 - **<name>**: <summary goes here>
