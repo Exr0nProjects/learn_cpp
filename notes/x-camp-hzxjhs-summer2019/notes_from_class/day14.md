@@ -23,10 +23,12 @@ c1205 | 2 | Horse Racing Selection | WIP | Should be doable with DP, but my appr
 
 #### Concepts:
 - **size_t**: an unsigned type to represent sizes in memory
+
     This type is usually defined per implementation to be either an `unsigned int` or `unsigned long long`, and is used as the type for variables which store memory sizes. Although it is not technically necessary, it is good practice to use the `size_t` type because it makes it more clear what the variable you are defining will be used for. It doesn't look like there are any real disadvantages, as long as you keep in mind that `size_t` will be an `unsigned` type.
     An internet debate discussing the advantages and disadvantages of using `size_t` as an argument type can be found on [bytes.com](https://bytes.com/topic/c/answers/220206-what-size_t), and some quick reference from [cplusplus.com](http://www.cplusplus.com/reference/cstring/size_t/).
 
 - **Topological Sort**: Order the nodes of a DAG such that the parents of each node are always before the node itself  in the sort
+
     Essentially, we would like to take a Directed Acyclic Graph (DAG) and place the nodes in order such that when we see the `id` of a node, we are guaranteed to have already seen all of the ancestors of that node.
     This is useful for many applications that involve DAGs, such as determining the order to evaluate expressions in spreadsheets or the order to load modules for each dependent piece of new code to be able to run.
     There are two main ways that Topological Sort is achieved:
@@ -50,6 +52,7 @@ c1205 | 2 | Horse Racing Selection | WIP | Should be doable with DP, but my appr
     Further reading can be found: { [Geeks for Geeks](https://www.geeksforgeeks.org/topological-sorting/), [UWashington CS](https://courses.cs.washington.edu/courses/cse326/03wi/lectures/RaoLect20.pdf), [HackerEarth](https://www.hackerearth.com/zh/practice/algorithms/graphs/topological-sort/tutorial/), [Tutorial-Horizon - Algorithms](https://algorithms.tutorialhorizon.com/topological-sort/)  }
 
 - **Bipartite Graph**: A graph with two sets of nodes, where a set of nodes cannot have a connection inside it
+
     Useful for some problems. We can find out if a graph is Bipartite by DFSing through it and checking if every connected node has the same "color" as the current node, and by "coloring" each node the opposite color as its ancestor when traversing. I don't know why this structure is useful yet, but it came up in the second problem of the contest today.
     Further resources: { [Geeks for Geeks Bigraph Testing](https://www.geeksforgeeks.org/bipartite-graph/), [Example Applications on Stack Exchange](https://cs.stackexchange.com/questions/24057/concrete-and-simple-applications-for-bipartite-graphs), [A Dense Textbook Excerpt from UChicago Math](http://www.math.uchicago.edu/~may/VIGRE/VIGRE2007/REUPapers/FINALAPP/Salvatore.pdf) }
 

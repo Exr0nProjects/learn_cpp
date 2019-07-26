@@ -24,6 +24,7 @@ VJudge313606| A | Resturaunt Dishes | WIP | Spend a long time debugging, still d
 
 #### Concepts:
 - **Reb Black Tree**: A Self Balancing BST that is less balanced than AVL but faster to insert/delete
+
     A red-black tree is a type of self balancing BST. It can be less balanced than AVL, but it wastes less rotations than AVL so we should use this type of tree if the application has lots of insertions/deletions, but AVL if it has relatively more searches. This kind of tree is often used in the backend of the `std` library to implement things like `std::map`.
 
     Red black trees rely on four properties:
@@ -62,6 +63,7 @@ VJudge313606| A | Resturaunt Dishes | WIP | Spend a long time debugging, still d
     In summary, _heaps are good for maintaining a global min/max, because the min/max can be accessed in `O(1)` and this can be maintained upon insertion/deletion in `O(log n)`. Thus, heaps are good for maintaining a global min/max relatively cheaply._
 
 - **Storing Binary Trees/Heaps**: Basically just shove them in an array
+
     Because they are always the same size, if we number the nodes starting at the root going layer by layer left to right, then the child of any node will always be `node*2` and `node*2+1` in the array, and the parent of that node will always be `node/2`. This is much more convenient than storing pointers to the children, or storing edges or some shenanigans like that.
 
 #### Reflection:

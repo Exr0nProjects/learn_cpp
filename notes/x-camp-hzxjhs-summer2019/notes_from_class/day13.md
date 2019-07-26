@@ -17,6 +17,7 @@ c1204 | 1 | Euclid GCD | AC | N/A
 
 #### Concepts:
 - **Trie**: Multi-level overlapping storage for segment-able types
+
     A trie is a way of storing data that has "overlapping" sections, such as strings. For example, if we would like to store the words `"these"` and `"there"`, we can store the first three identical characters on the same branch and at the `'e'` node we would branch off into the other characters. Each node can be represented with a struct such as the following:
     ```c ++
     const int ALPHABETSIZE = 26;

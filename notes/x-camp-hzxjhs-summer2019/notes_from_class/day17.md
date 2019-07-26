@@ -9,10 +9,12 @@
 ## Concepts:
 #### Const Class Methods
 **They are the only methods callable by `const` instances**
+
 If there is a `const` instance of a class, then class methods not marked as `const` cannot be called from the `const` instance. It is similar to having `const` arguments in functions - it may not be absolutely necessary but it is still good practice for portability and complier optimizations.
 
 #### Overloading Operators
 **We can overload operators for classes so we can add instances or allow them to be compared**
+
 This is done with something like this:
 ```C plus plus
 class Foo
@@ -28,11 +30,13 @@ These are useful for when users of your class would like to do intuitive things 
 
 #### Function Pointers
 **Uses**
+
 Function pointers provide a way to pass a function as an argument to another function or method. This may seem useless at first, but they are actually a really useful feature. They allow a user to further customize a general function, class, or method to a more use-case specific point while reusing basic functionality provided by the original function, class, or method. For example, many STL classes allow the user to provide a function with which to change some part of the functionality of the class itself, such as `std::sort()` which may optionally receive a `comp()` comparison function. This allows `std::sort()` to reuse much of the same quick sort code for sorting objects in an ascending, descending, and even other orders based on various and highly customizable values.
 
 They also allow the implementation of "callback" functions, which are functions that should be run when the original function is finished. These are powerful for asynchronous operations, because it allows functions to be called one after another in the correct order and ensuring all dependent calculations are completed before the next one starts. For example, Javascript makes heavy use of callback functions and this means it is highly versatile and robust when it comes to async and choppy performance, such as on a web browser.
 
 **Example**
+
 Passing a function to another one is relatively simple. An example of this is `std::sort()`, which takes start and end addresses and optionally a `comp()` comparison function. To pass a function to this argument, we simply define a normal function and just pass the name of the function directly to the argument, and the internals of the main function (in this case `std::sort()`) will take care of the rest.
 
 However, creating a function pointer seems somewhat messy at first. We would do something like this:
