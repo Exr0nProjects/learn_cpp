@@ -68,11 +68,11 @@ if ( cmp( a, b ) ) { /* do something */ }
 ```
 Which ends up not being so bad. However, in C++11 there is this thing called polymorphism and virtual functions, which are somewhat confusing and seem to be tied on classes. I don't understand it, but it seems like a syntactically nicer way to use function pointers, these features are implemented with function pointers anyways. I will look into it.
 
-Primary source: 
+Primary source:
 [cprogramming.com Tutorial](https://www.cprogramming.com/tutorial/function-pointers.html)
 
 
 ## Reflection:
 |  Type  |  Score (/12)  |
 |--------|:-------------:|
-Productivity | <score>
+Productivity | 6
