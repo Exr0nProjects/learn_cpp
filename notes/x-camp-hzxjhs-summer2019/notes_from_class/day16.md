@@ -1,4 +1,4 @@
-## Summary for Day 16 (<day> July 2019)
+## Summary for Day 16 (25 July 2019)
 
 #### Problems:
 |  Page  |  PID  |  Description  |  Status  | Notes |
@@ -38,4 +38,4 @@ There's literally nothing here this is so sad.
 |--------|:-------------:|
 Productivity | 8
 
-Today was decently productive but I had a hard time focusing so I did not get too much done. The test today was somewhat difficult, with some weird questions. 
+Today was decently productive but I had a hard time focusing so I did not get too much done. The test today was somewhat difficult, with some weird questions.
