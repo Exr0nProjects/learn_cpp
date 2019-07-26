@@ -1,8 +1,11 @@
-- Priority Queue - day16_apx1
+- Priority Queue - day16_apx1.md
+- Function Pointers - day17.md
+
 - Fibonacci Heap
 - Shell Sort
 - Radix Sort
-- Function Pointers
 - Map
 - Unordered Map (hashmap)
 - Huffman tree
+- Trinary Search
+- Input methods: cin, getline, scanf, getchar

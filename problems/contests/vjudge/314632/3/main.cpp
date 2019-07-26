@@ -1,23 +1,21 @@
 /*
- * Problem #[meta:pid]
- * [meta:date]
+ * Problem VJudge 314632 1
+ * 26 July 2019
  */
 
 #include <bits/stdc++.h>
 
 #include <iostream>
 #include <cstdio>
-#include <utility>
 #include <exception>
 #include <algorithm>
-#include <functional>
 #include <math.h>
 #include <random>
-#include <set>
-#include <map>
 #include <tuple>
 #include <string>
 #include <vector>
+#include <set>
+#include <map>
 #include <unordered_map>
 #include <queue>
 #include <stack>
