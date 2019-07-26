@@ -22,7 +22,7 @@
 
 #define ll long long
 #define dl double
-#define i32x 2147483647
+#define INF 1047483647
 #define PI 3.14159265358979323846264338
 
 using namespace std;
