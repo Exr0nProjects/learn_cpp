@@ -183,3 +183,5 @@ _Given `a` and `b`, find the minimum `x` such that `ax=1 (mod b)`_.   This uses 
 |  Type  |  Score (/12)  |
 |--------|:-------------:|
 Productivity | 9
+
+Today I was mostly productive in class, but I did not do any problems because I spent all of my time researching stuff for this one problem that the teacher was talking about. I looked into maps and this thing called the bron kerbosch algorithm but it is somewhat confusing so I did not put it in my summary today. I put it in the list of things to research so it should appear in a summary soon!
