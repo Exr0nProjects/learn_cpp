@@ -24,6 +24,7 @@
 
 #define ll long long
 #define dl double
+#define ld long double
 #define INF 1047483647
 #define PI 3.14159265358979323846264338
 

@@ -1,6 +1,7 @@
 /*
  * Problem VJudge 314632 1
  * 26 July 2019
+ * special array
  */
 
 #include <bits/stdc++.h>
@@ -27,7 +28,8 @@
 
 using namespace std;
 
-const int MAXSZ = 1; // todo
+const int MAXSZ = 200010; // todo
+int dp[MAXSZ][3] = { }; // dp[i][j] is the number of arrays of length i with a sum%3 = j
 
 int main ()
 {
