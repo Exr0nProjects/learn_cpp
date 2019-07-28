@@ -1,7 +1,7 @@
 # Appendix 1 for Day 16 (25 July 2019)
 
 ## Concepts:
-#### Priority Queues
+### Priority Queues
 **Theory**
 
 The simplest implementation of priority queues use arrays, because they are easy to understand and use. However, they are not particularly fast (read `O(n)`, insert `O(1)`, delete `O(n)`).

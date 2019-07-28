@@ -1,7 +1,7 @@
 # Appendix 1 for Day 18 (27 July 2019)
 
 ## Concepts:
-#### Null and Void Pointers
+### Null and Void Pointers
 **Explanation**
 
 Pointers are somewhat confusing, but they get really weird when we have some types of information missing...

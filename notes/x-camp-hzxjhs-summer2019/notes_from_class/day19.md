@@ -1,4 +1,4 @@
-# Summary for Day XX (XX July 2019)
+# Summary for Day 19 (29 July 2019)
 
 ## Problems:
 |  Page  |  PID  |  Description  |  Status  | Notes |
@@ -6,7 +6,7 @@
   pXXXXX | XXXXX | XXXXXXXXXXXXX | XXXXXXXX | XXXXX
 
 ## Concepts:
-### Name
+### Bron Kerbosch Algorithm Basics
 **Desc**
 
 explanation

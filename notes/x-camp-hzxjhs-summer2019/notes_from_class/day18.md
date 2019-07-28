@@ -28,7 +28,7 @@ Notably, there is a somewhat efficient brute force for finding the maximum fully
 This problem makes significant use of new concepts for me, including bit masks, graph inverses, and the maximum independent set / maximum fully connected set, and maps to store the names. See more of these concepts below...
 
 ## Concepts:
-#### Bit Masks
+### Bit Masks
 **Overview**
 
 Bit masks are used to keep/flip/write certain bits. In general, these bits don't represent binary numbers the way most sections of memory do, and instead may represent other things, such as a snowflake. Usually, there is a value and a mask, and we can use different bitwise operators to "mask" the mask on the value. The bitwise operators used are `&` for keep, `^` for flip, and `|` for write.
@@ -56,10 +56,12 @@ These kinds of bit flags and masks are also used for many real world application
 - [SO - What is bit masking?](https://stackoverflow.com/questions/10493411/what-is-bit-masking)
 - [LearnCpp.com - Bit Flags and Masks](https://www.learncpp.com/cpp-tutorial/3-8a-bit-flags-and-bit-masks/)
 
-#### Bron-Kerbosch Algorithm
+### Bron-Kerbosch Algorithm
 is complicated...
 
-#### Map
+See the summary for day19.
+
+### Map
 **Overview**
 
 Maps are basically the same as Python dictionaries, in that they associate a key with a value. However, in python the key must be of type `str` while in C++ the key can be any type. `std::map` tends to store values in a binary search tree based on a comparison object, which should follow a "strict weak ordering", whatever that means. The ordering makes it possible to iterate through the map, however it also means that `std::map` is slightly slower than `std::unordered_map` defined in the `<unordered_map>` header.
@@ -139,7 +141,7 @@ Maps are pretty much dictionaries, but the key can be any type/class. However, t
 **Sources**
 - [Cplusplus.com - `std::map`](http://www.cplusplus.com/reference/map/map/)
 
-#### Extended Euler's Algorithm
+### Extended Euler's Algorithm
 **Math and Implementation**
 `ax + by = gcd(a, b) = gcd(b, a % b)` <- this is the heart of euler's algorithm
 ```
@@ -155,7 +157,7 @@ where `ax+by = gcd(a, b)` and `x'` and `y'` are the previous `x`, `y` respective
 
 This means that once we have one solution, we can go back and find all solutions. And there is one trivial solution with Euler's GCD method: where `x = 1` and `y = 2`;
 
-```
+```c plus plus
 int exGcd(int, intb, int&x, int&y)
 {
   if (b==0)
@@ -176,7 +178,7 @@ _Given `a` and `b`, find the minimum `x` such that `ax=1 (mod b)`_.   This uses 
 
 **Sources**
 - [Brilliant Wiki - Extended Euclidean Algorithm](https://brilliant.org/wiki/extended-euclidean-algorithm/)
-- [Article in Mandarin explaining the math](blog.csdn.net/fearlessxjdx/article/details/74276376)
+- [Article in Mandarin explaining the math](https://blog.csdn.net/fearlessxjdx/article/details/74276376)
 - [GfG - Euclidean Algorithms (Basic and Extended)](https://www.geeksforgeeks.org/euclidean-algorithms-basic-and-extended/)
 
 ## Reflection:

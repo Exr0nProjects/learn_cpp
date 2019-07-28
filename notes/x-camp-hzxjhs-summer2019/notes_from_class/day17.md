@@ -7,12 +7,12 @@
  VJ314632 | 1 | String continuous sequence count | AC | used dp, should have done some weird left-right additiony thing
 
 ## Concepts:
-#### Const Class Methods
+### Const Class Methods
 **They are the only methods callable by `const` instances**
 
 If there is a `const` instance of a class, then class methods not marked as `const` cannot be called from the `const` instance. It is similar to having `const` arguments in functions - it may not be absolutely necessary but it is still good practice for portability and complier optimizations.
 
-#### Overloading Operators
+### Overloading Operators
 **We can overload operators for classes so we can add instances or allow them to be compared**
 
 This is done with something like this:
@@ -28,7 +28,7 @@ public:
 
 These are useful for when users of your class would like to do intuitive things with your class in a similar way as if they were one of the primitive types. Sometimes, other functions and methods will expect you to have these overloaded operators, for example `std::priority_queue` uses the `operator<` for comparison unless an explicit comparison function is provided in the constructor. This overloading, though not always necessary, is a nice touch for usability of classes, and makes code more readable as long as the implementation of the overloaded operators are intuitive. For example, a class like `std::string` has some really nice overloaded operators such as `operator+`, which concatenates two strings. It would not make much sense if this operator was implemented in a way that returned the sum of the ascii values of the characters in the string, although for a different class that implementation may be more useful. This is a good example of the importance of choosing good uses for your methods and functions, so that it is easier to both write and read code that uses them.
 
-#### Function Pointers
+### Function Pointers
 **Uses**
 
 Function pointers provide a way to pass a function as an argument to another function or method. This may seem useless at first, but they are actually a really useful feature. They allow a user to further customize a general function, class, or method to a more use-case specific point while reusing basic functionality provided by the original function, class, or method. For example, many STL classes allow the user to provide a function with which to change some part of the functionality of the class itself, such as `std::sort()` which may optionally receive a `comp()` comparison function. This allows `std::sort()` to reuse much of the same quick sort code for sorting objects in an ascending, descending, and even other orders based on various and highly customizable values.
