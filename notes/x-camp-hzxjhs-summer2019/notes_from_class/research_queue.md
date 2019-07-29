@@ -2,9 +2,10 @@
 - Function Pointers - day17.md
 - Void Pointers - day 18_apx1.md
 - Map - day18.md
+- Bron-Kerbosch Algorithm - day19.md
 
-- Bron-Kerbosch Algorithm { [Wikipedia](https://en.wikipedia.org/wiki/Bron%E2%80%93Kerbosch_algorithm), [SO - Basic Python Iplm](https://stackoverflow.com/questions/13904636/implementing-bron-kerbosch-algorithm-in-python), [OpenGenus.com Article](https://iq.opengenus.org/bron-kerbosch-algorithm/), [UGlasglow - Report on BK variations](http://www.dcs.gla.ac.uk/~pat/jchoco/clique/enumeration/report.pdf), [UGlasglow - BK Intro Slides](http://www.dcs.gla.ac.uk/~pat/jchoco/clique/enumeration/papers/bronKerbosch.pdf) }
 - Fibonacci Heap
+- Set { [CPlusPlus.com](http://www.cplusplus.com/reference/set/set/), [GfG](https://www.geeksforgeeks.org/set-in-cpp-stl/) }
 - Shell Sort
 - Radix Sort
 - Unordered Map (hashmap)
@@ -12,3 +13,5 @@
 - Trinary Search
 - Input methods: cin, getline, scanf, getchar
 - Assert
+- Distance from point to line
+- Constructors

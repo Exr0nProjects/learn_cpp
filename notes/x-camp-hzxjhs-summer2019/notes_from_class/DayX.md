@@ -8,8 +8,7 @@
 ## Concepts:
 ### Name
 **Desc**
-
-explanation
+Explanation
   - more explanation
 
 ## Reflection:
