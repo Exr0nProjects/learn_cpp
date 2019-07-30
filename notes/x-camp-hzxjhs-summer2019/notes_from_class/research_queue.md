@@ -4,7 +4,7 @@
 - Map - day18.md
 - Bron-Kerbosch Algorithm - day19.md
 
-- Fibonacci Heap
+- Fibonacci Heap - uses doubly linked list
 - Set { [CPlusPlus.com](http://www.cplusplus.com/reference/set/set/), [GfG](https://www.geeksforgeeks.org/set-in-cpp-stl/) }
 - Shell Sort
 - Radix Sort
@@ -15,3 +15,7 @@
 - Assert
 - Distance from point to line
 - Constructors
+- Spanning trees { [Brilliant.org Wiki](https://brilliant.org/wiki/spanning-trees/), [TutorialsPoint Spanning Trees](https://www.tutorialspoint.com/data_structures_algorithms/spanning_tree), [TutorialsPoint Kruskals Spanning Tree](https://www.tutorialspoint.com/data_structures_algorithms/kruskals_spanning_tree_algorithm.htm), [TutorialsPoint Prims Spanning Tree](https://www.tutorialspoint.com/data_structures_algorithms/prims_spanning_tree_algorithm.htm) }
+- Least Common Ancestor (trees)
+- Iterators
+- `new` when dealing with objects, heap vs stack memory? [SO](https://stackoverflow.com/questions/5775281/c-whats-the-difference-between-new-object-and-object)

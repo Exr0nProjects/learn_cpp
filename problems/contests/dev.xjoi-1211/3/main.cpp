@@ -1,10 +1,8 @@
 /*
- * Problem #[meta:pid]
- * [meta:date]
+ * dev.xjoi 1211 3
+ * 30 July 2019
  */
-
-#include <bits/stdc++.h>
-
+ 
 #include <iostream>
 #include <cstdio>
 #include <utility>
@@ -22,12 +20,9 @@
 #include <queue>
 #include <stack>
 
-#define UN unsigned
-#define ST static
-#define CN const
-#define LL long long
-#define DL double
-#define LD long double
+#define ll long long
+#define dl double
+#define ld long double
 #define INF 1047483647
 #define PI 3.14159265358979323846264338
 
