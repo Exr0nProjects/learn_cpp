@@ -155,7 +155,7 @@ Unfortunately, I was not able to debug `Dll<>::pushBefore()` or `Dll<>::pushAfte
 XOR linked list is a version of a doubly linked list that uses a single value to store the memory addresses of both the next and previous nodes. As the name suggests, it takes the XOR of the previous and next memory addresses so that each address can be recovered by XORing the combined address with the address of the previous node.  
 This means that two addresses are required at all stages to continue traversing the list, which is one of the primary disadvantages that the XOR linked list has over the normal doubly linked list. Otherwise, the XOR linked list is generally somewhat slower than the doubly linked list because it includes additional relatively cheap but still required XOR operations for each insert, delete, and traverse operation. However, the time complexities are still the same.
 
-**Example**
+**Example**  
 Because I don't have the time to provide a fully working example, I will provide a mock up implementation which is most likely highly buggy:
 ```c plus plus
 class Xll
