@@ -1,7 +1,6 @@
 /*
- * Problem #[!meta:pid!]
- * [!meta:date!]
- * 
+ * Problem #9520
+ * Thu 01 Aug 2019 @ 13:30 CST
  */
 
 #include <bits/stdc++.h>

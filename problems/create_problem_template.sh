@@ -2,14 +2,14 @@ dateformat="+%a %d %b %Y @ %R %Z";
 
 git pull
 
-cd $1
-mkdir $2
-cd $2
+mkdir -p $1
 
-#cat ../../meta/template.cpp | sed -E "s/\[meta\:pid\]$/$2/g" | sed -E "s/\[meta\:date\]$/$(date "$dateformat")">> main.cpp
-
-cat ../../meta/template.cpp >> main.cpp
-
-cd ../..
+[[ -s "$1/main.cpp" ]] ||\
+  cat ./meta/template.cpp\
+    | sed "s/\[\!meta\:pid\!\]$/$(basename $1)/g"\
+    | sed "s/\[\!meta\:date\!\]$/$(date "$dateformat")/g"\
+    >> "$1/main.cpp"
+    
+[[ -s "$1/main.cpp" ]] && printf "File exists!\n" & exit 1
 
 ./git_push.sh "script: creating new problem folder: $1 $2"

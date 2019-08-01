@@ -1,7 +1,6 @@
 /*
- * Problem #[!meta:pid!]
- * [!meta:date!]
- * 
+ * Problem #[meta:pid]
+ * [meta:date]
  */
 
 #include <bits/stdc++.h>
