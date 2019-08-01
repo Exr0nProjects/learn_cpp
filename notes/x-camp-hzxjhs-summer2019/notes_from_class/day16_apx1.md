@@ -12,7 +12,7 @@ However, priority queues are often implemented with heaps, where whenever a new 
 
 Priority queues (defined in the `<queue>` header for C++11) are essentially heaps.
 You can `push()` and `pop()`, and access the element with the least sort through `top()`. Here is an example of priority queue usage:
-```C++
+```C plus plus
 #include <bits/stdc++.h>
 #include <queue> // for priority_queue
 #include <vector> // for vector
