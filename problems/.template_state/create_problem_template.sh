@@ -12,4 +12,4 @@ mkdir -p $1
     
 [[ -s "$1/main.cpp" ]] && printf "File exists!\n" | exit 1
 
-./git_push.sh "script: creating new problem: $1"
+#./git_push.sh "script: creating new problem: $1"

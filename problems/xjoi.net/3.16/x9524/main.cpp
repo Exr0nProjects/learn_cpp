@@ -1,10 +1,8 @@
 /*
  * Problem #9524
  * Fri 02 Aug 2019 @ 11:06 CST)
- * 
+ * number of leaf nodes
  */
-
-#include <bits/stdc++.h>
 
 #include <iostream>
 #include <cstdio>
@@ -34,11 +32,37 @@
 
 using namespace std;
 
-const int MAXSZ = 1; // todo
+const int MAXSZ = 1000010; // todo
 
 int main ()
 {
-
-
+  int ret = 0, ids[MAXSZ] = { };
+  
+  int num;
+  scanf("%d\n", &num);
+  
+  for (int i=0; i<num; ++i)
+  {
+    int ans = 0;
+    for (int j=0; j<num; ++j)
+    {
+      int d;
+      scanf("%1d", &d);
+      if (d == 1) ++ ans;
+    }
+    if (i > 0) --ans;
+    if (ans == 0)
+    {
+      ids[ret] = i;
+      ++ret;
+    }
+  }
+  
+  printf("%d\n", ret);
+  for (int i=0; i<ret; ++i)
+  {
+    printf("%d ", ids[i]+1);
+  }
+  
   return 0;
 }
