@@ -20,4 +20,4 @@
 - Least Common Ancestor (trees)
 - Iterators
 - `new` when dealing with objects, heap vs stack memory? [SO](https://stackoverflow.com/questions/5775281/c-whats-the-difference-between-new-object-and-object)
-- 
+- Tarjan Algorithm (strongly connected areas, aka loops in directed graphs)
