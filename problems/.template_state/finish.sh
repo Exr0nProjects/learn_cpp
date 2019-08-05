@@ -1,5 +1,6 @@
-git pull
 
-mv "$1/$2" "$1/x$2"
+newpath="$(dirname $1)/x$(basename $1)"
+mv "$1" $newpath
 
-./git_push.sh "script: finish $1/$2"
+./commit.sh $newpath "script: AC $newpath"
+#./git_push.sh "script: finish $1/$2"
