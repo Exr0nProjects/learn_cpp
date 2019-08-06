@@ -1,13 +1,15 @@
 cache="./.template_state/last.txt"
 modpath=$1
 
-if [ "$1" == "_last" ]; then
-  modpath=`$(cat "$cache")`
+if [[ -z "$1" || "$1" == "_last" ]]; then
+  modpath=$(< "$cache")
 fi
+
+echo $modpath
 
 newpath="$(dirname $modpath)/x$(basename $modpath)"
 
 mv "$modpath" "$newpath"
 
 echo "$newpath" > "$cache"
-./commit.sh $newpath "script: AC $newpath"
+"$(dirname $cache)/live_commit.sh" "$newpath $cache" "script: AC $newpath"
