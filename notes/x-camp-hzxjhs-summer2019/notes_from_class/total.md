@@ -10,21 +10,79 @@
 c1225|    1 | counting permutations (similar to 7977) | TLE
    " |    2 | permutations with identical digits | WA
    " |    3 | permutations without consecutive numbers | TLE
+   2.13 | 1227 | connected reigons | AC
+   "    | 1228 | n queens | TLE
+   "    | 7998 | work division | AC
+   "    | 7999 | work division v2 | AC
+   "    | 7087 | tree conversion | TLE
+   2.13 | [1228](../../../problems/2.13/x1228/main.cpp) | n queens | AC
+   2.14 | 7939 | File I/O | AC
+   "    | 7940 | File I/O | AC
+   "    | 7941 | File I/O | AC
+   "    | 7942 | File I/O | AC
+   "    | 7943 | File I/O | AC
+   "    | 7944 | std::err | AC
+   2.15 | 7200 | Struct 1 | AC
+   "    | 7201 | Struct 2 | TLE
+   "    | 7202 | Struct 3 | TLE
+   "    | 7203 | Struct 2.1 | AC
+   "    | 7204 | Struct 2.2 | WA
+   4.4 | 9513 | tree input | TLE
+   "   | 9517 | guard palace | WA
+   vjudge.net contest 313134 | A | Contest questions listing | AC | N/A
+   "" | B | Circle surround radius | AC | N/A
+   "" | C | Chess rooks and king | WA | Don't know how to do
+   c1204 | 1 | Euclid GCD | AC | N/A
+   "" | 2 | Merge Sorted Arrays | AC | N/A
+   "" | 5 | Number Statistics | WIP | Can do, the number limits were written wrong and actually only need to worry about ints up to 10e7.
+   "" | 6 | Tree Depth and Width | CE | Not sure why it doesn't work
+   "" | 7 | Maximize Customer Calls | WA | DP got messed up, test case `1 10 2 4 6 9` doesn't work.
+   "" | 8 | Hamster Whacking Game | WA | Greedy algorithm doesn't work, should probably use DP.
+   c1204 | 8 | Hampster Whakamole | AC | ACd using heaps after explained in class
+   VJudge313606| A | Resturaunt Dishes | WIP | Spend a long time debugging, still doesn't work
+   "" | B | Min sum of squares pairs | AC | Simply make max different pairs, pattern matching
+   "" | C | Wandering in park | WIP | Ran out of time after debugging problem A for too long
+   VJudge 313606 | C | Park wandering | <stat> | Used  `std::priority_queue` instead of a heap, help from Alex Guo. The issue was I was relying on `queue.top()`, but the top item was changing on a new push because it was implemented as a heap.
+   dev.xjoi 1207 | 1 | Minimum Lumberjacking | AC | Simple after you understand it, find dist to nearest tree
+   "" | 2 | Modulus thing? | WIP | Not sure what the problem even means
+   c1205 | 1 | City Driving Turning | TLE | Used DFS. Not sure why it is too slow...
+   c1205 | 2 | Horse Racing Selection | WIP | Should be doable with DP, but my approach was similar to the apple problem, got distracted
+   4.4 | 9523 | Floyd Warshall | AC | Simple floyd warshall practice
+   VJ314632 | 1 | String continuous sequence count | AC | used dp, should have done some weird left-right additiony thing
+ dev.xjoi 1210 | 1 | cover dots with line | WA | For some reason I had a really hard time doing the math for this
+ dev.xjoi c1212| 2 | connecting letters | WIP | Segfaults are annoying
+ dev.xjoi 1216 | 1 | Weird knapsack | WIP | Combines different types of knapsack. I recognize the problem but I don't remember how to do the knapsack DP, so I was unable to do it
+""|  2  | Serpentine Matrix addition | WA | didn't start focusing on this problem until too late, originally read problem wrong. Bad at math, will work on more later. 
+""  | 3 | Create DAG, shortest path | WIP | Don't know how to test for loops, unable to do topological sort. Will work on more later.
+p3.16 | 9520 | Depth of a tree | AC | Spent way too much time debugging my edgelist class
+""  | 9521  |  Width of a tree | AC  | Wrote pretty quickly with another custom edgelist class
+""  |  9522 | Number of children per node in trees | AC | Cheesed through it by counting connections in input format. No actual trees were used
+""  | 9524  | Number of leaf nodes  | AC  | Again, no trees used, instead just parsed input
+xjoi.net 3.16  | 9520 | tree depth | AC | easy with edgelist, dfs
+""  | 9521 | tree width |  AC | same as above
+"" |  9522 | children of each node | AC | cheesed with arrays 
+""  |  9524 | number of leaf nodes | AC | same as above
+""  | 9500 | parent of each node | CE: TLE | should work, but the compiler time limit exceeded for some reason
+""  | 9501 | weights of nodes | AC | used edgelist and dfc
+xjoi.next 3.17  | 8806 | binary tree father | AC | cheesed with arrays again.
+dev.xjoi 1211 | 1 | Print directory structure | AC | Used map and iterators and a full on class
+"" | 3 | Find shortest max distance | WIP | ShenBear says to use a MST and then LCA, but I need to look into those
 
-#### Concepts:
-* **inline**: function that is placed in line at compile time so there is less jumping around?
+
+
+### inline: function that is placed in line at compile time so there is less jumping around?
 
     this causes less calling and function jumps which makes it faster but also more space required for the compiled binary (i think). usage: `inline void myfunc (int arg)`
 
-* **exit**: exit the entire program from outside of main.  
+### exit: exit the entire program from outside of main.  
 
     **THIS IS CONSIDERED A BAD PRACTICE** because stuff might not be cleaned up properly.  Better to throw a custom exeception class that will be caught in main and have the program exit from main normally there.
 
-* **pointers**: stay away from them, especially in 2d arrays and with structs.  
+### pointers: stay away from them, especially in 2d arrays and with structs.  
 
     They are not a good choice for competition/speed coding because they screw up so easily. If you have a signal 11 (segfault), then it's probably the pointer's fault. If your code breaks, its probably the pointer's fault. Just delete them. They can usually be worked around anyways.
 
-* **struct vs classes**: essentially just a naming convention   
+### struct vs classes: essentially just a naming convention   
 
     They are actually basically the same thing, because the only technical language differences are that:  
     1. struct member variables are public by default (can be overridden to make it the same as a class and vise versa)
@@ -32,23 +90,7 @@ c1225|    1 | counting permutations (similar to 7977) | TLE
 
     This means that `struct` and `class` are actually pretty much exactly the same thing, (both can have member methods, etc), so they are used as a naming convention. Usually, people use `struct`s when they are grouping together related variables to abstract the primitive types away, while they use `class`es as an "interface" to abstract entire methods or private variables away. The rule of thumb seems to be to use `classes` if there are private data members or methods, because that means that you are creating an "interface" for other pieces of code to interact with, and if you are simply grouping together data then you should use a `struct`
 
-#### Reflection:
-|  Type  |  Score (/12)  |
-|--------|:-------------:|
-Productivity | 10
-## Summary for Day 9 (17 July 2019)
-
-#### Problems:
-|  Page  |  PID  |  Description  |  Status  |
-|-------:|-------|---------------|:--------:|
- 2.13 | 1227 | connected reigons | AC
- "    | 1228 | n queens | TLE
- "    | 7998 | work division | AC
- "    | 7999 | work division v2 | AC
- "    | 7087 | tree conversion | TLE
-
-#### Concepts:
-- **Recursion**: Use when possible
+### Recursion: Use when possible
 
     It is very helpful for clean code and subproblems. Just make sure you craft your inputs, outputs, and exit cases clearly, or it can be easy to screw up.
     These kinds of places are very prone to fencepost errors, so when debugging, look there first.
@@ -59,7 +101,7 @@ Productivity | 10
     Also remember: Recursion is basically brute force with some optimizations (the exit cases). So don't worry about writing a recursive brute force.
     Instead, look for places to optimize exit cases.
 
-- **Recursion: less arguments?**: Sometimes using globals are better for speed and ease of use
+### Recursion: less arguments?: Sometimes using globals are better for speed and ease of use
 
     when writting comptetition code, such as this, speed is important. Sometimes we can get away with using globals, even if they are bad practice, because it makes the code run faster.
     For example, if in a recursive function you are passing a massive object that requires a copy menuver each time the function is called, then using a global is going to be much faster because it removes
@@ -67,38 +109,15 @@ Productivity | 10
 
     * However, that does not mean that they are good practice. It's probably worth it to stay away from them when posssible, especially when working on normal projects and not competition code. *
 
-- **Submitting Stubborn Problems**: Try variations
+### Submitting Stubborn Problems: Try variations
 
     sometimes problems refuse to AC, and in these cases you should try different meta-variations. Try it on a different submission server, or with redundant optimizations incase somehow your thinking didn't work out right. A seemingly redundant optimization is what made the difference with 7999, where a value (`tmax`) shouldn't even be greater than another value (`totmin`), so it was not explicitly checked as a redundant exit case. However, adding that exit case seems to make the entire process run significantly faster, even though it should be redundant.
 
-- **Bitwise**: Fast but furious
+### Bitwise: Fast but furious
 
     using bitwise operations to do things is fast, because thats how computers are stored. However, it is also painful because it is the real inards of computers. To tackle a project bitwise means that you have to be ready to go through some pain. Remember, bitshift as your best friend because it is fast and effective. That and the bitwise opperators: not `!`, and `&`, or `|`, and xor (dif) `^`. But if you can help it, still stay away from bitwise.
 
-#### Reflection:
-|  Type  |  Score (/12)  |
-|--------|:-------------:|
-Productivity | 8
-## Summary for Day 10 (18 July 2019)
-
-#### Problems:
-|  Page  |  PID  |  Description  |  Status  |
-|-------:|-------|---------------|:--------:|
-2.13 | [1228](../../../problems/2.13/x1228/main.cpp) | n queens | AC
-2.14 | 7939 | File I/O | AC
-"    | 7940 | File I/O | AC
-"    | 7941 | File I/O | AC
-"    | 7942 | File I/O | AC
-"    | 7943 | File I/O | AC
-"    | 7944 | std::err | AC
-2.15 | 7200 | Struct 1 | AC
-"    | 7201 | Struct 2 | TLE
-"    | 7202 | Struct 3 | TLE
-"    | 7203 | Struct 2.1 | AC
-"    | 7204 | Struct 2.2 | WA
-
-#### Concepts:
-- **speed**: look for redundancy
+### speed: look for redundancy
 
     Finally solved the queens problem today after Teacher Wang pointed out that I had an
     extra for loop that was not needed in my recursion function.
@@ -106,7 +125,7 @@ Productivity | 8
     made the entire programe much faster. Next time, don't waste so much time not noticing things.
     Instead, stop, and get some help.
 
-- **search algorithms**: BFS for maps, DFS for trees
+### search algorithms: BFS for maps, DFS for trees
 
     In general, it seems like BFS is better for maps and DFS for trees and other types of structures.
     BFS increments one step at a time, and searches the entire area possible with that many steps which makes it good for finding shortest path
@@ -116,14 +135,14 @@ Productivity | 8
     seperate data structure to remember what still needs to be visited, such as a `queue`. Choosing BFS vs DFS is important for efficient solving of a problem
     and these factors need to be taken into consideration.
 
-- **structs**: Group pieces of data together
+### structs: Group pieces of data together
 
     Structs are useful for grouping related pieces of data together. They have many useful applications, such as
     - Grouping things together into an object for better abstraction
     - Allowing multiple data types to be bound into one and used as arguments for functions or elements in arrays
     For example, they can be used to create "node" objects for trees or maps, or to pass a "cow" to a "catapult" function, if the particular problem requires it. All said, it is a way of abstracting data and making it easier to work with. Earlier I noted that `struct`s and `class`es are really similar, and what the differance was. Basically, they are technically almost identical but `struct`s are often used as pure data structures, while `class`es are used to create "interfaces" for other pieces of code to interact with. This is a naming convention that most people follow, so this is a framework we can use when reading other people's code and writing our own.
 
-- **scanf and printf**: Faster for big datasets than `cin` and `cout`.
+### scanf and printf: Faster for big datasets than `cin` and `cout`.
 
     For the most part I have been using `cin` and `cout` for I/O because it is easier to use with C++ `std` library classes and types. However, `scanf` and `printf` are much faster beause they don't have the same amount of call overhead as `cin` and `cout`. This makes them much faster to call, and can significantly speed up a program. However, they do not work well natively with C++ types, like `std::string`. Instead, there are often work arounds to the problems such as in this example:
     ```C plus plus
@@ -147,7 +166,7 @@ Productivity | 8
 
     Notably, `scanf` has some quirks with characters and invisibles in the input stream. Best to explicitly remove newlines from the input stream when inputting characters with `scanf`, with something like `scanf("%c\n", &mychar);`. If something is really broken, try replacing `scanf` with `cin` to see if the problem gets fixed. If so, maybe some speed reduction is worth a working program.
 
-- **Dijkstra Basics**: An algorithm to find the shortest route on a weighted undirected graph
+### Dijkstra Basics: An algorithm to find the shortest route on a weighted undirected graph
 
     Dijkstra's algorithm is often an effective one for finding a route on a graph. Here is a summary of [an article about it on Brilliant](https://brilliant.org/wiki/dijkstras-short-path-finder/) about it.
 
@@ -174,7 +193,7 @@ Productivity | 8
 
     Additionally, A* is a combination of Dijkstra and greedy search algorithms. It tends to perform very well in real world applications because it is fast and versatile. A good A* resource can be found [here](http://theory.stanford.edu/~amitp/GameProgramming/index.html).
 
-- **File I/O**: `freopen`, `fin`, `fout`, `cerr`
+### File I/O: `freopen`, `fin`, `fout`, `cerr`
 
     File opening with `freopen` is similar to other programming languages. There are filemodes, and the function returns a pointer to a file stream? It is a little confusing. Some extra sources:
     - [freopen](http://www.cplusplus.com/reference/cstdio/freopen/)
@@ -182,37 +201,23 @@ Productivity | 8
     - [fprintf](http://www.cplusplus.com/reference/cstdio/fprintf/)
     - [cerr](http://www.cplusplus.com/reference/iostream/cerr/)
 
-#### Reflection:
-|  Type  |  Score (/12)  |
-|--------|:-------------:|
-Productivity | 8
-## Summary for Day 11 (19 July 2019)
-
-#### Problems:
-|  Page  |  PID  |  Description  |  Status  |
-|-------:|-------|---------------|:--------:|
-4.4 | 9513 | in/store trees | WA
-
-#### Concepts:
-- **games**: Usually you can make a DAG and run dp on it
-
-- **Storing Maps by Edges**: using a linked list of edges to store maps and trees
+### Storing Maps by Edges: using a linked list of edges to store maps and trees
 
     We use a set of linked lists to store edges. Each linked list contains the edges that lead from a specific node. We have a head array to store the starts of the linked lists, and when we want to see all of the edges leading from a node, we just go to the start of the linked list, which is stored by the head array. Then, we can traverse the linked list to get all of the edges leading from the original node, and for each edge we can run the same process on the node that that edge points to. This is a fast way to store and process a tree, and is versatile because we can store edges given different criteria. For example, we can store an edge in the linked list of a node not only when that edge leads from the node, but maybe also when it leads to the node. By varying this criteria, we can make this structure useful for many applications.
 
     TLDR: Instead of storing nodes with arrays of other nodes that are pointed to, we store the edges in sets of linked lists so that we don't have to do expensive array expanding operations like `push_back` in vectors. Instead, we simply use linked lists to store edges and add to the end when needed.
 
-- **Binary Search Tree**: a binary tree (each node has at most two children) that is ordered
+### Binary Search Tree: a binary tree (each node has at most two children) that is ordered
 
     It is organized such that all nodes to the right of a node is greater in value than that node, and all nodes that are to the left are smaller in value. This makes it easy to search the tree because at each node you can simply go to the right if the value you are searching for is larger than the node, or to the left if the target value is smaller.
 
-- **Counted BST**: A binary search tree that has a value and count variable stored at each node
+### Counted BST: A binary search tree that has a value and count variable stored at each node
 
     This has all of the advantages of a normal BST, except it can hold multiple accounts of each value, by holding a `count` variable along with the `value` variable at each node. This allows the BST to hold the same value multiple times over, and still make searching the tree easy.
 
     We can also calculate the `weight` of a node as the sum of the weights of the two children nodes, plus the count of the current node. This recursive system allows us to figure out what index a specific number should be if we were printing out all of the values, for example. This "ranking" property is useful for many applications.
 
-- **Tree Balancing**: In BSTs, we want short trees
+### Tree Balancing: In BSTs, we want short trees
     The shorter the tree, the more efficient search will be happen when the tree is balanced.
 
     There are some ways to achieve this, such as:
@@ -222,7 +227,7 @@ Productivity | 8
         (This is the most effective method to keep your tree balanced)
         See below:
 
-- **Tree Balancing: Rotation**: Rotate the tree to keep the BST properties but make the tree more balanced
+### Tree Balancing: Rotation: Rotate the tree to keep the BST properties but make the tree more balanced
 
     AVLs use this kind of method to keep a BST balanced. There are four types of "rotations" that are used to keep a tree like this balanced:
     - Left: Rotate once left. This works when the top two layers have only one child per node.
@@ -231,24 +236,7 @@ Productivity | 8
 
     A good resource for AVL tree rotation basics: [https://www.tutorialspoint.com/data_structures_algorithms/avl_tree_algorithm.htm]
 
-#### Reflection:
-|  Type  |  Score (/12)  |
-|--------|:-------------:|
-Productivity | <score>
-
-We should probably try and get a computer to share so that we can see what the teacher broadcasts onto peoples screens. Maybe we can squeeze in by the other Alexes?
-
-What is "Cha1 Lu4"??
-## Summary for Day 12 (20 July 2019)
-
-#### Problems:
-|  Page  |  PID  |  Description  |  Status  |
-|-------:|-------|---------------|:--------:|
-4.4 | 9513 | tree input | TLE
-"   | 9517 | guard palace | WA
-
-#### Concepts:
-- **Floyd Warshall Algo**: Determine shortest distances between all nodes on a graph _independent_ of edges.
+### Floyd Warshall Algo: Determine shortest distances between all nodes on a graph _independent_ of edges.
 
     On a graph with `n` nodes and `q` edges, Floyd Warshall runs in `O(pow(n, 3))`. This means that Floyd Warshall is suitable for densely connected graphs because the number of connections does not slow down the algorithm.
 
@@ -256,30 +244,7 @@ What is "Cha1 Lu4"??
 
     Some articles about the Floyd Warshall Algorithm can be found on \[[Brilliant](https://brilliant.org/wiki/floyd-warshall-algorithm/), [Geeks for Geeks](https://www.geeksforgeeks.org/floyd-warshall-algorithm-dp-16/), [Tutorials Point Q&A](https://www.tutorialspoint.com/Floyd-Warshall-Algorithm)\]
 
-
-#### Reflection:
-|  Type  |  Score (/12)  |
-|--------|:-------------:|
-Productivity | <score>
-## Summary for Day 13 (22 July 2019)
-
-#### Problems:
-|  Page  |  PID  |  Description  |  Status  | Notes |
-|-------:|-------|---------------|:--------:|-------|
-vjudge.net contest 313134 | A | Contest questions listing | AC | N/A
-"" | B | Circle surround radius | AC | N/A
-"" | C | Chess rooks and king | WA | Don't know how to do
-c1204 | 1 | Euclid GCD | AC | N/A
-"" | 2 | Merge Sorted Arrays | AC | N/A
-"" | 5 | Number Statistics | WIP | Can do, the number limits were written wrong and actually only need to worry about ints up to 10e7.
-"" | 6 | Tree Depth and Width | CE | Not sure why it doesn't work
-"" | 7 | Maximize Customer Calls | WA | DP got messed up, test case `1 10 2 4 6 9` doesn't work.
-"" | 8 | Hamster Whacking Game | WA | Greedy algorithm doesn't work, should probably use DP.
-
-
-
-#### Concepts:
-- **Trie**: Multi-level overlapping storage for segment-able types
+### Trie: Multi-level overlapping storage for segment-able types
 
     A trie is a way of storing data that has "overlapping" sections, such as strings. For example, if we would like to store the words `"these"` and `"there"`, we can store the first three identical characters on the same branch and at the `'e'` node we would branch off into the other characters. Each node can be represented with a struct such as the following:
     ```c ++
@@ -305,42 +270,12 @@ c1204 | 1 | Euclid GCD | AC | N/A
 
     More resources on tries: { [Geeks for Geeks](https://www.geeksforgeeks.org/advantages-trie-data-structure/), [Boston University CS](https://www.cs.bu.edu/teaching/c/tree/trie/) }
 
-#### Reflection:
-|  Type  |  Score (/12)  |
-|--------|:-------------:|
-Productivity | 9
-
-There was no lecture today, we just did a bunch of contest problems. I think I am too slow at debugging still so I need to spend some time grinding earlier pages. I should get more familiar with C++ syntax and practice debugging more simple structures so that I can more efficiently do problems that require more thinking and a deeper understanding of the underlying algorithms.
-## Summary for Day 14 (23 July 2019)
-
-#### Problems:
-|  Page  |  PID  |  Description  |  Status  | Notes |
-|-------:|-------|---------------|:--------:|-------|
-c1205 | 1 | City Driving Turning | TLE | Used DFS. Not sure why it is too slow...
-c1205 | 2 | Horse Racing Selection | WIP | Should be doable with DP, but my approach was similar to the apple problem, got distracted
-
-###### Review from yesterday:
-- [VJudge 313134-C](https://vjudge.net/contest/313134#status//C/1/):
-    The way this person solved this problem consisted of a few stages:
-    1. Move to the center
-        This will let us set up for the next step
-    1. Now, find the quadrant with the least number of rooks in it.
-        There will be at least one quadrant that has rooks <= (the number of rooks) /4. Because there are 666 rooks, that means that at least one quadrant will have at most 166 rooks. The other 500 rooks must therefore be in the other three quadrants. We choose to go towards that quadrant.
-    1. It only takes at max 499 steps for the king to move from the center to a corner.
-        This means there will be no way for all 500 rooks to move out of the other three quadrants before we cross that diagonal. In this way, we are guaranteed to get checked along the way.
-
-- [VJudge 313134-D](https://vjudge.net/contest/313134#status//D/1/):
-    Something about binary segmentation of the problem, cutting it in half each time.
-    We can traverse the graph and see if any edges go against it's proper DAG.
-    Requires use of Topological sorting, see below
-
-#### Concepts:
-- **size_t**: an unsigned type to represent sizes in memory
+### size_t: an unsigned type to represent sizes in memory
 
     This type is usually defined per implementation to be either an `unsigned int` or `unsigned long long`, and is used as the type for variables which store memory sizes. Although it is not technically necessary, it is good practice to use the `size_t` type because it makes it more clear what the variable you are defining will be used for. It doesn't look like there are any real disadvantages, as long as you keep in mind that `size_t` will be an `unsigned` type.
     An internet debate discussing the advantages and disadvantages of using `size_t` as an argument type can be found on [bytes.com](https://bytes.com/topic/c/answers/220206-what-size_t), and some quick reference from [cplusplus.com](http://www.cplusplus.com/reference/cstring/size_t/).
 
-- **Topological Sort**: Order the nodes of a DAG such that the parents of each node are always before the node itself  in the sort
+### Topological Sort: Order the nodes of a DAG such that the parents of each node are always before the node itself  in the sort
 
     Essentially, we would like to take a Directed Acyclic Graph (DAG) and place the nodes in order such that when we see the `id` of a node, we are guaranteed to have already seen all of the ancestors of that node.
     This is useful for many applications that involve DAGs, such as determining the order to evaluate expressions in spreadsheets or the order to load modules for each dependent piece of new code to be able to run.
@@ -364,43 +299,12 @@ c1205 | 2 | Horse Racing Selection | WIP | Should be doable with DP, but my appr
 
     Further reading can be found: { [Geeks for Geeks](https://www.geeksforgeeks.org/topological-sorting/), [UWashington CS](https://courses.cs.washington.edu/courses/cse326/03wi/lectures/RaoLect20.pdf), [HackerEarth](https://www.hackerearth.com/zh/practice/algorithms/graphs/topological-sort/tutorial/), [Tutorial-Horizon - Algorithms](https://algorithms.tutorialhorizon.com/topological-sort/)  }
 
-- **Bipartite Graph**: A graph with two sets of nodes, where a set of nodes cannot have a connection inside it
+### Bipartite Graph: A graph with two sets of nodes, where a set of nodes cannot have a connection inside it
 
     Useful for some problems. We can find out if a graph is Bipartite by DFSing through it and checking if every connected node has the same "color" as the current node, and by "coloring" each node the opposite color as its ancestor when traversing. I don't know why this structure is useful yet, but it came up in the second problem of the contest today.
     Further resources: { [Geeks for Geeks Bigraph Testing](https://www.geeksforgeeks.org/bipartite-graph/), [Example Applications on Stack Exchange](https://cs.stackexchange.com/questions/24057/concrete-and-simple-applications-for-bipartite-graphs), [A Dense Textbook Excerpt from UChicago Math](http://www.math.uchicago.edu/~may/VIGRE/VIGRE2007/REUPapers/FINALAPP/Salvatore.pdf) }
 
-#### Reflection:
-|  Type  |  Score (/12)  |
-|--------|:-------------:|
-Productivity | 7
-
-This afternoon I got distracted by people around me. I ended up not doing too many problems on the test, and getting a bad score. Tomorrow, I will try to not get distracted and stay focused even when people around me are not. However, if it doesn't work then I will find a new spot to sit to be more focused in the future.
-## Summary for Day 15 (24 July 2019)
-
-#### Problems:
-|  Page  |  PID  |  Description  |  Status  | Notes |
-|-------:|-------|---------------|:--------:|-------|
-c1204 | 8 | Hampster Whakamole | AC | ACd using heaps after explained in class
-VJudge313606| A | Resturaunt Dishes | WIP | Spend a long time debugging, still doesn't work
-"" | B | Min sum of squares pairs | AC | Simply make max different pairs, pattern matching
-"" | C | Wandering in park | WIP | Ran out of time after debugging problem A for too long
-
-##### Review of problems from dev.xjoi.net contest 1204 (day 13)
-1. Problem 10: traveller's budget (we get some distances and costs of gas stations, ask how much money to get to target)
-    1. We start by filling up the tank
-    1. When we get to the next gas station, we check if it is cheaper than the fuel currently in the tank
-        1. if it is cheaper, we pretend that we didnt fill up the tank at the last station and instead fill it with the cheaper fuel
-        1. Then, continue on, always swapping out fuel for cheaper fuel when possible
-1. Problem 8: Gopher problem
-    1. We use some kind of binary heap to solve this problem.
-    1. First, start by ordering the gophers by the time that they leave
-    1. Then, for each gopher we place their score in a binary min heap
-        1. If the time that the gopher "expires" `d` is equal to the size of the heap, then this gopher may want to be hit at time, so we see if that gopher is worth more than the one that is currently at the top of the min heap. If so, then we replace it and heapify. (We just don't hit the one with the minimum score, and instead hit this new one)
-        1. If the `d` is greater than the size of the heap, then we can hit it no matter what so we simply add it to the heap.
-
-
-#### Concepts:
-- **Reb Black Tree**: A Self Balancing BST that is less balanced than AVL but faster to insert/delete
+### Reb Black Tree**: A Self Balancing BST that is less balanced than AVL but faster to insert/delete
 
     A red-black tree is a type of self balancing BST. It can be less balanced than AVL, but it wastes less rotations than AVL so we should use this type of tree if the application has lots of insertions/deletions, but AVL if it has relatively more searches. This kind of tree is often used in the backend of the `std` library to implement things like `std::map`.
 
@@ -428,7 +332,7 @@ VJudge313606| A | Resturaunt Dishes | WIP | Spend a long time debugging, still d
 
     This will keep the black-red tree somewhat balanced, although not as balanced as an AVL tree. However, it wastes little operations in the balancing process which makes insert/delete faster but search slower. This is a good alternative to AVL trees. Further reading: { [Geeks for Geeks 1](https://www.geeksforgeeks.org/red-black-tree-set-1-introduction-2/), [2](https://www.geeksforgeeks.org/red-black-tree-set-2-insert/), [visualization](https://www.cs.usfca.edu/~galles/visualization/RedBlack.html) }
 
-- **Binary Heaps**: A heap that is also a binary tree
+### Binary Heaps**: A heap that is also a binary tree
     We can store this structure in an array, see "Storing Binary Tree/Heaps" below.
 
     To insert, we insert the new node at the bottom of the heap, in the next empty spot of the array. Then, if the new node is out of order compared to its parent, then we simply swap those nodes, and repeat until the heap structure is maintained.
@@ -439,72 +343,10 @@ VJudge313606| A | Resturaunt Dishes | WIP | Spend a long time debugging, still d
 
     In summary, _heaps are good for maintaining a global min/max, because the min/max can be accessed in `O(1)` and this can be maintained upon insertion/deletion in `O(log n)`. Thus, heaps are good for maintaining a global min/max relatively cheaply._
 
-- **Storing Binary Trees/Heaps**: Basically just shove them in an array
+### Storing Binary Trees/Heaps**: Basically just shove them in an array
 
     Because they are always the same size, if we number the nodes starting at the root going layer by layer left to right, then the child of any node will always be `node*2` and `node*2+1` in the array, and the parent of that node will always be `node/2`. This is much more convenient than storing pointers to the children, or storing edges or some shenanigans like that.
 
-#### Reflection:
-|  Type  |  Score (/12)  |
-|--------|:-------------:|
-Productivity | 10
-
-Reflection:
-In contests, don't spend too much time debugging one problem. It is mostly not worth it. There is probably a fence post error somewhere. Instead, take a break, look at some of the other problems. Fifteen minutes is not enough to fully write and finish a problem. You should leave at least an hour to finish a relatively simple problem.
-
-I really need to work on debugging, and writing code quickly. The thinking will come later when I become more familiar with writing code. It is difficult to focus on what you are trying to do if the syntax is not unconscious, so that will have to happen before I am able to quickly do contests. Until then, I will keep practicing and trying to learn about different data structures and algorithms.
-
-Further reading:
-- Priority Queue
-- Fibonacci Heap
-- Shell Sort
-- Radix Sort
-- Function Pointers
-- Map
-- Unordered Map (hashmap)
-## Summary for Day 16 (25 July 2019)
-
-#### Problems:
-|  Page  |  PID  |  Description  |  Status  | Notes |
-|-------:|-------|---------------|:--------:|-------|
-VJudge 313606 | C | Park wandering | <stat> | Used  `std::priority_queue` instead of a heap, help from Alex Guo. The issue was I was relying on `queue.top()`, but the top item was changing on a new push because it was implemented as a heap.
-dev.xjoi 1207 | 1 | Minimum Lumberjacking | AC | Simple after you understand it, find dist to nearest tree
-"" | 2 | Modulus thing? | WIP | Not sure what the problem even means
-
-#### Problem review
-1207 (Today) Problem 3
-Alice and Bob game. We use a 2d DP approach where the value at [i,j] is the probability of alice winning when alice has i points and bob has j points?
-
-Problem 2
-Search problem, "zhe ban sou suo" aka halving search
-similar to extreme size knapsack problem, where you knapsack one side and then knapsack the other
-uses "ni4 yuan2", whatever that is
-
-dp start values: `dp[i][n] = 1` and `dp[n][j] = 0`;
-Alice has two possibilities:
-
-`dp[i][j] = 1/(pow(2, k))`
-
-#### Problem review
-Yesterday problem 4
-some kind of DP
-
-`f[i][j] -> f[i+1][j]`
-`f[i][j] -> f[i+1][j+1]`
-
-and some other stuff, it's all kind of confusing
-
-#### Concepts:
-There's literally nothing here this is so sad.
-
-#### Reflection:
-|  Type  |  Score (/12)  |
-|--------|:-------------:|
-Productivity | 8
-
-Today was decently productive but I had a hard time focusing so I did not get too much done. The test today was somewhat difficult, with some weird questions.
-# Appendix 1 for Day 16 (25 July 2019)
-
-## Concepts:
 ### Priority Queues
 **Theory**
 
@@ -561,15 +403,7 @@ Priority queues are good for keeping a global minimum/maximum. It can be created
 - [cplusplus.com Reference](http://www.cplusplus.com/reference/queue/priority_queue/)
 - [GfG Priority Queue Introduction](https://www.geeksforgeeks.org/priority-queue-set-1-introduction/)
 - [GfG Applications of Priority Queue](https://www.geeksforgeeks.org/applications-priority-queue/)
-# Summary for Day 17 (26 July 2019)
 
-## Problems:
-|  Page  |  PID  |  Description  |  Status  | Notes |
-|-------:|-------|---------------|:--------:|-------|
- 4.4 | 9523 | Floyd Warshall | AC | Simple floyd warshall practice
- VJ314632 | 1 | String continuous sequence count | AC | used dp, should have done some weird left-right additiony thing
-
-## Concepts:
 ### Const Class Methods
 **They are the only methods callable by `const` instances**
 
@@ -638,41 +472,6 @@ Which ends up not being so bad. However, in C++11 there is this thing called pol
 Primary source:
 [cprogramming.com Tutorial](https://www.cprogramming.com/tutorial/function-pointers.html)
 
-
-## Reflection:
-|  Type  |  Score (/12)  |
-|--------|:-------------:|
-Productivity | 6
-# Summary for Day 18 (27 July 2019)
-
-## Problems:
-|  Page  |  PID  |  Description  |  Status  | Notes |
-|-------:|-------|---------------|:--------:|-------|
-  pXXXXX | XXXXX | XXXXXXXXXXXXX | XXXXXXXX | XXXXX
-
-### Problem Review:
-VJudge 314632 (Yesterday)
-
-p2: dp, where `dp[i][j]` is equal to number of combinations with an array of size i and the sum % 3 == j.
-
-p3: bfs, we consider one search layer at a time and hold a counter, to make sure each turn we do not move more than `s` steps
-
-p4:
-- Use a map to (li3 san1 hua4)
-- We want to find friends who don't obstruct each other,
-- Somehow we convert this to an n digit binary number, which  represents what friends will come when.
-- We make an array of these and then somehow convert this into a graph, at which point we find the longest continuous path?
-- This problem can be converted to another problem, and both of them are np. They form an np-complete problem pair.
-- Something about a bron-kerbosch search algorithm.
-- This is a `O(2^n)` brute force, which is somewhat massive.
-- We can store the "clique" bits with an [`std::bitset` from the `<bitset>` header](http://www.cplusplus.com/reference/bitset/bitset/).
-Basically, make an array of 10^5 bit masks, one for each friend, and call each bit the space between two time points where Hiasat can change his name. A `true` value in a bit means that friend visits the site between those two time values. With these bit masks, if any two friends have a `true` bit in common then they cannot both be satisfied. Next, we create a disconnected graph with one node for each friend, and draw an edge between all friends that have common `true` bits. We then find the [maximum independent vertex set](https://www.tutorialspoint.com/graph_theory/graph_theory_independent_sets.htm) of the graph, and the number of vertices is the answer to the problem.
-
-Notably, there is a somewhat efficient brute force for finding the maximum fully connected set in a graph, and we can convert this problem to that one by taking the edge inverse. In other words, we connect all of the friends that do not interact with each other and put edges between them, and then we find the maximum fully connected set with the Bron-Kerbosch algorithm.
-
-This problem makes significant use of new concepts for me, including bit masks, graph inverses, and the maximum independent set / maximum fully connected set, and maps to store the names. See more of these concepts below...
-
-## Concepts:
 ### Bit Masks
 **Overview**
 
@@ -700,11 +499,6 @@ These kinds of bit flags and masks are also used for many real world application
 **Sources**
 - [SO - What is bit masking?](https://stackoverflow.com/questions/10493411/what-is-bit-masking)
 - [LearnCpp.com - Bit Flags and Masks](https://www.learncpp.com/cpp-tutorial/3-8a-bit-flags-and-bit-masks/)
-
-### Bron-Kerbosch Algorithm
-is complicated...
-
-See the summary for day19.
 
 ### Map
 **Overview**
@@ -826,15 +620,6 @@ _Given `a` and `b`, find the minimum `x` such that `ax=1 (mod b)`_.   This uses 
 - [Article in Mandarin explaining the math](https://blog.csdn.net/fearlessxjdx/article/details/74276376)
 - [GfG - Euclidean Algorithms (Basic and Extended)](https://www.geeksforgeeks.org/euclidean-algorithms-basic-and-extended/)
 
-## Reflection:
-|  Type  |  Score (/12)  |
-|--------|:-------------:|
-Productivity | 9
-
-Today I was mostly productive in class, but I did not do any problems because I spent all of my time researching stuff for this one problem that the teacher was talking about. I looked into maps and this thing called the bron kerbosch algorithm but it is somewhat confusing so I did not put it in my summary today. I put it in the list of things to research so it should appear in a summary soon!
-# Appendix 1 for Day 18 (27 July 2019)
-
-## Concepts:
 ### Null and Void Pointers
 **Explanation**
 
@@ -853,33 +638,10 @@ Given that we can only use the value stored in a `void` pointer after we cast it
 Additionally, C makes relatively heavier use of `void` pointers as return types for functions that deal with raw memory, such as `malloc`. However, this does not appear as often in C++, because apparently we are ["supposed to be using `new` anyway"](https://stackoverflow.com/questions/8530080/what-is-a-void-pointer-in-c#comment50705401_8530111), whatever that means.
 
 **Sources**
-
 - [SO - Void pointer?](https://stackoverflow.com/questions/8530080/what-is-a-void-pointer-in-c)
 - [SO - Void vs Null pointer](https://stackoverflow.com/questions/4334831/what-is-a-void-pointer-and-what-is-a-null-pointer)
 - [LearnCpp.com 6.13 - Void Pointers](https://www.learncpp.com/cpp-tutorial/613-void-pointers/)
-# Summary for Day 19 (29 July 2019)
 
-## Problems:
-|  Page  |  PID  |  Description  |  Status  | Notes |
-|-------:|-------|---------------|:--------:|-------|
-  dev.xjoi 1210 | 1 | cover dots with line | WA | For some reason I had a really hard time doing the math for this
-
-#### Problem Review:
-dev.xjoi 1210 (today)
-
-Problem 2  
-Make a tree, some kind of ring of trees? Use the greedy algorithm we can get `O(n)`.
-If the ring is odd then we scam it a bit and splice it together, and theres some kind of binary tree and then you just cout the luo gu and be done with it.
-
-Problem 3  
-K1, K2, K3
-For every tree store the minimum `b` value?  
-`min(h[i], k_x*i + b_min)`
-If a tree is behind another and the front one is shorter than the other then some of it is useless but then we remove some stuff and replace it with something else?  
-Looks like we store some kind of min heap??
-
-I did not understand the explination of these problems at all. 
-## Concepts:
 ### Bron Kerbosch Algorithm Basics
 **Overview**  
 The Bron Kerbosch algorithm operates on three arrays, often called `R`, `P`, and `X`. I like to call them "require", "possible", and "exclude". The names are pretty self explanatory, and what each recursive substep the algoritm finds all maximal cliques that include all nodes in `R`, any subset of nodes in `P`, and none of the nodes in `X`. By starting off with `R = Ø`, `P = Universe`, and `X = Ø`, we find all maximal cliques in the entire graph.
@@ -944,12 +706,12 @@ This algorithm runs in `O(n^m)`, which is somewhat atrocious.
 However, we can improve this time by using more complex methods such as by adding a "pivot", see below.
 
 **Sources<a name="bkbasic-sources"></a>**
-- [Wikipedia](https://en.wikipedia.org/wiki/Bron%E2%80%93Kerbosch_algorithm)
-- [SO - Basic Python Iplm](https://stackoverflow.com/questions/13904636/implementing-bron-kerbosch-algorithm-in-python)
-- [OpenGenus.com Article](https://iq.opengenus.org/bron-kerbosch-algorithm/)
-- [UGlasglow - Report on BK variations](http://www.dcs.gla.ac.uk/~pat/jchoco/clique/enumeration/report.pdf)
-- [UGlasglow - BK Intro Slides](http://www.dcs.gla.ac.uk/~pat/jchoco/clique/enumeration/papers/bronKerbosch.pdf)
-- [SE CS - Basic Bron Kerbosch Time Complexity](https://cs.stackexchange.com/questions/68060/what-is-the-time-complexity-of-the-classic-bron-kerbosch-algorithm-for-finding-c "What is the time complexity of the classic Bron-Kerbosch algorithm for finding cliques?")
+-   [Wikipedia](https://en.wikipedia.org/wiki/Bron%E2%80%93Kerbosch_algorithm)
+-   [SO - Basic Python Iplm](https://stackoverflow.com/questions/13904636/implementing-bron-kerbosch-algorithm-in-python)
+-   [OpenGenus.com Article](https://iq.opengenus.org/bron-kerbosch-algorithm/)
+-   [UGlasglow - Report on BK variations](http://www.dcs.gla.ac.uk/~pat/jchoco/clique/enumeration/report.pdf)
+-   [UGlasglow - BK Intro Slides](http://www.dcs.gla.ac.uk/~pat/jchoco/clique/enumeration/papers/bronKerbosch.pdf)
+-   [SE CS - Basic Bron Kerbosch Time Complexity](https://cs.stackexchange.com/questions/68060/what-is-the-time-complexity-of-the-classic-bron-kerbosch-algorithm-for-finding-c "What is the time complexity of the classic Bron-Kerbosch algorithm for finding cliques?")
 
 ### Bron Kerbosch Algorithm (with pivot) / Tomita
 **Explanation**  
@@ -963,29 +725,29 @@ The redundant recursive trees that the pivot processs truncates are normally ter
 This means that we need to choose a pivot that maximizes the reduction of redundant branches, by choosing a pivot `u` that has the maximum number of neighbors. This is called Tomita`s algorithm, and has Python code like this:
 
 **Example**
-```python
-def union (A, B):
-  return set union of sets `A` and `B`
-  
-def intersect (A, B):
-  return set intersect of sets `A` and `B`
-  
-def neighbors (v):
-  return set of verticies connected to `v`
+    ```python
+    def union (A, B):
+      return set union of sets `A` and `B`
+      
+    def intersect (A, B):
+      return set intersect of sets `A` and `B`
+      
+    def neighbors (v):
+      return set of verticies connected to `v`
 
-def BronKerboschBasic (R, P, X):
-  if (len(P) == 0 & len(X) == 0):
-    return R # report as maximal clique
-  u = element of union(P, X) with maximum neighbors
-  for vertex in P & not in neighbors(u):
-    BronKerboschBasic( union( R, {vertex} ),
-                       intersect(P, neighbors(vertex)),
-                       intersect(X, neighbors(vertex)) )
-    # move `vertex` from `P` -> `X` so that we don't check cliques 
-    #   with `vertex` in them in the future.
-    P = intersect ( P, {vertex} )
-    X = union     ( X, {vertex} )
-```
+    def BronKerboschBasic (R, P, X):
+      if (len(P) == 0 & len(X) == 0):
+        return R # report as maximal clique
+      u = element of union(P, X) with maximum neighbors
+      for vertex in P & not in neighbors(u):
+        BronKerboschBasic( union( R, {vertex} ),
+                           intersect(P, neighbors(vertex)),
+                           intersect(X, neighbors(vertex)) )
+        # move `vertex` from `P` -> `X` so that we don't check cliques 
+        #   with `vertex` in them in the future.
+        P = intersect ( P, {vertex} )
+        X = union     ( X, {vertex} )
+    ```
 This is essentially the same as the basic Bron Kerbosch algorithm, but we choose a pivot instead of running through every possibility at each stage. (The skipped possibilities will still be processed further in the recursive tree.) 
 
 _We can find the pivot in `P` or `X` because they are pretty much the same thing, but `X` has already been visited. Thus, it doesn't matter if the pivot comes from `P` or `X`, as long as it is one of them._
@@ -996,30 +758,6 @@ Although specific complexity of this algorithm depends on implementation, a suit
 **Sources**  
 See [the sources under "Bron Kerbosch Algorithm Basic"](#bkbasic-sources)
 
-## Reflection:
-|  Type  |  Score (/12)  |
-|--------|:-------------:|
-Productivity | 9.5
-
-Today I was decently productive. I am still very slow at looking at problems and recognizing how to do them, as well as debugging, although that will come with time. Instead, I focused today on trying to understand the Bron Kerbosch Algorithm and its pivot extension, which I think I understand now. However, there is this thing called vertex ordering that makes Bron Kerbosch run in `O(3^(n/3))`, which is "the best we can hope for" because there can be up to `3^(n/3)` maximal cliques in a graph [(study)](https://snap.stanford.edu/class/cs224w-2010/readings/tomita06cliques.pdf "University of Electro Communications, Tokyo - Experiments and Complexity Analysis for Maximal Cliques").
-# Summary for Day 20 (30 July 2019)
-
-## Problems:
-|  Page  |  PID  |  Description  |  Status  | Notes |
-|-------:|-------|---------------|:--------:|-------|
-  dev.xjoi 1211 | 1 | Print directory structure | AC | Used map and iterators and a full on class
-"" | 3 | Find shortest max distance | WIP | ShenBear says to use a MST and then LCA, but I need to look into those
-
-**Problem review from the test today:**
-
-problem 2:  
-Greedy algorithm, somehow order something?
-
-problem 3:  
-make MST with kirskal, doubling method?
-
-
-## Concepts:
 ### Doubly Linked List
 **Overview**  
 A doubly linked list is a linked list that is connected in both directions. Instead of only storing a `next` pointer, it also stores a `previous` pointer. This makes the delete operation much faster if only given a pointer to the node to delete because we can directly access the nodes on either side, unlike with a singly linked list where we need some reference to the previous node. This is the primary advantage that the doubly linked list has over its normal variant.  
@@ -1143,15 +881,14 @@ int main ()
   
   return 0;
 }
-
 ```
 Unfortunately, I was not able to debug `Dll<>::pushBefore()` or `Dll<>::pushAfter()`. However, the `pushFront()` and `pushBack()` functions still work.
 
 **Complexity**  
-- Insert `O(1)` given a pointer to the node by which to insert  
-- Delete `O(1)` given a pointer of the node to delete
-- Read `O(1)` given a pointer to the node with the value
-- Read `O(n)` given an index `n` to read
+-   Insert `O(1)` given a pointer to the node by which to insert  
+-   Delete `O(1)` given a pointer of the node to delete
+-   Read `O(1)` given a pointer to the node with the value
+-   Read `O(n)` given an index `n` to read
 
 
 ### XOR Linked List
@@ -1226,41 +963,12 @@ Notably, we cannot insert directly into the middle of an XOR linked list unless 
 **Summary**  
 XOR linked lists allow us to save around 33% of the memory used by a doubly linked list, but it is more computationally intensive and requires the memory addresses of two adjacent nodes to begin traversal at an arbitrary point. Otherwise, they are a good alternative to standard doubly linked lists.
 
-## Reflection:
-|  Type  |  Score (/12)  |
-|--------|:-------------:|
-Productivity | 10
-
-Today was pretty productive, but I don't know if I should be spending more of my time researching new concepts or doing competition problems. I should practice debugging and stuff so maybe I should focus more of my time on doing problems instead of just spending all day researching stuff and writting notes.# Summary for Day 21 (31 July 2019)
-
-## Problems:
-|  Page  |  PID  |  Description  |  Status  | Notes |
-|-------:|-------|---------------|:--------:|-------|
-  dev.xjoi c1212| 2 | connecting letters | WIP | Segfaults are annoying
-
-### Problem Review
-**Problem 1 (dev.xjoi.net 1212) today**  
-We use a "bigboi" method where each node stores its own "leader". Each node starts out being its own leader.  
-Then, we go through and connect stuff from the input, where if `a` and `b` are connected then we change one's leader to the other. Say we "move" `b` to be under `a`, meaning we change `b.leader := a.leader` and then recurse upwards so that all of `b.leader->leader` and `b.leader->leader->leader` etc all go under `a`, until `b.leader->....leader->leader = b.leader->....leader`(in other words, until the leader we are modifying's leader is itself (ie we reached the end of the chain of command)). We also have a function called `find` which finds a given node's top leader, and in the process moves all of those layers to be directly under the top leader. this eventually colapses all of the chains of command down to just a single layer, which makes the find function more efficient in the future.
-
-**Problem 2 (above)**  
-Basically connect the letters together and make a graph. If you can draw it in one line without repeating edges then it is doable.  
-Use Eulers number rule thing, where there must be either 2 or 0 nodes with an odd number of connections. Then run dfs and ensure we start and end on an odd node if there are odd nodes, otherwise it doesnt matter. Greedy algorithm at each step for lexographical order.
-
-**Problem 3 (above)**  
-n verticies, n-1 edges, minimal spanning tree?
-Look for cycles. First find a point, then find a tree, then realize there are n edges, and because of that do something with the other thing what?
-Construct a tree on every vertex in the loop, something about trees that go across the loop?
-zhei yang zi a few times without visuals.
-something about the width of the tree? We have to build a tree in a specific way.
-
-## Concepts:
 ### Access to Class Members
 **Overview**  
 Things defined in classes, such as variables and functions, are known as class _members_. Compound data types such as `class`es and `struct`s can allow different levels of access to their members, specifically `public`, `protected`, and `private`.  
-- `public` members can be accessed from anywhere in the program, including from `int main ()`. All members of struct are `public` by default.
-- `protected` members can only be accessed by other members of the class/instance and by members of derived classes. Outside functions like `int main ()` are not allowed to access protected members, and must read them through an interface `get` method.
-- `private` members can only be accessed by members of the class/instance they were declared in. Members of derived classes cannot access private members, nor can outside functions or classes.
+-   `public` members can be accessed from anywhere in the program, including from `int main ()`. All members of struct are `public` by default.
+-   `protected` members can only be accessed by other members of the class/instance and by members of derived classes. Outside functions like `int main ()` are not allowed to access protected members, and must read them through an interface `get` method.
+-   `private` members can only be accessed by members of the class/instance they were declared in. Members of derived classes cannot access private members, nor can outside functions or classes.
 
 **Example**  
 Here is a simple example showing the syntax for different member access declarations:
@@ -1343,36 +1051,6 @@ In C++, a class can inherit from multiple base classes. This works the same sing
 **Source**  
 [CPlusPlus.com](http://www.cplusplus.com/doc/tutorial/inheritance/#inheritance)
 
-
-## Reflection:
-|  Type  |  Score (/12)  |
-|--------|:-------------:|
-Productivity | 7
-
-I forgot my laptop today but Alex G let me borrow his. However, all of my workflows were not set up and I got distracted easily by people around me. I also did not get very good sleep last night so it was hard to think efficiently. Today was not very productive. More sleep and more laptops, and more working on problems instead of spending all of my time researching concepts tomorrow.
-# Summary for Day 22 (1 August 2019)
-
-## Problems:
-|  Page  |  PID  |  Description  |  Status  | Notes |
-|-------:|-------|---------------|:--------:|-------|
-  dev.xjoi 1216 | 1 | Weird knapsack | WIP | Combines different types of knapsack. I recognize the problem but I don't remember how to do the knapsack DP, so I was unable to do it
-""|  2  | Serpentine Matrix addition | WA | didn't start focusing on this problem until too late, originally read problem wrong. Bad at math, will work on more later. 
-""  | 3 | Create DAG, shortest path | WIP | Don't know how to test for loops, unable to do topological sort. Will work on more later.
-
-#### Problem Review
-**Problem 2 (dev.xjoi 1216 Today)**  
-Brute force can get 260/400 points...  
-Otherwise it's a math problem.  
-I think they use dp somehow?
-I originally thought it was just the sum of the sum of the numbers below of the numbers below, but then I realized that it was actually based on the serpentine matrix positioning at which point I had already spent an hour on the math. I then took a break on that problem to look at the other ones, and wasted a bunch of time trying to figure out how to find loops in a directed graph.
-
-**Problem 3 (dev.xjoi 1216 Today)**  
-first way find loop  
-tower? edge?  
-all verticies something  
-It is very difficult to hear what is going on through the microphone from the other class...
-
-## Concepts:
 ### Getters/Setters
 **Problem**  
 in OOP, classes should be a "black box" in meaning they provide an "interface" that abstracts away the inner workings of the implementation. This idea is called "encapsulation", and is one of the core principles of OOP.  Creating a good interface makes using the class much easier for the users and one way to do that is through using private variables. We use private variables because sometimes other parts of the class depend on a variable to reflect a certain relation with another, and we don't want the user of the class to be able to change these variables at will. It could break alot of things.  
@@ -1403,39 +1081,11 @@ Getters and setters are not needed in general, especially since we are working o
 For simple data sacks, use structs with a constructor to ensure everything has a sane value. For big (1000+ lines of code) projects, constructors take care of setting everything up. Other objects can call methods that do actions on the instance, but they don't get to control the classes private variables directly. Getters to provide info, not for heavy use. Otherwise, switch to C# or Java.
 
 **Sources**
-- **[CPPC - Private members and encapsulation](http://www.cplusplus.com/forum/beginner/6415/)**
-- **[SO - Overview of the problem](https://stackoverflow.com/questions/3647438/conventions-for-accessor-methods-getters-and-setters-in-c)**
-- [SO - Java Getters and Setters](https://stackoverflow.com/questions/2036970/how-do-getters-and-setters-work)
-- [Programiz - Python \@Property](https://www.programiz.com/python-programming/property)
-- [SO - Implementation of G/Setters](https://stackoverflow.com/questions/1596432/getter-and-setter-pointers-or-references-and-good-syntax-to-use-in-c)
-- [SO - Private variables and use](https://stackoverflow.com/questions/14399929/should-i-use-public-or-private-variables)
-- [SO - Getters/Setters in C++ from a newbie standpoint](https://stackoverflow.com/questions/737409/are-get-and-set-functions-popular-with-c-programmers)
-- [SO - More advanced getters](https://stackoverflow.com/questions/760777/c-getters-setters-coding-style)
-
-## Reflection:
-|  Type  |  Score (/12)  |
-|--------|:-------------:|
-Productivity | 10
-
-I spent alot of time doing problems, specifically debugging a class I wrote to implement edgelists. That is what got me into rabbit hole of getters and setters and the best way to write classes. Looking at the people around me, I deffinately need to practice writting more C++ code and debugging it because I am far slower than people like Alex Du. However, that means that I can spend less time reading and gathering new information, which feels less productive to me personally. This is a problem that I struggle with in many areas and something I should work on altering in my mental state, because I often feel like I am not putting in enough effort if I am grinding practice, muscle memory or experience. So I need to accept having a short summary and tomorrow night I won't spend an additional 2.5 hours reading up on a niche subject of OOP on Stack Overflow. Hopefully. Or maybe I will find some other obscure thing to write about tommorow. Anyways I'm going to take a break now.# Summary for Day 23 (2 July 2019)
-## Problems:
-|  Page  |  PID  |  Description  |  Status  | Notes |
-|-------:|-------|---------------|:--------:|-------|
-  p3.16 | 9520 | Depth of a tree | AC | Spent way too much time debugging my edgelist class
-""  | 9521  |  Width of a tree | AC  | Wrote pretty quickly with another custom edgelist class
-""  |  9522 | Number of children per node in trees | AC | Cheesed through it by counting connections in input format. No actual trees were used
-""  | 9524  | Number of leaf nodes  | AC  | Again, no trees used, instead just parsed input
-xjoi.net 3.16  | 9520 | tree depth | AC | easy with edgelist, dfs
-""  | 9521 | tree width |  AC | same as above
- "" |  9522 | children of each node | AC | cheesed with arrays 
- ""  |  9524 | number of leaf nodes | AC | same as above
-""  | 9500 | parent of each node | CE: TLE | should work, but the compiler time limit exceeded for some reason
-""  | 9501 | weights of nodes | AC | used edgelist and dfc
-xjoi.next 3.17  | 8806 | binary tree father | AC | cheesed with arrays again.
-
-## Reflection:
-|  Type  |  Score (/12)  |
-|--------|:-------------:|
-Productivity | 8
-
-I was pretty productive in class today, in that I spent time in class doing problems. However, I am still rather slow at writing them even when I know exactly what I am doing. I wrote the same edgelist class five times today and got much faster at it, and I guess this kind of repitition is what is needed to get better at doing problems and debugging them quickly. So what I really need right now is to practice grinding many more problems, I suppose I should just try and do all of the problems on XJOI because that is a good pool of practice problems to get better at C++.
+-   **[CPPC - Private members and encapsulation](http://www.cplusplus.com/forum/beginner/6415/)**
+-   **[SO - Overview of the problem](https://stackoverflow.com/questions/3647438/conventions-for-accessor-methods-getters-and-setters-in-c)**
+-   [SO - Java Getters and Setters](https://stackoverflow.com/questions/2036970/how-do-getters-and-setters-work)
+-   [Programiz - Python \@Property](https://www.programiz.com/python-programming/property)
+-   [SO - Implementation of G/Setters](https://stackoverflow.com/questions/1596432/getter-and-setter-pointers-or-references-and-good-syntax-to-use-in-c)
+-   [SO - Private variables and use](https://stackoverflow.com/questions/14399929/should-i-use-public-or-private-variables)
+-   [SO - Getters/Setters in C++ from a newbie standpoint](https://stackoverflow.com/questions/737409/are-get-and-set-functions-popular-with-c-programmers)
+-   [SO - More advanced getters](https://stackoverflow.com/questions/760777/c-getters-setters-coding-style)
