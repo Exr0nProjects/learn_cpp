@@ -71,238 +71,238 @@ dev.xjoi 1211 | 1 | Print directory structure | AC | Used map and iterators and 
 
 
 ### inline: function that is placed in line at compile time so there is less jumping around?
+this causes less calling and function jumps which makes it faster but also more space required for the compiled binary (i think). usage: `inline void myfunc (int arg)`
 
-    this causes less calling and function jumps which makes it faster but also more space required for the compiled binary (i think). usage: `inline void myfunc (int arg)`
+### exit: exit the entire program from outside of main.
+**THIS IS CONSIDERED A BAD PRACTICE** because stuff might not be cleaned up properly.  Better to throw a custom exeception class that will be caught in main and have the program exit from main normally there.
 
-### exit: exit the entire program from outside of main.  
+### pointers: stay away from them, especially in 2d arrays and with structs.
+They are not a good choice for competition/speed coding because they screw up so easily. If you have a signal 11 (segfault), then it's probably the pointer's fault. If your code breaks, its probably the pointer's fault. Just delete them. They can usually be worked around anyways.
 
-    **THIS IS CONSIDERED A BAD PRACTICE** because stuff might not be cleaned up properly.  Better to throw a custom exeception class that will be caught in main and have the program exit from main normally there.
+### struct vs classes: essentially just a naming convention
+They are actually basically the same thing, because the only technical language differences are that:  
+1.   struct member variables are public by default (can be overridden to make it the same as a class and vise versa)
+1.   struct inheritance "connection?" (i dunno what that should be called) is also public by default, which means by default you can access a parent class private data member through the child struct. Again, this can be overridden with the `private` keyword, and a class can achive struct default behavior in the same way but with a `public` keyword.   
 
-### pointers: stay away from them, especially in 2d arrays and with structs.  
-
-    They are not a good choice for competition/speed coding because they screw up so easily. If you have a signal 11 (segfault), then it's probably the pointer's fault. If your code breaks, its probably the pointer's fault. Just delete them. They can usually be worked around anyways.
-
-### struct vs classes: essentially just a naming convention   
-
-    They are actually basically the same thing, because the only technical language differences are that:  
-    1. struct member variables are public by default (can be overridden to make it the same as a class and vise versa)
-    1. struct inheritance "connection?" (i dunno what that should be called) is also public by default, which means by default you can access a parent class private data member through the child struct. Again, this can be overridden with the `private` keyword, and a class can achive struct default behavior in the same way but with a `public` keyword.   
-
-    This means that `struct` and `class` are actually pretty much exactly the same thing, (both can have member methods, etc), so they are used as a naming convention. Usually, people use `struct`s when they are grouping together related variables to abstract the primitive types away, while they use `class`es as an "interface" to abstract entire methods or private variables away. The rule of thumb seems to be to use `classes` if there are private data members or methods, because that means that you are creating an "interface" for other pieces of code to interact with, and if you are simply grouping together data then you should use a `struct`
+This means that `struct` and `class` are actually pretty much exactly the same thing, (both can have member methods, etc), so they are used as a naming convention. Usually, people use `struct`s when they are grouping together related variables to abstract the primitive types away, while they use `class`es as an "interface" to abstract entire methods or private variables away. The rule of thumb seems to be to use `classes` if there are private data members or methods, because that means that you are creating an "interface" for other pieces of code to interact with, and if you are simply grouping together data then you should use a `struct`
 
 ### Recursion: Use when possible
+It is very helpful for clean code and subproblems. Just make sure you craft your inputs, outputs, and exit cases clearly, or it can be easy to screw up.
+These kinds of places are very prone to fencepost errors, so when debugging, look there first.
+Also, make sure you know exacly how you are spliting the problem into subproblems before starting to write code, or else it is easy to confuse yourself and end up doing something wrong.
+The pain of debugging at that point will become very great because the problems fold over on themselves. So make sure you know exactly how the algorithm
+you are writing works before attempting to write it with recurssion.
 
-    It is very helpful for clean code and subproblems. Just make sure you craft your inputs, outputs, and exit cases clearly, or it can be easy to screw up.
-    These kinds of places are very prone to fencepost errors, so when debugging, look there first.
-    Also, make sure you know exacly how you are spliting the problem into subproblems before starting to write code, or else it is easy to confuse yourself and end up doing something wrong.
-    The pain of debugging at that point will become very great because the problems fold over on themselves. So make sure you know exactly how the algorithm
-    you are writing works before attempting to write it with recurssion.
-
-    Also remember: Recursion is basically brute force with some optimizations (the exit cases). So don't worry about writing a recursive brute force.
-    Instead, look for places to optimize exit cases.
+Also remember: Recursion is basically brute force with some optimizations (the exit cases). So don't worry about writing a recursive brute force.
+Instead, look for places to optimize exit cases.
 
 ### Recursion: less arguments?: Sometimes using globals are better for speed and ease of use
+When writting comptetition code, such as this, speed is important. Sometimes we can get away with using globals, even if they are bad practice, because it makes the code run faster.
+For example, if in a recursive function you are passing a massive object that requires a copy menuver each time the function is called, then using a global is going to be much faster because it removes
+that extra overhead. In these situations, it is acceptable to use globals. Infact, they will be required for some types of problems in the future.
 
-    when writting comptetition code, such as this, speed is important. Sometimes we can get away with using globals, even if they are bad practice, because it makes the code run faster.
-    For example, if in a recursive function you are passing a massive object that requires a copy menuver each time the function is called, then using a global is going to be much faster because it removes
-    that extra overhead. In these situations, it is acceptable to use globals. Infact, they will be required for some types of problems in the future.
-
-    * However, that does not mean that they are good practice. It's probably worth it to stay away from them when posssible, especially when working on normal projects and not competition code. *
+* However, that does not mean that they are good practice. It's probably worth it to stay away from them when posssible, especially when working on normal projects and not competition code. *
 
 ### Submitting Stubborn Problems: Try variations
-
-    sometimes problems refuse to AC, and in these cases you should try different meta-variations. Try it on a different submission server, or with redundant optimizations incase somehow your thinking didn't work out right. A seemingly redundant optimization is what made the difference with 7999, where a value (`tmax`) shouldn't even be greater than another value (`totmin`), so it was not explicitly checked as a redundant exit case. However, adding that exit case seems to make the entire process run significantly faster, even though it should be redundant.
+Sometimes problems refuse to AC, and in these cases you should try different meta-variations. Try it on a different submission server, or with redundant optimizations incase somehow your thinking didn't work out right. A seemingly redundant optimization is what made the difference with 7999, where a value (`tmax`) shouldn't even be greater than another value (`totmin`), so it was not explicitly checked as a redundant exit case. However, adding that exit case seems to make the entire process run significantly faster, even though it should be redundant.
 
 ### Bitwise: Fast but furious
-
-    using bitwise operations to do things is fast, because thats how computers are stored. However, it is also painful because it is the real inards of computers. To tackle a project bitwise means that you have to be ready to go through some pain. Remember, bitshift as your best friend because it is fast and effective. That and the bitwise opperators: not `!`, and `&`, or `|`, and xor (dif) `^`. But if you can help it, still stay away from bitwise.
+Using bitwise operations to do things is fast, because thats how computers are stored. However, it is also painful because it is the real inards of computers. To tackle a project bitwise means that you have to be ready to go through some pain. Remember, bitshift as your best friend because it is fast and effective. That and the bitwise opperators: not `!`, and `&`, or `|`, and xor (dif) `^`. But if you can help it, still stay away from bitwise.
 
 ### speed: look for redundancy
-
-    Finally solved the queens problem today after Teacher Wang pointed out that I had an
-    extra for loop that was not needed in my recursion function.
-    It could be simulated by recursing through the same area as the for loop, and removing the for loop
-    made the entire programe much faster. Next time, don't waste so much time not noticing things.
-    Instead, stop, and get some help.
+Finally solved the queens problem today after Teacher Wang pointed out that I had an
+extra for loop that was not needed in my recursion function.
+It could be simulated by recursing through the same area as the for loop, and removing the for loop
+made the entire programe much faster. Next time, don't waste so much time not noticing things.
+Instead, stop, and get some help.
 
 ### search algorithms: BFS for maps, DFS for trees
-
-    In general, it seems like BFS is better for maps and DFS for trees and other types of structures.
-    BFS increments one step at a time, and searches the entire area possible with that many steps which makes it good for finding shortest path
-    type solutions.    However, DFS goes all the way down the depth of the search space before returning, which makes it difficult to decide weather
-    to check if a specific spot can be reached through a shorter path on a map. However, in other structures such as trees, where movement is more
-    restricted to "coridors" DFS can work much lighter than BFS because DFS can easily be implemented with recursion, while BFS often requires a
-    seperate data structure to remember what still needs to be visited, such as a `queue`. Choosing BFS vs DFS is important for efficient solving of a problem
-    and these factors need to be taken into consideration.
+In general, it seems like BFS is better for maps and DFS for trees and other types of structures.
+BFS increments one step at a time, and searches the entire area possible with that many steps which makes it good for finding shortest path
+type solutions.    However, DFS goes all the way down the depth of the search space before returning, which makes it difficult to decide weather
+to check if a specific spot can be reached through a shorter path on a map. However, in other structures such as trees, where movement is more
+restricted to "coridors" DFS can work much lighter than BFS because DFS can easily be implemented with recursion, while BFS often requires a
+seperate data structure to remember what still needs to be visited, such as a `queue`. Choosing BFS vs DFS is important for efficient solving of a problem and these factors need to be taken into consideration.
 
 ### structs: Group pieces of data together
-
-    Structs are useful for grouping related pieces of data together. They have many useful applications, such as
-    - Grouping things together into an object for better abstraction
-    - Allowing multiple data types to be bound into one and used as arguments for functions or elements in arrays
-    For example, they can be used to create "node" objects for trees or maps, or to pass a "cow" to a "catapult" function, if the particular problem requires it. All said, it is a way of abstracting data and making it easier to work with. Earlier I noted that `struct`s and `class`es are really similar, and what the differance was. Basically, they are technically almost identical but `struct`s are often used as pure data structures, while `class`es are used to create "interfaces" for other pieces of code to interact with. This is a naming convention that most people follow, so this is a framework we can use when reading other people's code and writing our own.
+Structs are useful for grouping related pieces of data together. They have many useful applications, such as
+-   Grouping things together into an object for better abstraction
+-   Allowing multiple data types to be bound into one and used as arguments for functions or elements in arrays
+For example, they can be used to create "node" objects for trees or maps, or to pass a "cow" to a "catapult" function, if the particular problem requires it. All said, it is a way of abstracting data and making it easier to work with. Earlier I noted that `struct`s and `class`es are really similar, and what the differance was. Basically, they are technically almost identical but `struct`s are often used as pure data structures, while `class`es are used to create "interfaces" for other pieces of code to interact with. This is a naming convention that most people follow, so this is a framework we can use when reading other people's code and writing our own.
 
 ### scanf and printf: Faster for big datasets than `cin` and `cout`.
 
-    For the most part I have been using `cin` and `cout` for I/O because it is easier to use with C++ `std` library classes and types. However, `scanf` and `printf` are much faster beause they don't have the same amount of call overhead as `cin` and `cout`. This makes them much faster to call, and can significantly speed up a program. However, they do not work well natively with C++ types, like `std::string`. Instead, there are often work arounds to the problems such as in this example:
-    ```C plus plus
-    #include <bits/stdc++.h>
+For the most part I have been using `cin` and `cout` for I/O because it is easier to use with C++ `std` library classes and types. However, `scanf` and `printf` are much faster beause they don't have the same amount of call overhead as `cin` and `cout`. This makes them much faster to call, and can significantly speed up a program. However, they do not work well natively with C++ types, like `std::string`. Instead, there are often work arounds to the problems such as in this example:
+```C plus plus
+#include <bits/stdc++.h>
 
-    using namespace std;
+using namespace std;
 
-    int main ()
-    {
-        printf("Hello world!\n");
-        printf("`printf` stands for print format. It can format things, similar to Python3 `print` and Java `System.out.format`\n");
-        printf("num: %d, char: %c, c-string: \"%s\" and so on.\n", 65, "A", "const char[] (null terminated character sequence");
+int main ()
+{
+    printf("Hello world!\n");
+    printf("`printf` stands for print format. It can format things, similar to Python3 `print` and Java `System.out.format`\n");
+    printf("num: %d, char: %c, c-string: \"%s\" and so on.\n", 65, "A", "const char[] (null terminated character sequence");
 
-        string mystr = "something like this!";
-        printf("and we can convert c++ strings to c strings with %s\n", mystr.c_str());
+    string mystr = "something like this!";
+    printf("and we can convert c++ strings to c strings with %s\n", mystr.c_str());
 
-        return 0;
-    }
-    ```
-    The `scanf` and `printf` syntax take a little getting used to, but it's like learning RegExp:  commit once and use it everywhere.
+    return 0;
+}
+```
+The `scanf` and `printf` syntax take a little getting used to, but it's like learning RegExp:  commit once and use it everywhere.
 
-    Notably, `scanf` has some quirks with characters and invisibles in the input stream. Best to explicitly remove newlines from the input stream when inputting characters with `scanf`, with something like `scanf("%c\n", &mychar);`. If something is really broken, try replacing `scanf` with `cin` to see if the problem gets fixed. If so, maybe some speed reduction is worth a working program.
+Notably, `scanf` has some quirks with characters and invisibles in the input stream. Best to explicitly remove newlines from the input stream when inputting characters with `scanf`, with something like `scanf("%c\n", &mychar);`. If something is really broken, try replacing `scanf` with `cin` to see if the problem gets fixed. If so, maybe some speed reduction is worth a working program.
 
 ### Dijkstra Basics: An algorithm to find the shortest route on a weighted undirected graph
+Dijkstra's algorithm is often an effective one for finding a route on a graph. Here is a summary of [an article about it on Brilliant](https://brilliant.org/wiki/dijkstras-short-path-finder/) about it.
 
-    Dijkstra's algorithm is often an effective one for finding a route on a graph. Here is a summary of [an article about it on Brilliant](https://brilliant.org/wiki/dijkstras-short-path-finder/) about it.
+Basically, the algorithm entails visiting the shortest unvisited node from the origin and checking if going to a neighboring node from that node is less costly than whatever was previously stored in the node. If it is, then the neighboring node is updated.
 
-    Basically, the algorithm entails visiting the shortest unvisited node from the origin and checking if going to a neighboring node from that node is less costly than whatever was previously stored in the node. If it is, then the neighboring node is updated.
+Here is a more detailed set of instructions for the algorithm:
+-   Setup
+    1.  Give every node an integer `id`, starting from 0.
+    1.  Create 2 arrays \<int\> `dist` and \<bool\> `visit`, each capable of holding all elements.
+    1.  Initialize all values of `dist` with `infinity`.
+    1.  Initialize all values of `visit` with `false`.
+    1.  Initialize `dist[start]` with `0`.
+-   Execute
+    1.  For each `idx` in `visit`
+        1.  If `visit[idx]` is `false` and `dist[idx]` is the minimum of `dist`
+            1.  `visit[idx]` = false;
+            1.  For each `idy` of neighbors
+                1.  If `dist[idy]` more than `dist[idx]` + `inbetween` (the distance between nodes `idx` and `idy`)
+                    1.  `dist[idy]` = `dist[idx]` + `inbetween`;
+    1.  If there are no more `false` values in `visit`
+        1.  Return `dist`
 
-    Here is a more detailed set of instructions for the algorithm:
-    - Setup
-      1. Give every node an integer `id`, starting from 0.
-      1. Create 2 arrays \<int\> `dist` and \<bool\> `visit`, each capable of holding all elements.
-      1. Initialize all values of `dist` with `infinity`.
-      1. Initialize all values of `visit` with `false`.
-      1. Initialize `dist[start]` with `0`.
-    - Execute
-        1. For each `idx` in `visit`
-            1. If `visit[idx]` is `false` and `dist[idx]` is the minimum of `dist`
-                1. `visit[idx]` = false;
-                1. For each `idy` of neighbors
-                    1. If `dist[idy]` more than `dist[idx]` + `inbetween` (the distance between nodes `idx` and `idy`)
-                        1. `dist[idy]` = `dist[idx]` + `inbetween`;
-        1. If there are no more `false` values in `visit`
-          1. Return `dist`
+Notably, Dijkstra is gaurenteed to find the shortest path from the start to any node, however it is a "blind" search which means it does not consider where the objective is. This makes it useful for computing things like vector fields, but it runs rather slowly for computing the shortest distance to a specific node. There are other algorithms, such as a "greedy best first search" algorithm which tries to estimate the distance between a candidate test node and the objective, and searches in the "direction" of the objective. This means it can get trapped in concave obstacles, but for the most part it runs much faster than Dijkstra.
 
-    Notably, Dijkstra is gaurenteed to find the shortest path from the start to any node, however it is a "blind" search which means it does not consider where the objective is. This makes it useful for computing things like vector fields, but it runs rather slowly for computing the shortest distance to a specific node. There are other algorithms, such as a "greedy best first search" algorithm which tries to estimate the distance between a candidate test node and the objective, and searches in the "direction" of the objective. This means it can get trapped in concave obstacles, but for the most part it runs much faster than Dijkstra.
-
-    Additionally, A* is a combination of Dijkstra and greedy search algorithms. It tends to perform very well in real world applications because it is fast and versatile. A good A* resource can be found [here](http://theory.stanford.edu/~amitp/GameProgramming/index.html).
+Additionally, A\* is a combination of Dijkstra and greedy search algorithms. It tends to perform very well in real world applications because it is fast and versatile. A good A\* resource can be found at [theory.stanford.edu](http://theory.stanford.edu/~amitp/GameProgramming/index.html).
 
 ### File I/O: `freopen`, `fin`, `fout`, `cerr`
 
-    File opening with `freopen` is similar to other programming languages. There are filemodes, and the function returns a pointer to a file stream? It is a little confusing. Some extra sources:
-    - [freopen](http://www.cplusplus.com/reference/cstdio/freopen/)
-    - [fopen](https://en.cppreference.com/w/cpp/io/c/fopen)
-    - [fprintf](http://www.cplusplus.com/reference/cstdio/fprintf/)
-    - [cerr](http://www.cplusplus.com/reference/iostream/cerr/)
+File opening with `freopen` is similar to other programming languages. There are filemodes, and the function returns a pointer to a file stream? It is a little confusing. Some extra sources:
+-   [freopen](http://www.cplusplus.com/reference/cstdio/freopen/)
+-   [fopen](https://en.cppreference.com/w/cpp/io/c/fopen)
+-   [fprintf](http://www.cplusplus.com/reference/cstdio/fprintf/)
+-   [cerr](http://www.cplusplus.com/reference/iostream/cerr/)
 
 ### Storing Maps by Edges: using a linked list of edges to store maps and trees
 
-    We use a set of linked lists to store edges. Each linked list contains the edges that lead from a specific node. We have a head array to store the starts of the linked lists, and when we want to see all of the edges leading from a node, we just go to the start of the linked list, which is stored by the head array. Then, we can traverse the linked list to get all of the edges leading from the original node, and for each edge we can run the same process on the node that that edge points to. This is a fast way to store and process a tree, and is versatile because we can store edges given different criteria. For example, we can store an edge in the linked list of a node not only when that edge leads from the node, but maybe also when it leads to the node. By varying this criteria, we can make this structure useful for many applications.
+We use a set of linked lists to store edges. Each linked list contains the edges that lead from a specific node. We have a head array to store the starts of the linked lists, and when we want to see all of the edges leading from a node, we just go to the start of the linked list, which is stored by the head array. Then, we can traverse the linked list to get all of the edges leading from the original node, and for each edge we can run the same process on the node that that edge points to. This is a fast way to store and process a tree, and is versatile because we can store edges given different criteria. For example, we can store an edge in the linked list of a node not only when that edge leads from the node, but maybe also when it leads to the node. By varying this criteria, we can make this structure useful for many applications.
 
-    TLDR: Instead of storing nodes with arrays of other nodes that are pointed to, we store the edges in sets of linked lists so that we don't have to do expensive array expanding operations like `push_back` in vectors. Instead, we simply use linked lists to store edges and add to the end when needed.
+TLDR: Instead of storing nodes with arrays of other nodes that are pointed to, we store the edges in sets of linked lists so that we don't have to do expensive array expanding operations like `push_back` in vectors. Instead, we simply use linked lists to store edges and add to the end when needed.
 
 ### Binary Search Tree: a binary tree (each node has at most two children) that is ordered
 
-    It is organized such that all nodes to the right of a node is greater in value than that node, and all nodes that are to the left are smaller in value. This makes it easy to search the tree because at each node you can simply go to the right if the value you are searching for is larger than the node, or to the left if the target value is smaller.
+It is organized such that all nodes to the right of a node is greater in value than that node, and all nodes that are to the left are smaller in value. This makes it easy to search the tree because at each node you can simply go to the right if the value you are searching for is larger than the node, or to the left if the target value is smaller.
 
 ### Counted BST: A binary search tree that has a value and count variable stored at each node
 
-    This has all of the advantages of a normal BST, except it can hold multiple accounts of each value, by holding a `count` variable along with the `value` variable at each node. This allows the BST to hold the same value multiple times over, and still make searching the tree easy.
+This has all of the advantages of a normal BST, except it can hold multiple accounts of each value, by holding a `count` variable along with the `value` variable at each node. This allows the BST to hold the same value multiple times over, and still make searching the tree easy.
 
-    We can also calculate the `weight` of a node as the sum of the weights of the two children nodes, plus the count of the current node. This recursive system allows us to figure out what index a specific number should be if we were printing out all of the values, for example. This "ranking" property is useful for many applications.
+We can also calculate the `weight` of a node as the sum of the weights of the two children nodes, plus the count of the current node. This recursive system allows us to figure out what index a specific number should be if we were printing out all of the values, for example. This "ranking" property is useful for many applications.
 
 ### Tree Balancing: In BSTs, we want short trees
-    The shorter the tree, the more efficient search will be happen when the tree is balanced.
+The shorter the tree, the more efficient search will be happen when the tree is balanced.
 
-    There are some ways to achieve this, such as:
-    - Random Sort: We scramble the data before starting creating the tree
-    - Read From a Heap: By combining trees and heaps, we can get more balanced trees
-    - AVL: A self balancing tree structure, which uses "rotations" to balance out an unbalanced tree.
-        (This is the most effective method to keep your tree balanced)
-        See below:
+There are some ways to achieve this, such as:
+-   Random Sort: We scramble the data before starting creating the tree
+-   Read From a Heap: By combining trees and heaps, we can get more balanced trees
+-   AVL: A self balancing tree structure, which uses "rotations" to balance out an unbalanced tree.
+    (This is the most effective method to keep your tree balanced)
+    See below:
 
 ### Tree Balancing: Rotation: Rotate the tree to keep the BST properties but make the tree more balanced
 
-    AVLs use this kind of method to keep a BST balanced. There are four types of "rotations" that are used to keep a tree like this balanced:
-    - Left: Rotate once left. This works when the top two layers have only one child per node.
-    - Right: Same as above but on the right.
-    - Left-right: When on average there are more than two children per node, we need these combination rotations, which involve rotating a subtree one direction and then rotating the whole tree the other.
+AVLs use this kind of method to keep a BST balanced. There are four types of "rotations" that are used to keep a tree like this balanced:
+-   Left: Rotate once left. This works when the top two layers have only one child per node.
+-   Right: Same as above but on the right.
+-   Left-right: When on average there are more than two children per node, we need these combination rotations, which involve rotating a subtree one direction and then rotating the whole tree the other.
 
-    A good resource for AVL tree rotation basics: [https://www.tutorialspoint.com/data_structures_algorithms/avl_tree_algorithm.htm]
+A good resource for AVL tree rotation basics: [Tutorials Point - AVL Tree](https://www.tutorialspoint.com/data_structures_algorithms/avl_tree_algorithm.htm)
 
 ### Floyd Warshall Algo: Determine shortest distances between all nodes on a graph _independent_ of edges.
 
-    On a graph with `n` nodes and `q` edges, Floyd Warshall runs in `O(pow(n, 3))`. This means that Floyd Warshall is suitable for densely connected graphs because the number of connections does not slow down the algorithm.
+On a graph with `n` nodes and `q` edges, Floyd Warshall runs in `O(pow(n, 3))`. This means that Floyd Warshall is suitable for densely connected graphs because the number of connections does not slow down the algorithm.
 
-    Essentially, the algorithm takes each pair of nodes in the graph and tries to get from one node to the other through an intermediate node. If the distance from the `start` to `intermediate` plus the distance from `intermediate` to `end` is less than the current best distance from `start` to `end`, then the best distance is updated to reflect the one that goes through the `intermediate` node.
+Essentially, the algorithm takes each pair of nodes in the graph and tries to get from one node to the other through an intermediate node. If the distance from the `start` to `intermediate` plus the distance from `intermediate` to `end` is less than the current best distance from `start` to `end`, then the best distance is updated to reflect the one that goes through the `intermediate` node.
 
-    Some articles about the Floyd Warshall Algorithm can be found on \[[Brilliant](https://brilliant.org/wiki/floyd-warshall-algorithm/), [Geeks for Geeks](https://www.geeksforgeeks.org/floyd-warshall-algorithm-dp-16/), [Tutorials Point Q&A](https://www.tutorialspoint.com/Floyd-Warshall-Algorithm)\]
+Some articles about the Floyd Warshall Algorithm:
+-   [Brilliant](https://brilliant.org/wiki/floyd-warshall-algorithm/)
+-   [Geeks for Geeks](https://www.geeksforgeeks.org/floyd-warshall-algorithm-dp-16/)
+-   [Tutorials Point Q&A](https://www.tutorialspoint.com/Floyd-Warshall-Algorithm)\]
 
 ### Trie: Multi-level overlapping storage for segment-able types
 
-    A trie is a way of storing data that has "overlapping" sections, such as strings. For example, if we would like to store the words `"these"` and `"there"`, we can store the first three identical characters on the same branch and at the `'e'` node we would branch off into the other characters. Each node can be represented with a struct such as the following:
-    ```c ++
-    const int ALPHABETSIZE = 26;
+A trie is a way of storing data that has "overlapping" sections, such as strings. For example, if we would like to store the words `"these"` and `"there"`, we can store the first three identical characters on the same branch and at the `'e'` node we would branch off into the other characters. Each node can be represented with a struct such as the following:
+```c ++
+const int ALPHABETSIZE = 26;
 
-    struct TrieNode
-    {
-      TrieNode children[ALPHABETSIZE];
-      bool isLeaf = false; // is this letter the end of a word?
-    }
-    ```
-    In this way, we can search the tree in `O(L)` time where `L` is the length of the word. This is significantly faster than a structure such as a Self Balancing BST, where `search`, `insert`, and `delete` are usually `O(L log n)`. They are also often faster than hashing, because while they have the same time complexity, there is no need to compute a hash function or worry about collisions.
-    Additionally, tries are good for printing the words in alphabetical order because everything is stored in that kind of logical way. They are also good for prefix search, because the structure is put together in a way that highlights words that start the same way.
+struct TrieNode
+{
+  TrieNode children[ALPHABETSIZE];
+  bool isLeaf = false; // is this letter the end of a word?
+}
+```
+In this way, we can search the tree in `O(L)` time where `L` is the length of the word. This is significantly faster than a structure such as a Self Balancing BST, where `search`, `insert`, and `delete` are usually `O(L log n)`. They are also often faster than hashing, because while they have the same time complexity, there is no need to compute a hash function or worry about collisions.
+Additionally, tries are good for printing the words in alphabetical order because everything is stored in that kind of logical way. They are also good for prefix search, because the structure is put together in a way that highlights words that start the same way.
 
-    However, tries take up a lot of storage, because each node must be able to point to `ALPHABETSIZE` children nodes. In these situations, we should prefer to use other data structures such as a Ternary Search Tree, which supports similar operations but is slightly slower than a trie.
+However, tries take up a lot of storage, because each node must be able to point to `ALPHABETSIZE` children nodes. In these situations, we should prefer to use other data structures such as a Ternary Search Tree, which supports similar operations but is slightly slower than a trie.
 
-    A summary of the pros and cons of the trie:
-    | Pros | Cons |
-    |------|------|
-    - O(L) for insert, search, and delete | - Takes up massive amounts of  memory
-    - Easy alphabetical access | -
-    - Easy prefix search | -
+A summary of the pros and cons of the trie:
+| Pros | Cons |
+|------|------|
+-   O(L) for insert, search, and delete | - Takes up massive amounts of  memory
+-   Easy alphabetical access | -
+-   Easy prefix search | -
 
-    More resources on tries: { [Geeks for Geeks](https://www.geeksforgeeks.org/advantages-trie-data-structure/), [Boston University CS](https://www.cs.bu.edu/teaching/c/tree/trie/) }
+More resources on tries:
+-   [Geeks for Geeks](https://www.geeksforgeeks.org/advantages-trie-data-structure/)
+-   [Boston University CS](https://www.cs.bu.edu/teaching/c/tree/trie/) }
 
 ### size_t: an unsigned type to represent sizes in memory
 
-    This type is usually defined per implementation to be either an `unsigned int` or `unsigned long long`, and is used as the type for variables which store memory sizes. Although it is not technically necessary, it is good practice to use the `size_t` type because it makes it more clear what the variable you are defining will be used for. It doesn't look like there are any real disadvantages, as long as you keep in mind that `size_t` will be an `unsigned` type.
-    An internet debate discussing the advantages and disadvantages of using `size_t` as an argument type can be found on [bytes.com](https://bytes.com/topic/c/answers/220206-what-size_t), and some quick reference from [cplusplus.com](http://www.cplusplus.com/reference/cstring/size_t/).
+This type is usually defined per implementation to be either an `unsigned int` or `unsigned long long`, and is used as the type for variables which store memory sizes. Although it is not technically necessary, it is good practice to use the `size_t` type because it makes it more clear what the variable you are defining will be used for. It doesn't look like there are any real disadvantages, as long as you keep in mind that `size_t` will be an `unsigned` type.
 
-### Topological Sort: Order the nodes of a DAG such that the parents of each node are always before the node itself  in the sort
+An internet debate discussing the advantages and disadvantages of using `size_t` as an argument type can be found on [bytes.com](https://bytes.com/topic/c/answers/220206-what-size_t), and some quick reference from [cplusplus.com](http://www.cplusplus.com/reference/cstring/size_t/).
 
-    Essentially, we would like to take a Directed Acyclic Graph (DAG) and place the nodes in order such that when we see the `id` of a node, we are guaranteed to have already seen all of the ancestors of that node.
-    This is useful for many applications that involve DAGs, such as determining the order to evaluate expressions in spreadsheets or the order to load modules for each dependent piece of new code to be able to run.
-    There are two main ways that Topological Sort is achieved:
-    - Khan's Algorithm (BFS)
-        1. Start by initializing arrays `in_order` and `visited` with enough space to store pointers to each node
-        1. Visit each node, and count how many direct parents it has. Store this value in `in_order`.
-        1. Find a node that has no ancestors and put it in the front of the queue. This will be our first `source` node.
-        1. While we have nodes in the queue, pop the front and take it as `source`:
-            1. For each `child` of `source`:
-                1. If the `in_order` of `child` is `1` and `child` is not `visited`, then put `child` on in the queue and mark it as `visited`.
-                1. Otherwise, subtract `1` from the `in_order` of `child`.
-                1. `in_order` essentially counts how many parents are remaining to put in the sort before we can put `child` in the sort.
-            1. Add `source` to the end of the Topological Sort.
+### Topological Sort: Order the nodes of a DAG such that the parents of each node are always before the node itself in the sort
 
-        Khan's Algorithm runs in `O(|V|^2+|E|)`, where `|V|` is the number of nodes/vertices and `|E|` is the number of edges.
-    - Modified DFS
-        This is basically the same as normal DFS over a graph, except we keep track of what has been visited and don't visit it again. Whenever we reach a new node, we put it at the front of the sort, such that for each node `source` it is guaranteed that all of its descendants are already in the sort, behind it.
+Essentially, we would like to take a Directed Acyclic Graph (DAG) and place the nodes in order such that when we see the `id` of a node, we are guaranteed to have already seen all of the ancestors of that node.
+This is useful for many applications that involve DAGs, such as determining the order to evaluate expressions in spreadsheets or the order to load modules for each dependent piece of new code to be able to run.
+There are two main ways that Topological Sort is achieved:
+-   Khan's Algorithm (BFS)
+    1.  Start by initializing arrays `in_order` and `visited` with enough space to store pointers to each node
+    1.  Visit each node, and count how many direct parents it has. Store this value in `in_order`.
+    1.  Find a node that has no ancestors and put it in the front of the queue. This will be our first `source` node.
+    1.  While we have nodes in the queue, pop the front and take it as `source`:
+        1.  For each `child` of `source`:
+            1.  If the `in_order` of `child` is `1` and `child` is not `visited`, then put `child` on in the queue and mark it as `visited`.
+            1.  Otherwise, subtract `1` from the `in_order` of `child`.
+            1.  `in_order` essentially counts how many parents are remaining to put in the sort before we can put `child` in the sort.
+        1.  Add `source` to the end of the Topological Sort.
 
-        This version of DFS runs in `O(|V|+|E|)` time, which is faster than Khan's Algorithm. This is usually the easiest way of creating a Topological Sort.
+Khan's Algorithm runs in `O(|V|^2+|E|)`, where `|V|` is the number of nodes/vertices and `|E|` is the number of edges.
+-   Modified DFS
+    This is basically the same as normal DFS over a graph, except we keep track of what has been visited and don't visit it again. Whenever we reach a new node, we put it at the front of the sort, such that for each node `source` it is guaranteed that all of its descendants are already in the sort, behind it.
 
-    Further reading can be found: { [Geeks for Geeks](https://www.geeksforgeeks.org/topological-sorting/), [UWashington CS](https://courses.cs.washington.edu/courses/cse326/03wi/lectures/RaoLect20.pdf), [HackerEarth](https://www.hackerearth.com/zh/practice/algorithms/graphs/topological-sort/tutorial/), [Tutorial-Horizon - Algorithms](https://algorithms.tutorialhorizon.com/topological-sort/)  }
+    This version of DFS runs in `O(|V|+|E|)` time, which is faster than Khan's Algorithm. This is usually the easiest way of creating a Topological Sort.
+
+Further reading can be found:
+-   [Geeks for Geeks](https://www.geeksforgeeks.org/topological-sorting/)
+-   [UWashington CS](https://courses.cs.washington.edu/courses/cse326/03wi/lectures/RaoLect20.pdf)
+-   [HackerEarth](https://www.hackerearth.com/zh/practice/algorithms/graphs/topological-sort/tutorial/)
+-   [Tutorial-Horizon - Algorithms](https://algorithms.tutorialhorizon.com/topological-sort/)
 
 ### Bipartite Graph: A graph with two sets of nodes, where a set of nodes cannot have a connection inside it
 
     Useful for some problems. We can find out if a graph is Bipartite by DFSing through it and checking if every connected node has the same "color" as the current node, and by "coloring" each node the opposite color as its ancestor when traversing. I don't know why this structure is useful yet, but it came up in the second problem of the contest today.
-    Further resources: { [Geeks for Geeks Bigraph Testing](https://www.geeksforgeeks.org/bipartite-graph/), [Example Applications on Stack Exchange](https://cs.stackexchange.com/questions/24057/concrete-and-simple-applications-for-bipartite-graphs), [A Dense Textbook Excerpt from UChicago Math](http://www.math.uchicago.edu/~may/VIGRE/VIGRE2007/REUPapers/FINALAPP/Salvatore.pdf) }
+    Further resources: 
+-   [Geeks for Geeks Bigraph Testing](https://www.geeksforgeeks.org/bipartite-graph/)
+-   [Example Applications on Stack Exchange](https://cs.stackexchange.com/questions/24057/concrete-and-simple-applications-for-bipartite-graphs)
+-   [A Dense Textbook Excerpt from UChicago Math](http://www.math.uchicago.edu/~may/VIGRE/VIGRE2007/REUPapers/FINALAPP/Salvatore.pdf)
 
 ### Reb Black Tree**: A Self Balancing BST that is less balanced than AVL but faster to insert/delete
 
@@ -330,22 +330,25 @@ dev.xjoi 1211 | 1 | Print directory structure | AC | Used map and iterators and 
             1. There are now four configurations that the new and parent nodes could be in.
             1. They correspond nicely with the four AVL cases. Essentially, we left/right/left-right/right-left rotate the parent and grandparent, and then swap the colors of the parent and grandparent.
 
-    This will keep the black-red tree somewhat balanced, although not as balanced as an AVL tree. However, it wastes little operations in the balancing process which makes insert/delete faster but search slower. This is a good alternative to AVL trees. Further reading: { [Geeks for Geeks 1](https://www.geeksforgeeks.org/red-black-tree-set-1-introduction-2/), [2](https://www.geeksforgeeks.org/red-black-tree-set-2-insert/), [visualization](https://www.cs.usfca.edu/~galles/visualization/RedBlack.html) }
+    This will keep the black-red tree somewhat balanced, although not as balanced as an AVL tree. However, it wastes little operations in the balancing process which makes insert/delete faster but search slower. This is a good alternative to AVL trees. Further reading:
+-   [Geeks for Geeks 1](https://www.geeksforgeeks.org/red-black-tree-set-1-introduction-2/) 
+-   [GfG 2](https://www.geeksforgeeks.org/red-black-tree-set-2-insert/)
+-   [visualization](https://www.cs.usfca.edu/~galles/visualization/RedBlack.html)
 
 ### Binary Heaps**: A heap that is also a binary tree
-    We can store this structure in an array, see "Storing Binary Tree/Heaps" below.
+We can store this structure in an array, see "Storing Binary Tree/Heaps" below.
 
-    To insert, we insert the new node at the bottom of the heap, in the next empty spot of the array. Then, if the new node is out of order compared to its parent, then we simply swap those nodes, and repeat until the heap structure is maintained.
+To insert, we insert the new node at the bottom of the heap, in the next empty spot of the array. Then, if the new node is out of order compared to its parent, then we simply swap those nodes, and repeat until the heap structure is maintained.
 
-    To delete, we remove the top/root node (that's the whole point of a heap anyways, and if for some reason you want to remove something else then just find it first and call it the root of that subtree, the rest of the heap doesn't care.) and fill it's place with the last node, which is one of  the smallest. Then, take the maximum of { the new root `root`, and the original `left` and `right` children }. The `root` is swapped with the largest of those and the process repeats with `root` as the root of the affected subtree.
+To delete, we remove the top/root node (that's the whole point of a heap anyways, and if for some reason you want to remove something else then just find it first and call it the root of that subtree, the rest of the heap doesn't care.) and fill it's place with the last node, which is one of  the smallest. Then, take the maximum of { the new root `root`, and the original `left` and `right` children }. The `root` is swapped with the largest of those and the process repeats with `root` as the root of the affected subtree.
 
-    Heaps can be used in many places, (at least that's what it looks like from the past few days because we have been doing heap problems). Usually, when you need to continually find the least or most of something with limited other restrictions, then you want to use a heap. Especially when there is an order to the information you receive or some kind of ordering to when some actions can be performed, we can take advantage of an "intermediate" heap with limited information to find the least/most value with that particular set of information that is available in that stage of solving the problem. For example, the whackamole problem from Monday was heapable because we could make limited information heaps for each frame of time and only insert hamsters into the heap that would expire in that frame of time. This is one way to make the problem smaller and divide and conquer.
+Heaps can be used in many places, (at least that's what it looks like from the past few days because we have been doing heap problems). Usually, when you need to continually find the least or most of something with limited other restrictions, then you want to use a heap. Especially when there is an order to the information you receive or some kind of ordering to when some actions can be performed, we can take advantage of an "intermediate" heap with limited information to find the least/most value with that particular set of information that is available in that stage of solving the problem. For example, the whackamole problem from Monday was heapable because we could make limited information heaps for each frame of time and only insert hamsters into the heap that would expire in that frame of time. This is one way to make the problem smaller and divide and conquer.
 
-    In summary, _heaps are good for maintaining a global min/max, because the min/max can be accessed in `O(1)` and this can be maintained upon insertion/deletion in `O(log n)`. Thus, heaps are good for maintaining a global min/max relatively cheaply._
+In summary, _heaps are good for maintaining a global min/max, because the min/max can be accessed in `O(1)` and this can be maintained upon insertion/deletion in `O(log n)`. Thus, heaps are good for maintaining a global min/max relatively cheaply._
 
 ### Storing Binary Trees/Heaps**: Basically just shove them in an array
 
-    Because they are always the same size, if we number the nodes starting at the root going layer by layer left to right, then the child of any node will always be `node*2` and `node*2+1` in the array, and the parent of that node will always be `node/2`. This is much more convenient than storing pointers to the children, or storing edges or some shenanigans like that.
+Because they are always the same size, if we number the nodes starting at the root going layer by layer left to right, then the child of any node will always be `node*2` and `node*2+1` in the array, and the parent of that node will always be `node/2`. This is much more convenient than storing pointers to the children, or storing edges or some shenanigans like that.
 
 ### Priority Queues
 **Theory**
@@ -400,9 +403,9 @@ Priority queues are good for keeping a global minimum/maximum. It can be created
 
 **Extra Reading**
 
-- [cplusplus.com Reference](http://www.cplusplus.com/reference/queue/priority_queue/)
-- [GfG Priority Queue Introduction](https://www.geeksforgeeks.org/priority-queue-set-1-introduction/)
-- [GfG Applications of Priority Queue](https://www.geeksforgeeks.org/applications-priority-queue/)
+-   [cplusplus.com Reference](http://www.cplusplus.com/reference/queue/priority_queue/)
+-   [GfG Priority Queue Introduction](https://www.geeksforgeeks.org/priority-queue-set-1-introduction/)
+-   [GfG Applications of Priority Queue](https://www.geeksforgeeks.org/applications-priority-queue/)
 
 ### Const Class Methods
 **They are the only methods callable by `const` instances**
@@ -497,8 +500,8 @@ Another example of using bitwise flags and masks is the N Queens problem. We can
 These kinds of bit flags and masks are also used for many real world applications, such as permissions for files on linux computers, which are stored as three bit flags for read, write and execute. Bit masks are also used in IPv4 in the form of net masking, which is why so many LAN ip addresses start with 192.168 (they were masked with 11000000:10101000).
 
 **Sources**
-- [SO - What is bit masking?](https://stackoverflow.com/questions/10493411/what-is-bit-masking)
-- [LearnCpp.com - Bit Flags and Masks](https://www.learncpp.com/cpp-tutorial/3-8a-bit-flags-and-bit-masks/)
+-   [SO - What is bit masking?](https://stackoverflow.com/questions/10493411/what-is-bit-masking)
+-   [LearnCpp.com - Bit Flags and Masks](https://www.learncpp.com/cpp-tutorial/3-8a-bit-flags-and-bit-masks/)
 
 ### Map
 **Overview**
@@ -578,7 +581,7 @@ Maps are pretty much dictionaries, but the key can be any type/class. However, t
 [cplusplus.com](http://www.cplusplus.com/reference/map/map/) says that "Maps are typically implemented as _binary search trees_.", which means that they have a similar complexity. It depends on what the specific BST used is, but I assume it is a self balanced one and so it is probably AVL or a Red Black Tree.
 
 **Sources**
-- [Cplusplus.com - `std::map`](http://www.cplusplus.com/reference/map/map/)
+-   [Cplusplus.com - `std::map`](http://www.cplusplus.com/reference/map/map/)
 
 ### Extended Euler's Algorithm
 **Math and Implementation**
@@ -616,9 +619,9 @@ Find the problem [here](luogu.org/problem/P1082).
 _Given `a` and `b`, find the minimum `x` such that `ax=1 (mod b)`_.   This uses the above strategy, somehow? `ax=by+1` -> `ax-by=1`
 
 **Sources**
-- [Brilliant Wiki - Extended Euclidean Algorithm](https://brilliant.org/wiki/extended-euclidean-algorithm/)
-- [Article in Mandarin explaining the math](https://blog.csdn.net/fearlessxjdx/article/details/74276376)
-- [GfG - Euclidean Algorithms (Basic and Extended)](https://www.geeksforgeeks.org/euclidean-algorithms-basic-and-extended/)
+-   [Brilliant Wiki - Extended Euclidean Algorithm](https://brilliant.org/wiki/extended-euclidean-algorithm/)
+-   [Article in Mandarin explaining the math](https://blog.csdn.net/fearlessxjdx/article/details/74276376)
+-   [GfG - Euclidean Algorithms (Basic and Extended)](https://www.geeksforgeeks.org/euclidean-algorithms-basic-and-extended/)
 
 ### Null and Void Pointers
 **Explanation**
@@ -638,9 +641,9 @@ Given that we can only use the value stored in a `void` pointer after we cast it
 Additionally, C makes relatively heavier use of `void` pointers as return types for functions that deal with raw memory, such as `malloc`. However, this does not appear as often in C++, because apparently we are ["supposed to be using `new` anyway"](https://stackoverflow.com/questions/8530080/what-is-a-void-pointer-in-c#comment50705401_8530111), whatever that means.
 
 **Sources**
-- [SO - Void pointer?](https://stackoverflow.com/questions/8530080/what-is-a-void-pointer-in-c)
-- [SO - Void vs Null pointer](https://stackoverflow.com/questions/4334831/what-is-a-void-pointer-and-what-is-a-null-pointer)
-- [LearnCpp.com 6.13 - Void Pointers](https://www.learncpp.com/cpp-tutorial/613-void-pointers/)
+-   [SO - Void pointer?](https://stackoverflow.com/questions/8530080/what-is-a-void-pointer-in-c)
+-   [SO - Void vs Null pointer](https://stackoverflow.com/questions/4334831/what-is-a-void-pointer-and-what-is-a-null-pointer)
+-   [LearnCpp.com 6.13 - Void Pointers](https://www.learncpp.com/cpp-tutorial/613-void-pointers/)
 
 ### Bron Kerbosch Algorithm Basics
 **Overview**  
