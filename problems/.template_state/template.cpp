@@ -1,4 +1,10 @@
 /*
+ID: spoytie2
+TASK: XXXX
+LANG: C++14                 
+*/
+
+/*
  * Problem #[!meta:pid!]
  * [!meta:date!]
  * 
@@ -39,6 +45,6 @@ const int MAXSZ = 1; // todo
 int main ()
 {
 
-
+  printf("\n");
   return 0;
 }

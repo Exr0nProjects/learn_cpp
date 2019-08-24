@@ -1,3 +1,4 @@
+#!/bin/bash
 
 newpath="$(dirname $1)/x$(basename $1)"
 mv "$1" $newpath
