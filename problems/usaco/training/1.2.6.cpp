@@ -35,14 +35,14 @@ int main() {
     ++ dayct[(dct+12)%7];
     if (dpt == 1)
     {
-      if ((!year%4 && year%100) || !year%400) { dct += 29; printf("+29 "); }
+      // printf("\nfebuary %d, %d | %d", year, (! (bool) (year%4) && (bool) (year%100)), ! (bool) (year%400));
+      if ( ((! (bool) (year%4) && (bool) (year%100)) || ! (bool) (year%400))) { dct += 29; printf("+29 (leap) "); }
       else { dct += 28; printf("+28 "); }
     }
     dct += days[dpt];
     if (days[dpt] > 0) printf("+%d ", days[dpt]);
     ++dpt;
-    if (dpt == 12) { dpt = 0; ++ year; }
-    printf("year %d: %d", year, )
+    if (dpt == 12) { dpt = 0; ++ year; printf("year %d: %d\n" , year-1, dct); }
   }
 
   for (int i=5; i<12; ++i)
