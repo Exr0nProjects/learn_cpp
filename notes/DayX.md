@@ -3,15 +3,16 @@
 ## Problems:
 |  Page  |  PID  |  Description  |  Status  | Notes |
 |-------:|-------|---------------|:--------:|-------|
-  pXXXXX | XXXXX | XXXXXXXXXXXXX | XXXXXXXX | XXXXX
+| pXXXXX | XXXXX | XXXXXXXXXXXXX | XXXXXXXX | XXXXX |
 
 ## Concepts:
-### Name
+### Balanced Tree Types
 **Desc**
-Explanation
-  - more explanation
+-   XXX
+-   XXX
+-   XXX
 
 ## Reflection:
-|  Type  |  Score (/12)  |
+| Type | Score (/12) |
 |--------|:-------------:|
-Productivity | <score>
+| Productivity | <score> |
