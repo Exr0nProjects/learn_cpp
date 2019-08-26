@@ -41,10 +41,22 @@ Comes from calling the same state multiple times, this is why DP helps.
 
 ## Further Reading
 -   Virtual Memory
--   bellman-ford
+-   **bellman-ford**
 -   kruskal
 -   prim
 -   tobological sort
 -   floodfill
 -   disjoint set
 -   LCA
+
+## Homework
+### Explain Algorithms
+**You must explain**
+-   What is it?
+-   Underlying idea/principle? (Djikstra => greedy)
+-   Usages
+-   Constraints
+**My list**
+-   bellman-ford
+-   topological sort
+-   LCA/RMQ
