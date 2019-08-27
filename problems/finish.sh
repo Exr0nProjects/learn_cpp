@@ -13,4 +13,4 @@ mv "$modpath" "$newpath"
 
 echo "$newpath $cache"
 
-"$(dirname $cache)/live_commit.sh" "$modpath" "script: AC $newpath"
+"$(dirname $cache)/live_commit.sh" "$modpath $newpath" "script: AC $newpath"
