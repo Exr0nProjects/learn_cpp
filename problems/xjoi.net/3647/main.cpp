@@ -5,8 +5,8 @@ LANG: C++14
 */
 
 /*
- * Problem #[!meta:pid!]
- * [!meta:date!]
+ * Problem #3647
+ * Tue 27 Aug 2019 @ 07:21 PDT)
  * 
  */
 
@@ -42,8 +42,21 @@ using namespace std;
 
 const int MAXSZ = 1; // todo
 
+inline int fbi (const int r, const int a=0, const int b=1)
+{
+  if (r == 1) return a;
+  return fbi(r-1, b, a+b);
+}
 int main ()
 {
+  // FILE* fin = fopen("fbi.in", "r");
+  // FILE* fout = fopen("fbi.out", "w+");
 
+  int num;
+  // fscanf(fin, "%d", &num);
+  scanf("%d", &num);
+
+  // fprintf(fout, "%d", fbi(num));
+  printf("%d", fbi(num));
   return 0;
 }
