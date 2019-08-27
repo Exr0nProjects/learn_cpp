@@ -42,15 +42,16 @@ using namespace std;
 
 const int MAXSZ = 1; // todo
 
-const int dfc (const int r, const int c=1)
+const LL dfc(const LL r, const LL c = 1)
 {
-  if (r == 1) return c;
-  return c*dfc(r-1, c+1) % 998244353;
+  if (r == 1)
+    return c;
+  return c * (dfc(r - 1, c + 1) % 998244353);
 }
-int main ()
+int main()
 {
-  int num;
-  scanf("%d", &num);
-  printf("%d", dfc(num)%998244353);
+  LL num;
+  scanf("%lld", &num);
+  printf("%lld", dfc(num) % 998244353);
   return 0;
 }
