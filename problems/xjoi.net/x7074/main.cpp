@@ -42,7 +42,7 @@ using namespace std;
 
 const int MAXSZ = 1; // todo
 
-const LL gcd (const LL a, const LL b)
+const UN LL gcd (const UN LL a, const UN LL b)
 {
   if (b == 0) return a;
   return gcd(b, a%b);
@@ -50,9 +50,9 @@ const LL gcd (const LL a, const LL b)
 
 int main ()
 {
-  LL a, b;
-  scanf("%lld%lld", &a, &b);
+  UN LL a, b;
+  scanf("%llu%llu", &a, &b);
 
-  printf("%lld", gcd(a, b));
+  printf("%llu", gcd(a, b));
   return 0;
 }
