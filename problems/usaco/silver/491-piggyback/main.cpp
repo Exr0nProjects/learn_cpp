@@ -3,9 +3,6 @@ ID: spoytie2
 TASK: piggyback
 LANG: C++14
 */
-#include <iostream>
-#include <fstream>
-#include <string>
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -43,7 +40,7 @@ int main()
     for (int i=0; i<n; ++i)
     {
         int _a, _b;
-        scanf("%d%d", &_a, &_b);
+        fscanf(fin, "%d%d", &_a, &_b);
         addEdge(_a, _b);
         addEdge(_b, _a);
     }
