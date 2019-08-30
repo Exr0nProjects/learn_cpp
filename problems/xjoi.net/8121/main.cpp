@@ -63,7 +63,7 @@ inline pair<int, int> pRep(const int n)
 
 inline bool legit(pair<int, int> n)
 {
-  return n.first >= 0 && n.second >= 0 && n.first <= a && n.second <= b && matrix[n.first][n.second] == 0 && steps[n.first][n.second] == 0;
+  return n.first >= 0 && n.second >= 0 && n.first < a && n.second < b && matrix[n.first][n.second] == 0 && steps[n.first][n.second] == 0;
 }
 
 int main()
@@ -86,15 +86,14 @@ int main()
   q.push(iRep(si - 1, sj - 1));
   while (!q.empty())
   {
-    //    printf("%d %d => %d %d\n", q.front()/MAXSZ, q.front()%MAXSZ, ei, ej);
-    //    for (int i=0; i<a; ++i) { for (int j=0; j<b; ++j) printf("%d ", steps[i][j]); printf("\n"); } printf("\n\n");
-
     int cur;
     if (q.front() == ei * MAXSZ + ej)
       break;
     else
       cur = max(steps[q.front() / MAXSZ][q.front() % MAXSZ], 1);
     steps[q.front() / MAXSZ][q.front() % MAXSZ] = cur;
+
+    //    printf("%d %d (%d) => %d %d\n", q.front()/MAXSZ, q.front()%MAXSZ, cur, ei, ej); for (int i=0; i<a; ++i) { for (int j=0; j<b; ++j) printf("%d ", steps[i][j]); printf("\n"); } printf("\n\n");
 
     for (pair<int, int> n = pRep(q.front()); iRep(n) == q.front() || legit(n); ++n.first)
     {
@@ -128,7 +127,7 @@ int main()
     q.pop();
   }
 
-  printf("%d", steps[ei][ej] - 1);
+  printf("%d", steps[ei][ej] - 2);
 
   return 0;
 }
@@ -141,4 +140,25 @@ int main()
 0 1 1 0 0 0 0
 0 0 0 0 1 1 0
 1 3 1 7
+  
+4 4
+0 1 1 1
+0 0 1 1
+1 0 0 1
+1 1 0 0
+1 1 4 4
+ 
+4 4
+0 1 1 0
+0 1 0 0
+0 1 0 1
+0 0 0 0
+1 1 1 4
+  
+4 4
+0 0 1 0
+1 0 0 0
+0 0 0 1
+0 1 0 0
+2 3 4 4
  */
