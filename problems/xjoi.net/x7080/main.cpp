@@ -7,7 +7,7 @@
 /*
  * Problem 7080 (xjoi.net/7080)
  * Created Fri 30 Aug 2019 @ 16:48 (PDT)
- * Accepted [!meta:end!]
+ * Accepted Fri 30 Aug 2019 @ 16:57 (PDT)
  *
  */
 
@@ -43,18 +43,20 @@ using namespace std;
 
 const int MAXSZ = 1; // todo
 
-void r (const int n)
+void r(const string n, const int end = 1)
 {
-  if (n == 0) return;
-  r(n/10);
-  printf("%d\n", n%10);
+  if (end > n.length())
+    return;
+  r(n, end + 1);
+  printf("%c\n", n[n.length() - end]);
 }
 
-int main ()
+int main()
 {
-  int num;
-  scanf("%d", &num);
-  r(num);
-  
+  char num[11];
+  scanf("%s", num);
+  string n = num;
+  r(n);
+
   return 0;
 }
