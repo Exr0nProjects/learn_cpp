@@ -1,14 +1,14 @@
 /*
-ID: spoytie2
-TASK: XXXX
-LANG: C++14                 
-*/
+ ID: spoytie2
+ TASK: XXXX
+ LANG: C++14
+ */
 
 /*
- * Problem a (test/a)
- * Created Fri 30 Aug 2019 @ 07:10 (PDT)
- * Accepted Fri 30 Aug 2019 @ 07:10 (PDT)
- * 
+ * Problem 7080 (xjoi.net/7080)
+ * Created Fri 30 Aug 2019 @ 16:48 (PDT)
+ * Accepted [!meta:end!]
+ *
  */
 
 #include <bits/stdc++.h>
@@ -43,8 +43,18 @@ using namespace std;
 
 const int MAXSZ = 1; // todo
 
+void r (const int n)
+{
+  if (n == 0) return;
+  r(n/10);
+  printf("%d\n", n%10);
+}
+
 int main ()
 {
-
+  int num;
+  scanf("%d", &num);
+  r(num);
+  
   return 0;
 }
