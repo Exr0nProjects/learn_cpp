@@ -5,8 +5,9 @@ LANG: C++14
 */
 
 /*
- * Problem #[!meta:pid!]
- * [!meta:date!]
+ * Problem [!meta:pid!]
+ * Created [!meta:beg!]
+ * Accepted [!meta:end!]
  * 
  */
 
