@@ -1,14 +1,14 @@
 /*
-ID: spoytie2
-TASK: XXXX
-LANG: C++14                 
-*/
+ ID: spoytie2
+ TASK: XXXX
+ LANG: C++14
+ */
 
 /*
  * Problem 7981 (7981)
  * Created Fri 30 Aug 2019 @ 17:10 (PDT)
- * Accepted [!meta:end!]
- * 
+ * Accepted Fri 30 Aug 2019 @ 17:12 (PDT)
+ *
  */
 
 #include <bits/stdc++.h>
@@ -43,11 +43,11 @@ using namespace std;
 
 const int MAXSZ = 1; // todo
 
-int main ()
+int main()
 {
   int num;
   scanf("%d", &num);
-  printf("%d", pow(2, num) -1);
+  printf("%d", (int)pow(2, num) - 1);
 
   return 0;
 }
