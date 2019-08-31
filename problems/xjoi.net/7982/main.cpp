@@ -1,14 +1,14 @@
 /*
-ID: spoytie2
-TASK: XXXX
-LANG: C++14                 
-*/
+ ID: spoytie2
+ TASK: XXXX
+ LANG: C++14
+ */
 
 /*
  * Problem 7982 (xjoi.net/7982)
  * Created Fri 30 Aug 2019 @ 17:13 (PDT)
  * Accepted [!meta:end!]
- * 
+ *
  */
 
 #include <bits/stdc++.h>
@@ -43,25 +43,28 @@ using namespace std;
 
 const int MAXSZ = 1; // todo
 
-string swap (const string s, const char f, const char t)
+string swap(string s, const char f, const char t)
 {
-  for (auto r : s)
+  for (char &r : s)
   {
-    if (r == f) r = t;
+    if (r == f)
+      r = t;
+    else if (r == t)
+      r = f;
   }
   return s;
 }
 
-int main ()
+int main()
 {
   int num;
   scanf("%d", &num);
 
-  string base = "A->C";
-  
-  for (int i=0; i<num; ++i)
+  string base = "A->C\n";
+
+  for (int i = 1; i < num; ++i)
   {
-    base = swap(base, 'C', 'B') + "A->C" + swap(base, 'A', 'B');
+    base = swap(base, 'C', 'B') + "A->C\n" + swap(base, 'A', 'B');
   }
 
   cout << base;
