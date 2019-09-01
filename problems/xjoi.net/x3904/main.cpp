@@ -1,14 +1,14 @@
 /*
-ID: spoytie2
-TASK: XXXX
-LANG: C++14                 
-*/
+ ID: spoytie2
+ TASK: XXXX
+ LANG: C++14
+ */
 
 /*
  * Problem 3904 (xjoi.net/3904)
  * Created Sun 01 Sep 2019 @ 15:56 (PDT)
- * Accepted [!meta:end!]
- * 
+ * Accepted Sun 01 Sep 2019 @ 16:02 (PDT)
+ *
  */
 
 #include <bits/stdc++.h>
@@ -43,12 +43,14 @@ using namespace std;
 
 const int MAXSZ = 1; // todo
 
-int main ()
+int main()
 {
   int ba, bb, bc, ca, cb, cc;
-  scanf("%d%d%d%d%d%d", &ba, &bb, &bc, &ca, &cb, &cc);
+  scanf("%d%d%d\n%d%d%d", &ba, &bb, &bc, &ca, &cb, &cc);
+
   int ret = ca - ba;
-  if ((cb*100+cc) < (bb*100+bc)) --ret;
+  if ((cb * 100 + cc) < (bb * 100 + bc))
+    --ret;
   printf("%d", max(ret, -1));
   return 0;
 }
