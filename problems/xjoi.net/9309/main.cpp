@@ -39,7 +39,7 @@ const int MAXSZ = 1; // todo
 
 int main ()
 {
-  printf("x is goodx is good");
+  printf("x is good\nx is good");
 
   return 0;
 }
