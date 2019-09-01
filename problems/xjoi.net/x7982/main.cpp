@@ -7,8 +7,8 @@
 /*
  * Problem 7982 (xjoi.net/7982)
  * Created Fri 30 Aug 2019 @ 17:13 (PDT)
- * Accepted [!meta:end!]
- *
+ * Accepted Sun 01 Sep 2019 @ 15:26 (PDT)
+ * (Final fix: target was the B stack not C stack, didn't read problem correctly.)
  */
 
 #include <bits/stdc++.h>
@@ -60,11 +60,11 @@ int main()
   int num;
   scanf("%d", &num);
 
-  string base = "A->C\n";
+  string base = "A->B\n";
 
   for (int i = 1; i < num; ++i)
   {
-    base = swap(base, 'C', 'B') + "A->C\n" + swap(base, 'A', 'B');
+    base = swap(base, 'C', 'B') + "A->B\n" + swap(base, 'A', 'C');
   }
 
   cout << base;
