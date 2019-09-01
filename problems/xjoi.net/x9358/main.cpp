@@ -43,7 +43,7 @@ int main ()
   scanf("%d%d", &a, &b);
   
   if ( (a+b)&1 ) printf("maoge");
-  else printf("maoge233");
+  else printf("maoge");
 
   return 0;
 }
