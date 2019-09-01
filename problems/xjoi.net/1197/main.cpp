@@ -1,14 +1,14 @@
 /*
-ID: spoytie2
-TASK: XXXX
-LANG: C++14                 
-*/
+ ID: spoytie2
+ TASK: XXXX
+ LANG: C++14
+ */
 
 /*
  * Problem 1197 (xjoi.net/1197)
  * Created Sun 01 Sep 2019 @ 16:07 (PDT)
  * Accepted [!meta:end!]
- * 
+ *
  */
 
 #include <bits/stdc++.h>
@@ -41,17 +41,23 @@ LANG: C++14
 
 using namespace std;
 
-const int MAXSZ = 1; // todo
+const int MAXSZ = 10010; // todo
+int tmax[MAXSZ];
 
 int dfs(const int b, const int m, const int t, const int cur = 0)
 {
+  if (tmax[t] != 0)
+    return tmax[t];
   int mx = cur;
-  if (t >= b) mx = max(dfs(b, m, t-b, cur + 3), mx);
-  if (t >= m) mx = max(dfs(b, m, t-m, cur + 1), mx);
+  if (t >= b)
+    mx = max(dfs(b, m, t - b, cur + 3), mx);
+  if (t >= m)
+    mx = max(dfs(b, m, t - m, cur + 1), mx);
+  tmax[t] = mx;
   return mx;
 }
 
-int main ()
+int main()
 {
   int b, m, t;
   scanf("%d%d%d", &b, &m, &t);
