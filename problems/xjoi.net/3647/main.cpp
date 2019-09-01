@@ -49,14 +49,16 @@ inline int fbi (const int r, const int a=0, const int b=1)
 }
 int main ()
 {
-  // FILE* fin = fopen("fbi.in", "r");
-  // FILE* fout = fopen("fbi.out", "w+");
+  FILE* fin = fopen("fbi.in", "r");
+  FILE* fout = fopen("fbi.out", "w+");
+
+  if (fin == NULL || fout == NULL) return 100;
 
   int num;
-  // fscanf(fin, "%d", &num);
-  scanf("%d", &num);
+  fscanf(fin, "%d", &num);
+  // scanf("%d", &num);
 
-  // fprintf(fout, "%d", fbi(num));
-  printf("%d", fbi(num));
+  fprintf(fout, "%d\n", fbi(num));
+  // printf("%d", fbi(num));
   return 0;
 }
