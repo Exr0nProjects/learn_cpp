@@ -1,14 +1,14 @@
 /*
-ID: spoytie2
-TASK: XXXX
-LANG: C++14                 
-*/
+ ID: spoytie2
+ TASK: XXXX
+ LANG: C++14
+ */
 
 /*
  * Problem 9303 (xjoi.net/9303)
  * Created Sun 01 Sep 2019 @ 15:46 (PDT)
- * Accepted [!meta:end!]
- * 
+ * Accepted Sun 01 Sep 2019 @ 15:54 (PDT)
+ *
  */
 
 #include <bits/stdc++.h>
@@ -43,18 +43,20 @@ using namespace std;
 
 const int MAXSZ = 1; // todo
 
-int main ()
+int main()
 {
   int num;
   scanf("%d", &num);
-  
-  int d = 0;
-  for (int i=num%10; num != 0; num /= 10)
+
+  int d = -num;
+  for (int i = num % 10; num != 0; num /= 10, i = num % 10)
   {
-    d += pow(3, i);
+    d += (int)pow(i, 3);
   }
 
-  if (d == num) printf("YES");
-  else printf("NO");
+  if (d == 0)
+    printf("YES");
+  else
+    printf("NO");
   return 0;
 }
