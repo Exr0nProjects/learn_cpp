@@ -15,3 +15,4 @@ mkdir -p $1
 
 echo "$1" > "$cache"
 
+./list_completed.sh
