@@ -1,14 +1,14 @@
 /*
-ID: spoytie2
-TASK: XXXX
-LANG: C++14                 
-*/
+ ID: spoytie2
+ TASK: XXXX
+ LANG: C++14
+ */
 
 /*
  * Problem 1226 (xjoi.net/1226)
  * Created Fri 06 Sep 2019 @ 19:59 (PDT)
- * Accepted [!meta:end!]
- * 
+ * Accepted Fri 06 Sep 2019 @ 20:15 (PDT)
+ *
  */
 
 #include <bits/stdc++.h>
@@ -43,11 +43,12 @@ using namespace std;
 
 const int MAXSZ = 10; // todo
 int maze[MAXSZ][MAXSZ];
-int a, b, count=0;
+int a, b, mcount=0;
 
 void dfs (const int i, const int j)
 {
-  if (i == a-1 && j == b-1) { count ++; return; }
+  //printf("%d, %d\n", i, j); for (int x=0; x<a; ++x) { printf("  "); for (int y=0; y<b; ++y) printf("%3d", maze[x][y]); printf("\n"); } printf("\n");
+  if (i == a-1 && j == b-1) { mcount ++; return; }
   if (i > 0 && maze[i-1][j] == 0)
   {
     maze[i-1][j] = maze[i][j]+1;
@@ -86,9 +87,10 @@ int main ()
       if (t == '#') maze[i][j] = -1;
     }
   }
-
+  
+  maze[0][0] = 1;
   dfs(0, 0);
-  printf("%d", count);
-
+  printf("%d", mcount);
+  
   return 0;
 }
