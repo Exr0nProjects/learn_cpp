@@ -7,7 +7,7 @@
 /*
  * Problem 8100 (xjoi.net/8100)
  * Created Sun 08 Sep 2019 @ 14:30 (PDT)
- * Accepted [!meta:end!]
+ * Accepted Sun 08 Sep 2019 @ 14:53 (PDT)
  *
  */
 
@@ -64,7 +64,7 @@ int main()
     line[i].i = i;
   }
 
-  sort(line, line + num, [](const Person &lhs, const Person &rhs) { return lhs.t < rhs.t; });
+  stable_sort(line, line + num, [](const Person &lhs, const Person &rhs) { return lhs.t < rhs.t; });
 
   long double avg = 0, wait = 0;
   for (int i = 0; i < num; ++i)
