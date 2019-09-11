@@ -1,4 +1,5 @@
 # homework
+
 understand floyd warshal. why does it work?
 connect with other concepts. 
 it is a dp problem, why? how does it work? proof?

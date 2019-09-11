@@ -43,6 +43,8 @@ using namespace std;
 
 const int MAXSZ = 1; // todo
 int board[MAXSZ][MAXSZ];
+LL horizontal[MAXSZ];
+LL vertical[MAXSZ];
 
 int main ()
 {
@@ -50,11 +52,25 @@ int main ()
   scanf("%d", &num);
   for (int i=0; i<num; ++i)
   {
-    for (int j=0; j<num; ++j)
+    horizontal[i] = 0;
+    for (int j = 0; j < num; ++j)
     {
       scanf("%d", &board[i][j]);
+      horizontal[i] += board[i][j];
+      vertical[j] += board[i][j];
     }
   }
+
+  LL big;
+  for (int i=0; i<num; ++i)
+  {
+    for (int j=0; j<num; ++j)
+    {
+      if (board[i][j] == 0) big = max(big, horizontal[i]+vertical[j]);
+    }
+  }
+
+  printf("%lld", big);
 
   return 0;
 }
