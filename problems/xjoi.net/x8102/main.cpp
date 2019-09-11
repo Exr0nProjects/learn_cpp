@@ -1,14 +1,14 @@
 /*
-ID: spoytie2
-TASK: XXXX
-LANG: C++14                 
-*/
+ ID: spoytie2
+ TASK: XXXX
+ LANG: C++14
+ */
 
 /*
  * Problem 8102 (xjoi.net/8102)
  * Created Tue 10 Sep 2019 @ 19:37 (PDT)
- * Accepted [!meta:end!]
- * 
+ * Accepted Wed 11 Sep 2019 @ 06:29 (PDT)
+ *
  */
 
 #include <bits/stdc++.h>
@@ -41,7 +41,7 @@ LANG: C++14
 
 using namespace std;
 
-const int MAXSZ = 1; // todo
+const int MAXSZ = 1010; // todo
 int board[MAXSZ][MAXSZ];
 LL horizontal[MAXSZ];
 LL vertical[MAXSZ];
@@ -61,7 +61,9 @@ int main ()
     }
   }
 
-  LL big;
+  //printf("\n\n"); for (int i=0; i<num; ++i) printf("%3d", horizontal[i]); printf("\n"); for (int i=0; i<num; ++i) printf("%3d", vertical[i]); printf("\n");
+
+  LL big = 0;
   for (int i=0; i<num; ++i)
   {
     for (int j=0; j<num; ++j)
@@ -70,7 +72,18 @@ int main ()
     }
   }
 
-  printf("%lld", big);
+  if (big == 0)
+    printf("Bad Game!");
+  else
+    printf("%lld", big);
 
   return 0;
 }
+
+/*
+4
+1 1 1 0
+1 1 1 1
+1 1 1 1
+0 1 1 1
+*/
