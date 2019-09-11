@@ -7,6 +7,7 @@ LANG: C++14
 /*
  * Problem 8103 (xjoi.net/8103)
  * Created Wed 11 Sep 2019 @ 08:33 (PDT)
+ * Continue Wed 11 Sep 2019 @ 12:04 (PDT)
  * Accepted [!meta:end!]
  * 
  */
@@ -46,7 +47,7 @@ int apples[MAXSZ];
 
 int main ()
 {
-  int n, s, a, b;
+  int n, s, a, b, ret;
   scanf("%d%d%d%d", &n, &s, &a, &b);
   for (int i=0; i<n; ++i) scanf("%d", &apples[i]);
 
@@ -55,8 +56,14 @@ int main ()
     int mindx = -1;
     for (int i = 0; i < n; ++i)
     {
-      if ()
+      if (mindx == -1 || apples[i] < cmin && apples[i] >= 0)
+      {
+        cmin = apples[i];
+        mindx = i;
+      }
     }
+    apples[mindx] = -1;
+    ++ret;
   }
 
   return 0;
