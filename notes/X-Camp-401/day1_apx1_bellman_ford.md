@@ -15,3 +15,10 @@ If the graph is a line (linked list), and we happen to loop through the edges fr
 ## Detecting negative weight cycles
 
 We can loop through all the edges once more to check if there are any changes in the weights. If there are, then there is a negative weight cycle because the first |V|-1 iterations should have already covered all the edges, even in the worst case.
+
+## Sources
+
+- [Wikipedia](https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm)
+- [Geeks for Geeks](https://www.geeksforgeeks.org/bellman-ford-algorithm-dp-23/)
+- [Brilliant Wiki](https://brilliant.org/wiki/bellman-ford-algorithm/)
+- [MIT 6.006 L15](https://courses.csail.mit.edu/6.006/spring11/lectures/lec15.pdf)
