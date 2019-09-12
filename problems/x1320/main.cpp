@@ -7,7 +7,7 @@ LANG: C++14
 /*
  * Problem 1320 (1320)
  * Created Thu 12 Sep 2019 @ 07:26 (PDT)
- * Accepted [!meta:end!]
+ * Accepted Thu 12 Sep 2019 @ 07:36 (PDT)
  * 
  */
 
@@ -45,7 +45,7 @@ const int MAXSZ = 10010; // todo
 struct Customer
 {
   int b, e;
-  bool operator< (const Customer& o) { return e < o.e; }
+  bool operator< (const Customer& o) const { return e < o.e; }
 } arr[MAXSZ];
 
 int main ()
