@@ -6,9 +6,8 @@ LANG: C++14
 
 /*
  * Problem 8103 (xjoi.net/8103)
- * Created Wed 11 Sep 2019 @ 08:33 (PDT)
- * Continue Wed 11 Sep 2019 @ 12:04 -> 12:14 (PDT)
- * Accepted [!meta:end!]
+ * Created Wed 11 Sep 2019 @ 07:08 (PDT)
+ * Accepted Thu 12 Sep 2019 @ 07:23 (PDT)
  * 
  */
 
@@ -45,26 +44,26 @@ using namespace std;
 const int MAXSZ = 5010; // todo
 int apples[MAXSZ];
 
-int main ()
+int main()
 {
-  int n, s, a, b, ret;
-  scanf("%d%d%d%d", &n, &s, &a, &b);
-  for (int i=0; i<n; ++i) scanf("%d", &apples[i]);
+    int num, s, a, b, ret;
+    scanf("%d%d%d%d", &num, &s, &a, &b);
 
-  for (int cmin=-1; cmin < s; ++cmin)
-  {
-    int mindx = -1;
-    for (int i = 0; i < n; ++i)
+    priority_queue<int> pq;
+    for (int i = 0; i < num; ++i)
     {
-      if (mindx == -1 || apples[i] < cmin && apples[i] >= 0)
-      {
-        cmin = apples[i];
-        mindx = i;
-      }
+        int t, c;
+        scanf("%d%d", &t, &c);
+        if (t <= a + b) // should be <?
+            pq.push(c);
     }
-    apples[mindx] = -1;
-    ++ret;
-  }
 
-  return 0;
+    for (; !pq.empty; pq.pop())
+    {
+        if (pq.top() > s) break; // should be >=?
+        ++ ret;
+        s -= pq.top();
+    }
+
+    return 0;
 }
