@@ -1,14 +1,14 @@
 /*
-ID: spoytie2
-TASK: XXXX
-LANG: C++14                 
-*/
+ ID: spoytie2
+ TASK: XXXX
+ LANG: C++14
+ */
 
 /*
  * Problem 7805 (xjoi.net/7805)
  * Created Sun 15 Sep 2019 @ 07:11 (PDT)
- * Accepted [!meta:end!]
- * 
+ * Accepted Sun 15 Sep 2019 @ 07:14 (PDT)
+ *
  */
 
 #include <bits/stdc++.h>
@@ -46,7 +46,7 @@ const int MAXSZ = 1; // todo
 int rec (const int num, const int i=1)
 {
   if (i == num) return 1;
-  return num/i + rec(num, i-1);
+  return num/i + rec(num, i+1);
 }
 
 int main ()
@@ -55,6 +55,5 @@ int main ()
   scanf("%d", &num);
 
   printf("%d", rec(num));
-
   return 0;
 }
