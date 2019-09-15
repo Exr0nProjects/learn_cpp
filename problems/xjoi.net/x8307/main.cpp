@@ -1,14 +1,14 @@
 /*
-ID: spoytie2
-TASK: XXXX
-LANG: C++14                 
-*/
+ ID: spoytie2
+ TASK: XXXX
+ LANG: C++14
+ */
 
 /*
  * Problem 8307 (xjoi.net/8307)
  * Created Sun 15 Sep 2019 @ 07:17 (PDT)
- * Accepted [!meta:end!]
- * 
+ * Accepted Sun 15 Sep 2019 @ 07:24 (PDT)
+ *
  */
 
 #include <bits/stdc++.h>
@@ -43,15 +43,22 @@ using namespace std;
 
 const int MAXSZ = 1; // todo
 
-void rec (const int n, const int p=2)
+void rec(const int n, const int p = 2)
 {
-  if (n == 0) return;
+  if (n == 0)
+    return;
   printf("%d", p);
-  if (p % 2) rec(n-1, p+2);
-  else rec (n-2, p-1);
+
+  if (n > 1)
+    printf(" ");
+
+  if (p % 2)
+    rec(n - 1, p + 3);
+  else
+    rec(n - 1, p - 1);
 }
 
-int main ()
+int main()
 {
   int num;
   scanf("%d", &num);
