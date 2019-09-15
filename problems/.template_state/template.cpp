@@ -30,6 +30,7 @@ LANG: C++14
 #include <queue>
 #include <stack>
 
+#define cn const int
 #define UN unsigned
 #define ST static
 #define CN const
