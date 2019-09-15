@@ -7,7 +7,7 @@ LANG: C++14
 /*
  * Problem 8310 (xjoi.net/8310)
  * Created Sun 15 Sep 2019 @ 07:38 (PDT)
- * Accepted [!meta:end!]
+ * Accepted Sun 15 Sep 2019 @ 07:41 (PDT)
  * 
  */
 
