@@ -1,14 +1,14 @@
 /*
-ID: spoytie2
-TASK: XXXX
-LANG: C++14                 
-*/
+ ID: spoytie2
+ TASK: XXXX
+ LANG: C++14
+ */
 
 /*
  * Problem 8309 (xjoi.net/8309)
  * Created Sun 15 Sep 2019 @ 07:33 (PDT)
- * Accepted [!meta:end!]
- * 
+ * Accepted Sun 15 Sep 2019 @ 07:37 (PDT)
+ *
  */
 
 #include <bits/stdc++.h>
@@ -44,7 +44,7 @@ using namespace std;
 
 cn MAXSZ = 1; // todo
 
-void fib (cn m, cn a=1, cn b=1);
+void fib (cn m, cn a=1, cn b=1)
 {
   if (m == 0) return;
   printf("%d ", a);
