@@ -1,14 +1,14 @@
 /*
-ID: spoytie2
-TASK: XXXX
-LANG: C++14                 
-*/
+ ID: spoytie2
+ TASK: XXXX
+ LANG: C++14
+ */
 
 /*
- * Problem [!meta:pid!]
- * Created [!meta:beg!]
+ * Problem 8302 (xjoi.net/8302)
+ * Created Sun 15 Sep 2019 @ 14:33 (PDT)
  * Accepted [!meta:end!]
- * 
+ *
  */
 
 #include <bits/stdc++.h>
@@ -44,8 +44,32 @@ using namespace std;
 
 const int MAXSZ = 1; // todo
 
+int f (const int n)
+{
+  return n*n+2;
+}
+
+int g (cn n)
+{
+  int s = 0;
+  for (int i=1; i<=n; ++i)
+    s += f(i);
+  
+  return s;
+}
+
 int main ()
 {
+  int n;
+  scanf("%d", &n);
 
+  int s = 0;
+  for (int i=1; i<=n; ++i)
+  {
+    s += g(i);
+  }
+  
+  printf("%d", s);
+  
   return 0;
 }

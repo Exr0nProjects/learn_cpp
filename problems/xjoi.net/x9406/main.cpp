@@ -5,9 +5,9 @@ LANG: C++14
 */
 
 /*
- * Problem [!meta:pid!]
- * Created [!meta:beg!]
- * Accepted [!meta:end!]
+ * Problem 9406 (xjoi.net/9406)
+ * Created Sun 15 Sep 2019 @ 14:56 (PDT)
+ * Accepted Sun 15 Sep 2019 @ 14:58 (PDT)
  * 
  */
 
@@ -46,6 +46,8 @@ const int MAXSZ = 1; // todo
 
 int main ()
 {
-
+  int num;
+  scanf("%d", &num);
+  printf("%d", (int) pow(2, num) - 1);
   return 0;
 }

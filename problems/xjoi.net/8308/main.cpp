@@ -5,8 +5,8 @@ LANG: C++14
 */
 
 /*
- * Problem [!meta:pid!]
- * Created [!meta:beg!]
+ * Problem 8308 (xjoi.net/8308)
+ * Created Sun 15 Sep 2019 @ 07:25 (PDT)
  * Accepted [!meta:end!]
  * 
  */
@@ -30,7 +30,6 @@ LANG: C++14
 #include <queue>
 #include <stack>
 
-#define cn const int
 #define UN unsigned
 #define ST static
 #define CN const
@@ -44,8 +43,17 @@ using namespace std;
 
 const int MAXSZ = 1; // todo
 
+void rec(const int m, const int c=1, const int p=3)
+{
+  if (c == m) return;
+  printf("%d ", p);
+  rec(m, c+1, p + (c+1)*2);
+}
+
 int main ()
 {
-
+  int num;
+  scanf("%d", &num);
+  rec(num);
   return 0;
 }

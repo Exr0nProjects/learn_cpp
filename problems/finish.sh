@@ -15,13 +15,10 @@ cat "$modpath/main.cpp"\
     | sed "s/\[\!meta\:end\!\]$/$(date "$dateformat")/g"\
     > "$newpath/main.cpp"
 
-# < "$modpath/main.cpp" > "$newpath/main.cpp"
-
-#mv "$modpath" "$newpath"
 rm -rf "$modpath"
 
-echo "$newpath $cache"
-
 ./list_completed.sh
+
+echo "_" "$cache"
 
 "$(dirname $cache)/live_commit.sh" "$modpath $newpath working.txt completed.txt" "AC $modpath (script)"

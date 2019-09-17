@@ -5,9 +5,9 @@ LANG: C++14
 */
 
 /*
- * Problem [!meta:pid!]
- * Created [!meta:beg!]
- * Accepted [!meta:end!]
+ * Problem 7830 (xjoi.net/7830)
+ * Created Sun 15 Sep 2019 @ 07:15 (PDT)
+ * Accepted Sun 15 Sep 2019 @ 07:15 (PDT)
  * 
  */
 
@@ -30,7 +30,6 @@ LANG: C++14
 #include <queue>
 #include <stack>
 
-#define cn const int
 #define UN unsigned
 #define ST static
 #define CN const
@@ -46,6 +45,6 @@ const int MAXSZ = 1; // todo
 
 int main ()
 {
-
+  printf("12345");
   return 0;
 }

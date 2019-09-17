@@ -1,14 +1,14 @@
 /*
-ID: spoytie2
-TASK: XXXX
-LANG: C++14                 
-*/
+ ID: spoytie2
+ TASK: XXXX
+ LANG: C++14
+ */
 
 /*
- * Problem [!meta:pid!]
- * Created [!meta:beg!]
- * Accepted [!meta:end!]
- * 
+ * Problem 8101 (xjoi.net/8101)
+ * Created Tue 10 Sep 2019 @ 18:57 (PDT)
+ * Accepted Sun 15 Sep 2019 @ 13:44 (PDT)
+ *
  */
 
 #include <bits/stdc++.h>
@@ -30,7 +30,6 @@ LANG: C++14
 #include <queue>
 #include <stack>
 
-#define cn const int
 #define UN unsigned
 #define ST static
 #define CN const
@@ -42,10 +41,25 @@ LANG: C++14
 
 using namespace std;
 
-const int MAXSZ = 1; // todo
+const int MAXSZ = 100010; // todo
 
-int main ()
+int main()
 {
+  int num, mmx, p=0, ret=0;
+  scanf("%d%d", &num, &mmx);
+  for (int i=0; i<num; ++i)
+  {
+    int c;
+    scanf("%d", &c);
+    if (c + p > mmx) 
+    {
+      ret += c+p-mmx;
+      c -= c+p-mmx;
+    }
+    p = max(c, 0);
+  }
+  
+  printf("%d", ret);
 
   return 0;
 }

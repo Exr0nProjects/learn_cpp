@@ -5,9 +5,9 @@ LANG: C++14
 */
 
 /*
- * Problem [!meta:pid!]
- * Created [!meta:beg!]
- * Accepted [!meta:end!]
+ * Problem 7802 (xjoi.net/7802)
+ * Created Sun 15 Sep 2019 @ 14:29 (PDT)
+ * Accepted Sun 15 Sep 2019 @ 14:32 (PDT)
  * 
  */
 
@@ -46,6 +46,18 @@ const int MAXSZ = 1; // todo
 
 int main ()
 {
+  int num, mn=10000000, mx=0;
+  scanf("%d", &num);
+
+  for (int i=0; i<num; ++i)
+  {
+    int t;
+    scanf("%d", &t);
+    mn = min(mn, t);
+    mx = max(mx, t);
+  }
+
+  printf("%d", mx-mn);
 
   return 0;
 }

@@ -1,14 +1,14 @@
 /*
-ID: spoytie2
-TASK: XXXX
-LANG: C++14                 
-*/
+ ID: spoytie2
+ TASK: XXXX
+ LANG: C++14
+ */
 
 /*
- * Problem [!meta:pid!]
- * Created [!meta:beg!]
- * Accepted [!meta:end!]
- * 
+ * Problem 7801 (xjoi.net/7801)
+ * Created Sun 15 Sep 2019 @ 14:21 (PDT)
+ * Accepted Sun 15 Sep 2019 @ 14:26 (PDT)
+ *
  */
 
 #include <bits/stdc++.h>
@@ -44,8 +44,20 @@ using namespace std;
 
 const int MAXSZ = 1; // todo
 
+int rsum (cn n)
+{
+  if (n == 0) return 0;
+  int t;
+  scanf("%d", &t);
+  return t + rsum(n-1);
+}
+
 int main ()
 {
+  int num;
+  scanf("%d", &num);
 
+  printf("%d", rsum(num));
+  
   return 0;
 }
