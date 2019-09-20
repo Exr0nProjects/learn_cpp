@@ -37,64 +37,48 @@ int main()
     addEdge(a, b, w);
     addEdge(b, a, w);
   }
-
+  
   auto cmp = [](const int l, const int r) { return edges[l].weight < edges[r].weight; };
   priority_queue<int, vector<int>, function<bool(int,int)> > pq(cmp);
-
-  for (int e=head[1], m=head[1]; true; e=edges[e].next)
+  
+  for (int e=head[1]; e; e=edges[e].next)
   {
-    if (!e)
-    {
-      pq.push(m);
-      vis[1] = true;
-      break;
-    }
-    if (edges[e].weight < edges[m].weight) m = e;
+    pq.push(e);
   }
-
-  for (; !pq.empty(); pq.pop())
+  vis[1] = true;
+  
+  for (int vist = 1; vist < m; pq.pop())
   {
-    Edge c = pq.top();
+    Edge c = edges[pq.top()];
     if (vis[c.to]) continue;
+    
     // output that this edge is used
     printf("%d->%d\n", c.from, c.to);
-    for (int e=head[c.to], m=head[c.to]; true; e=edges[e].next)
+    
+    ++ vist;
+    vis[c.to] = true;
+
+    for (int e=head[c.to]; e; e=edges[e].next)
     {
-      if (!e)
-      {
-        pq.push(m);
-        vis[c.to] = true;
-        break;
-      }
-      if (edges[e].weight < edges[m].weight) m = e;
+      pq.push(e);
     }
   }
-
+  
+  
+  
   return 0;
 }
 
 /*
 2 1
 1 2 1
-
-4 3
-1 3 1
-3 2 1
-2 4 2
-
-
-4 3
-1 2 2
-2 3 -1
-3 4 1
-
-2 2
+ 
+4 6
 1 2 1
-2 1 -2
-
-4 4
-1 2 5
-1 3 3
-2 3 -3
+1 3 5
+1 4 2
+2 3 2
+2 4 3
 3 4 1
+
  */
