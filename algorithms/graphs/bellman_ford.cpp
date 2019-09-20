@@ -37,30 +37,25 @@ int main()
     if (a == 1)
       val[b] = w;
   }
-
-  printf("\n\n");
-  for (int i = 1; i <= m; ++i)
-  {
-    printf("%d ", i);
-    for (int e = head[i]; e; e = edges[e].next)
-    {
-      printf("%3d ", edges[e].to);
-    }
-    printf("\n");
-  }
-
+  
+//  printf("\n\n");
+//  for (int i = 1; i <= m; ++i)
+//  {
+//    printf("%d ", i);
+//    for (int e = head[i]; e; e = edges[e].next)
+//    {
+//      printf("%3d ", edges[e].to);
+//    }
+//    printf("\n");
+//  }
+  
   for (int i = 1; i < m - 1; ++i)
   {
     //*d*/for (int j=1; j<=m; ++j) printf("%3d", val[j]); printf("\n\n");
     for (int c = 1; c <= m; ++c)
     {
-      printf("  %d", c);
-      for (int j = 1; j <= m; ++j)
-        printf("%3d", val[j]);
-      printf("\n");
       for (int e = head[c]; e > 0; e = edges[e].next)
       {
-        printf("    %3d\n", edges[e].to);
         if (!val[edges[e].to] && val[c])
           val[edges[e].to] = val[c] + edges[e].weight;
         else
@@ -68,7 +63,7 @@ int main()
       }
     }
   }
-
+  
   for (int c = 1; c <= m; ++c)
   {
     for (int e = head[m]; e > 0; e = edges[e].next)
@@ -80,29 +75,32 @@ int main()
       }
     }
   }
-
+  
   printf("%d", val[m]);
 }
 
 /*
 2 1
 1 2 1
- 
+
 4 3
 1 3 1
 3 2 1
 2 4 2
 
- 
- 
-5 9
+
+4 3
 1 2 2
-2 3 2
-2 1 2
-3 2 -1
-1 4 1
-4 1 3
-4 3 -1
-4 5 9
-3 5 1
-*/
+2 3 -1
+3 4 1
+
+2 2
+1 2 1
+2 1 -2
+
+4 4
+1 2 5
+1 3 3
+2 3 -3
+3 4 1
+ */
