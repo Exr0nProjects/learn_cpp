@@ -1,14 +1,14 @@
 /*
 ID: spoytie2
 TASK: XXXX
-LANG: C++14                 
+LANG: C++14
 */
 
 /*
  * Problem 9227 (xjoi.net/9227)
  * Created Sat 21 Sep 2019 @ 12:05 (PDT)
- * Accepted [!meta:end!]
- * 
+ * Accepted Sat 21 Sep 2019 @ 12:17 (PDT)
+ *
  */
 
 #include <bits/stdc++.h>
@@ -47,12 +47,12 @@ bool trees[MAXSZ];
 
 int main ()
 {
-  int l, n;
+  int l, n, c=0;
   scanf("%d%d", &l, &n);
 
   for (int i=0; i<n; ++i)
   {
-    int a, b, c=0;
+    int a, b;
     scanf("%d%d", &a, &b);
     for (int j=a; j<=b; ++j)
     {
@@ -64,3 +64,11 @@ int main ()
 
   return 0;
 }
+
+/*
+3
+2
+1 2
+0 1
+
+*/
