@@ -1,14 +1,14 @@
 /*
 ID: spoytie2
 TASK: XXXX
-LANG: C++14                 
+LANG: C++14
 */
 
 /*
  * Problem 1125 (xjoi.net/1125)
  * Created Sat 21 Sep 2019 @ 11:59 (PDT)
- * Accepted [!meta:end!]
- * 
+ * Accepted Sat 21 Sep 2019 @ 12:04 (PDT)
+ *
  */
 
 #include <bits/stdc++.h>
@@ -44,18 +44,17 @@ using namespace std;
 
 const int MAXSZ = 1; // todo
 
-int f (const int n, c=1)
-{
-  if (n == 1) return c;
-  return f(n-1, (c+1)*2);
-}
-
 int main ()
 {
-  int n;
+  int n, s=1;
   scanf("%d", &n);
 
-  printf("%d", f(n));
+  for (int i=1; i<n; ++i)
+  {
+    s = (s+1)<<1;
+  }
+
+  printf("%d", s);
 
   return 0;
 }
