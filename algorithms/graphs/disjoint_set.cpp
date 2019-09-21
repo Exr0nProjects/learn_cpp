@@ -23,10 +23,11 @@ void addEdge (const int a, const int b)
     ++next;
 }
 
-int find (const int s, const int p=0)
+int find (const int s)
 {
-    if (bigboi[s] == p) return s;
-    bigboi[s] = find(bigboi[s], bigboi[s]);
+    if (bigboi[s] == s) return s;
+    bigboi[s] = find(bigboi[s]);
+  return bigboi[s];
 }
 
 
