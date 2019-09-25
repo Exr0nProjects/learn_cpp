@@ -9,17 +9,17 @@ const int MAXSZ = 108; // should be a prime number + 1
 struct Val
 {
     int k, v;
-    Val* next = nullptr;
-} * table[MAXSZ*2];
+    Val *next = nullptr;
+} * table[MAXSZ * 2];
 
 inline int gk(const int k)
 {
-    return k%(MAXSZ-1);
+    return k % (MAXSZ - 1);
 }
 
 void write(const int k, const int v)
 {
-    Val* n = new Val;
+    Val *n = new Val;
     n->k = k;
     n->v = v;
     n->next = table[gk(k)];
@@ -28,10 +28,11 @@ void write(const int k, const int v)
 
 int read(const int k)
 {
-    Val* v = table[gk(k)];
-    for (; v->k != k; v=v->next)
+    Val *v = table[gk(k)];
+    for (; v->k != k; v = v->next)
     {
-        if (v == nullptr) return NULL;
+        if (v == nullptr)
+            return NULL;
     }
     return v->v;
 }
@@ -42,7 +43,7 @@ int main()
 {
     int n;
     scanf("%d", &n);
-    for (int i=0; i<n; ++i)
+    for (int i = 0; i < n; ++i)
     {
         int k, v;
         scanf("%d%d", &k, &v);
@@ -50,9 +51,9 @@ int main()
         key_store[i] = k;
     }
 
-    for (int i=0; i<n; ++i)
+    for (int i = 0; i < n; ++i)
     {
-        printf("%d", read(key_store[i]));
+        printf("%d: %d\n", key_store[i], read(key_store[i]));
     }
 
     return 0;
