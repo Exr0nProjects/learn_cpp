@@ -10,16 +10,20 @@ struct Edge
 {
     static int cnt;
     int from, to, weight, next;
-    bool operator< (const Edge& o) const
-    {
-        return 
-    }
-} edges[MAXSZ*2], full[MAXSZ*2];
+} edges[MAXSZ * 2], full[MAXSZ * 2];
 int Edge::cnt = 1;
 int head[MAXSZ];
 int bigb[MAXSZ];
 
-void addEdge (const int a, const int b, const int w)
+int find(const int c)
+{
+    if (bigb[c] == c)
+        return c;
+    bigb[c] = find(bigb[c]);
+    return bigb[c];
+}
+
+void addEdge(const int a, const int b, const int w)
 {
     edges[Edge::cnt].from = a;
     edges[Edge::cnt].to = b;
@@ -27,31 +31,27 @@ void addEdge (const int a, const int b, const int w)
     edges[Edge::cnt].next = head[a];
     head[a] = Edge::cnt;
     ++Edge::cnt;
+
+    bigb[find(a)] = bigb[find(b)] = min(find(a), find(b));
 }
 
-void addEdge (const Edge& base)
+void addEdge(const Edge &base)
 {
     edges[Edge::cnt] = base;
     edges[Edge::cnt].next = head[base.from];
     head[base.from] = Edge::cnt;
     ++Edge::cnt;
+
+    bigb[find(base.from)] = bigb[find(base.to)] = min(find(base.from), find(base.to));
 }
 
-int find (const int c)
-{
-    if (bigb[c] == 0) bigb[c] = bigb[edges[head[c]].to];
-    if (bigb[c] == c) return c;
-    bigb[c] = find(bigb[c]);
-    return bigb[c];
-}
-
-int main ()
+int main()
 {
     int m, n;
     scanf("%d%d", &m, &n);
-    auto cmp = [](const int& l, const int& r) { return full[l].weight < full[r].weight; };
-    priority_queue<int, vector<int>, function<bool(int, int)> > pq(cmp);
-    for (int i=1; i<=n; ++i)
+    auto cmp = [](const int &l, const int &r) { return full[l].weight > full[r].weight; };
+    priority_queue<int, vector<int>, function<bool(int, int)>> pq(cmp);
+    for (int i = 1; i <= n; ++i)
     {
         int a, b, w;
         scanf("%d%d%d", &a, &b, &w);
@@ -59,17 +59,41 @@ int main ()
         full[i].to = b;
         full[i].weight = w;
         pq.push(i);
+
+        bigb[full[i].from] = full[i].from;
+        bigb[full[i].to] = full[i].to;
     }
-    printf("%d\n", full[pq.top()].weight); // debug, todo: remove
-    for (int vis = 0; ! pq.empty(); pq.pop())
+
+    int sum = 0;
+    for (int vis = 0; !pq.empty(); pq.pop())
     {
         auto cur = full[pq.top()];
-        if (bigb[cur.to] == vis) continue; // if it leads back to something we already have
+        if (find(cur.to) == vis && find(cur.from) == vis)
+            continue; // if it leads back to something we already have
         addEdge(cur);
         addEdge(cur.to, cur.from, cur.weight); // other direction
-        vis = find(cur.to);
-        printf("%d -> %d, %d\n", cur.from, cur.to, vis);
+        vis = min(find(cur.to), find(cur.from));
+        printf("%d -> %d, %d\n", cur.from, cur.to, cur.weight);
+        sum += cur.weight;
+        // for (int i=1; i<=m; ++i) printf("%3d", i); printf("\n"); for (int i=1; i<=m; ++i) printf("%3d", bigb[i]); printf("\n\n");
     }
+
+    printf("total: %d\n", sum);
 
     return 0;
 }
+
+/*
+3 3
+1 2 3
+3 2 1
+3 1 2
+
+5 6
+1 2 2
+1 4 1
+2 3 2
+3 4 -2
+3 5 1
+4 5 9
+*/
