@@ -7,20 +7,20 @@
 #include <cstdio>
 
 using namespace std;
-
+const int MAXSZ = 10010;
 struct Node
 {
   int value = NULL;
-  node* left = NULL;
-  node* right = NULL;
-}
+  Node* left = NULL;
+  Node* right = NULL;
+};
 
 Node& go_left (Node& base);
 
 Node& go_right (Node& base)
 {
-  Node* ret = &base.left;
-  base.left = &(ret->right);
+  Node* ret = base.left;
+  base.left = (ret->right);
   ret->right = &base;
 
   return *ret;
@@ -29,8 +29,8 @@ Node& go_right (Node& base)
 Node& go_left (Node& base)
 {
 
-  Node* ret = &base.right;
-  base.right = &(ret->left);
+  Node* ret = base.right;
+  base.right = (ret->left);
   ret->left = &base;
 
   return *ret;
@@ -38,10 +38,19 @@ Node& go_left (Node& base)
 
 int main ()
 {
-  const int siz = 20;
-  Node nodes[20];
-  nodes[0].value = 1;
+  int n;
+  scanf("%d", &n);
 
+  Node* root = new Node();
+
+  for (int i=1; i<=n; ++i)
+  {
+    int a, b;
+    scanf("%d%d", &a, &b);
+    root->left = new Node(); root->right = new Node();
+    root->left->value = a;
+    root->right->value = b;
+  }
 
   return 0;
 }
