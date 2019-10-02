@@ -10,52 +10,73 @@ using namespace std;
 cn MAXSZ = 100;
 struct Edge
 {
-    int f, t, w, n; // from to next weight
-} edges[MAXSZ*2];
+    int f, t, n; // from to next
+} edges[MAXSZ * 2];
 int head[MAXSZ];
 int dist[MAXSZ];
 
-void addEdge(cn a, cn b, cn w)
+void addEdge(cn a, cn b)
 {
     static int cnt = 1;
     edges[cnt].f = a;
     edges[cnt].t = b;
-    edges[cnt].w = w;
     edges[cnt].n = head[a];
     head[a] = cnt;
-    ++cnt; 
+    ++cnt;
 }
 
-void dfs (cn c)
+void dfs(cn c, queue<int> q)
 {
-    m = MAXSZ;
-    mi = 0;
-    for (int i=head[c]; i; i=edges[i].n)
+    q.push(c);
+    printf("dfs %d\n", c);
+    int m = MAXSZ;
+    int mi = 0;
+    for (int i = head[c]; i; i = edges[i].n)
     {
         if (dist[edges[i].t] > 0 && m > dist[edges[i].t])
         {
             m = dist[edges[i].t];
             mi = edges[i].t;
         }
-        dfs(edges[i].t);
+        dfs(edges[i].t, q);
     }
-    if (mi > 0) printf()
+    if (mi > 0)
+    {
+        for (; !q.empty(); q.pop())
+            printf("%3d", q.front());
+        printf("\n");
+    }
 }
 
-int main ()
+int main()
 {
-    int m,n;
+    int m, n;
     scanf("%d%d", &m, &n);
-    for (int i=1; i<=n; ++i)
+    printf("\n%d %d\n\n\n", m, n);
+    for (int i = 1; i <= n; ++i)
     {
-        int a, b, w;
-        scanf("%d%d%d", &a, &b, &w);
-        addEdge(a, b, w);
+        int a, b;
+        scanf("%d%d", &a, &b);
+        addEdge(a, b);
     }
-    for (int i=1; i<=m; ++i)
+
+    for (int i = 1; i <= m; ++i)
     {
-        if (i) continue;
+        if (i)
+            continue;
         dist[i] = 1;
-        dfs(i);
+        dfs(i, queue<int>());
     }
+    printf("end.");
+
+    return 0;
 }
+
+/*
+
+4 4
+1 2
+2 3
+3 1
+3 4
+ */
