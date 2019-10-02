@@ -28,17 +28,18 @@ void addEdge(cn a, cn b)
 void dfs(cn c, queue<int> q)
 {
     q.push(c);
-    printf("dfs %d\n", c);
     int m = MAXSZ;
     int mi = 0;
     for (int i = head[c]; i; i = edges[i].n)
     {
         if (dist[edges[i].t] > 0 && m > dist[edges[i].t])
         {
+            dist[edges[i].t] = dist[c] + 1;
             m = dist[edges[i].t];
             mi = edges[i].t;
         }
-        dfs(edges[i].t, q);
+        if (!dist[edges[i].t])
+            dfs(edges[i].t, q);
     }
     if (mi > 0)
     {
@@ -52,7 +53,7 @@ int main()
 {
     int m, n;
     scanf("%d%d", &m, &n);
-    printf("\n%d %d\n\n\n", m, n);
+    printf("\n\n%d %d\n\n\n", m, n);
     for (int i = 1; i <= n; ++i)
     {
         int a, b;
@@ -62,12 +63,11 @@ int main()
 
     for (int i = 1; i <= m; ++i)
     {
-        if (i)
+        if (dist[i])
             continue;
         dist[i] = 1;
         dfs(i, queue<int>());
     }
-    printf("end.");
 
     return 0;
 }
