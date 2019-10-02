@@ -4,10 +4,10 @@
  *
  */
 
-#include <cstdio>
+#include <bits/stdc++.h>
 
 using namespace std;
-const int MAXSZ = 10010;
+const int MAXSZ = 100;
 struct Node
 {
   int value = NULL;
@@ -36,21 +36,52 @@ Node& go_left (Node& base)
   return *ret;
 }
 
+void input (Node* cur)
+{
+  if (cur->value < 0) return;
+  int a, b;
+  scanf("%d%d", &a, &b);
+  cur->left = new Node();
+  cur->left->value = a;
+  cur->left->value = b;
+  input(cur->left);
+  input(cur->right);
+}
+
+queue<Node *> q;
+void add_print_queue ()
+{
+  if (! q.empty())
+  {
+    Node* c = q.front();
+    if (c)
+    {
+      q.push(c->left);
+      q.push(c->right);
+    }
+    printf("%3d", c->value);
+    q.pop();
+    add_print_queue();
+  }
+}
+void print_tree(Node* root)
+{
+  for (; !q.empty(); q.pop());
+  q.push(root);
+  add_print_queue();
+}
+
 int main ()
 {
   int n;
   scanf("%d", &n);
 
   Node* root = new Node();
+  Node* cur = root;
 
-  for (int i=1; i<=n; ++i)
-  {
-    int a, b;
-    scanf("%d%d", &a, &b);
-    root->left = new Node(); root->right = new Node();
-    root->left->value = a;
-    root->right->value = b;
-  }
+  input(root);
+  
+
 
   return 0;
 }
