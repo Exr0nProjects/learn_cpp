@@ -13,7 +13,7 @@ struct Edge
     int f, t, n; // from to next
 } edges[MAXSZ * 2];
 int head[MAXSZ];
-int dist[MAXSZ];
+bool vist[MAXSZ];
 int m, n;
 
 void addEdge(cn a, cn b)
@@ -26,36 +26,36 @@ void addEdge(cn a, cn b)
     ++cnt;
 }
 
-void dfs(cn c, queue<int> q)
+void dfs(cn c, queue<int> q, vector<int> v, cn d = 0)
 {
-    printf("dfs called, c=%d: ", c);
-    auto p = q;
-    printf("\n");
+    //for (int i=0; i<d; ++i) printf("      "); printf("dfs called, c=%d: ", c); auto p = q; printf("\n");
     q.push(c);
     int mn = MAXSZ;
     int mi = 0;
     for (int i = head[c]; i; i = edges[i].n)
     {
-        if (dist[edges[i].t] > 0 && mn > dist[edges[i].t])
+        //for (int j=0; j<d; ++j) printf("      "); printf("  in %d->%d  %d  ", edges[i].f, edges[i].t, v[edges[i].t] > 0 && mn > v[edges[i].t]); for (int j=1; j <= m; ++j) printf("%3d", v[j]); printf("\n");
+        if (v[edges[i].t] > 0)
         {
-            mn = dist[edges[i].t];
-            mi = edges[i].t;
+            if (mn > v[edges[i].t])
+            {
+                mn = v[edges[i].t];
+                mi = edges[i].t;
+            }
         }
-        printf("    in %d->%d  ", edges[i].f, edges[i].t);
-        for (int j = 1; j <= m; ++j)
-            printf("%3d", dist[j]);
-        printf("\n");
-        if (!dist[edges[i].t])
+        else
         {
-            dist[edges[i].t] = dist[c] + 1;
-            dfs(edges[i].t, q);
+            v[edges[i].t] = v[c] + 1;
+            vist[edges[i].t] = true;
+            dfs(edges[i].t, q, v, d + 1);
         }
     }
+    //for (int j=0; j<d; ++j) printf("      "); printf("winner: %d w/ %d", mi, mn); printf("\n");
     if (mi > 0)
     {
         for (bool f = false; !q.empty(); q.pop())
         {
-            if (q.front() == mn)
+            if (q.front() == mi)
                 f = true;
             if (f)
                 printf("%3d", q.front());
@@ -76,10 +76,11 @@ int main()
 
     for (int i = 1; i <= m; ++i)
     {
-        if (dist[i])
+        if (vist[i])
             continue;
-        dist[i] = 1;
-        dfs(i, queue<int>());
+        vector<int> v(m + 5);
+        v[i] = 1;
+        dfs(i, queue<int>(), v);
     }
 
     return 0;
@@ -93,7 +94,7 @@ int main()
 3 1
 3 4
 
-8 9
+8 10
 1 3
 3 2
 2 1
