@@ -3,7 +3,7 @@ Base code taken from tree rotations, #e7e5b6bd095629d6ae075e9f1ff13a0e32707123
  */
 
 #include <bits/stdc++.h>
-
+#define cn const int
 using namespace std;
 const int MAXSZ = 100;
 struct Node
@@ -11,6 +11,7 @@ struct Node
     int value = NULL;
     Node *left = NULL;
     Node *right = NULL;
+    operator bool() const {return value || left || right;};
 };
 
 Node *go_right(Node *base)
@@ -31,6 +32,19 @@ Node *go_left(Node *base)
     ret->left = base;
 
     return ret;
+}
+
+void insert(Node *root, cn v)
+{
+    Node *n;
+    for (n = root; n;)
+    {
+        if (n->value == v) return; // already exists
+        else if (n->value > v) n = n->left;
+        else if (n->value < v) n = n->right;
+    }
+    n = new Node();
+    n->value = v;
 }
 
 void input(Node *cur)
