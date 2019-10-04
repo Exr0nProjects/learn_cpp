@@ -18,7 +18,7 @@ void rotate (const int i)
     if (i == 1) return;
     int t = p[i/2];
     p[i/2] = p[i];
-    p[i]
+    p[i];
 }
 
 void heapify (const int i)

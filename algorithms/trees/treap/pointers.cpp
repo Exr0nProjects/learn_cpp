@@ -8,9 +8,10 @@ using namespace std;
 const int MAXSZ = 100;
 struct Node
 {
-    int value = NULL;
+    int value = NULL, weight = NULL;
     Node *left = NULL;
     Node *right = NULL;
+    Node *parent = NULL;
     operator bool() const {return value || left || right;};
 };
 
@@ -18,6 +19,9 @@ Node *go_right(Node *base)
 {
     printf("rotating node %d right!\n", base->value);
     Node *ret = base->left;
+    ret->parent = base->parent;
+    base->parent = ret;
+    ret->right->parent = base;
     base->left = (ret->right);
     ret->right = base;
 
@@ -26,12 +30,26 @@ Node *go_right(Node *base)
 
 Node *go_left(Node *base)
 {
-    printf("rotating node %d right!\n", base->value);
+    printf("rotating node %d left!\n", base->value);
     Node *ret = base->right;
+    ret->parent = base->parent;
+    base->parent = ret;
+    ret->left->parent = base;
     base->right = (ret->left);
     ret->left = base;
 
     return ret;
+}
+
+void heapify(Node *c)
+{
+    if (!c->parent) return; // c is root of tree
+    if (c->value > c->parent->value)
+    {
+        if      (c->parent->left == c) c = go_right(c->parent);
+        else if (c->parent->right == c) c = go_left(c->parent);
+    }
+    heapify(c);
 }
 
 void insert(Node *root, cn v)
@@ -39,26 +57,38 @@ void insert(Node *root, cn v)
     Node *n;
     for (n = root; n;)
     {
-        if (n->value == v) return; // already exists
-        else if (n->value > v) n = n->left;
-        else if (n->value < v) n = n->right;
+        if (n->value == v)
+            return; // already exists
+        else if (n->value > v)
+            n = n->left;
+        else if (n->value < v)
+            n = n->right;
     }
     n = new Node();
     n->value = v;
+    n->weight = rand() % MAXSZ;
+
+    heapify(n);
 }
 
-void input(Node *cur)
+void remove(Node* root, cn v)
 {
-    if (cur == NULL || cur->value < 0)
-        return;
-    int a, b;
-    scanf("%d%d", &a, &b);
-    cur->left = new Node();
-    cur->right = new Node();
-    cur->left->value = a;
-    cur->right->value = b;
-    input(cur->left);
-    input(cur->right);
+    Node* d;
+    for (d = root; d->value != v;)
+    {
+        if (d->value == NULL) return;
+        else if (d->value > v)
+        {
+            d = d->left;
+        }
+        else if (d->value < v)
+        {
+            d = d->right;
+        }
+    }
+    for (; d->right; d=go_left(d));
+    if (d->parent) d->parent->right = NULL;
+    delete d;
 }
 
 queue<Node *> q;
@@ -91,8 +121,14 @@ int main()
     Node *root = new Node();
     Node *cur = root;
 
-    scanf("%d", &cur->value);
-    input(root);
+    int n;
+    scanf("%d", &n);
+    for (int i=0; i<n; ++i)
+    {
+        int a;
+        scanf("%d", &a);
+        insert(root, a);
+    }
 
     print_tree(root);
 
