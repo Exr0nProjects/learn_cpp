@@ -9,11 +9,13 @@ using namespace std;
 cn MAXSZ = 100;
 int tree[MAXSZ];
 
-int find(cn a, cn b, cn c=1)
+int find(cn a, cn b, cn c = 1)
 {
-    if (tree[c] == 0) return 0;
-    if (tree[c] == a || tree[c] == b) return tree[c];
-    int fa = find(a, b, c*2), fb = find(a, b, c*2+1);
+    if (tree[c] == 0)
+        return 0;
+    if (tree[c] == a || tree[c] == b)
+        return tree[c];
+    int fa = find(a, b, c * 2), fb = find(a, b, c * 2 + 1);
     if (fa && fb)
     {
         return tree[c];
@@ -22,14 +24,13 @@ int find(cn a, cn b, cn c=1)
     {
         return fa | fb;
     }
-    
 }
 
 int main()
 {
     int n;
     scanf("%d", &n);
-    for (int i=0; i<n; ++i)
+    for (int i = 1; i <= n; ++i)
     {
         scanf("%d", &tree[i]);
     }
@@ -39,3 +40,9 @@ int main()
 
     printf("%d", find(a, b));
 }
+
+/*
+ 5
+ 1 2 3 4 5
+ 3 5
+ */
