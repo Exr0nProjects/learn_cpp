@@ -102,6 +102,28 @@ Node *heapify(Node *c)
     return c;
 }
 
+Node *find(Node *&root, cn v)
+{
+    Node *p, *pp = root;
+    for (p = root; p->value != v;)
+    {
+        if (!p)
+            break;
+        pp = p;
+        if (p->value > v)
+        {
+            p = p->left;
+        }
+        else if (p->value < v)
+        {
+            p = p->right;
+        }
+    }
+    if (p)
+        return p;
+    return nullptr;
+}
+
 Node *insert(Node *&root, cn v) // returns pointer to the newly created node
 {
     Node *n = root, *p = nullptr;
@@ -138,20 +160,9 @@ Node *insert(Node *&root, cn v) // returns pointer to the newly created node
 
 Node *remove(Node *&root, cn v)
 {
-    Node *d;
-    for (d = root; d->value != v;)
-    {
-        if (!d->value)
-            return root;
-        else if (d->value > v)
-        {
-            d = d->left;
-        }
-        else if (d->value < v)
-        {
-            d = d->right;
-        }
-    }
+    Node *d = find(root, v);
+    if (!d)
+        return root;
     //d*/printf("found: val = %d\n", d->value);
     for (; d->right || d->left;)
     {
@@ -167,6 +178,46 @@ Node *remove(Node *&root, cn v)
     else
         d->parent->left = nullptr;
     delete d;
+    return root;
+}
+
+pair<Node *, Node *> split(Node *root, cn v)
+{
+    Node *d = find(root, v);
+    d->weight = MAXSZ + 1;
+    heapify(d);
+    pair<Node *, Node *> ret;
+    ret.first = d->left;
+    ret.second = d->right;
+    d->left->parent = nullptr;
+    d->right->parent = nullptr;
+    delete d;
+    return ret;
+}
+
+Node *merge(pair<Node *, Node *> t)
+{
+    auto d = new Node();
+    d->left = t.first;
+    d->right = t.second;
+    t.first->parent = t.second->parent = d;
+    auto root = d;
+    /* copied from remove */
+    for (; d->right || d->left;)
+    {
+        if (d->right)
+            go_left(d);
+        else if (d->left)
+            go_right(d);
+        if (!d->parent->parent)
+            root = d->parent;
+    }
+    if (d->parent->right == d)
+        d->parent->right = nullptr;
+    else
+        d->parent->left = nullptr;
+    delete d;
+    /* end copy */
     return root;
 }
 
@@ -191,6 +242,17 @@ int main()
         {
             insert(root, i);
         }
+        print_tree(root);
+
+        printf("splitting at 2\n");
+        auto trees = split(root, 2);
+        printf("left:\n");
+        print_tree(trees.first);
+        printf("right:\n");
+        print_tree(trees.second);
+
+        printf("merging trees\n");
+        root = merge(trees);
         print_tree(root);
 
         printf("deleting 1\n");
