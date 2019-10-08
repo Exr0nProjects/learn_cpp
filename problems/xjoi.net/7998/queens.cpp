@@ -17,9 +17,9 @@ int h[MAXSZ], v[MAXSZ];
 int c[MAXSZ][MAXSZ];
 int gmn = 0, n;
 
-void dfs(cn r)
+void dfs(cn r, cn s = 0)
 {
-    if (r == 1)
+    if (!r)
     {
         int _c = 0;
         for (int i = 0; i < n; ++i)
@@ -28,7 +28,7 @@ void dfs(cn r)
             {
                 if (h[i] == v[j] && h[i] != 0)
                 {
-                    printf("picking %d, %d\n", i, j);
+                    //printf("picking %d, %d\n", i, j);
                     _c += c[i][j];
                 }
             }
@@ -40,14 +40,14 @@ void dfs(cn r)
         return;
     }
 
-    for (int i = 0; i < n; ++i)
+    for (int i = s; i < n; ++i)
     {
         for (int j = 0; j < n; ++j)
         {
             if (h[i] || v[j])
                 continue;
             h[i] = v[j] = r;
-            dfs(r - 1);
+            dfs(r - 1, s);
             h[i] = v[j] = 0;
         }
     }
@@ -62,15 +62,6 @@ int main()
         {
             scanf("%d", &c[i][j]);
         }
-    }
-
-    for (int i = 0; i < n; ++i)
-    {
-        for (int j = 0; j < n; ++j)
-        {
-            printf("%3d", c[i][j]);
-        }
-        printf("\n");
     }
 
     dfs(n);
