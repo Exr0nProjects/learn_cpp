@@ -13,7 +13,7 @@
 using namespace std;
 
 const int MAXSZ = 30;
-bool h[MAXSZ], v[MAXSZ];
+int h[MAXSZ], v[MAXSZ];
 int c[MAXSZ][MAXSZ];
 int gmn = 0, n;
 
@@ -21,30 +21,34 @@ void dfs(cn r)
 {
     if (r == 1)
     {
-        int _c;
-        for (int i=0; i<n; ++i)
+        int _c = 0;
+        for (int i = 0; i < n; ++i)
         {
-            for (int j=0; j<n; ++j)
+            for (int j = 0; j < n; ++j)
             {
-                if (h[i] && v[j])
+                if (h[i] == v[j] && h[i] != 0)
                 {
+                    printf("picking %d, %d\n", i, j);
                     _c += c[i][j];
                 }
             }
         }
-        if (gmn == 0) gmn = _c;
-        else gmn = min(gmn, _c);
+        if (gmn == 0)
+            gmn = _c;
+        else
+            gmn = min(gmn, _c);
         return;
     }
 
-    for (int i=0; i<n; ++i)
+    for (int i = 0; i < n; ++i)
     {
-        for (int j=0; j<n; ++j)
+        for (int j = 0; j < n; ++j)
         {
-            if (h[i] || v[j]) continue;
-            h[i] = v[j] = true;
-            dfs(r-1);
-            h[i] = v[j] = false;
+            if (h[i] || v[j])
+                continue;
+            h[i] = v[j] = r;
+            dfs(r - 1);
+            h[i] = v[j] = 0;
         }
     }
 }
@@ -52,12 +56,21 @@ void dfs(cn r)
 int main()
 {
     scanf("%d", &n);
-    for (int i=0; i<n; ++i)
+    for (int i = 0; i < n; ++i)
     {
-        for (int j=0; j<n; ++j)
+        for (int j = 0; j < n; ++j)
         {
             scanf("%d", &c[i][j]);
         }
+    }
+
+    for (int i = 0; i < n; ++i)
+    {
+        for (int j = 0; j < n; ++j)
+        {
+            printf("%3d", c[i][j]);
+        }
+        printf("\n");
     }
 
     dfs(n);
