@@ -13,15 +13,15 @@ ull best3[MAXSZ];
 ull bestk[MAXSZ];
 ull best4[MAXSZ];
 
-inline void out(cn s, cn d) { printf("%c->%c", s + 65, d + 65); }
+inline void out(cn s, cn d) { printf("%c->%c\n", s + 65, d + 65); }
 
 void print3(cn n, cn s = 0, cn d = 2, int aux[] = {})
 {
     if (n > 1)
-        print3(n - 1, s, (s + d - 1) % 3, aux);
-    printf("%c->%c", cnv(s), cnv(d));
+        print3(n - 1, s, 3 - s - d, aux);
+    out(s, d);
     if (n > 1)
-        print3(n - 1, )
+        print3(n - 1, 3 - s - d, d, aux);
 }
 
 void print4(cn n, cn s = 0, cn d = 3, int aux[] = {})
@@ -55,5 +55,6 @@ int main()
         }
         //printf("%lld: %lld\n", i, best4[i]);
     }
-    print_steps((int)n);
+    print3((int)n);
+    print4((int)n);
 }
