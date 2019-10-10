@@ -13,7 +13,7 @@ struct Edge
 {
     int t, n;
 } edges[MAXSZ];
-int head[MAXSZ], val[MAXSZ], n, q;
+int head[MAXSZ], val[MAXSZ] = {}, n, q;
 
 void addEdge(cn a, cn b)
 {
@@ -24,34 +24,79 @@ void addEdge(cn a, cn b)
     ++cnt;
 }
 
-void trev(cn s, cn v, cn f=0)
+void trev(cn s, cn v, cn f = 0)
 {
+    printf("traversing %d with %d\n", s, v);
+    printf("  ");
+    for (int i = 1; i <= n; ++i)
+    {
+        printf("%d ", val[n]);
+    }
+    printf("\n");
+    val[s] += v;
+    printf("  ");
+    for (int i = 1; i <= n; ++i)
+    {
+        printf("%d ", val[n]);
+    }
+    printf("\n");
+    return;
     for (int p = head[s]; p; p = edges[p].n)
     {
-        if (edges[p].t == f) continue;
-        val[edges[p].t] += v;
+        printf("  propogating\n");
+        if (edges[p].t == f)
+            continue;
         trev(edges[p].t, v, s);
     }
 }
 
-int main ()
+int main()
 {
     scanf("%d%d", &n, &q);
-    for (int i=1; i<n; ++i)
+    for (int i = 1; i < n; ++i)
     {
         int a, b;
         scanf("%d%d", &a, &b);
-        addEdge(a, b);
-        addEdge(b, a);
+        addEdge(min(a, b), max(a, b));
     }
-    for (int i=0; i<q; ++i)
+    for (int i = 1; i <= n; ++i)
+    {
+        printf("%d: t=%d n=%d\n", i, edges[i].t, edges[i].n);
+    }
+    for (int i = 1; i <= n; ++i)
+    {
+        printf("%d ", val[n]);
+    }
+    printf("\n");
+    for (int i = 0; i < q; ++i)
     {
         int s, v;
         scanf("%d%d", &s, &v);
         trev(s, v);
+        for (int i = 1; i <= n; ++i)
+        {
+            printf("%d ", val[n]);
+        }
+        printf("\n");
     }
-    for (int i=1; i<=n; ++i)
+    for (int i = 1; i <= n; ++i)
     {
-        printf("%d ", val[n]);
+        printf("%d\n", val[n]);
     }
 }
+
+/*
+5 3
+2 1
+3 2
+3 4
+3 5
+1 47
+2 4
+1 63
+ 
+2 1
+2 1
+2 1
+=> 0 1
+ */
