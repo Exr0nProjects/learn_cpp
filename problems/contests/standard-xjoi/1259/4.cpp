@@ -1,11 +1,11 @@
 #include <bits/stdc++.h>
 #define cn const int
 using namespace std;
-cn MAXSZ = 110;
+cn MAXSZ = 1010;
 struct Edge
 {
     int f, t, n; // n can represent next or weight
-} edges[MAXSZ * 2];
+} edges[MAXSZ * MAXSZ];
 int head[MAXSZ];
 int bigb[MAXSZ];
 int cnt = 1;
@@ -14,7 +14,7 @@ int n;
 
 void addEdge(cn a, cn b)
 {
-    printf("  adding %d, %d\n", a, b);
+    //    printf("  adding %d, %d\n", a, b);
     edges[cnt].f = a;
     edges[cnt].t = b;
     edges[cnt].n = head[a];
@@ -54,10 +54,11 @@ int main()
     {
         for (int j = 1; j <= n; ++j)
         {
-            if (i == j)
-                continue;
+
             int w;
             scanf("%d", &w);
+            if (i == j)
+                continue;
             if (w == 0)
             {
                 addEdge(i, j);
@@ -72,21 +73,22 @@ int main()
                 pq.push(p);
             }
         }
+        //d*/ printf("\n");
     }
-    for (int i = 1; i <= n; ++i)
-        printf("%3d", i);
-    printf("\n");
-    for (int i = 1; i <= n; ++i)
-        printf("%3d", find(i));
-    printf("\n\n");
+    //    for (int i = 1; i <= n; ++i)
+    //        printf("%3d", i);
+    //    printf("\n");for (int i = 1; i <= n; ++i)
+    //        printf("%3d", find(i));
+    //d*/    printf("\n\n");
     int retc = 0, retw = 0;
-    printf("%d %d\n", cnt, n);
+    //d*/ printf("%d %d\n", cnt, n);
     for (; cnt < n * 2 - 2; pq.pop())
     {
         if (pq.top()->n != 0 && find(pq.top()->f) != find(pq.top()->t))
         {
-            printf("adding %d-%d: %d\n", pq.top()->f, pq.top()->t, pq.top()->n);
+            //d*/ printf("adding %d-%d: %d\n", pq.top()->f, pq.top()->t, pq.top()->n);
             addEdge(pq.top()->f, pq.top()->t);
+            addEdge(pq.top()->t, pq.top()->f);
             bigb[find(max(pq.top()->f, pq.top()->t))] = min(pq.top()->f, pq.top()->t);
             ++retc;
             retw += pq.top()->n;
@@ -94,3 +96,17 @@ int main()
     }
     printf("%d\n%d", retc, retw);
 }
+
+/*
+5
+0 15 27 6 0
+15 0 33 19 11
+27 33 0 0 17
+6 19 0 0 9
+0 11 17 9 0
+
+3
+0 10 20
+10 0 0
+20 0 0
+*/
