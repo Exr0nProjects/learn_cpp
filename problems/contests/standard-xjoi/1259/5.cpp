@@ -12,7 +12,7 @@ struct Link
     n = _n;
   }
 } * head[MAXSZ];
-bool vis[500000010]; // for min sorted diff
+bool vis[50000010]; // for min sorted diff
 
 int n, m;
 int main()
@@ -27,33 +27,34 @@ int main()
     vis[a] = true;
     gmax = max(gmax, a);
   }
-  for (int i = 1; i <= n * 10; ++i)
-    printf("%3d", vis[i]);
-  printf("\n\n");
+  //d*/ for (int i=1; i<=n*10; ++i) printf("%3d", vis[i]); printf("\n\n");
   for (int i = 1; i <= m; ++i)
   {
-    char c[20];
-    scanf("\n%s ", &c);
+    string c;
+    cin >> c;
     if (c[4] == 'R')
     {
-      printf("insert\n");
+      //d*/ printf("insert\n"); // insert
       int a, b;
       scanf("%d%d", &a, &b);
       Link *c;
       for (c = head[a]; c->n; c = c->n)
         ;
       c->n = new Link(b, nullptr);
-      gmax = max(gmax, a);
+      vis[b] = true;
+      gmax = max(gmax, b);
     }
     else if (c[4] == 'G')
     { // min gap
-      printf("min\n");
+      //d*/printf("min\n");
       int p = -1000000, mn = 1000000;
       for (int i = 1; i < n; ++i)
       {
-        for (Link *j = head[i]; j->n; j = j->n)
+        for (Link *j = head[i]; j; j = j->n)
         {
+          //d*/printf("  checking %d\n", j->v);
           mn = min(mn, abs(j->v - p));
+          p = j->v;
         }
       }
       printf("%d\n", mn);
@@ -61,9 +62,11 @@ int main()
     else if (c[4] == 'S')
     {
       int mn = 1000000, cm = 0;
+      //d*/ printf("minsort\n");
+      //d*/for (int i=1; i<=n*10; ++i) printf("%3d", vis[i]); printf("\n%d\n\n", gmax);
       for (int i = gmax - 1; i >= 0; --i)
       { // count the spaces between numbers
-        printf("minsort\n");
+
         if (vis[i])
         {
           mn = min(mn, cm);
