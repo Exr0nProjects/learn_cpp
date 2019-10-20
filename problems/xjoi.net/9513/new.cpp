@@ -33,7 +33,7 @@ void trev(cn s, cn v, cn f = 0)
         printf("%d ", val[n]);
     }
     printf("\n");
-    val[s] += v;
+    val[s] += v; // how is it possible that setting this one thing sets two values?
     printf("  ");
     for (int i = 1; i <= n; ++i)
     {
