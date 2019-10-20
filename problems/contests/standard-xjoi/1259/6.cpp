@@ -1,3 +1,4 @@
+// todo: add a traceback array and just print it out
 #include <bits/stdc++.h>
 #define cn const int;
 using namespace std;
