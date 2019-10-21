@@ -44,14 +44,15 @@ int main() {
   {
     if (times[i].b <= pend)
     {
-      cmx += times[i].e-pend;
+      cmx += max(0, times[i].e-pend);
       gmx = max(cmx, gmx);
       pend = max(pend, times[i].e);
     }
     else
     {
       if (gmn == -1) gmn = times[i].b - pend;
-      else gmn = min(gmn, times[i].b - pend);
+      else gmn = max(gmn, times[i].b - pend);
+      cmx = times[i].e-times[i].b;
       pend = times[i].e;
     }
   }
