@@ -39,21 +39,24 @@ int main() {
 
   sort(times, times+num);
   
-  int cmx=times[0].e-times[0].b, gmx=cmx, gmn=-1;
+  int cmx=times[0].e-times[0].b, gmx=cmx, gmn=-1, pend=times[0].e;
   for (int i=1; i<num; ++i)
   {
-    if (times[i].b <= times[i-1].e)
+    if (times[i].b <= pend)
     {
-      cmx += times[i].e-times[i-1].e;
+      cmx += times[i].e-pend;
       gmx = max(cmx, gmx);
+      pend = max(pend, times[i].e);
     }
     else
     {
-      if (gmn == -1) gmn = times[i].b - times[i-1].e;
-      else gmn = min(gmn, times[i].b - times[i-1].e);
+      if (gmn == -1) gmn = times[i].b - pend;
+      else gmn = min(gmn, times[i].b - pend);
+      pend = times[i].e;
     }
   }
 
+  gmn = max(gmn, 0);
 
   fprintf(fout, "%d %d\n", gmx, gmn);
   
