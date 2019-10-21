@@ -7,50 +7,55 @@ LANG: C++14
 #include <fstream>
 #include <string>
 #include <bits/stdc++.h>
-
+#define cn const int
 using namespace std;
 
-const int MAXSZ = 1000010;
-bool times[MAXSZ];
+cn MAXSZ = 5010;
+struct Time
+{
+  int b, e;
+  bool operator< (const Time& o) const { return b < o.b; }
+} times[MAXSZ];
 
 int main() {
-  printf("test\n");
   FILE* fin  = fopen("milk2.in",  "r" );
   FILE* fout = fopen("milk2.out", "w+");
 
   if (fin == NULL) return 100;
   if (fout == NULL) return 101;
 
-  int num, maxm=0, maxi=0, maxt=0, mint=-1;
+  int num, maxt=0, mint=-1;
   fscanf(fin, "%d", &num);
   for (int i=0; i<num; ++i)
   {
     int beg, end;
     fscanf(fin, "%d%d", &beg, &end);
-    for (int j=beg; j<=end; ++j) times[j] = true;
+    times[i].b = beg;
+    times[i].e = end;
     maxt = max(maxt, end);
     if (mint == -1) mint = beg;
     else mint = min(beg, mint);
   }
+
+  sort(times, times+num);
   
-  int curm = 0, curi = 0;
-  for (int i=mint; i<maxt; ++i)
+  int cmx=times[0].e-times[0].b, gmx=cmx, gmn=-1;
+  for (int i=1; i<num; ++i)
   {
-    if (times[i])
+    if (times[i].b <= times[i-1].e)
     {
-      ++ curm;
-      curi = 0;
-      maxm = max(curm, maxm);
+      cmx += times[i].e-times[i-1].e;
+      gmx = max(cmx, gmx);
     }
     else
     {
-      ++ curi;
-      curm = 0;
-      maxi = max(curi, maxi);
+      if (gmn == -1) gmn = times[i].b - times[i-1].e;
+      else gmn = min(gmn, times[i].b - times[i-1].e);
     }
   }
 
-  fprintf(fout, "%d %d\n", maxm, maxi);
+
+  fprintf(fout, "%d %d\n", gmx, gmn);
   
   return 0;
 }
