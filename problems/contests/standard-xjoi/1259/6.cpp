@@ -1,23 +1,22 @@
 // todo: add a traceback array and just print it out
 #include <bits/stdc++.h>
-#define cn const int;
+#define cn const int
 using namespace std;
 
 cn MAXSZ = 1010;
 struct Edge
 {
-    int f, t, w, n;
-} edges[MAXSZ*MAXSZ];
+    int f, t, w;
+    Edge (cn a, cn b, cn c) { f=a; t=b; w=c; }
+};
+vector<Edge> G;
+int dist[MAXSZ];
+int pre[MAXSZ];
 int s, t, m, n, cnt=1; // m = nodes, n = edges
 
 void addEdge(cn a, cn b, cn w)
 {
-    edges[cnt].f = a;
-    edges[cnt].t = b;
-    edges[cnt].w = w;
-    edges[cnt].n = head[a];
-    head[a] = cnt;
-    ++cnt;
+    G.push_back(Edge(a, b, w));
 }
 
 int main ()
@@ -28,7 +27,44 @@ int main ()
     {
         int a, b, c;
         scanf("%d%d%d", &a ,&b, &c);
-        addEdge(a, b, c);
-        addEdge(b, a, c);
+        addEdge(a, b, c); // start from the end and go to the source using backwards edges for lex comp?
     }
+
+    for (int i=1; i<=m; ++i)
+    {
+        dist[i] = 100000000;
+        pre[i] = 0;
+    }
+
+    // bellman ford
+    for (int i=1; i<=m; ++i)
+    {
+        for (int id=1; id<cnt; ++id)
+        {
+            auto e = G[id];
+            if (dist[e.f] + e.w < dist[e.t])
+            {
+                dist[e.t] = dist[e.f] + e.w;
+                pre[e.t] = e.f;
+            }
+        }
+    }
+
+    for (int id = 1; id < cnt; ++id)
+    {
+        auto e = G[id];
+        if (dist[e.f] + e.w < dist[e.t])
+        {
+            dist[e.t] = dist[e.f] + e.w;
+            pre[e.t] = e.f;
+        }
+    }
+    int c=0;
+    string ret;
+    for (int n=t; n!=s; n=pre[n])
+    {
+        ret = to_string(n) + " " + ret;
+    }
+    printf("%d\n", c);
+    cout << ret;
 }
