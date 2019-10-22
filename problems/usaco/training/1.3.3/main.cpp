@@ -46,7 +46,7 @@ const int MAXSZ = 1; // todo
 
 int main ()
 {
-  const string path = 
+  auto fin = 
 
   return 0;
 }
