@@ -13,6 +13,7 @@ struct Edge
         t = b;
         w = c;
     }
+    bool operator<(const Edge &o) const { return f < o.f; }
 };
 vector<Edge> G;
 int dist[MAXSZ];
@@ -41,6 +42,8 @@ int main()
         pre[i] = 0;
     }
 
+    sort(G.begin(), G.end());
+
     // bellman ford
     dist[s] = 0;
     //d*/ for (int i=0; i<=m; ++i) printf("%3d", i); printf("\n"); for (int i=0; i<=m; ++i) printf("%3d", dist[i]); printf("\n\n");
@@ -64,17 +67,24 @@ int main()
         auto e = G[id];
         if (dist[e.f] + e.w < dist[e.t])
         {
-            dist[e.t] = dist[e.f] + e.w;
-            pre[e.t] = e.f;
+            printf("You show me the wrong map!");
+            return 0;
         }
     }
-    int c = 0;
     string ret;
     for (int n = t; n != s; n = pre[n])
     {
-        ++c;
         ret = to_string(n) + " " + ret;
     }
-    printf("%d\n%d ", c, s);
+    printf("%d\n%d ", dist[t], s);
     cout << ret;
 }
+
+/*
+1 4
+4 4
+1 3 2
+1 2 3
+2 4 2
+3 4 1
+ */
