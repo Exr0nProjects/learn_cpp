@@ -7,7 +7,7 @@ LANG: C++14
 /*
  * Problem transform (usaco/training/transform)
  * Created Sun 27 Oct 2019 @ 14:22 (PDT)
- * Accepted [!meta:end!]
+ * Accepted Sun 27 Oct 2019 @ 16:17 (PDT)
  *
  */
 
@@ -116,63 +116,93 @@ bool check()
 
 int main()
 {
-  scanf("%d", &n);
+  auto fin = fopen("transform.in", "r");
+  auto fout = fopen("transform.out", "w+");
+  fscanf(fin, "%d", &n);
   for (int i = 0; i < n; ++i)
   {
-    scanf("\n");
+    fscanf(fin, "\n");
     for (int j = 0; j < n; ++j)
     {
-      scanf("%c", &abeg[i][j]);
+      fscanf(fin, "%c", &abeg[i][j]);
       aend[i][j] = abeg[i][j];
     }
   }
   for (int i = 0; i < n; ++i)
   {
-    scanf("\n");
+    fscanf(fin, "\n");
     for (int j = 0; j < n; ++j)
     {
-      scanf("%c", &targ[i][j]);
+      fscanf(fin, "%c", &targ[i][j]);
     }
   }
   --n;
 
-  if (check())
-  {
-    printf("6\n");
-    return 0;
-  }
-
   r90();
   if (check())
   {
-    printf("1\n");
+    fprintf(fout, "1\n");
     return 0;
   }
   r180();
   if (check())
   {
-    printf("2\n");
+    fprintf(fout, "2\n");
     return 0;
   }
   r270();
   if (check())
   {
-    printf("3\n");
+    fprintf(fout, "3\n");
     return 0;
   }
   reflect();
   if (check())
   {
-    printf("4\n");
+    fprintf(fout, "4\n");
     return 0;
   }
-  combo();
+  reflect();
+  for (int i=0; i<=n; ++i)
+  {
+    for (int j=0; j<=n; ++j)
+    {
+      abeg[i][j] = aend[i][j];
+    }
+  }
+  r90();
   if (check())
   {
-    printf("5\n");
+    fprintf(fout, "5\n");
+    return 0;
+  }
+  r180();
+  if (check())
+  {
+    fprintf(fout, "5\n");
+    return 0;
+  }
+  r270();
+  if (check())
+  {
+    fprintf(fout, "5\n");
     return 0;
   }
 
-  printf("7\n");
+  reflect();
+  for (int i=0; i<=n; ++i)
+  {
+    for (int j=0; j<=n; ++j)
+    {
+      aend[i][j] = abeg[i][j];
+    }
+  }
+  if (check())
+  {
+    fprintf(fout, "6\n");
+    return 0;
+  }
+
+  fprintf(fout, "7\n");
   return 0;
 }
