@@ -1,1 +1,1 @@
-usaco/training/transform
+usaco/training/namenum
