@@ -1,11 +1,11 @@
 /*
 ID: spoytie2
-TASK: XXXX
+TASK: [!meta:pid!]
 LANG: C++14                 
 */
 
 /*
- * Problem [!meta:pid!]
+ * Problem [!meta:pid!] [!meta:srcpath!]
  * Created [!meta:beg!]
  * Accepted [!meta:end!]
  * 
@@ -39,6 +39,7 @@ LANG: C++14
 #define LD long double
 #define INF 1047483647
 #define PI 3.14159265358979323846264338
+#define PID "[!meta:pid!]"
 
 using namespace std;
 
@@ -46,6 +47,8 @@ const int MAXSZ = 1; // todo
 
 int main ()
 {
+//auto fin = fopen(PID, "r");
+//auto fout = fopen(PID, "w+");
 
   return 0;
 }
