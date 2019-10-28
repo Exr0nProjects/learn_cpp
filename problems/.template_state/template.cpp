@@ -39,7 +39,6 @@ LANG: C++14
 #define LD long double
 #define INF 1047483647
 #define PI 3.14159265358979323846264338
-#define PID "[!meta:pid!]"
 
 using namespace std;
 
@@ -47,8 +46,8 @@ const int MAXSZ = 1; // todo
 
 int main ()
 {
-//auto fin = fopen(PID, "r");
-//auto fout = fopen(PID, "w+");
+  //auto fin = fopen("[!meta:pid!].in", "r");
+  //auto fout = fopen("[!meta:pid!].out", "w+");
 
   return 0;
 }
