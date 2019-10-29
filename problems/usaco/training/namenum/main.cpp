@@ -43,7 +43,7 @@ LANG: C++14
 using namespace std;
 
 const int MAXSZ = 30; // todo
-long long n;
+long long n, debugcount = 0;
 struct TrieNode
 {
   char v;
@@ -74,30 +74,37 @@ int main()
   auto fin = fopen("namenum.in", "r");
   auto fout = fopen("namenum.out", "w+");
 
+  char t[20];
+  fscanf(fin, "%s", t);
+
   auto dict = fopen("dict.txt", "r"); // todo: space seperated? assuming newline
+  
   char c;
   TrieNode *p = &root;
-  for (fscanf(dict, "%c", &c); c; fscanf(fin, "%c", &c))
+  for (fscanf(dict, "%c", &c); c; fscanf(dict, "%c", &c))
   {
+    fprintf(fout, "%c", c); if (debugcount > 10) { return 0; } else { ++debugcount; }
     if (c == '\n')
     {
+      fprintf(fout, "newline reached!");
       p->leaf = true;
       p = &root;
       continue;
+      return 0;
     }
     if (!p->c[c - 'A'])
     {
+      fprintf(fout, "new name char! %c\n", c);
       p->c[c - 'A'] = new TrieNode(c);
     }
     p = p->c[c - 'A'];
   }
 
+  return 0;
+
   printTrie();
-
-  char t[20];
-  fscanf(fin, "%s", t);
-
-  fprintf(fout, "%s", t);
+  
+  return 0;
 
   dfs(t);
 
