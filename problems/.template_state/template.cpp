@@ -41,7 +41,7 @@ LANG: C++14
 #define PI 3.14159265358979323846264338
 
 using namespace std;
-// const auto fin = fopen("[!meta:pid!].in", "r");
+// auto fin = fopen("[!meta:pid!].in", "r");
 // auto fout = fopen("[!meta:pid!].out", "w+");
 
 const int MAXSZ = 1; // todo
