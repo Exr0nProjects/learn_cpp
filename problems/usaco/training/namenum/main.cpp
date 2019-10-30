@@ -57,9 +57,26 @@ string numpad[10][3] = { {}, {},
   {"W", "X", "Y"}  // 9
 };
 
-bool find(const string &name)
+bool find(const string &name, cn high = 5000, cn low = 0)
 {
+  if (low >= high) return false;
+  int cur = (int) ((high-low)/2);
+  
+  for (int i = 0; i < name.length(); ++i)
+  {
+    if (!names[cur][i])
+      return find(name, (high - low) / 2 + 1, low);
 
+    if (name[i] == names[cur][i])
+      continue;
+    if (name[i] > names[cur][i])
+      return find(name, high, (high - low)/2);
+    if (name[i] < names[cur][i])
+      return find(name, (high - low)/2+1, low);
+  }
+  if (names[cur][name.length()])
+    return find(name, high, (high - low) / 2);
+  return true;
 }
 
 void dfs(const string num, string name = "")
@@ -76,26 +93,23 @@ void dfs(const string num, string name = "")
 
 int main()
 {
-  string s = "pls AC";
-  printf("%s", s.c_str());
   char c[20];
   for (int i=0; i<5000; ++i)
   {
-    if (incount > 5000) break; else ++incount;
-    fscanf(dict, "%s", c);
-    s = c;
-    names.insert(s);
+    //if (incount > 5000) break; else ++incount;
+    fscanf(dict, "%s", names[i]);
+    if (names[i][0] == '\n') printf("%d\n", i);
   }
 
   printf("finished inserting dict names\n");
 
   string n;
   fscanf(fin, "%s", c);
-  s = c;
+  n = c;
 
   printf("starting dfs\n");
 
-  dfs(s);
+  dfs(n);
 
   return 0;
 }
