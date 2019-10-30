@@ -11,8 +11,6 @@ LANG: C++14
  *
  */
 
-#include <bits/stdc++.h>
-
 #include <iostream>
 #include <cstdio>
 #include <utility>
@@ -41,89 +39,63 @@ LANG: C++14
 #define PI 3.14159265358979323846264338
 
 using namespace std;
+FILE *fin = fopen("namenum.in", "r");
+FILE *dict = fopen("dict.txt", "r");
+FILE *fout = fopen("namenum.out", "w+");
 
-const int MAXSZ = 30; // todo
-long long n, debugcount = 0;
-struct TrieNode
-{
-  char v;
-  bool leaf = false;
-  map<char, TrieNode> c; // each capital letter
-  TrieNode() { v = NULL; }
-  TrieNode(const char _v) { v = _v; }
-  bool operator< (const TrieNode &o) const
-  { return v < o.v; }
-} root;
+const int MAXSZ = -1; // todo
+char names[5000][20];
 
-void printTrie(const TrieNode &c = root, cn l = 1)
+string numpad[10][3] = { {}, {},
+  {"A", "B", "C"}, // 2
+  {"D", "E", "F"}, // 3
+  {"G", "H", "I"}, // 4
+  {"J", "K", "L"}, // 5
+  {"M", "N", "O"}, // 6
+  {"P", "R", "S"}, // 7
+  {"T", "U", "V"}, // 8
+  {"W", "X", "Y"}  // 9
+};
+
+bool find(const string &name)
 {
-  for (int i = 0; i < l; ++i)
-    printf("| ");
-  printf("%c\n", c.v);
-  printf("recursing\n");
-  for (auto &p : c.c)
+
+}
+
+void dfs(const string num, string name = "")
+{
+  if (num.length() == 0 && find(name))
   {
-    printf("next up: %c\n", p.first);
-    printTrie(p.second, l+1);
+    fprintf(fout, "%s\n", name.c_str());
   }
-}
-
-inline pair<char, TrieNode> make (const char &c)
-{
-  return pair<char, TrieNode>{c, TrieNode{c}};
-}
-
-void dfs(string n)
-{
-}
+  for (int i=0; i<2; ++i)
+  {
+    dfs(num.substr(1), name + numpad[num[0]-'0'][i]);
+  }
+} 
 
 int main()
 {
-  auto fin = fopen("namenum.in", "r");
-  auto fout = fopen("namenum.out", "w+");
-
-  char t[20];
-  fscanf(fin, "%s", t);
-
-  auto dict = fopen("dict.txt", "r"); // todo: space seperated? assuming newline
-  
-  char c, prevc = '@';
-  TrieNode *p = &root;
-  for (fscanf(dict, "%c", &c); c; fscanf(dict, "%c", &c))
+  string s = "pls AC";
+  printf("%s", s.c_str());
+  char c[20];
+  for (int i=0; i<5000; ++i)
   {
-    if (c == '\n')
-    {
-      if (prevc == '\n')
-      {
-        break;
-      }
-      else
-      {
-        p->leaf = true;
-        continue;
-      }
-    }
-    prevc = c;
-    if (p->c.find(c) == p->c.end())
-    {
-      p->c.insert(make(c));
-    }
-    p = &(p->c[c]); // move on
+    if (incount > 5000) break; else ++incount;
+    fscanf(dict, "%s", c);
+    s = c;
+    names.insert(s);
   }
 
-  printf("finished input of dict!\n");
+  printf("finished inserting dict names\n");
 
-  return 0;
+  string n;
+  fscanf(fin, "%s", c);
+  s = c;
 
-  printTrie();
+  printf("starting dfs\n");
 
-  return 0;
-
-  printTrie();
-  
-  return 0;
-
-  dfs(t);
+  dfs(s);
 
   return 0;
 }
