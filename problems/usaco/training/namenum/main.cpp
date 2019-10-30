@@ -48,21 +48,29 @@ struct TrieNode
 {
   char v;
   bool leaf = false;
-  TrieNode *c[MAXSZ] = {}; // each capital letter
+  map<char, TrieNode> c; // each capital letter
   TrieNode() { v = NULL; }
   TrieNode(const char _v) { v = _v; }
+  bool operator< (const TrieNode &o) const
+  { return v < o.v; }
 } root;
 
-void printTrie(TrieNode *c = &root, cn l = 0)
+void printTrie(const TrieNode &c = root, cn l = 1)
 {
   for (int i = 0; i < l; ++i)
     printf("| ");
-  printf("%c", c->v);
-  for (int i = 0; i < MAXSZ; ++i)
+  printf("%c\n", c.v);
+  printf("recursing\n");
+  for (auto &p : c.c)
   {
-    if (c->c[i])
-      printTrie(c->c[i], l + 1);
+    printf("next up: %c\n", p.first);
+    printTrie(p.second, l+1);
   }
+}
+
+inline pair<char, TrieNode> make (const char &c)
+{
+  return pair<char, TrieNode>{c, TrieNode{c}};
 }
 
 void dfs(string n)
@@ -79,26 +87,35 @@ int main()
 
   auto dict = fopen("dict.txt", "r"); // todo: space seperated? assuming newline
   
-  char c;
+  char c, prevc = '@';
   TrieNode *p = &root;
   for (fscanf(dict, "%c", &c); c; fscanf(dict, "%c", &c))
   {
-    fprintf(fout, "%c", c); if (debugcount > 10) { return 0; } else { ++debugcount; }
     if (c == '\n')
     {
-      fprintf(fout, "newline reached!");
-      p->leaf = true;
-      p = &root;
-      continue;
-      return 0;
+      if (prevc == '\n')
+      {
+        break;
+      }
+      else
+      {
+        p->leaf = true;
+        continue;
+      }
     }
-    if (!p->c[c - 'A'])
+    prevc = c;
+    if (p->c.find(c) == p->c.end())
     {
-      fprintf(fout, "new name char! %c\n", c);
-      p->c[c - 'A'] = new TrieNode(c);
+      p->c.insert(make(c));
     }
-    p = p->c[c - 'A'];
+    p = &(p->c[c]); // move on
   }
+
+  printf("finished input of dict!\n");
+
+  return 0;
+
+  printTrie();
 
   return 0;
 
