@@ -7,7 +7,7 @@ mkdir -p $1
 
 [[ -s "$1/main.cpp" ]] ||\
   cat ./.template_state/template.cpp\
-    | sed "s/\[\!meta\:pid\!\]$/$(basename $1)/g"\
+    | sed "s/\[\!meta\:pid\!\]/$(basename $1)/g"\
     | sed "s/\[\!meta\:srcpath\!\]$/(${1//\//\\/})/g"\
     | sed "s/\[\!meta\:beg\!\]$/$(date "$dateformat")/g"\
     >> "$1/main.cpp"
