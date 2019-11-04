@@ -1,1 +1,1 @@
-usaco/training/palsquare
+usaco/training/dualpal
