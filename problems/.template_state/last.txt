@@ -1,1 +1,1 @@
-usaco/training/milk
+usaco/training/barn1
