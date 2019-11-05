@@ -21,4 +21,4 @@ rm -rf "$modpath"
 
 echo "_" "$cache"
 
-"$(dirname $cache)/live_commit.sh" "$modpath $newpath working.txt completed.txt" "AC $modpath (script)"
+"$(dirname $cache)/live_commit.sh" "./$modpath ./$newpath working.txt completed.txt" "AC $modpath (script)"
