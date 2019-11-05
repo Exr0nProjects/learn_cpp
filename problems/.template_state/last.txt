@@ -1,1 +1,1 @@
-usaco/training/dualpal
+usaco/training/milk
