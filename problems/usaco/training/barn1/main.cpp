@@ -64,11 +64,11 @@ int main ()
     ++stalls[i];
   }
 
-  auto cmp = [](cn l, cn r) { return stalls[l] > stalls[r]; };
+  auto cmp = [](cn l, cn r) { return stalls[l] < stalls[r]; }; // swapped cmp sign, segfault?
   priority_queue<int, deque<int>, function<bool(int, int)> > pq(cmp);
 
   int ccount = 0;
-  for (int i=1; i<=c; ++i) // cover all w/ a board and preprocess empties
+  for (int i=1; i<=s; ++i) // cover all w/ a board and preprocess empties
   {
     if (stalls[i] == 0)
     {
@@ -84,8 +84,26 @@ int main ()
     if (ccount && ccount < c) covered[i] = true;
   }
 
-  // todo: select next largest gap from pq and uncover it
-  
+  for (int i=0; i<=s; ++i) printf("%3d", i); printf("\n");
+  for (int i=0; i<=s; ++i) printf("%3d", stalls[i]); printf("\n");
 
+  for (; m; pq.pop())
+  {
+    printf("  pq top: %d\n", pq.top());
+    for (int i=pq.top(); i>pq.top()-stalls[pq.top()]; --i)
+    {
+      covered[i] = false;
+      --m;
+    }
+  }
+
+  int ret = 0;
+  for (int i=1; i<=s; ++i)
+  {
+    if (covered[i]) ++ ret;
+  }
+
+  fprintf(fout, "%d\n", ret);
+  
   return 0;
 }
