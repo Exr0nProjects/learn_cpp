@@ -1,17 +1,15 @@
 /*
 ID: spoytie2
-TASK: XXXX
-LANG: C++14                 
+TASK: 7807
+LANG: C++14
 */
 
 /*
- * Problem 1.3.3 (usaco/training/1.3.3)
- * Created Mon 21 Oct 2019 @ 07:47 (PDT)
+ * Problem [!meta:pid!] (xjoi.net/7807)
+ * Created Sun 03 Nov 2019 @ 10:43 (PST)
  * Accepted [!meta:end!]
- * 
+ *
  */
-
-#include <bits/stdc++.h>
 
 #include <iostream>
 #include <cstdio>
@@ -41,12 +39,35 @@ LANG: C++14
 #define PI 3.14159265358979323846264338
 
 using namespace std;
+// auto fin = fopen("[!meta:pid!].in", "r");
+// auto fout = fopen("[!meta:pid!].out", "w+");
 
 const int MAXSZ = 1; // todo
+int n, ret;
 
-int main ()
+void dfs(cn r = 0, bool has = false)
 {
-  auto fin = 
+  if (r == n)
+  {
+    if (has)
+      ++ret;
+    return;
+  }
+  for (int i = 0; i < 10; ++i)
+  {
+    if (i == 6 || i == 8)
+      dfs(r + 1, true);
+    else
+      dfs(r + 1, has);
+  }
+}
+
+int main()
+{
+  scanf("%d", &n);
+
+  dfs();
+  printf("%d", ret);
 
   return 0;
 }

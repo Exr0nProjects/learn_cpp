@@ -1,14 +1,14 @@
 /*
 ID: spoytie2
-TASK: [!meta:pid!]
+TASK: 3276
 LANG: C++14                 
 */
 
 /*
- * Problem [!meta:pid!] [!meta:srcpath!]
- * Created [!meta:beg!]
- * Accepted [!meta:end!]
- * 
+ * Problem 3276 (xjoi.net/3276)
+ * Created Fri 08 Nov 2019 @ 08:12 (PST)
+ * Accepted Fri 08 Nov 2019 @ 08:19 (PST)
+ * increasing subseq
  */
 
 #include <bits/stdc++.h>
@@ -42,14 +42,38 @@ LANG: C++14
 #define PI 3.14159265358979323846264338
 
 using namespace std;
-// auto fin = fopen("[!meta:pid!].in", "r");
-// auto fout = fopen("[!meta:pid!].out", "w+");
+// auto fin = fopen("3276.in", "r");
+// auto fout = fopen("3276.out", "w+");
 
-const int MAXSZ = 1; // todo
+const int MAXSZ = 1010;
+int arr[MAXSZ];
+int dps[MAXSZ];
+int n;
 
 int main ()
 {
+  scanf("%d", &n);
+  for (int i=0; i<n; ++i)
+  {
+    scanf("%d", &arr[i]);
+  }
 
+  dps[0] = 1;
+  int ret = 1;
+  for (int i=1; i<n; ++i)
+  {
+    for (int j=0; j<i; ++j)
+    {
+      if (arr[j] < arr[i] && dps[j] > dps[i])
+      {
+        dps[i] = dps[j];
+      }
+    }
+    ++ dps[i];
+    ret = max(ret, dps[i]);
+  }
+
+  printf("%d", ret);
 
   return 0;
 }
