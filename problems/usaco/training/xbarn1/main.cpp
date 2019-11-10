@@ -7,7 +7,7 @@ LANG: C++14
 /*
  * Problem barn1 (usaco/training/barn1)
  * Created Tue 05 Nov 2019 @ 07:54 (PST)
- * Accepted [!meta:end!]
+ * Accepted Sun 10 Nov 2019 @ 08:43 (PST)
  * 
  */
 
@@ -67,6 +67,7 @@ int main ()
   auto cmp = [](cn l, cn r) { return stalls[l] < stalls[r]; }; // swapped cmp sign, segfault?
   priority_queue<int, deque<int>, function<bool(int, int)> > pq(cmp);
 
+
   int ccount = 0;
   for (int i=1; i<=s; ++i) // cover all w/ a board and preprocess empties
   {
@@ -74,7 +75,7 @@ int main ()
     {
       ++ccount;
       covered[i] = true;
-      if (i != 1) pq.push(i-1);
+      if (covered[i-1]) pq.push(i-1); // first stall check logic was wrong
     }
     else
     {
@@ -87,15 +88,16 @@ int main ()
   for (int i=0; i<=s; ++i) printf("%3d", i); printf("\n");
   for (int i=0; i<=s; ++i) printf("%3d", stalls[i]); printf("\n");
 
-  for (; m; pq.pop())
+  for (--m; m && !pq.empty(); --m) // segfault in this for loop
   {
     printf("  pq top: %d\n", pq.top());
-    for (int i=pq.top(); i>pq.top()-stalls[pq.top()]; --i)
+    for (int i=pq.top(); i>pq.top()-stalls[pq.top()]; --i) // uncover area in the middle
     {
       covered[i] = false;
-      --m;
     }
+    if (!pq.empty()) pq.pop(); // possibility of too many boards
   }
+ // return 0; // todo remove
 
   int ret = 0;
   for (int i=1; i<=s; ++i)
