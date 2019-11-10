@@ -43,39 +43,64 @@ using namespace std;
 
 const int MAXSZ = 1010;
 string s1, s2;
-int far[MAXSZ][MAXSZ]; // far = next index to start checking // todo: subproblem graph
-int amt[MAXSZ][MAXSZ];
+int dp[MAXSZ][MAXSZ]; // far = next index to start checking // todo: subproblem graph
+
+// int dp[MAXSZ][MAXSZ];
+
+// int recurse(cn a, cn b)
+// {
+//   if (dp[a][b] >= 0) return dp[a][b];
+//   int ret;
+//   if (a == b && b == 0)
+//   {
+//     ret = s1[0] == s2[0]
+//   }
+//   else if (a == 0)
+//   {
+//     for (int i=0; i<=b; ++i)
+//     {
+//       ret |= s1[a] == s2[b]; // boolean max 
+//     }
+//   }
+//   else if (b == 0)
+//   {
+//     for (int i=0; i<=a; ++i)
+//     {
+//       ret |= s1[a] == s2[b] // boolean max, see above
+//     }
+//   }
+//   if (ret)
+//   {
+//     dp[a][b] = ret;
+//     return ret;
+//   }
+
+
+// }
 
 int main ()
 {
   cin >> s1 >> s2;
 
-  far[0][0] = amt[0][0] = s1[0] == s2[0];
+  dp[0][0] = s1[0] == s2[0];
   for (int i=1; i<s1.length(); ++i)
   {
-    amt[i][0] = s1[i] == s2[0];
-    far[i][0] = (i+1)*amt[i][0]; // amt[i][0] is either 0 or 1 representing if char is same
+    dp[i][0] = s1[i] == s2[0];
   }
   for (int i=0; i<s2.length(); ++i)
   {
-    amt[0][i] = s1[0] == s2[i];
-    far[0][i] = (i+1)*amt[0][i];
+    dp[0][i] = s1[0] == s2[i];
   }
 
   for (int i=1; i<s1.length(); ++i)
   {
     for (int j=1; j<s2.length(); ++j)
     {
-      for (int k=far[i-1][j]; k<s1.length(); ++k)
-      {
-        if (s1[k] == s2[j])
-        {
-          amt[i][j] = amt[i-1][j] + 1;
-          far[i][j] = 
-        }
-      }
+      dp[i][j] = dp[i-1][j-1] + (s1[i] == s2[j]);
     }
   }
+
+  printf("%d\n", dp[s1.length()][s2.length()]);
 
   return 0;
 }
