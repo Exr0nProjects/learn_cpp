@@ -43,28 +43,39 @@ using namespace std;
 
 const int MAXSZ = 1010;
 string s1, s2;
-int dp[MAXSZ][MAXSZ]; // todo: subproblem graph
+int far[MAXSZ][MAXSZ]; // far = next index to start checking // todo: subproblem graph
+int amt[MAXSZ][MAXSZ];
 
 int main ()
 {
   cin >> s1 >> s2;
 
-  dps[0] = 0;
-  for (int i=0; i<s1.length(); ++i)
+  far[0][0] = amt[0][0] = s1[0] == s2[0];
+  for (int i=1; i<s1.length(); ++i)
   {
-    char c = s1[i];
-    for (int j = dps[max(i-1, 0)]; j < s2.length(); ++j)
-    {
-      if (c == s2[j])
-      {
-        dps[i] = j+1;
-        break;
-      }
-    }
-    dps[i] = max(dps[i], dps[max(0, i-1)]);
+    amt[i][0] = s1[i] == s2[0];
+    far[i][0] = (i+1)*amt[i][0]; // amt[i][0] is either 0 or 1 representing if char is same
+  }
+  for (int i=0; i<s2.length(); ++i)
+  {
+    amt[0][i] = s1[0] == s2[i];
+    far[0][i] = (i+1)*amt[0][i];
   }
 
-  printf("%d", dps[s1.length()-1]);
+  for (int i=1; i<s1.length(); ++i)
+  {
+    for (int j=1; j<s2.length(); ++j)
+    {
+      for (int k=far[i-1][j]; k<s1.length(); ++k)
+      {
+        if (s1[k] == s2[j])
+        {
+          amt[i][j] = amt[i-1][j] + 1;
+          far[i][j] = 
+        }
+      }
+    }
+  }
 
   return 0;
 }
