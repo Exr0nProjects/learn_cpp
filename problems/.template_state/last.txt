@@ -1,1 +1,1 @@
-usaco/training/crypt1
+usaco/training/combo
