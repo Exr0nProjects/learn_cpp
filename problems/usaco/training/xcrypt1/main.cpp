@@ -7,7 +7,7 @@ LANG: C++14
 /*
  * Problem crypt1 (usaco/training/crypt1)
  * Created Sun 10 Nov 2019 @ 08:58 (PST)
- * Accepted [!meta:end!]
+ * Accepted Sun 10 Nov 2019 @ 10:18 (PST)
  *
  */
 
@@ -40,8 +40,8 @@ LANG: C++14
 #define PI 3.14159265358979323846264338
 
 using namespace std;
-//auto fin = fopen("crypt1.in", "r");
-//auto fout = fopen("crypt1.out", "w+");
+auto fin = fopen("crypt1.in", "r");
+auto fout = fopen("crypt1.out", "w+");
 
 const int MAXSZ = 1; // todo
 int n;
