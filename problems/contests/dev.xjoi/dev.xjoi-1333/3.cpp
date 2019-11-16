@@ -20,6 +20,11 @@ struct Carpet
     bool operator<(const Carpet &o) { return (x == o.x ? y < o.y : x < o.x); }
 } tmp;
 vector<Carpet> out;
+pair<int, int> dir[6] = {pair<int, int>{0, 0},
+                         pair<int, int>{-1, -1},
+                         pair<int, int>{1, -1},
+                         pair<int, int>{-1, 1},
+                         pair<int, int>{1, 1}};
 
 int n, y, x;
 
@@ -39,11 +44,6 @@ void draw(cn y, cn x, cn c, cn s = 0) // pos y, pos x, type, size
         draw(y, x, c, s - 1);
 
         int shift = (2 << s) - 1;
-        pair<int, int> dir[6] = {pair<int, int>{0, 0},
-                                 pair<int, int>{-1, -1},
-                                 pair<int, int>{1, -1},
-                                 pair<int, int>{-1, 1},
-                                 pair<int, int>{1, 1}};
         draw(y + dir[c].first * shift, x, ((c + 1) / 2) * 2 - ((c + 1) % 2), s - 1);           // flip y type: `for (int i=1; i<5; ++i) printf("%d -> %d\n", i, ((i+1)/2)*2 - ((i+1)%2));`
         draw(y, x + dir[c].second * shift, ((c + 2) % 4 ? (c + 2) % 4 : 4), s - 1);            // flip x type: `for (int i=1; i<5; ++i) printf("%d -> %d\n", i, ((i+2)%4? (i+2)%4: 4));`
         draw(y + dir[c].first * ((1 << s) - 1), x + dir[c].second * ((1 << s) - 1), c, s - 1); // draw the one that faces the same way.
@@ -74,8 +74,16 @@ void draw(cn y, cn x, cn c, cn s = 0) // pos y, pos x, type, size
     }
 }
 
+void starter(cn sx, cn sy, cn quad, cn size = 1)
+{
+    draw(sy - dir[quad].first * ((1 << size)), sx - dir[quad].second * ((1 << size)), quad, size - 1);
+}
+
 int main()
 {
+    starter(0, 0, 4, 3);
+    return 0;
+
     scanf("%d", &n);
     scanf("%d%d", &y, &x);
     printf("%d %d %d\n", n, y, x);
