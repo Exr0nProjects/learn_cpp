@@ -30,8 +30,6 @@ bool step()
         r.val *= conv[i][s.cur];
         r.prev.push(i);
 
-        q.pop();
-
         if (r.prev.size() >= n)
             continue; // chain too long
         else if (i == s.src && r.val > 1.01)
@@ -74,7 +72,7 @@ int main()
             q.push(t);
         }
 
-        printf("front: %d", q.front().src);
+        printf("front: %d\n", q.front().src);
 
         bool flag = true;
         while (!q.empty())
@@ -84,6 +82,7 @@ int main()
                 flag = false;
                 break;
             }
+            q.pop();
         }
         if (flag)
             printf("no arbitrage sequence exists !\n");
