@@ -1,1 +1,1 @@
-usaco/training/combo
+usaco/training/wormhole
