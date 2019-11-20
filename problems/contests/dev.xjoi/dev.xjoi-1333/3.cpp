@@ -17,7 +17,7 @@ struct Carpet
         x = _x;
         c = _c;
     }
-    bool operator<(const Carpet &o) { return (x == o.x ? y < o.y : x < o.x); }
+    bool operator<(const Carpet &o) const { return (x == o.x ? y < o.y : x < o.x); }
 } tmp;
 vector<Carpet> out;
 pair<int, int> dir[6] = {pair<int, int>{0, 0},
