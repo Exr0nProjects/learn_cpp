@@ -3,32 +3,44 @@
  * labrynth
  */
 
-#include <iostream>
-#include <string>
-#include <cmath>
+#include <bits/stdc++.h>
+#define cn const int;
 
 using namespace std;
+const int MAXSZ = 20;
+int n;
+int cells[MAXSZ][MAXSZ];
+int dist[MAXSZ][MAXSZ];
 
+queue<pair<int, int> > q;
 
 int main ()
 {
-  int n; // positive int n < 15
-  cin >> n;
-  bool ** lab = new bool * [n];
+  scanf("%d", &n);
   for (int i=0; i<n; ++i)
   {
-    lab[n] = new bool [n];
-    string line;
-    getline(cin, line);
-    for (int j=0; j<2*n; j += 2)
+    for (int j=0; j<n; ++j)
     {
-      lab[i][j] = (bool) ( (int) line[j] -48 );
-      cout << lab[i][j];
+      scanf("%d", cells[i][j]);
     }
-    cout << endl;
   }
 
+  dist[0][0] = 1;
+  for (q.push(pair<int, int>{0, 0}); !q.empty(); q.pop())
+  {
+    pair<int, int> pos[] = {{0, -1}, {0, 1}, {-1, 0}, {1, 0}};
+    for (pair<int,int> p : pos)
+    {
+      if (q.top().first + p.first < 0 || q.top().first + p.first >= n
+       || q.top().second + p.secoond < 0 || q.top().second + p.second >= n
+       || cells[q.top().first+p.first][q.top().second+p.second] >= 1)
+        continue;
+      dist[q.top().first+p.first][q.top().second+p.second] = dist[q.top().first][q.top().second] + 1;
+      q.push(pair<int, int>{q.top().first + p.first, q.top().second + p.second});
+    }
+  }
 
+  printf("%d", cells[n-1][n-1]);
 
   return 0;
 }
