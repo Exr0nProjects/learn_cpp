@@ -14,20 +14,20 @@ int dist[MAXSZ][MAXSZ];
 
 void noop(){}
 
-void mydfs(const int i, const int j)
+void mydfs(const int i, const int j, const int layer=0)
 {
- //d*/ printf("dfs: %d %d\n", i, j);
+  //d*/ for (int i=0; i<layer; ++i) printf("  "); printf("dfs: %d %d\n", i, j);
   if (i == j && j == n-1)
   {
-    if (best == -1)
-    {
-      best = dist[i][j];
-      mcount += 1;
-    }
-    else if (dist[i][j] <= best)
+    if (best == -1 || dist[i][j] == best)
     {
       best = dist[i][j];
       ++mcount;
+    }
+    else if (dist[i][j] < best)
+    {
+      mcount = 1;
+      best = dist[i][j];
     }
     return;
   }
@@ -40,7 +40,7 @@ void mydfs(const int i, const int j)
      || dist[i + p.first][j + p.second] > 0) // already visited
       continue;
     dist[i+p.first][j+p.second] = dist[i][j] + 1;
-    mydfs(i+p.first, j+p.second);
+    mydfs(i+p.first, j+p.second, layer+1);
     dist[i+p.first][j+p.second] = 0;
   }
 }
@@ -56,10 +56,12 @@ int main()
     }
   }
   
+  if (n == 1 && cells[0][0] == 1) {printf("0\n0"); return 0;} // edge case circumvention
+  
   dist[0][0] = 1;
   mydfs(0, 0);
 
-  cout << mcount << endl << best;
+  cout << mcount << endl << max(best, 0); // max used to circumvent edgecases
   
   return 0;
 }
@@ -71,5 +73,10 @@ int main()
 0 1 0 0 0
 0 1 0 1 0
 0 0 0 1 0
+ 
+ 3
+ 0 0 0
+ 0 0 0
+ 0 0 0
 
 */
