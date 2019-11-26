@@ -87,14 +87,16 @@ int main ()
         dist[0][i][j] = pow(10, 9) + 1;
         dis[i][j] = pow(10, 9) + 1;
       }
+      printf("nx %d,%d: %d\n", i, j, nx[i][j]);
     }
   }
 
   for (int i=1; i<=m; ++i)
   {
-    int a, b, c;
+    int a, b; LL c;
     scanf("%d%d%d", &a, &b, &c);
-    dist[0][a][b] = dist[0][b][a] = c;
+    if (dist[0][a][b] == 0) dist[0][a][b] = dist[0][b][a] = c; // also from teacher's code, because apparently there can be more than one edge between two nodes?
+    else dist[0][a][b] = dist[0][b][a] = min(dist[0][a][b], c);
     nx[a][b] = b; nx[b][a] = a;
     
     dis[a][b] = dis[b][a] = c;
@@ -116,15 +118,11 @@ int main ()
     {
       for (int j=1; j<=n; ++j)
       {
-        if (i==k || j==k || i==j) continue; // from teacher's code... oofu
+       // if (i==k || j==k || i==j) continue; // from teacher's code... oofu
         if (dist[k-1][i][j] > dist[0][i][k] + dist[k-1][k][j])
         {
           dist[k][i][j] = dist[0][i][k] + dist[k-1][k][j];
           nx[i][j] = k;
-        }
-        else if (dist[k-1][i][j] == dist[0][i][k] + dist[k-1][k][j]  &&  nx[i][j] > nx[i][k]) // lex compare, also from teachers code
-        {
-          nx[i][j] = nx[i][k];
         }
         else
         {
