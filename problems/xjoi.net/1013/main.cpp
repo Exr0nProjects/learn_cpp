@@ -14,34 +14,37 @@ int dist[MAXSZ][MAXSZ];
 
 void noop(){}
 
-void mydfs(const int i, const int j, const int layer=0)
+void mydfs(const int i, const int j, const int layer=1)
 {
   //d*/ for (int i=0; i<layer; ++i) printf("  "); printf("dfs: %d %d\n", i, j);
   if (i == j && j == n-1)
   {
-    if (best == -1 || dist[i][j] == best)
+    //d*/ printf("\ndist: %d\n", layer); for (int i=0; i<n; ++i) { for (int k=0; k<layer; ++k) printf("  "); for (int j=0; j<n; ++j) printf("%3d", dist[i][j]); printf("\n"); }
+    if (best == -1 || layer == best)
     {
-      best = dist[i][j];
+      best = layer;
       ++mcount;
     }
-    else if (dist[i][j] < best)
+    else if (layer < best)
     {
       mcount = 1;
-      best = dist[i][j];
+      best = layer;
     }
     return;
   }
   pair<int, int> pos[] = {{0, -1}, {0, 1}, {-1, 0}, {1, 0}};
   for (pair<int, int> p : pos)
   {
-    if (i + p.first < 0 || i + p.first >= n // x out of range
-     || j + p.second < 0 || j + p.second >= n // y out of range
-     || cells[i + p.first][j + p.second] >= 1 // not a valid spot
-     || dist[i + p.first][j + p.second] > 0) // already visited
+    int ii = i+p.first;
+    int jj = j+p.second;
+    if (ii < 0 || ii >= n // x out of range
+     || jj < 0 || jj >= n // y out of range
+     || cells[ii][jj] >= 1 // not a valid spot
+     || dist[ii][jj] > 0) // already visited
       continue;
-    dist[i+p.first][j+p.second] = dist[i][j] + 1;
-    mydfs(i+p.first, j+p.second, layer+1);
-    dist[i+p.first][j+p.second] = 0;
+    dist[ii][jj] = 1;
+    mydfs(ii, jj, layer+1);
+    dist[ii][jj] = 0;
   }
 }
 
@@ -66,7 +69,7 @@ int main()
   return 0;
 }
 
-/** test data
+/* test data
 5
 0 0 0 0 0
 0 1 1 1 0
@@ -74,9 +77,9 @@ int main()
 0 1 0 1 0
 0 0 0 1 0
  
- 3
- 0 0 0
- 0 0 0
- 0 0 0
+3
+0 0 0
+0 0 0
+0 0 0
 
 */
