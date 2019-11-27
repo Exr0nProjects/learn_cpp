@@ -1,7 +1,7 @@
 /*
 ID: spoytie2
 TASK: cowjog
-LANG: C++14                 
+LANG: C++14
 */
 
 /*
@@ -42,20 +42,20 @@ LANG: C++14
 #define PI 3.14159265358979323846264338
 
 using namespace std;
-// auto fin = fopen("cowjog.in", "r");
-// auto fout = fopen("cowjog.out", "w+");
+ auto fin = fopen("cowjog.in", "r");
+ auto fout = fopen("cowjog.out", "w+");
 
 const int MAXSZ = 1; // todo
 int n;
 
 int main ()
 {
-  scanf("%d", &n);
+  fscanf(fin, "%d", &n);
   int groups = 0, slowest = -1, prev = -1;
   for (int i=0; i<n; ++i)
   {
     int p, s;
-    scanf("%d%d", &p, &s);
+    fscanf(fin, "%d%d", &p, &s);
     // check
     if (s < slowest || slowest == -1)
     {
@@ -74,7 +74,7 @@ int main ()
     prev = p;
   }
 
-  printf("%d\n", groups);
+  fprintf(fout, "%d\n", groups);
 
   return 0;
 }
