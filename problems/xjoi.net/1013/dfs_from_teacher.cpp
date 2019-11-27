@@ -41,7 +41,6 @@ int main(){
       cin>>map1[i][j];
   
   dfs(1,1,1);
-  cout<<tot<<endl;
-  cout<<ans<<endl;
+  cout << tot << endl << ans << endl;
   return 0;
 } 
