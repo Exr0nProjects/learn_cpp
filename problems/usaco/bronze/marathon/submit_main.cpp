@@ -1,14 +1,14 @@
 /*
 ID: spoytie2
 TASK: marathon
-LANG: C++14                 
+LANG: C++14
 */
 
 /*
  * Problem marathon (usaco/bronze/marathon)
  * Created Wed 27 Nov 2019 @ 11:11 (PST)
  * Accepted [!meta:end!]
- * problem # 487 
+ * problem # 487
  */
 
 #include <bits/stdc++.h>
@@ -42,7 +42,7 @@ LANG: C++14
 #define PI 3.14159265358979323846264338
 
 using namespace std;
-auto fin = open("marathon.in", "r");
+auto fin = fopen("marathon.in", "r");
 auto fout = fopen("marathon.out", "w+");
 
 const int MAXSZ = 100010; // todo
@@ -63,18 +63,18 @@ int main ()
 
   int bestskip = 0, total = 0;
 
-  scanf("%d", &n);
+  fscanf(fin, "%d", &n);
   for (int i=0; i<n; ++i)
   {
-    scanf("%d%d", points[i].x, points[i].y);
+    fscanf(fin, "%d%d", &points[i].x, &points[i].y);
     if (i > 0) total += mhdist(points[i], points[i-1]);
     if (i > 1)
     {
-      bestskip = max(bestskip, mhdist(points[i], points[i-1])+mhdist(points[i-1], points[i-2]));
+      bestskip = max(bestskip, mhdist(points[i], points[i-1])+mhdist(points[i-1], points[i-2])-mhdist(points[i], points[i-2]));
     }
   }
 
-  printf("%d\n", total-bestskip);
+  fprintf(fout, "%d\n", total-bestskip);
 
   return 0;
 }
