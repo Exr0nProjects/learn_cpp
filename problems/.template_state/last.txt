@@ -1,1 +1,1 @@
-usaco/bronze/marathon
+usaco/bronze/crosswords
