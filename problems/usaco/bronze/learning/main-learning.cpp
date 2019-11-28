@@ -107,7 +107,7 @@ int main ()
       }
       else if (herd[i].s && !herd[i-1].s) // upper half is spotted
       {
-        ret += (herd[i].w - max(a+1, herd[i].w-pad)+even); // add segment either to the pad or to where the incoming cows start
+        ret += (herd[i].w - max(a, herd[i].w-pad-even)); // add segment either to the pad or to where the incoming cows start
       }
       else if (herd[i-1].s && !herd[i].s) // lower half is spotted
       {
@@ -118,7 +118,7 @@ int main ()
     {
       if (herd[i-1].s == herd[i].s) // same type
       {
-        ret += (b-herd[i-1].w) * herd[i].s; // add the entire segment between lower of herd cow seg and upper bound
+        ret += (b-herd[i-1].w) * herd[i-1].s; // add the entire segment between lower of herd cow seg and upper bound
       }
       else if (herd[i].s && !herd[i-1].s) // upper half is spotted
       {
