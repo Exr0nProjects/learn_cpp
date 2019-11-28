@@ -42,8 +42,8 @@ LANG: C++14
 #define PI 3.14159265358979323846264338
 
 using namespace std;
-// auto fin = fopen("learning.in", "r");
-// auto fout = fopen("learning.out", "w+");
+auto fin = fopen("learning.in", "r");
+auto fout = fopen("learning.out", "w+");
 
 const int MAXSZ = 50010; // todo
 struct Cow
@@ -69,11 +69,11 @@ int main ()
 {
   int ret = 0;
   
-  scanf("%d%d%d", &n, &a, &b);
+  fscanf(fin, "%d%d%d", &n, &a, &b);
   for (int i=0; i<n; ++i)
   {
     char s[5];
-    scanf("%s%d", &s, &herd[i].w);
+    fscanf(fin, "%s%d", &s, &herd[i].w);
     herd[i].s = s[0] == 'S';
     if (herd[i].w <= b && herd[i].w >= a && herd[i].s) ++ ret; // in range and is spotted
   }
@@ -132,7 +132,7 @@ int main ()
   if (b > herd[n-1].w) ret += b-herd[n-1].w;
   if (a < herd[0].w) ret += herd[0].w - a;
   
-  printf("%d\n", ret);
+  fprintf(fout, "%d\n", ret);
 
 
   return 0;
