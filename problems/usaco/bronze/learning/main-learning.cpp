@@ -57,7 +57,7 @@ int n, a, b;
 void debug()
 {
   bool d = true;
-  //d*/ d = false;
+  /*/d*/ d = false;
   if (d) return;
   for (int i=0; i<n; ++i)
   {
@@ -69,10 +69,12 @@ int main ()
 {
   int ret = 0;
   
+  //fscanf(fin, "%d%d%d", &n, &a, &b);
   fscanf(fin, "%d%d%d", &n, &a, &b);
   for (int i=0; i<n; ++i)
   {
     char s[5];
+    //fscanf(fin, "%s%d", &s, &herd[i].w);
     fscanf(fin, "%s%d", &s, &herd[i].w);
     herd[i].s = s[0] == 'S';
     if (herd[i].w <= b && herd[i].w >= a && herd[i].s) ++ ret; // in range and is spotted
@@ -80,6 +82,7 @@ int main ()
   stable_sort(herd, herd+n);
 
   debug();
+  /*/d*/ printf("ret = %d\n", ret);
   
   for (int i=1; i<n; ++i)
   {
@@ -100,7 +103,7 @@ int main ()
     {
       if (herd[i-1].s == herd[i].s) // same type
       {
-        ret += (herd[i].w - a -1) * herd[i].s; // add seg between upper bound and a, if upper bound is spotted
+        ret += (herd[i].w - a) * herd[i].s; // add seg between upper bound and a, if upper bound is spotted
       }
       else if (herd[i].s && !herd[i-1].s) // upper half is spotted
       {
@@ -119,21 +122,22 @@ int main ()
       }
       else if (herd[i].s && !herd[i-1].s) // upper half is spotted
       {
-        ret += herd[i].w - max(herd[i].w - pad - even, b); // add however many we can
+        ret += max(b - (herd[i].w - pad - even)+1, 0); // add however many we can
       }
       else if (herd[i-1].s && !herd[i].s) // lower half is spotted
       {
         ret += min(herd[i-1].w+pad+even, b) - herd[i-1].w; // same, but for lower
       }
     }
+    /*/d*/ printf("after seg %d, ret = %d\n", i, ret);
   }
   
   // if incoming cows are out of bounds of the segments
-  if (b > herd[n-1].w) ret += b-herd[n-1].w;
-  if (a < herd[0].w) ret += herd[0].w - a;
+  if (b > herd[n-1].w) ret += (b-herd[n-1].w) *herd[n-1].s;
+  if (a < herd[0].w) ret += (herd[0].w - a) *herd[0].s;
   
+  //fprintf(fout, "%d\n", ret);
   fprintf(fout, "%d\n", ret);
-
 
   return 0;
 }
@@ -162,4 +166,17 @@ S 10
 NS 4
 S 3
  => 7
+
+2 1 200
+S 23
+NS 24
+ => 23
+
+5 1 20
+S 5
+S 25
+NS 26
+S 10
+NS 11
+ => 13
  */
