@@ -59,7 +59,7 @@ int main ()
         {
           cmin = c;
         }
-        break;
+      //  break; //! this break was causing the issue, breaking out of the loop meant that the full line was not being consumed from the input file
       }
     }
   }
