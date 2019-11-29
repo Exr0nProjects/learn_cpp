@@ -43,20 +43,28 @@ LL conv(char n[], cn l, cn b)
   return b*conv(n, l-1, b) + n[l-1];
 }
 
+map<int, string> tabulate;
 string solve(char a[], char b[])
 {
+  int hash = a[0]*pow(10, 5) + a[1]*pow(10, 4); + a[2]*1000 + b[0]*100 + b[1]*10 + b[2];
+  if (tabulate.find(ans) != tabulate.end()) return *ans;
+
+  string ret;
   for (int i=10; i<MAXSZ; ++i)
   {
+    if (s.length()) break;
     for (int j=10; j<MAXSZ; ++j)
     {
    //d*/   printf("%7lld->%10lld, %7lld->%10lld\n", i, conv(a, 3, i), j, conv(b, 3, j));
       if (conv(a, 3, i) == conv(b, 3, j))
       {
-        return to_string(i) + " " + to_string(j);
+        ret = to_string(i) + " " + to_string(j);
+        break;
       }
     }
   }
-  return "this should never happen";
+  tabulate[hash] = ret;
+  return ret;
 }
 
 int main ()
