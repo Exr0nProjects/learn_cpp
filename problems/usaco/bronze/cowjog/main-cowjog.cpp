@@ -51,7 +51,7 @@ int n;
 int main ()
 {
   fscanf(fin, "%d", &n);
-    int groups = 0, slowest = -1, prev = -1, spos = -1, spad = 0;
+  LL groups = 0, slowest = -1, prev = -1, spos = -1, spad = 0;
   for (int i=0; i<n; ++i)
   {
     int p, s;

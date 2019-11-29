@@ -111,7 +111,8 @@ int main ()
       }
       else if (herd[i-1].s && !herd[i].s) // lower half is spotted
       {
-        ret += (min(a, herd[i-1].w+pad+even) - herd[i-1].w); // same as above but for the lower bound
+        //ret += (min(a, herd[i-1].w+pad+even) - herd[i-1].w); // same as above but for the lower bound
+        ret += max(herd[i-1]+pad+even-a+1, 0);
       }
     }
     else if (herd[i].w > b && herd[i-1].w < b) // segment goes too far up
