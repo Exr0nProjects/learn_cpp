@@ -1,4 +1,4 @@
-// jan 2015 bronze cowroute 1
+// jan 2015 bronze cowroute 1, missing test cases 2, 8, 9, 12 (9/12)
 
 #include <bits/stdc++.h>
 

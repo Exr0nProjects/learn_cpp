@@ -1,4 +1,4 @@
-// jan 2015 bronze cowroute 2 brute force
+// jan 2015 bronze cowroute 2 brute force, missing test case #4 (9/10)
 
 #include <bits/stdc++.h>
 
@@ -41,44 +41,72 @@ LL a, b, n;
 LL to[MAXSZ];
 LL from[MAXSZ];
 
+void debug()
+{
+  printf("idx: ");
+  for (int i=0; i<20; ++i)
+  {
+    printf("%3d", i);
+  }
+  printf("\nto:  ");
+  for (int i=0; i<20; ++i)
+  {
+    if (to[i])
+      printf("%3d", to[i]);
+    else printf("  .");
+  }
+  printf("\nfrom:");
+  for (int i=0; i<20; ++i)
+  {
+    if (from[i])
+      printf("%3d", from[i]);
+    else printf("  .");
+  }
+  printf("\n");
+}
+
 int main ()
 {
   fscanf(fin, "%lld %lld %lld", &a, &b, &n);
+  // scanf("%lld%lld%lld", &a, &b, &n);
   for (int i=0; i<n; ++i)
   {
     // input
     int c, m;
     fscanf(fin, "%d%d", &c, &m);
-  
+    // scanf("%d%d", &c, &m);
+    
     vector<int> route;
+    int s = m;
     for (int j=0; j<m; ++j)
     {
       int t;
       fscanf(fin, "%d", &t);
+      // scanf("%d", &t);
+      printf("%d: pushing back %d\n", i, t);
+      if (t == a) s = j;
       route.push_back(t);
     }
     // from source to any transfer point
-    bool passed = false; // for the first pass
-    for (int j=0; j<route.size()-1; ++j) // going towards
+    for (; s<m; ++s) // going towards
     {
-      if (route[j] == a) passed = true;
-      else if (passed)
-      {
-        if (to[route[j]] <= 0 || to[route[j]] > c) to[route[j]] = c; // store minimum cost from start to transfer
-      } 
+      // passed? logic taken care of in input, thru `s`
+      if (to[route[s]] <= 0 || to[route[s]] > c) to[route[s]] = c; // store minimum cost from start to transfer
     }
 
     // from the end to the transfer point
-    passed = false;
+    bool passed = false;
     for (int j=route.size()-1; j>=0; --j) // go backwards and check if dest is there
     {
       if (route[j] == b) passed = true;
       else if (passed)
       {
-        if (from[route[j]] <= 0 || from[route[j]] > c) from[route[j]] = c; // stor minicum cost from transfer to end
+        if (from[route[j]] <= 0 || from[route[j]] > c) from[route[j]] = c; // stor minimum cost from transfer to end
       }
     }
   }
+  
+  debug();
 
   int gmin = -1;
   // check all the possible transfer points
@@ -86,14 +114,31 @@ int main ()
   {
     if (to[i] > 0 && from[i] > 0) // valid transfer point
     {
-      if (gmin < 0 || to[i] + from[i] > gmin)
+      if (gmin < 0 || to[i] + from[i] < gmin)
       {
         gmin = to[i] + from[i];
       }
     }
   }
+  
+  if (to[b] > 0 && (gmin < 0 || gmin > to[b])) // direct
+  {
+    gmin = to[b];
+  }
 
   fprintf(fout, "%lld\n", gmin);
+  //printf("%lld\n", gmin);
 
   return 0;
 }
+
+/*
+1 2 3
+3 3
+3 2 1
+4 4
+2 1 4 3
+8 5
+4 1 7 8 2
+
+ */
