@@ -35,32 +35,100 @@ using namespace std;
  auto fout = fopen("cowroute.out", "w+");
 
 const int MAXSZ = -1; // todo
-int a, b, n;
+LL a, b, n;
 
 int main ()
 {
-  int cmin = -1;
-  scanf("%d%d%d", &a, &b, &n);
-  for (int i=0; i<n; ++i)
+  LL cmin = -1;
+  fscanf(fin, "%lld %lld %lld", &a, &b, &n);
+  for (LL i=0; i<n; ++i) // for each route
   {
-    int c, m;
-    scanf("%d%d", &c, &m);
+    LL c, m;
+    fscanf(fin, "%lld%lld", &c, &m);
+    printf("%d\n", i);
 
     bool first = false;
-    for (int j=0; j<m; ++j)
+    for (LL j=0; j<m; ++j) // for each stop
     {
-      int t;
-      scanf("%d", &t);
+      LL t;
+      fscanf(fin, "%lld", &t);
       if (t == a) first = true; // visited a
       if (t == b && first) // then visited b => success!
       {
-        cmin = (cmin < 0 ? c : min(c, cmin)); // min between c, cmin if cmin is inited
+        if (cmin < 0 || cmin > c)
+        {
+          cmin = c;
+        }
         break;
       }
     }
   }
 
-  printf("%d\n", cmin);
+  fprintf(fout, "%lld\n", cmin);
 
   return 0;
 }
+
+/*
+// no route
+1 2 1
+2 2
+1 3
+ => -1
+
+// backwards
+1 2 1
+2 2
+2 1
+ => -1
+
+// min changes
+1 4 2
+8 4
+1 2 3 4
+4 2
+1 4
+ => 4
+
+// better route but it doesn't work
+1 4 2
+8 4
+1 2 3 4
+4 2
+1 3
+ => 8
+
+// visits first but not second
+1 4 1
+8 3
+1 2 3
+ => -1
+
+// visits second but not first
+1 4 1
+8 3
+2 3 4
+ => -1
+
+// visits first on one and second on another
+1 4 2
+2 3
+1 2 3
+2 3
+2 3 4
+ => -1
+ 
+// lots of routes
+ works!
+ => 1
+
+// worse routes later
+1 4 3
+4 3
+1 2 4
+8 3
+1 3 4
+2 3
+1 2 3
+ => 4
+ */
