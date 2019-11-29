@@ -84,7 +84,7 @@ int main ()
       fscanf(fin, "%d", &t);
       // scanf("%d", &t);
       printf("%d: pushing back %d\n", i, t);
-      if (t == a) s = j;
+      if (t == a) s = j+1; // this didn't change anything, but maybe some edge cases would be fixed?
       route.push_back(t);
     }
     // from source to any transfer point
@@ -126,7 +126,7 @@ int main ()
     gmin = to[b];
   }
 
-  fprintf(fout, "%lld\n", gmin);
+  fprintf(fout, "%d\n", gmin); // format type was wrong, was outputting crazy stuff due to implicit conversion from int to long long
   //printf("%lld\n", gmin);
 
   return 0;
