@@ -1,1 +1,1 @@
-usaco/bronze/learning
+script_test
