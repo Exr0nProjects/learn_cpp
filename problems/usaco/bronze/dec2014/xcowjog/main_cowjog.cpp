@@ -7,7 +7,7 @@ LANG: C++14
 /*
  * Problem cowjog (usaco/bronze/dec2014/cowjog)
  * Created Sat 30 Nov 2019 @ 10:18 (PST)
- * Accepted [!meta:end!]
+ * Accepted Sat 30 Nov 2019 @ 13:01 (PST)
  ! Inspired by http://usaco.org/current/data/sol_cowjog_bronze.html
  ! 1/11 test cases, only the first one is AC, others are WA
  ? Analysis:
@@ -67,6 +67,8 @@ int main ()
     fscanf(fin, "%d%d", &_, &s);
     spood.push_back(s);
   }
+
+  reverse(spood.begin(), spood.end());
 
   int s = -1, count=0;
   for (int p : spood)
