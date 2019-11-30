@@ -11,14 +11,12 @@ echo "Marking $modpath as AC..."
 newpath="$(dirname $modpath)/x$(basename $modpath)"
 mkdir -p "$newpath";
 
-cat "$modpath/main.cpp"\
+cat "$modpath/main_$(basename $modpath).cpp"\
     | sed "s/\[\!meta\:end\!\]$/$(date "$dateformat")/g"\
-    > "$newpath/main.cpp"
+    > "$newpath/main_$(basename $modpath).cpp"
 
 rm -rf "$modpath"
 
 ./list_completed.sh
-
-echo "_" "$cache"
 
 "$(dirname $cache)/live_commit.sh" "./$modpath ./$newpath working.txt completed.txt" "AC $modpath (script)"
