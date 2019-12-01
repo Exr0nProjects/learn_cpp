@@ -45,23 +45,26 @@ using namespace std;
 FILE *fin = fopen("cow.in", "r");
 FILE *fout = nullptr;
 
-const int MAXSZ = 100000;          // todo
-bool field[3 + 10][MAXSZ + 10];    // 3 letters in cow + padding
-long long tab[3 + 10][MAXSZ + 10]; // dp tabulation
+const int MAXSZ = 100000;      // todo
+bool field[10][MAXSZ + 10];    // 3 letters in cow + padding
+long long tab[10][MAXSZ + 10]; // dp tabulation
 
 int n;
 
 long long dfs(cn y, cn x, cn stp = 0)
 {
   for (int i = 0; i < stp; ++i)
-    printf("  ");
-  printf("dfs: %d, %d\n", y, x);
-  if (tab[y][x] >= 0)
-    return tab[y][x];
-  else if (y == 3)
-    return 1; // made the word cow
-  else if (x == n)
-    return 0; // ran out of letters
+    //d*/  printf("  ");
+    //d*/printf("dfs: %d, %d\n", y, x);
+
+    if (y < 0 || x < 0)
+      throw "y or x out of bounds!";
+    else if (y >= 3)
+      return 1; // made the word cow
+    else if (x >= n)
+      return 0; // ran out of letters
+    else if (tab[y][x] >= 0)
+      return tab[y][x];
 
   long long ret = 0;
   for (int j = x + 1; j <= n; ++j)
@@ -88,7 +91,7 @@ int main()
   fscanf(fin, "%d\n", &n);
   for (int j = 1; j <= n; ++j)
   {
-    for (int i = 1; i <= n; ++i)
+    for (int i = 1; i <= 4; ++i) // this used to be `i<=n` which would fail for large numbers of n
       tab[i][j] = -1; // init tabulation array
 
     char c;
