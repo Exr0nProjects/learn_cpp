@@ -9,7 +9,7 @@ fi
 echo "Marking $modpath as AC..."
 
 newpath="$(dirname $modpath)/x$(basename $modpath)"
-mkdir -p "$newpath";
+mv $modpath $newpath
 
 cat "$modpath/main_$(basename $modpath).cpp"\
     | sed "s/\[\!meta\:end\!\]$/$(date "$dateformat")/g"\
