@@ -7,7 +7,7 @@ LANG: C++14
 /*
  * Problem cow (usaco/bronze/feb2015/cow)
  * Created Sun 01 Dec 2019 @ 11:49 (PST)
- * Accepted [!meta:end!]
+ * Accepted Sun 01 Dec 2019 @ 15:13 (PST)
  *
  */
 
