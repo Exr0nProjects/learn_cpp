@@ -59,6 +59,8 @@ long long dfs(cn y, cn x, cn stp = 0)
 
     if (y < 0 || x < 0)
       throw "y or x out of bounds!";
+    else if (y >= 2)
+      return tab[3][x + 1];
     else if (y >= 3)
       return 1; // made the word cow
     else if (x >= n)
@@ -67,7 +69,7 @@ long long dfs(cn y, cn x, cn stp = 0)
       return tab[y][x];
 
   long long ret = 0;
-  for (int j = x + 1; j <= n; ++j)
+  for (int j = x + 1; j < n; ++j) // doesn't have to go up to n because that spot would have to be an W to be worth anything anyways, and we deal with W in the base case
   {
     if (field[y + 1][j])
       ret += dfs(y + 1, j, stp + 1);
@@ -92,7 +94,7 @@ int main()
   for (int j = 1; j <= n; ++j)
   {
     for (int i = 1; i <= 4; ++i) // this used to be `i<=n` which would fail for large numbers of n
-      tab[i][j] = -1; // init tabulation array
+      tab[i][j] = -1;            // init tabulation array
 
     char c;
     fscanf(fin, "%c", &c);
@@ -102,6 +104,14 @@ int main()
       field[2][j] = true;
     else if (c == 'W')
       field[3][j] = true;
+  }
+
+  tab[3][n] = field[3][n];
+  for (int j = n - 1; j > 0; --j)
+  {
+    if (field[3][j])
+      ++tab[3][j]; // ends up as either 0 or -1
+    tab[3][j] += tab[3][j + 1] + 1;
   }
 
   tab[0][0] = -1;
@@ -120,7 +130,7 @@ COWW
 => 2
 
 6
-CCOWW
+CCOOWW
 => 8
 
 6
