@@ -1,1 +1,1 @@
-usaco/bronze/dec2014/cowjog
+usaco/bronze/feb2015/hopscotch
