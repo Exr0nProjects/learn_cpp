@@ -1,14 +1,14 @@
 /*
 ID: spoytie2
 TASK: hopscotch
-LANG: C++14                 
+LANG: C++14
 */
 
 /*
  * Problem hopscotch (usaco/bronze/feb2015/hopscotch)
  * Created Sun 01 Dec 2019 @ 11:49 (PST)
- * Accepted [!meta:end!]
- * 
+ * Accepted Sun 01 Dec 2019 @ 12:25 (PST)
+ *
  * first attempt: dfs with tabulation
  */
 
@@ -43,27 +43,32 @@ LANG: C++14
 #define PI 3.14159265358979323846264338
 
 using namespace std;
-FILE* fin = fopen("hopscotch.in", "r");
-FILE* fout = nullptr;
+FILE *fin = fopen("hopscotch.in", "r");
+FILE *fout = nullptr;
 
 const int MAXSZ = 15; // todo
-bool grid[MAXSZ+10][MAXSZ+10];
-int store[MAXSZ+10][MAXSZ+10];
+bool grid[MAXSZ + 10][MAXSZ + 10];
+int store[MAXSZ + 10][MAXSZ + 10];
 int r, c;
 
-int dfs(cn y, cn x, cn ways=0)
+int dfs(cn y, cn x, cn ways = 0)
 {
-  if (store[y][x] >= 0) return store[y][x];
-  if (y == r || x == c) return 0;
+  for (int k = 0; k < ways; ++k)
+    printf("  ");
+  printf("new dfs: %d, %d\n", y, x);
+  if (store[y][x] >= 0)
+    return store[y][x];
+  if (y == r || x == c)
+    return y == r && x == c;
 
   int ret = 0;
-  for (int i=y+1; i<=r; ++i)
+  for (int i = y + 1; i <= r; ++i)
   {
-    for (int j=x+1; j<=c; ++j)
+    for (int j = x + 1; j <= c; ++j)
     {
       if (grid[i][j] != grid[y][x]) // different color
       {
-        ret += dfs(i, j);
+        ret += dfs(i, j, ways + 1);
       }
     }
   }
@@ -71,23 +76,34 @@ int dfs(cn y, cn x, cn ways=0)
   return ret;
 }
 
-int main ()
+int main()
 {
-  if (fin) { fout = fopen("hopscotch.out", "w+"); } else { fin = stdin; fout = stdout; }
+  if (fin)
+  {
+    fout = fopen("hopscotch.out", "w+");
+  }
+  else
+  {
+    fin = stdin;
+    fout = stdout;
+  }
   fscanf(fin, "%d%d", &r, &c);
-  for (int i=1; i<=r; ++i)
+  for (int i = 1; i <= r; ++i)
   {
     fscanf(fin, "\n"); // consume newlines
-    for (int j=1; j<=c; ++j)
+    for (int j = 1; j <= c; ++j)
     {
       store[i][j] = -1;
-      fscanf(fin, "%c", &grid[i][j]);
+      char c;
+      fscanf(fin, "%c", &c);
+      if (c == 'R')
+        grid[i][j] = true;
     }
   }
 
-  for (int i=0; i<=r; ++i)
+  for (int i = 0; i <= r; ++i)
   {
-    for (int j=0; j<= c; ++j)
+    for (int j = 0; j <= c; ++j)
     {
       printf("%3d", grid[i][j]);
     }
