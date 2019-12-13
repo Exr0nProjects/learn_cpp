@@ -9,6 +9,11 @@ LANG: C++14
  * Created Wed 27 Nov 2019 @ 12:24 (PST)
  * Accepted [!meta:end!]
  * problem # 490
+ ! The 2 main differences between my original codes and the solution code on the website are these:
+ * 1. My code counted the spotted old cows first, then counted the intervals between the cows, while the solution code counted each interval including the upper cow
+ * 2. My code had boundary conditions written in for if there were new cows that are out of range of the old cows, while his code just put in fake old cows really far away
+ * Both of these differences made my code harder to write and debug, because I had to write more logic for each difference.
+ ! This is one aspect of writing simpler codes that will take more work than others.
  */
 
 #include <bits/stdc++.h>
