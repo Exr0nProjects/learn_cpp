@@ -55,15 +55,28 @@ void walk(cl i, cl j, const string& p="")
 {
   if (!farm[i][j]) // out of bounds
     return;
-  if (i == n && j == n) // at the end
+  // if (i == n && j == n) // at the end
+  // {
+  //   printf((p + "\n").c_str());
+  //   // check if its a palendrome
+  //   for (int i=1; i<p.length(); ++i)
+  //   {
+  //     if (p[i] != p[p.length()-i]) return;
+  //   }
+  //   printf(("palendrome: " + p + "\n").c_str());
+  //   pals.insert(p);
+  //   return;
+  // }
+  if (i+j-2 > n && (p[2*n-i-j+1] != p[i+j-3])) // if this step makes it a non-palendrome
   {
-    printf((p + "\n").c_str());
-    // check if its a palendrome
-    for (int i=1; i<p.length(); ++i)
-    {
-      if (p[i] != p[p.length()-i]) return;
-    }
-    printf(("palendrome: " + p + "\n").c_str());
+    printf("\n%d, %d", 2*n-i-j+1, i+j-3);
+    printf("\n%c == %c\n", p[2*n-i-j+1], p[i+j-3]);
+    printf(("not a palendrome: " + p + "\n").c_str());
+    return;
+  }
+  if (i == n && j == n) // if this is the end and we still have a palendrome
+  {
+    printf("made it to the end!\n");
     pals.insert(p);
     return;
   }
