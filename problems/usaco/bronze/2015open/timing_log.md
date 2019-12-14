@@ -10,3 +10,5 @@
 20:18 | finished backtracking version of palpath, ac first (5/12) cases, others TLE, now working on #1
 20:32 | PLM moocrypt, all 15 test cases ac except WA case#7, now debugging (likely missing edge case)
 20:40 | give up debugging #1, now analysing #2 more
+21:01 | analysed #2, using revelations: only need to care about the three parts spereatly, and shared letters are doubled so they don't matter to create a venn diagram counting problem, now coding
+21:29 | pause to sleep.
