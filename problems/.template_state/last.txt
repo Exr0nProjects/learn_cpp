@@ -1,1 +1,1 @@
-usaco/bronze/2015open/moocrypt
+usaco/bronze/2015open/geteven
