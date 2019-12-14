@@ -1,1 +1,1 @@
-usaco/bronze/2015open/palpath
+usaco/bronze/2019dec/gymnastics
