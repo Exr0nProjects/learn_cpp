@@ -1,1 +1,1 @@
-usaco/bronze/2019dec/gymnastics
+usaco/bronze/2019dec/whereami
