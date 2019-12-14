@@ -53,8 +53,7 @@ FILE *fin = fopen("cow.in", "r");
 FILE *fout = nullptr;
 
 const int MAXSZ = 100000;      // todo
-long long tab[10][MAXSZ + 10]; // dp tabulation
-
+long long letter[5];
 int n;
 
 int main()
@@ -69,9 +68,8 @@ int main()
     fout = stdout;
   }
 
+  letter[0] = 1;
   fscanf(fin, "%d\n", &n);
-  for (int j = 0; j <= n + 1; ++j)
-    tab[0][j] = 1;
   for (int j = 1; j <= n; ++j)
   {
     char c;
@@ -83,16 +81,10 @@ int main()
       k = 2;
     else if (c == 'W')
       k = 3;
-
-    for (int i = 1; i < 4; ++i)
-    {
-      tab[i][j] = tab[i][j - 1];
-      if (i == k)
-        tab[i][j] += tab[i - 1][j]; // combinations
-    }
+    letter[k] += letter[k-1];
   }
 
-  fprintf(fout, "%lld\n", tab[3][n]);
+  fprintf(fout, "%lld\n", letter[3]);
 
   return 0;
 }

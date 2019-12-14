@@ -1,1 +1,1 @@
-usaco/bronze/feb2015/hopscotch
+usaco/bronze/2015open/moocrypt

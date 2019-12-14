@@ -1,7 +1,7 @@
 /*
 ID: spoytie2
 TASK: [!meta:pid!]
-LANG: C++14                 
+LANG: C++14
 */
 
 /*
@@ -32,10 +32,11 @@ LANG: C++14
 
 #define cn const int
 #define ca const auto &
+#define ll long long
+#define cl const long long
 #define UN unsigned
 #define ST static
 #define CN const
-#define LL long long
 #define DL double
 #define LD long double
 #define INF 1047483647
