@@ -54,25 +54,17 @@ struct Bale
 } bales[MAXSZ];
 ll n;
 
-bool escape(ll l, ll r)
+bool escape_iter(ll l, ll r)
 {
-  if (l <= 0 || r > n)
+  while (l > 0 && r <= n)
   {
-    printf("escaped! l: %d, r: %d, n: %d\n", l, r, n);
-    return true;
+    printf("cycle: %d-%d\n", l, r);
+    printf("dist: %d, l=%d, r=%d\n", bales[r].pos - bales[l].pos, bales[l].siz, bales[r].siz);
+    if (bales[r].pos - bales[l].pos > bales[r].siz) {printf("++r;\n"); ++r; }
+    if (bales[r].pos - bales[l].pos > bales[l].siz) --l;
+    else if (bales[r].pos - bales[l].pos <= bales[r].siz && r <= n && l > 0) return false; // less than l and less than r
   }
-  cl dist = bales[r].pos - bales[l].pos;
-  if (dist > bales[r].siz || dist > bales[l].siz)
-  {
-    printf("breakthru! dist=%d, %d-%d\n", dist, l, r);
-    if (dist > bales[r].siz)
-      ++r;
-    if (dist > bales[l].siz)
-      --l;
-    printf("-> %d-%d\n", l, r);
-    return escape(l, r);
-  }
-  return false;
+  return true;
 }
 
 int main()
@@ -95,6 +87,7 @@ int main()
     bales[i].siz = s;
     bales[i].pos = p;
   }
+  stable_sort(bales + 1, bales + n + 1);
 
   ll ret = 0;
   for (ll i = 1; i < n; ++i)
@@ -102,7 +95,7 @@ int main()
     printf("\nbale %d: %d @ %d\n", i, bales[i].siz, bales[i].pos);
 
     printf("%d-%d:\n", i, i + 1);
-    if (!escape(i, i + 1))
+    if (!escape_iter(i, i + 1))
     {
       ret += bales[i + 1].pos - bales[i].pos;
     }
@@ -112,3 +105,12 @@ int main()
 
   return 0;
 }
+
+/*
+
+3
+5 2
+5 4
+5 10
+ => 2
+ */
