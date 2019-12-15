@@ -53,18 +53,32 @@ struct Bale
   bool operator<(const Bale &o) const { return pos < o.pos; }
 } bales[MAXSZ];
 ll n;
+short tab[MAXSZ][MAXSZ];
 
-bool escape_iter(ll l, ll r)
+
+bool escape(ll l, ll r)
 {
-  while (l > 0 && r <= n)
+  if (tab[l][r] >= 0) return tab[l][r];
+  if (l <= 0 || r > n)
   {
-    printf("cycle: %d-%d\n", l, r);
-    printf("dist: %d, l=%d, r=%d\n", bales[r].pos - bales[l].pos, bales[l].siz, bales[r].siz);
-    if (bales[r].pos - bales[l].pos > bales[r].siz) {printf("++r;\n"); ++r; }
-    if (bales[r].pos - bales[l].pos > bales[l].siz) --l;
-    else if (bales[r].pos - bales[l].pos <= bales[r].siz && r <= n && l > 0) return false; // less than l and less than r
+    printf("escaped! l: %d, r: %d, n: %d\n", l, r, n);
+    return true;
   }
-  return true;
+  cl dist = bales[r].pos - bales[l].pos;
+  if (dist > bales[r].siz || dist > bales[l].siz)
+  {
+    printf("breakthru! dist=%d, %d-%d\n", dist, l, r);
+    if (dist > bales[r].siz)
+      ++r;
+    if (dist > bales[l].siz)
+      --l;
+    printf("-> %d-%d\n", l, r);
+    bool ret = escape(l, r);
+    tab[l][r] = ret;
+    return ret;
+  }
+  tab[l][r] = false;
+  return false;
 }
 
 int main()
@@ -80,6 +94,15 @@ int main()
   }
   fscanf(fin, "%lld", &n);
   printf("n=%d\n", n);
+
+  for (int i=0; i<=n+1; ++i)
+  {
+    for (int j=0; j<=n+1; ++j)
+    {
+      tab[i][j] = -1;
+    }
+  }
+
   for (int i = 1; i <= n; ++i)
   {
     int s, p;
@@ -95,7 +118,7 @@ int main()
     printf("\nbale %d: %d @ %d\n", i, bales[i].siz, bales[i].pos);
 
     printf("%d-%d:\n", i, i + 1);
-    if (!escape_iter(i, i + 1))
+    if (!escape(i, i + 1))
     {
       ret += bales[i + 1].pos - bales[i].pos;
     }
