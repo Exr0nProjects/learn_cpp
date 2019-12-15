@@ -1,1 +1,1 @@
-usaco/bronze/2019dec/lineup
+usaco/bronze/2015open/trapped
