@@ -1,1 +1,1 @@
-usaco/bronze/2015open/trapped
+usaco/silver/2019dec/milkvisits
