@@ -5,3 +5,4 @@
 8:16 | AC #1 | writing #2
 8:27 | AC #2 after minor debugging | analysing #3 more
 8:36 | have plan for #3 | now coding it
+8:58 | AC #3 after writing (no debug needed) | AK -> rest
