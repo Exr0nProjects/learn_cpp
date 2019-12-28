@@ -6,3 +6,4 @@ int main ()
   std::fscanf(fopen("promote.in", "r"), "%d%d%d%d%d%d%d%d", &s1, &s1, &s1, &s2, &g1, &g2, &p1, &p2);
   std::fprintf(fopen("promote.out", "w+"), "%d\n%d\n%d\n", s2-s1 + (g2-g1+(p2-p1)), g2-g1+(p2-p1), p2-p1);
 }
+//* This problem was not "purified" because the usaco soln uses the same method.

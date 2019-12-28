@@ -8,7 +8,8 @@ LANG: C++14
  * Problem angry (usaco/bronze/2016jan/angry)
  * Created Sat 28 Dec 2019 @ 10:15 (PST)
  * Accepted [!meta:end!]
- *
+ ! the minor purification modification for this problem is we only have to simulate the furthest exploding haybale for each explosion stage
+ ! instead of all of them because we can just subtract indicies to get the number of haybales in between
  */
 
 #include <iostream>
@@ -46,29 +47,22 @@ FILE *fout = nullptr;
 
 const int MAXSZ = 110; // todo
 int bales[MAXSZ];
-bool vis[MAXSZ];
-queue<pair<int, int>> q;
 int N;
 
-void simulate(cn i, cn s)
+ll simulate(cn i, cn s, cn d) // d is either -1 or 1 for direction
 {
   for (int j = 0; j < s; ++j)
     printf("  ");
   printf("simulate called (%d, %d)\n", bales[i], s);
 
-  vis[i] = true;
-  for (int p = i - 1; p >= 0 && bales[i] - s <= bales[p]; --p) // left
+  ll next = -1;
+  for (int p = i + d; p >= 0 && p < N && abs(bales[i] - bales[p]) <= s; p += d)
   {
-    if (vis[p])
-      continue;
-    q.push(make_pair(p, s + 1));
+    next = p;
   }
-  for (int p = i + 1; p < N && bales[i] + s >= bales[p]; ++p) // right
-  {
-    if (vis[p])
-      continue;
-    q.push(make_pair(p, s + 1));
-  }
+  if (next < 0)
+    return i;
+  return simulate(next, s + 1, d);
 }
 
 int main()
@@ -94,18 +88,7 @@ int main()
   ll ret = 0;
   for (int i = 0; i < N; ++i)
   {
-    ll t = 0;
-    for (int j = 0; j < N; ++j)
-      vis[j] = false;
-    q.push(make_pair(i, 1));
-    for (; !q.empty(); q.pop())
-    {
-      if (vis[q.front().first])
-        continue;
-      simulate(q.front().first, q.front().second);
-      ++t;
-    }
-    ret = max(ret, t);
+    ret = max(ret, simulate(i, 1, 1) - simulate(i, 1, -1) + 1);
   }
   fprintf(fout, "%lld\n", ret);
 
