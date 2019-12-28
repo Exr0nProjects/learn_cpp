@@ -1,1 +1,1 @@
-usaco/bronze/2016jan/angry
+usaco/bronze/2016jan/promote
