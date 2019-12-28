@@ -45,12 +45,24 @@ FILE *fin = fopen("balancing.in", "r");
 FILE *fout = nullptr;
 
 const int MAXSZ = 110; // todo
-vector<pair<int, int>> cows;
-int n, B; // `B` is not actually used
+vector< pair<int, int> > cows;
+int n, B;
 
-bool cmpy(const pair<int, int> &l, const pair<int, int> &r)
+int bash(cn x, cn y)
 {
-  return l.second < r.second;
+  int count[2][2] = {};
+  int ret = 0;
+  for (const auto &p : cows)
+  {
+    int i = 0, j = 0;
+    if (p.first > x)
+      i = 1;
+    if (p.second > y)
+      j = 1;
+    ++count[i][j];
+    ret = max(ret, count[i][j]);
+  }
+  return ret;
 }
 
 int main()
@@ -72,35 +84,15 @@ int main()
     cows.push_back(make_pair(x, y));
   }
 
-  stable_sort(cows.begin(), cows.end());
-  int x = cows[n / 2 + 1].first - 1;
-  stable_sort(cows.begin(), cows.end(), cmpy);
-  int y = cows[n / 2 + 1].second - 1;
-
-  printf("optimal crossing: (%d, %d)\n", x, y);
-  int count[2][2] = {};
-  int ret = 0;
-  for (const auto &p : cows)
+  int ret = 1000000000;
+  for (int x = 0; x <= B; x += 2)
   {
-    int i = 0, j = 0;
-    if (p.first > x)
-      i = 1;
-    if (p.second > y)
-      j = 1;
-    ++count[i][j];
-    ret = max(ret, count[i][j]);
+    for (int y = 0; y <= B; y += 2)
+    {
+      ret = min(ret, bash(x, y));
+    }
   }
-
   fprintf(fout, "%d\n", ret);
-
   return 0;
 }
-
-/*
-5 10000
-1 9
-1 5
-1 1
-5 3
-5 -1
- */
+/**/

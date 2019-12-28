@@ -73,9 +73,17 @@ int main()
   }
 
   stable_sort(cows.begin(), cows.end());
-  int x = cows[n / 2 + 1].first - 1;
+  for (auto c : cows)
+  {
+    printf("%5d", c.first);
+  }
+  printf("\n");
+  int x = cows[n / 2].first - 1;
   stable_sort(cows.begin(), cows.end(), cmpy);
-  int y = cows[n / 2 + 1].second - 1;
+  for (auto c : cows)
+    printf("%5d", c.second);
+  printf("\n");
+  int y = cows[n / 2].second - 1;
 
   printf("optimal crossing: (%d, %d)\n", x, y);
   int count[2][2] = {};
