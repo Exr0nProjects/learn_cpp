@@ -1,1 +1,1 @@
-usaco/bronze/2016jan/mowing
+usaco/bronze/2016jan/angry
