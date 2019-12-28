@@ -7,7 +7,7 @@ LANG: C++14
 /*
  * Problem mowing (usaco/bronze/2016jan/mowing)
  * Created Sat 28 Dec 2019 @ 09:44 (PST)
- * Accepted [!meta:end!]
+ * Accepted Sat 28 Dec 2019 @ 11:14 (PST)
  *
  */
 
@@ -114,6 +114,7 @@ int main()
     debug();
   }
 
+  if (ret > 1000) ret = -1; // forgot to add edge case
   fprintf(fout, "%d\n", ret);
 
   return 0;
