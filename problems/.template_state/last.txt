@@ -1,1 +1,1 @@
-usaco/silver/2019dec/milkvisits
+usaco/bronze/2015dec/paint
