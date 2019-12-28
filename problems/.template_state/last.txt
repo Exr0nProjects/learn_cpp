@@ -1,1 +1,1 @@
-usaco/bronze/2015dec/paint
+usaco/bronze/2015dec/speeding
