@@ -1,1 +1,1 @@
-usaco/bronze/2015dec/speeding
+usaco/bronze/2015dec/badmilk
