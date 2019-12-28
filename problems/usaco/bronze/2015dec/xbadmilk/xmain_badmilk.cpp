@@ -8,7 +8,8 @@ LANG: C++14
  * Problem badmilk (usaco/bronze/2015dec/badmilk)
  * Created Sat 28 Dec 2019 @ 08:37 (PST)
  * Accepted Sat 28 Dec 2019 @ 08:59 (PST)
- *
+ * 
+ * Not purified because this soln is simpler than the usaco provided one because it abstracts some of the logic away using `std::set`
  */
 
 #include <iostream>

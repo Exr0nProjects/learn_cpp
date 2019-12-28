@@ -8,7 +8,7 @@ LANG: C++14
  * Problem paint (usaco/bronze/2015dec/paint)
  * Created Sat 28 Dec 2019 @ 08:11 (PST)
  * Accepted [!meta:end!]
- * 
+ ! an implementation of the second method described in the usaco problem analysis by Nick Wu (mathy)
  */
 
 #include <bits/stdc++.h>
@@ -47,23 +47,25 @@ FILE* fin = fopen("paint.in", "r");
 FILE* fout = nullptr;
 
 const int MAXSZ = 110; // todo
-bool painted[MAXSZ];
 int a, b, c, d;
 
 
 int main ()
 {
   if (fin) { fout = fopen("paint.out", "w+"); } else { fin = stdin; fout = stdout; }
-  fscanf(fin, "%d%d%d%d", &a, &b, &c, &d);
-  for (int i=a; i<b; ++i) painted[i] = 1;
-  for (int i=c; i<d; ++i) painted[i] = 1;
   
-  ll ret = 0;
-  for (int i=0; i<MAXSZ; ++i)
+  fscanf(fin, "%d%d%d%d", &a, &b, &c, &d);
+  // ensure a starts first
+  if (c < a)
   {
-    ret += painted[i];
+    swap(a, c);
+    swap(b, d);
   }
-  fprintf(fout, "%lld\n", ret);
+  
+  if (b <= c) // no overlap
+    fprintf(fout, "%d\n", b-a + d-c);
+  else // overlap
+    fprintf(fout, "%d\n", max(b, d) - a);
 
   return 0;
 }

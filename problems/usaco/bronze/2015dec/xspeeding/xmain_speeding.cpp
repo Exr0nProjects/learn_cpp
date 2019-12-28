@@ -9,6 +9,7 @@ LANG: C++14
  * Created Sat 28 Dec 2019 @ 08:18 (PST)
  * Accepted Sat 28 Dec 2019 @ 08:28 (PST)
  * 
+ * Not "purified" because my submitted solution already uses the same approach as the given usaco answer
  */
 
 #include <bits/stdc++.h>
