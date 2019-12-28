@@ -7,11 +7,9 @@ LANG: C++14
 /*
  * Problem cbarn (usaco/bronze/2016feb/cbarn)
  * Created Sat 28 Dec 2019 @ 13:21 (PST)
- * Accepted [!meta:end!]
- * 
+ * Accepted Sat 28 Dec 2019 @ 15:08 (PST)
+ *
  */
-
-#include <bits/stdc++.h>
 
 #include <iostream>
 #include <cstdio>
@@ -47,33 +45,52 @@ FILE *fin = fopen("cbarn.in", "r");
 FILE *fout = nullptr;
 
 const int MAXSZ = 1100; // todo
-ll needed[MAXSZ]; 
+ll needed[MAXSZ];
 ll n;
 
 ll test(cl start)
 {
-  ll ans=0;
-  for (int i=0; i<n; ++i)
+  ll ans = 0;
+  for (int i = 0; i < n; ++i)
   {
-    ans += i*needed[(start+i)%n];
+    ans += i * needed[(start + i) % n + 1];
+    printf("  add: %d, ans: %d\n", (start + i) % n + 1, ans);
   }
   return ans;
 }
 
-int main ()
+int main()
 {
-  if (fin) { fout = fopen("cbarn.out", "w+"); } else { fin = stdin; fout = stdout; }
-  fscanf(fin, "%lld", &n);
-  for (int i=1; i<=n; ++i)
+  if (fin)
   {
-    fscanf(fin, "%lld", needed[i]);
+    fout = fopen("cbarn.out", "w+");
+  }
+  else
+  {
+    fin = stdin;
+    fout = stdout;
+  }
+  fscanf(fin, "%lld", &n);
+  for (int i = 1; i <= n; ++i)
+  {
+    fscanf(fin, "%lld", &needed[i]);
   }
 
-  ll ret = -1;
-  for (int i=1; i<=n; ++i)
+  for (int i = 1; i <= n; ++i)
   {
-    if (ret < 0) ret = test(i);
-    else ret = min(ret, test(i));
+    printf("%3lld", needed[i]);
+  }
+  printf("\n");
+
+  //printf("%d", test(1)); return 100;
+
+  ll ret = -1;
+  for (int i = 0; i < n; ++i)
+  {
+    if (ret < 0)
+      ret = test(i);
+    else
+      ret = min(ret, test(i));
   }
 
   fprintf(fout, "%lld\n", ret);
