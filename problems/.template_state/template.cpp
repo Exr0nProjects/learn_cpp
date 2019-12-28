@@ -43,8 +43,8 @@ LANG: C++14
 #define PI 3.14159265358979323846264338
 
 using namespace std;
-FILE* fin = fopen("[!meta:pid!].in", "r");
-FILE* fout = nullptr;
+FILE *fin = fopen("[!meta:pid!].in", "r");
+FILE *fout = nullptr;
 
 const int MAXSZ = -1; // todo
 
