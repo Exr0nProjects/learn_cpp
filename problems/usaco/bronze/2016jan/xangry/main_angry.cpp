@@ -47,29 +47,28 @@ FILE *fout = nullptr;
 const int MAXSZ = 110; // todo
 int bales[MAXSZ];
 bool vis[MAXSZ];
+queue<pair<int, int>> q;
 int N;
 
-ll simulate(cn i, cn s)
+void simulate(cn i, cn s)
 {
   for (int j = 0; j < s; ++j)
     printf("  ");
   printf("simulate called (%d, %d)\n", bales[i], s);
-  ll ret = 1;
+
+  vis[i] = true;
   for (int p = i - 1; p >= 0 && bales[i] - s <= bales[p]; --p) // left
   {
     if (vis[p])
       continue;
-    vis[p] = true;
-    ret += simulate(p, s + 1);
+    q.push(make_pair(p, s + 1));
   }
   for (int p = i + 1; p < N && bales[i] + s >= bales[p]; ++p) // right
   {
     if (vis[p])
       continue;
-    vis[p] = true;
-    ret += simulate(p, s + 1);
+    q.push(make_pair(p, s + 1));
   }
-  return ret;
 }
 
 int main()
@@ -95,10 +94,18 @@ int main()
   ll ret = 0;
   for (int i = 0; i < N; ++i)
   {
+    ll t = 0;
     for (int j = 0; j < N; ++j)
       vis[j] = false;
-    vis[i] = true;
-    ret = max(ret, simulate(i, 1));
+    q.push(make_pair(i, 1));
+    for (; !q.empty(); q.pop())
+    {
+      if (vis[q.front().first])
+        continue;
+      simulate(q.front().first, q.front().second);
+      ++t;
+    }
+    ret = max(ret, t);
   }
   fprintf(fout, "%lld\n", ret);
 
