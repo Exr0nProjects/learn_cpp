@@ -58,8 +58,8 @@ int knapsack(cn i, cn w)
   if (w - weight[i] >= 0)
     ret = max(ret, knapsack(i + 1, w - weight[i]) + value[i]);
   for (int j = 0; j < i; ++j)
-    printf("  ");
-  printf("knapsack %d, %d -> %d\n", i, w, ret);
+   // printf("  "); // FIX: forgot to remove the debug output. 
+  //printf("knapsack %d, %d -> %d\n", i, w, ret);
   tabu[i][w] = ret;
   return ret;
 }
