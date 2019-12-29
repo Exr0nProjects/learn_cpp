@@ -1,1 +1,1 @@
-usaco/bronze/2017jan/notlast
+usaco/bronze/2017jan/cowtip.in
