@@ -43,8 +43,6 @@ LANG: C++14
 #define PI 3.14159265358979323846264338
 
 using namespace std;
-FILE *fin = fopen("4.in", "r");
-FILE *fout = nullptr;
 
 const int MAXSZ = -1; // todo
 
@@ -52,7 +50,6 @@ const int MAXSZ = -1; // todo
 
 int main ()
 {
-  if (fin) { fout = fopen("4.out", "w+"); } else { fin = stdin; fout = stdout; }
   int n;
   scanf("%d", &n);
 
