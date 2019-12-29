@@ -1,3 +1,4 @@
+#!/bin/bash
 dateformat="+%a %d %b %Y @ %R (%Z)"
 cache="./.template_state/last.txt"
 modpath=$1

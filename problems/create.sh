@@ -1,3 +1,4 @@
+#!/bin/bash
 cache="./.template_state/last.txt"
 
 dateformat="+%a %d %b %Y @ %R (%Z)";
@@ -13,5 +14,4 @@ mkdir -p $1
     >> "$1/main_$(basename $1).cpp"\
   && echo "$1" > "$cache"\
   && ./list_completed.sh 
-    
 [[ -s "$1/main_$(basename $1).cpp" ]] && printf "File exists!\n" | exit 1

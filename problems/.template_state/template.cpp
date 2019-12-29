@@ -17,7 +17,7 @@ LANG: C++14
 #include <exception>
 #include <algorithm>
 #include <functional>
-#include <math.h>
+#include <cmath>
 #include <random>
 #include <set>
 #include <map>
