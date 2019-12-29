@@ -1,1 +1,1 @@
-usaco/bronze/2016feb/balancing
+contests/dev.xjoi/dev.xjoi-1351/5
