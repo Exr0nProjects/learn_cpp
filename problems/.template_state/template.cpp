@@ -50,7 +50,7 @@ const int MAXSZ = -1; // todo
 
 int main ()
 {
-  if (fin) { stdin = fin, stdout = fopen("[!meta:pid!].out", "w+"); }
+  if (fin) { stdin = fin; stdout = fopen("[!meta:pid!].out", "w+"); }
 
 
   return 0;
