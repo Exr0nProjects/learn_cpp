@@ -44,21 +44,9 @@ using namespace std;
 FILE *fin = fopen("hps.in", "r");
 FILE *_ = stderr;
 
-const int MAXSZ = 110; // todo
-int pa[MAXSZ], pb[MAXSZ];
+const int MAXSZ = 5; // todo
+int matches[MAXSZ][MAXSZ];
 int n;
-
-int test(int mp[])
-{
-  int ret = 0;
-  for (int i=0; i<n; ++i)
-  {
-    fprintf(_, "%d, %d\n", (mp[pa[i]-1] + 1) % 3, mp[pb[i]-1]);
-    if ((mp[pa[i]-1] + 1) % 3 == (mp[pb[i]-1])%3) ++ret; // FIX: used to be `mp[pa[i]-1] + (1%3)`
-  }
-  fprintf(_, "total: %d\n", ret);
-  return ret;
-}
 
 int main ()
 {
@@ -66,25 +54,13 @@ int main ()
   scanf("%d", &n);
   for (int i=0; i<n; ++i)
   {
-    scanf("%d%d", &pa[i], &pb[i]);
+    int a, b;
+    scanf("%d%d", &a, &b);
+    ++matches[a][b];
   }
   
-  int ret=0;
-  
-  int opts[] = {0, 1, 2};
-  for (int i : opts)
-    for (int j : opts)
-    {
-      if (j == i) continue;
-      for (int k : opts)
-      {
-        if (k == j || k == i) continue;
-        int mp[3] = {i, j, k};
-        ret = max(ret, test(mp));
-      }
-    }
-  
-  printf("%d\n", ret);
+  printf("%d\n", max( matches[1][2] + matches[2][3] + matches[3][1],
+                      matches[2][1] + matches[3][2] + matches[1][3]));
 
   return 0;
 }

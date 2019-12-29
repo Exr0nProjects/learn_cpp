@@ -4,6 +4,7 @@
 
 | Time | Note | Next |
 
+
 ## Purify Notes
 
 -

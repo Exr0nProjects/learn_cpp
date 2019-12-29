@@ -48,39 +48,11 @@ const int MAXSZ = 10; // todo
 int N;
 bool grid[MAXSZ+4][MAXSZ+4];
 
-pair<int, int> farthest(pair<int, int> src)
+void toggle(cn y, cn x)
 {
-  if (grid[src.first][src.second]) return src;
-  if (src.first == 1 && src.second == 1) return make_pair(-1, -1);
-
-  // step
-  if (src.first == N || src.second == 1) // on a teleport edge (bottom and left)
-  {
-    if (src.second == 1) // left edge
-    {
-      src.second = src.first-1;
-      src.first = 1;
-    }
-    else if (src.first == N) // bottom edge but not corner
-    {
-      src.first = src.second-1;
-      src.second = N;
-    }
-  }
-  else
-  {
-    ++src.first;
-    --src.second;
-  }
-  fprintf(_, "  check: (%d, %d)\n", src.first, src.second);
-  return farthest(src);
-}
-
-void toggle(pair<int, int> spot)
-{
-  if (spot.first < 1 || spot.second < 1 || spot.first > N || spot.second > N) return;
-  for (int i=1; i<=spot.first; ++i)
-    for (int j=1; j<=spot.second; ++j)
+  if (y < 1 || x < 1 || y > N || x > N) return;
+  for (int i=1; i<=y; ++i)
+    for (int j=1; j<=x; ++j)
     {
       grid[i][j] = !grid[i][j];
     }
@@ -104,7 +76,6 @@ int main ()
 {
   if (fin) { stdin = fin; stdout = fopen("cowtip.out", "w+"); }
   scanf("%d", &N);
-  fprintf(_, "n=%d\n", N);
   for (int i=1; i<=N; ++i)
   {
     scanf("\n");
@@ -117,20 +88,19 @@ int main ()
   }
   
   int ret = 0;
-  for (int i=0; i<N*N; ++i)
+  for (int i=N; i>0; --i)
   {
-    ca p = farthest(make_pair(N, N));
-    if (p.first < 0 && p.second < 0)
+    for (int j=N; j>0; --j)
     {
-      printf("%d\n", ret);
-      return 0;
+      if (grid[i][j])
+      {
+        toggle(i, j);
+        ++ret;
+      }
     }
-    toggle(p);
-    debug();
-    ++ret;
   }
   
-  printf("1\n");
+  printf("%d\n", ret);
 
   return 0;
 }
