@@ -41,8 +41,6 @@ LANG: C++14
 #define PI 3.14159265358979323846264338
 
 using namespace std;
-FILE *fin = fopen("5.in", "r");
-FILE *fout = nullptr;
 
 const int MAXSZ = 60; // todo
 int maze[MAXSZ][MAXSZ];
@@ -84,15 +82,6 @@ void dfs(cn i, cn j, cn s = 0)
 
 int main()
 {
-  if (fin)
-  {
-    fout = fopen("5.out", "w+");
-  }
-  else
-  {
-    fin = stdin;
-    fout = stdout;
-  }
   scanf("%d", &n);
   for (int i = 0; i < n + 2; ++i)
   {
