@@ -7,7 +7,7 @@ LANG: C++14
 /*
  * Problem 3 (contests/dev.xjoi/dev.xjoi-1351/3)
  * Created Sat 28 Dec 2019 @ 18:08 (PST)
- * Accepted [!meta:end!]
+ * Accepted Sat 28 Dec 2019 @ 20:41 (PST)
  * hanoi with steps
  */
 
@@ -41,8 +41,6 @@ LANG: C++14
 #define PI 3.14159265358979323846264338
 
 using namespace std;
-FILE *fin = fopen("3.in", "r");
-FILE *fout = nullptr;
 
 const int MAXSZ = -1; // todo
 
@@ -60,15 +58,6 @@ string swip(string s, const char a, const char b)
 
 int main()
 {
-  if (fin)
-  {
-    fout = fopen("3.out", "w+");
-  }
-  else
-  {
-    fin = stdin;
-    fout = stdout;
-  }
   int n;
   scanf("%d", &n);
 
