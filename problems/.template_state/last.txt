@@ -1,1 +1,1 @@
-usaco/bronze/2016dec/square
+usaco/bronze/2016dec/blocks
