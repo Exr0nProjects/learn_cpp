@@ -43,8 +43,6 @@ LANG: C++14
 #define PI 3.14159265358979323846264338
 
 using namespace std;
-FILE *fin = fopen("1.in", "r");
-FILE *fout = nullptr;
 
 const int MAXSZ = 100010; // todo
 bool nums[MAXSZ];
@@ -52,8 +50,6 @@ bool nums[MAXSZ];
 
 int main ()
 {
-  if (fin) { fout = fopen("1.out", "w+"); } else { fin = stdin; fout = stdout; }
-
   int n;
   scanf("%d", &n);
   for (int i=2; i<n; ++i)

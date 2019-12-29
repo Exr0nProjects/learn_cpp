@@ -2,7 +2,10 @@
 26 Sep 2019
 */
 
-#include <bits/stdc++.h>
+#include <cstdio>
+#include <vector>
+#include <queue>
+#include <functional>
 using namespace std;
 
 const int MAXSZ = 1010;

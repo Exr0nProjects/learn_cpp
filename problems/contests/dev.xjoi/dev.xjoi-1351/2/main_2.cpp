@@ -41,8 +41,6 @@ LANG: C++14
 #define PI 3.14159265358979323846264338
 
 using namespace std;
-FILE *fin = fopen("2.in", "r");
-FILE *fout = nullptr;
 
 const int MAXSZ = 40; // todo
 int weight[MAXSZ];
@@ -68,15 +66,6 @@ int knapsack(cn i, cn w)
 
 int main()
 {
-  if (fin)
-  {
-    fout = fopen("2.out", "w+");
-  }
-  else
-  {
-    fin = stdin;
-    fout = stdout;
-  }
 
   scanf("%d%d", &m, &n);
   for (int i = 0; i < n; ++i)
