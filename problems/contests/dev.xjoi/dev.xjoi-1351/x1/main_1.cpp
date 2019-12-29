@@ -52,12 +52,12 @@ int main ()
 {
   int n;
   scanf("%d", &n);
-  for (int i=2; i<n; ++i)
+  for (int i=2; i<=n; ++i) // FIX: wants prime numbers up to and including n, not up to n
   {
     if (! nums[i])
     {
       printf("%d ", i);
-      for (int j=2*i; j<n; j += i)
+      for (int j=2*i; j<=n; j += i)
       {
         nums[j] = true;
       }
