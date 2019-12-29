@@ -32,6 +32,7 @@ LANG: C++14
 #define ca const auto &
 #define ll long long
 #define cl const long long
+
 #define UN unsigned
 #define ST static
 #define CN const
@@ -41,7 +42,6 @@ LANG: C++14
 #define PI 3.14159265358979323846264338
 
 using namespace std;
-FILE *fin = fopen("[!meta:pid!].in", "r");
 FILE *_ = stderr;
 
 const int MAXSZ = -1; // todo
@@ -50,7 +50,6 @@ const int MAXSZ = -1; // todo
 
 int main ()
 {
-  if (fin) { stdin = fin, stdout = fopen("[!meta:pid!].out", "w+"); }
 
 
   return 0;

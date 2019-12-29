@@ -6,7 +6,6 @@
 #include <vector>
 #include <queue>
 #include <functional>
-using namespace std;
 
 const int MAXSZ = 1010;
 struct Edge
