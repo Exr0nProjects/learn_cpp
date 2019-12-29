@@ -1,1 +1,1 @@
-usaco/bronze/2016dec/blocks
+usaco/bronze/2016dec/cowsignal
