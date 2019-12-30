@@ -1,1 +1,1 @@
-usaco/bronze/2017dec/measurement
+usaco/bronze/2017dec/billboard
