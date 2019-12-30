@@ -48,6 +48,7 @@ const int MAXSZ = 10; // todo
 int N, K;
 struct China
 {
+  int idx;
   vector<vector<bool> > g; // approx 2 long longs
   China () {
     for (int i=0; i<MAXSZ; ++i)
@@ -66,21 +67,21 @@ void print(const China &p)
   {
     for (int j=0; j<N; ++j)
     {
-      fprintf(_, "%d", (bool) p.g[i][j]);
+      fprintf(_, "%c", (bool) p.g[i][j] ? '#' : '.');
     }
     fprintf(_, "\n");
   }
   fprintf(_, "\n");
 }
 
-bool fits(const China &sub, const China &whole)
+bool fits(const China &a, const China &whole)
 {
   // true if it fits as a picee of the whole
   for (int i=0; i<N; ++i)
   {
     for (int j=0; j<N; ++j)
     {
-      if (sub.g[i][j] && !whole.g[i][j]) return false;
+      if (a.g[i][j] && !whole.g[i][j]) return false; // if `a` has extra bits
     }
   }
   return true;
@@ -97,6 +98,22 @@ bool overlap(const China &a, const China &b)
     }
   }
   return false;
+}
+
+bool finalCmp(const China &a, const China &b, const China &whole)
+{
+  // true if it fits as a picee of the whole
+  fprintf(_, "Final compare between %d and %d: \n", a.idx, b.idx); print(a); print(b);
+  for (int i=0; i<N; ++i)
+  {
+    for (int j=0; j<N; ++j)
+    {
+      fprintf(_, "Checking cell (%d, %d)\n", i, j);
+      if (whole.g[i][j] && (a.g[i][j] == b.g[i][j])) return false; // if should be true and not (only one is true)
+      if (!whole.g[i][j] && (a.g[i][j] || b.g[i][j])) return false; // if should be false and any is true
+    }
+  }
+  return true;
 }
 
 bool shift(const China &src, China &dst, cn si, cn sj)
@@ -129,9 +146,10 @@ bool shift(const China &src, China &dst, cn si, cn sj)
         if (src.g[i][j]) return false;
   }
   
-  fprintf(_, "before shift: \n"); print(src); fprintf(_, "\n");
+  //d*/fprintf(_, "before shift: \n"); print(src); fprintf(_, "\n");
   
   // complete the shift
+  dst.idx = src.idx;
   for (int i=0; i<N; ++i)
     for (int j=0; j<N; ++j)
     {
@@ -140,6 +158,8 @@ bool shift(const China &src, China &dst, cn si, cn sj)
       else
         dst.g[i][j] = 0;
     }
+  
+  //d*/fprintf(_, "shifted:\n"); print(src);
   
   return true;
 }
@@ -175,13 +195,12 @@ int main ()
     }
     
   }
-  print(target);
   
   China in, temp;
   // for each piece
   for (int k=0; k<K; ++k)
   {
-    
+    in.idx = k;
     // input it
     for (int i=0; i<N; ++i)
     {
@@ -189,10 +208,12 @@ int main ()
       for (int j=0; j<N; ++j)
       {
         char c;
-        scanf("%d", &c);
+        scanf("%c", &c); //FIX: this was scanf("%d", ...) which ofc returned nothing
         in.g[i][j] = (c =='#');
       }
     }
+    
+    //d*/fprintf(_, "Input:\n"); print(in);
     
     // shift to all locations
     for (int i=-N; i<=N; ++i)
@@ -202,8 +223,23 @@ int main ()
         if (shift(in, temp, i, j))
         {
           if (fits(temp, target)) // overlap func is actually bad, cuz i need it to allow one to not fully cover the other but not the other way around
-            possible.push_back(target);
+            possible.push_back(temp);
         }
+      }
+    }
+  }
+  
+  for (int i=0; i<possible.size(); ++i)
+  {
+    for (int j=i+1; j<possible.size(); ++j)
+    {
+      fprintf(_, "%d, %d\n", i, j);
+      print(possible[i]); print(possible[j]);
+      if (finalCmp(possible[i], possible[j], target))
+      {
+        // WORKED!
+        printf("%d\n%d\n", possible[i].idx+1, possible[j].idx+1);
+        return 0;
       }
     }
   }
