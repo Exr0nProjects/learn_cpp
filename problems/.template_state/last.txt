@@ -1,1 +1,1 @@
-usaco/bronze/2017dec/billboard
+usaco/bronze/2016open/diamond
