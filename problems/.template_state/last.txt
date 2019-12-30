@@ -1,1 +1,1 @@
-usaco/bronze/2016open/diamond
+usaco/bronze/2016open/reduce
