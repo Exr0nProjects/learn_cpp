@@ -57,9 +57,9 @@ int main ()
   {
     for (int j=-1010; j<1010; ++j)
     {
-      if (((i >= ax1 && i < ax2 && i >= ay1 && i < ay2)  // part of billboard 1
-        || (i >= bx1 && i < bx2 && i >= by1 && i < by2)) // part of billboard 2
-        &&!(i >= xx1 && i < xx2 && i >= xy1 && i < xy2)) // and not blocked by the truck
+      if (((i >= ax1 && i < ax2 && j >= ay1 && j < ay2)  // part of billboard 1
+        || (i >= bx1 && i < bx2 && j >= by1 && j < by2)) // part of billboard 2
+        &&!(i >= xx1 && i < xx2 && j >= xy1 && j < xy2)) // and not blocked by the truck
       {
         ++ret;
       }
