@@ -56,7 +56,7 @@ int toIdx(char c)
   return 0;
 }
 
-pair<int, int> getMax(const int arr[], cn size)
+int getMax(const int arr[], cn size)
 {
   int b = arr[0], x=0;
   for (int i=1; i<size; ++i)
@@ -67,7 +67,7 @@ pair<int, int> getMax(const int arr[], cn size)
       x = i;
     }
   }
-  return make_pair(b, x);
+  return b;
 }
 
 int main ()
@@ -86,21 +86,21 @@ int main ()
   //for (ca i : logs) printf("%d: %3d\n", i.second.first, i.second.second); printf("\n");
   
   int prod[] = {0, 7, 7, 7};
-  int curr[] = {0, 0, 0, 0};
-  int wall = 14, pwall = 0, ret = 0; // maybe two changes on the same day? add retday variable
+  bool wall[] = {0, 0, 0, 0};
+  int ret = 0; // maybe two changes on the same day? add retday variable
   for (int i=0; i<logs.size(); ++i)
   {
     prod[logs[i].second.first] += logs[i].second.second;
-    pair<int, int> best = getMax(prod, 4);
+    int best = getMax(prod, 4);
     
-    wall=0;
     for (int j=1; j<4; ++j)
     {
-      wall = (wall<<1) + (prod[j]==best.first);
+      if (wall[i] != (prod[j]==best)) wall[0] = 1; // change flag
+      wall[i] = prod[j]==best;
     }
     
-    if (wall != pwall) ++ret;
-    pwall = wall;
+    ret += wall[0];
+    wall[0] = 0;
   }
   
   printf("%d\n", ret);
