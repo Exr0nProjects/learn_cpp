@@ -1,1 +1,1 @@
-usaco/bronze/2017dec/shuffle
+usaco/bronze/2017dec/measurement
