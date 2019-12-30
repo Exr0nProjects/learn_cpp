@@ -7,7 +7,7 @@ LANG: C++14
 /*
  * Problem bcs (usaco/bronze/2016open/bcs)
  * Created Mon 30 Dec 2019 @ 12:07 (PST)
- * Accepted [!meta:end!]
+ * Accepted Mon 30 Dec 2019 @ 14:20 (PST)
  *
  */
 
@@ -238,7 +238,7 @@ int main ()
       if (finalCmp(possible[i], possible[j], target))
       {
         // WORKED!
-        printf("%d\n%d\n", possible[i].idx+1, possible[j].idx+1);
+        printf("%d %d\n", possible[i].idx+1, possible[j].idx+1);
         return 0;
       }
     }
