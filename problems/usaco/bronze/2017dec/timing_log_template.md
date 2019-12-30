@@ -8,7 +8,7 @@
 15:27 | AC #2 (almost no debugging needed - input is one indexed fix and extra newline fix) | coding #3
 16:01 | AC #3, that was annoying to write in a way that was simple and clean looking | analysing #1
 16:07 | realize that super bashy #1 actually works! | coding bashy #1
-16:17 | pause | -
+16:19 | AC #1 hecka bashy | pause
 
 ## Purify Notes
 
