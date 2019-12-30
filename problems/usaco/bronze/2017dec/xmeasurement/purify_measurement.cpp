@@ -8,7 +8,7 @@ LANG: C++14
  * Problem measurement (usaco/bronze/2017dec/measurement)
  * Created Sun 29 Dec 2019 @ 15:28 (PST)
  * Accepted [!meta:end!]
- *
+ ! Minor purification changes: rewrote to avoid using bitwise and less variables in general for storing the wall state.
  */
 
 #include <iostream>
