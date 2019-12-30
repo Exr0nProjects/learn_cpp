@@ -13,17 +13,18 @@
 12:56 | have plan for #3 | coding #3
 13:06 | AC #3 | working on #2 i guess
 13:34 | shift code seems to work | now its time to put it all together
+14:01 | AC #2 | pause
 
 ## Purify Notes
 
-### Problem 1:
+### Problem 1: diamond
 
--
+This problem was not modified because it uses the same approach as the USACO soln and is quite simple. 
 
-### Problem 2:
+### Problem 2: bcs
 
--
+My original code for this problem uses the same approach as the USACO soln, but is more readable due to the use of functions. However, it also contains extra logic (to prevent shifting over the edge) which is traded for runtime in the USACO soln. **It is unclear which should be considered better**, so a cpp impl of the usaco soln can be found [here](./xbcs/xnew_bcs.cpp).
 
-### Problem 3:
+### Problem 3: reduce
 
--
+Although my code uses more memory (it stores all the numbers instead of just eight) it is easier to code (no shenanigans with eight different variable names) so I will prefer my code.
