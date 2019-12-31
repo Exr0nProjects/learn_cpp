@@ -7,11 +7,9 @@ LANG: C++14
 /*
  * Problem moocrypt (usaco/bronze/2015open/moocrypt)
  * Created Fri 13 Dec 2019 @ 19:06 (PST)
- * Accepted [!meta:end!]
+ * Accepted Tue Dec 31 2019 @ 14:12 (PST)
  *
  */
-
-#include <bits/stdc++.h>
 
 #include <iostream>
 #include <cstdio>
@@ -100,6 +98,15 @@ int main ()
     }
   }
   
+  for (int i=0; i<=n+3; ++i)
+  {
+    for (int j=0; j<=m+3; ++j)
+    {
+      fprintf(stderr, "%c", board[i][j]);
+    }
+  fprintf(stderr, "\n");
+
+    }
   
 //  printf("%d\n", count(4, 4, 'M', 'O')); return 0;
   
@@ -109,8 +116,10 @@ int main ()
 
   for (char _m='A'; _m<='Z'; ++_m)
   {
+    if (_m == 'M') continue; // FIX: didn't have this.
     for (char _o='A'; _o<='Z'; ++_o)
     {
+      if (_o == 'O') continue;
       if (_m == _o) continue;
       ll t = 0;
       for (int i=2; i<=n+1; ++i)
@@ -118,7 +127,7 @@ int main ()
         for (int j=2; j<=m+1; ++j)
         {
           t += count(i, j, _m, _o);
-          if (_m=='Q' && _o=='M') printf("number @ (%d, %d): %d\n", i, j, count(i, j, _m, _o));
+          //d*/if (_m=='Q' && _o=='M') printf("number @ (%d, %d): %d\n", i, j, count(i, j, _m, _o));
         }
       }
       if (t) printf("t = %d with m=%c, o=%c\n", t, _m, _o);
@@ -126,7 +135,7 @@ int main ()
     }
   }
 
-  fprintf(fout, "%d\n", ret);
+  fprintf(fout, "%lld\n", ret);
 
   return 0;
 }
