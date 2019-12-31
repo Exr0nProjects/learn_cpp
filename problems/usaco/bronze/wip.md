@@ -5,11 +5,8 @@
 **These problems have yet to be solved.**
 
 - [bronze14dec learning](./2014dec/learning/main-learning.cpp)
-- [bronze15feb censor](./2015feb/censor/main_censor.cpp)
-- [bronze15open geteven](./2015open/geteven/main_geteven.cpp)
-- [bronze15open moocrypt](./2015open/moocrypt/main_moocrypt.cpp)
+- 
 - [bronze15open palpath](./2015open/palpath/new_palpath.cpp)
-- [bronze15open trapped](./2015open/trapped/main_trapped.cpp)
 
 ## Unsolved during contest
 
@@ -19,6 +16,10 @@
 [bronze2014dec cowjog](./2014dec/xcowjog/purify_cowjog.cpp) | Read the problem wrong, had cows moving backwards
 [bronze2015jan meeting](./2015jan/xmeeting/purify_meeting.cpp) | Was written with two dfs functions, consolodated and purified to use less storage and code
 [bronze2015feb cow](./2015feb/xcow/new_cow.cpp) | Misunderstood dp dimensions
+[bronze15feb censor](./2015feb/xcensor/xnew_censor.cpp) | Didn't remember to just look back a few chars simply instead of from beginning or with fancy KMP stuff
+[bronze15open geteven](./2015open/xgeteven/xbashy_geteven.cpp) | Bashy method works if you only pay attention to even or odd.
+[bronze15open trapped](./2015open/xtrapped/xnew_trapped.cpp) | Bashy recursive simulation is fast enough
+[bronze15open moocrypt](./2015open/xmoocrypt/xmain_moocrypt.cpp) | Didn't read problem fully: I had 'M' and 'O' mapping to itself.
 [bronze2015dec paint](./2015dec/xpaint/xpurify_paint.cpp) | Used bashy method instead of mathy one
 [bronze2016jan angry](./2016jan/xangry/xpurify_angry.cpp) | Purify to simulate only furthest explosion instead of all of them, then subtract indicies
 [bronze2016feb balancing](./2016feb/xbalancing/bash_balancing.cpp) | Didn't realize that I could take advantage of only checking around places that matter
