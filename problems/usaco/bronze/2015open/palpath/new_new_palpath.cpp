@@ -8,7 +8,7 @@ LANG: C++14
  * Problem palpath (usaco/bronze/2015open/palpath)
  * Created Fri 13 Dec 2019 @ 19:45 (PST)
  * Accepted [!meta:end!]
- *
+ * Note: this is the same algorithm as  the usaco answer (except it  uses two dfs funcs instead of a transpose) but still TLEs.
  */
 
 #include <iostream>
@@ -24,6 +24,7 @@ LANG: C++14
 #include <tuple>
 #include <string>
 #include <vector>
+#include <unordered_set>
 #include <unordered_map>
 #include <queue>
 #include <stack>
