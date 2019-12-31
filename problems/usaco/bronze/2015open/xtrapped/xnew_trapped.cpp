@@ -53,9 +53,19 @@ bool ram(int l, int r)
 {
   if (l < 0 || r >= bales.size()) return true;
   
-  if (bales[r].first - bales[l].first > bales[r].second) ++r;
-  else  if  (bales[r].first  -bales[l].first > bales[l].second) --l;
-  else return false;
+  if (bales[r].first - bales[l].first > bales[r].second)
+  {
+    ++r;
+  }
+  else if (bales[r].first  -bales[l].first > bales[l].second)
+  {
+    --l;
+  }
+  else
+  {
+    return false;
+  }
+  
   return ram(l, r);
 }
 
