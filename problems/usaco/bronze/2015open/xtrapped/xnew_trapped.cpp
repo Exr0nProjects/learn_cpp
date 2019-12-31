@@ -6,8 +6,8 @@ LANG: C++14
 
 /*
  * Problem trapped (usaco/bronze/2015open/trapped)
- * Created Sun 15 Dec 2019 @ 08:59 (PST)
- * Accepted [!meta:end!]
+ * Created Tue Dec 31 2019 @ earlier (PST)
+ * Accepted Tue 31 Dec 2019 @ 12:27 (PST)
  *
  */
 
