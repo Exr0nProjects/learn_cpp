@@ -34,3 +34,4 @@
 [bronze2017jan hps](./2017jan/xhps/xpurify_hps.cpp) | Didn't realize that I only need to check two posibilities instead of all permutations of three elements
 [bronze2017dec billboard](./2017dec/xbillboard/xmain_billboard.cpp) | Used bashy method instead of mathy one
 [bronze2017dec measurement](./2017dec/xmeasurement/purify_measurement.cpp) | Rewrote to use less varibables and no bitwise
+[bronze19open buckets](./2019open/xbuckets/xmain_buckets.cpp) | Rewrote to use math (only one rock) instead of bfs
