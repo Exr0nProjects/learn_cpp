@@ -5,8 +5,14 @@
 **These problems have yet to be solved.**
 
 - [bronze14dec learning](./2014dec/learning/main-learning.cpp)
-- 
 - [bronze15open palpath](./2015open/palpath/new_palpath.cpp)
+- [bronze18open family](./2018open/family/main_family.cpp)
+- [bronze18open tttt](./2018open/tttt/main_tttt.cpp)
+- [bronze18open milkorder] (not started)
+
+## Badly needs purification
+- [bronze19open evolution](./2019open/xevolution/xstash_evolution_wip.cpp)
+- [bronze19open factory](./2019open/xfactory/xmain_factory.cpp)
 
 ## Unsolved during contest
 
