@@ -1,1 +1,1 @@
-usaco/bronze/2019open/buckets
+usaco/bronze/2019open/factory
