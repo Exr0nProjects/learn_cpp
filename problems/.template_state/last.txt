@@ -1,1 +1,1 @@
-usaco/bronze/2018open/family
+usaco/bronze/2019open/buckets
