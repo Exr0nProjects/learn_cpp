@@ -1,1 +1,1 @@
-usaco/bronze/2019open/factory
+onlinejudge/dp/2
