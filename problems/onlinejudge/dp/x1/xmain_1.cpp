@@ -7,7 +7,7 @@ LANG: C++14
 /*
  * Problem 1 (onlinejudge/dp/1)
  * Created Thu 02 Jan 2020 @ 15:44 (PST)
- * Accepted [!meta:end!]
+ * Accepted Fri 03 Jan 2020 @ 10:03 (PST)
  * https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=114&page=show_problem&problem=944
  * 10003 - Cutting Sticks
  */
@@ -55,9 +55,9 @@ int cutStick(cn l, cn r, cn step = 0)
 {
   if (tabu[l][r] >= 0)
     return tabu[l][r];
-  for (int i = 0; i < step; ++i)
-    cerr << "  ";
-  cerr << "cutStick called on a stick of len " << cuts[r] - cuts[l] << " and " << l << ", " << r << endl;
+  // for (int i = 0; i < step; ++i)
+  //   cerr << "  ";
+  // cerr << "cutStick called on a stick of len " << cuts[r] - cuts[l] << " and " << l << ", " << r << endl;
   if (l >= r - 1)
     return 0;
   int ret = 0x7FFFFFF;
