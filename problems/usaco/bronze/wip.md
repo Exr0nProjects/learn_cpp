@@ -4,7 +4,6 @@
 
 **These problems have yet to be solved.**
 
-- [bronze14dec learning](./2014dec/learning/main-learning.cpp)
 - [bronze15open palpath](./2015open/palpath/new_palpath.cpp)
 - [bronze18open family](./2018open/family/main_family.cpp)
 - [bronze18open tttt](./2018open/tttt/main_tttt.cpp)
@@ -20,6 +19,7 @@
 
 | Problem | Notes |
 [bronze2014dec cowjog](./2014dec/xcowjog/purify_cowjog.cpp) | Read the problem wrong, had cows moving backwards
+[bronze14dec learning](./2014dec/learning/main-learning.cpp) | Added an edge case wrong, should only increment `b` on upper half. (dfd231d0a6167b75f10323754acbca2b57eb63cf)
 [bronze2015jan meeting](./2015jan/xmeeting/purify_meeting.cpp) | Was written with two dfs functions, consolodated and purified to use less storage and code
 [bronze2015feb cow](./2015feb/xcow/new_cow.cpp) | Misunderstood dp dimensions
 [bronze15feb censor](./2015feb/xcensor/xnew_censor.cpp) | Didn't remember to just look back a few chars simply instead of from beginning or with fancy KMP stuff
