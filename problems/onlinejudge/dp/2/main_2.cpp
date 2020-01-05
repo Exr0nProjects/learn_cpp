@@ -121,18 +121,18 @@ int dp(cn i)
   if (ret > 0)
     return ret;
   ret = 1; // not 1 because what if there are no edges?
-           //  for (int e = head[i]; e; e = edges[e].n)
-           //  {
-           //    if (strcmp(strs[i].c_str(), strs[edges[e].t].c_str()) > 0) // lex compare
-           //    {
-           //      ret = max(ret, dp(edges[e].t) + 1);
-           //    }
-           //  }
-  for (int j = 1; j < strs.size(); ++j)
+//  for (int e = head[i]; e; e = edges[e].n)
+//  {
+//    if (strcmp(strs[i].c_str(), strs[edges[e].t].c_str()) > 0) // lex compare
+//    {
+//      ret = max(ret, dp(edges[e].t) + 1);
+//    }
+//  }
+  for (int j=1; j<strs.size(); ++j)
   {
     if (adj[i][j] && strcmp(strs[i].c_str(), strs[j].c_str()) > 0)
     {
-      ret = max(ret, 1 + dp(j));
+      ret = max(ret, 1+dp(j));
     }
   }
   fprintf(_, "dp(%d) -> %d\n", i, ret);
@@ -147,18 +147,17 @@ int main()
     stdin = fin;
     stdout = fopen("2.out", "w+");
   }
-
-  //  string a, b;
-  //  cin >> a >> b;
-  //  cout << isStep(a, b) << endl;
-  //  cout << a << endl << b << endl;
-  //  return 0;
-
-  int N;
-  scanf("%d", &N); // TODO: this only exists becasue I don't know how to input an arbitrary number of strings
+  
+//  string a, b;
+//  cin >> a >> b;
+//  cout << isStep(a, b) << endl;
+//  cout << a << endl << b << endl;
+//  return 0;
+  
+  int N; scanf("%d", &N); // TODO: this only exists becasue I don't know how to input an arbitrary number of strings
 
   char buf[20];
-  for (int k = 1; k <= N; ++k)
+  for (int k = 1; k<=N; ++k)
   {
     scanf("%s", buf);
     string s = buf;
@@ -174,25 +173,22 @@ int main()
     strs.push_back(s);
   }
 
-  //  fprintf(_, "Head: "); for (int i=1; i<N; ++i) fprintf(_, "%4d", head[i]);
-  //
-  //  fprintf(_, "\n\nidx:  "); for (int i=1; i<ect; ++i) fprintf(_, "%4d", i);
-  //  fprintf(_, "\nfrom: "); for (int i=1; i<ect; ++i) fprintf(_, "%4d", edges[i].f);
-  //  fprintf(_, "\nto:   "); for (int i=1; i<ect; ++i) fprintf(_, "%4d", edges[i].t);
-  //  fprintf(_, "\nnext: "); for (int i=1; i<ect; ++i) fprintf(_, "%4d", edges[i].n); fprintf(_, "\n\n\n");
-
-  fprintf(_, "   ");
-  for (int i = 1; i < strs.size(); ++i)
-    fprintf(_, "%3d", i);
-  for (int i = 1; i < strs.size(); ++i)
+//  fprintf(_, "Head: "); for (int i=1; i<N; ++i) fprintf(_, "%4d", head[i]);
+//
+//  fprintf(_, "\n\nidx:  "); for (int i=1; i<ect; ++i) fprintf(_, "%4d", i);
+//  fprintf(_, "\nfrom: "); for (int i=1; i<ect; ++i) fprintf(_, "%4d", edges[i].f);
+//  fprintf(_, "\nto:   "); for (int i=1; i<ect; ++i) fprintf(_, "%4d", edges[i].t);
+//  fprintf(_, "\nnext: "); for (int i=1; i<ect; ++i) fprintf(_, "%4d", edges[i].n); fprintf(_, "\n\n\n");
+  
+  fprintf(_, "   "); for (int i=1; i<strs.size(); ++i) fprintf(_, "%3d", i);
+  for (int i=1; i<strs.size(); ++i)
   {
     fprintf(_, "\n%2d:", i);
-    for (int j = 1; j < strs.size(); ++j)
+    for (int j=1; j<strs.size(); ++j)
     {
-      fprintf(_, "%3c", adj[i][j] ? '#' : '.');
+      fprintf(_, "%3c", adj[i][j]?'#':'.');
     }
-  }
-  fprintf(_, "\n");
+  } fprintf(_, "\n");
 
   int ret = 0;
   for (int i = 1; i < strs.size(); ++i)
