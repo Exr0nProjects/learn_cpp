@@ -11,8 +11,6 @@ LANG: C++14
  * problem # 490
  */
 
-#include <bits/stdc++.h>
-
 #include <iostream>
 #include <cstdio>
 #include <utility>
@@ -82,7 +80,6 @@ int main()
 
   //fscanf(fin, "%d%d%d", &n, &a, &b);
   fscanf(fin, "%d%d%d", &n, &a, &b);
-  ++b; // our intervals don't count the upper bound, so we increment so when it counts to one below the upper bound, it is actually the original upper bound
   for (int i = 0; i < n; ++i)
   {
     char s[5];
@@ -113,18 +110,19 @@ int main()
     {
       int s = max(l, a);
       int e = min(m, b);
+      printf("s=%d, e=%d\n", s, e);
       ret += max(e - s + 1, 0);
     }
     printf("    %d ", ret);
     if (herd[i + 1].s) // top half
     {
       int s = max(m + 1, a); // not m, because we want the interval to start at the next one
-      int e = min(r, b);
+      int e = min(r, b + 1); // FIX: b+1 because the top half doesn't count the upper bound but if it is be then we want to count the upper bound
       ret += max(e - s, 0);
     }
     printf("%d ", ret);
     // above will undercount center if upper but not lower
-    if ((!herd[i].s) && herd[i + 1].s && herd[i].w % 2 == herd[i + 1].w % 2 && a <= m && m <= b)
+    if ((!herd[i].s) && herd[i + 1].s && (herd[i].w % 2) == (herd[i + 1].w % 2) && a <= m && m <= b)
     {
       ++ret;
     }
