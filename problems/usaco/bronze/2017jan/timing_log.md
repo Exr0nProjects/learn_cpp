@@ -3,6 +3,7 @@
 ## Contest Timeline
 
 | Time | Note | Next |
+|----|----|----|
 11:07 | start | reading problems
 11:15 | have plans for first 2 problems (1 is iffy) | writing #2
 11:33 | 4/10 (final 6 WA) for #2 | researching for #1

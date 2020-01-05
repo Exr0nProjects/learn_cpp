@@ -3,6 +3,7 @@
 ## Contest Timeline
 
 | Time | Note | Next |
+|----|----|----|
 15:11 | start | reading problems
 15:17 | have plans for 2, 3, idea for 1 | coding #2
 15:27 | AC #2 (almost no debugging needed - input is one indexed fix and extra newline fix) | coding #3

@@ -3,6 +3,7 @@
 ## Contest Timeline
 
 | Time | Note | Next |
+|----|----|----|
 15:00 | start | reading problems
 15:08 | have plans for one and two, no clue for #3 | writing #1
 15:13 | AC #1 | writing #2

@@ -3,6 +3,7 @@
 ## Contest Timeline
 
 | Time | Note | Next |
+|----|----|----|
 
 
 ## Purify Notes

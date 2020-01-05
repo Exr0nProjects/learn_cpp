@@ -3,6 +3,7 @@
 ## Contest Timeline
 
 | Time | Note | Next |
+|----|----|----|
 10:01 | start | reading problems
 10:08 | finish reading problems, have plan for all three | coding 1
 10:17 | AC #1 | now working on #2

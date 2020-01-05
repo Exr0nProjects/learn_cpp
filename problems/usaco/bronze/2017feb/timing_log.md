@@ -3,6 +3,7 @@
 ## Contest Timeline
 
 | Time | Note | Next |
+|----|----|----|
 14:00 | start | reading problems
 14:07 | have plans for all three problems, they seem suspiciously simple... | coding #1
 14:11 | AC #1 (first try, almost no debugging) | coding #2

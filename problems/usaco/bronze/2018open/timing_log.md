@@ -3,6 +3,7 @@
 ## Contest Timeline
 
 | Time | Note | Next |
+|----|----|----|
 15:04 | start | reading problems
 15:14 | have plans for  1, 3 | starting #1
 15:36 | waiting for result on #1 | starting #3

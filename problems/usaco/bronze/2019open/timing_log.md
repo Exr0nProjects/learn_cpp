@@ -3,6 +3,7 @@
 ## Contest Timeline
 
 | Time | Note | Next |
+|----|----|----|
 10:05 | start | reading problems
 10:10 | have plans for 1, 2, 50% guess on 3 so submitting that first | writing guessy 3
 10:11 | waiting for grading | writing #1

@@ -3,6 +3,7 @@
 ## Contest Timeline
 
 | Time | Note | Next |
+|----|----|----|
 11:37 | start | reading problems
 11:45 | have plans for 1, maybe 3 | coding #1
 11:48 | realize that 1 might be harder than I thought because the total diff < K not diff from one < K | analysing #1

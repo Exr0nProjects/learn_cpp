@@ -18,6 +18,7 @@
 **These problems were either not solved during the course of the contest due to lack of skill or were poorly written and needed significant purification.**
 
 | Problem | Notes |
+|----|----|
 [bronze2014dec cowjog](./2014dec/xcowjog/purify_cowjog.cpp) | Read the problem wrong, had cows moving backwards
 [bronze14dec learning](./2014dec/learning/main-learning.cpp) | Added an edge case wrong, should only increment `b` on upper half. (dfd231d0a6167b75f10323754acbca2b57eb63cf)
 [bronze2015jan meeting](./2015jan/xmeeting/purify_meeting.cpp) | Was written with two dfs functions, consolodated and purified to use less storage and code
