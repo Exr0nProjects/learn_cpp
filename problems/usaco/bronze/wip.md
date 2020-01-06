@@ -19,7 +19,7 @@
 | Problem | Notes |
 |----|----|
 [bronze2014dec cowjog](./2014dec/xcowjog/purify_cowjog.cpp) | Read the problem wrong, had cows moving backwards
-[bronze14dec learning](./2014dec/learning/main-learning.cpp) | Added an edge case wrong, should only increment `b` on upper half. See [dfd231d](dfd231d).
+[bronze14dec learning](./2014dec/learning/main-learning.cpp) | Added an edge case wrong, should only increment `b` on upper half. See [dfd231d](dfd231d) Exr0n@dfd231d.
 [bronze2015jan meeting](./2015jan/xmeeting/purify_meeting.cpp) | Was written with two dfs functions, consolodated and purified to use less storage and code
 [bronze2015feb cow](./2015feb/xcow/new_cow.cpp) | Misunderstood dp dimensions
 [bronze15feb censor](./2015feb/xcensor/xnew_censor.cpp) | Didn't remember to just look back a few chars simply instead of from beginning or with fancy KMP stuff
