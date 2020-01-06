@@ -6,8 +6,8 @@ LANG: C++14
 
 /*
  * Problem [!meta:pid!] [!meta:srcpath!]
- * Created [!meta:beg!]
- * Accepted [!meta:end!]
+ * Create time: [!meta:beg!]
+ * Accept time: [!meta:end!]
  * 
  */
 

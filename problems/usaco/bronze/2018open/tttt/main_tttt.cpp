@@ -7,8 +7,8 @@ LANG: C++14
 /*
  * Problem tttt (usaco/bronze/2018open/tttt)
  * Created Tue 31 Dec 2019 @ 15:14 (PST)
- * Accepted [!meta:end!]
- *
+ * Accepted Sun 05 Jan 2020 @ 18:37 (PST)
+ * FIX: both players in each pair must appear in the winning combo.
  */
 
 #include <iostream>
@@ -54,15 +54,49 @@ bool canWin(char a, char b)
   bool ret = false;
   for (int i=0; i<3; ++i)
   {
-    bool h=true, v=true;
+    // in arr, true = bad (screwed up, not a win)
+    bool ah, av, bh, bv;
+    ah = av = bh = bv = false;
+    bool v=true, h=true;
     for (int j=0; j<3; ++j)
     {
       char c = board[i][j];
       char d = board[j][i];
       if (!(c==a||c==b)) h=false;
       if (!(d==a||d==b)) v=false;
+      
+      // scuffed player tracking
+      // FIX: originally had it so that if one player could win on their own then it would get paired with every other and carry that other player, resulting in way too many pairs
+      // Thus, we simply make sure that both players have contributed per win.
+      ah |= c == a;
+      av |= d == a;
+      bh |= c == b;
+      bv |= d == b;
+      
+//      if (a == 'A' && b == 'B')
+//      {
+//        printf("(%d, %d) c=%c, d=%c, h=%d, v=%d\n", i, j, c, d, h, v);
+//        printf("ah: %d, av: %d, bh: %d, bv: %d\n\n", ah, av, bh, bv);
+//      }
     }
-    ret |= h || v;
+    
+    ret |= ((h&&ah&&bh) || (v&&av&&bv)); // direction good and both used
+    
+    
+    
+//    bool h=true, v=true;
+//    bool _a = false, _b = false;
+//    for (int j=0; j<3; ++j)
+//    {
+//      char c = board[i][j];
+//      char d = board[j][i];
+//      if (!(c==a||c==b)) h=false;
+//      if (!(d==a||d==b)) v=false;
+//
+//      if (c==a || d==a) _a = true;
+//      if (c==b || d==b) _b = true; // used a and b
+//    }
+//    ret |= (h || v)*(_a && _b);
   }
 
   // center
@@ -109,7 +143,7 @@ int main ()
   for (char c:players)
     for (char d:players)
     {
-      if (c > d) ret += canWin(c, d);
+      if (c < d) ret += canWin(c, d);
     }
     
   printf("%d\n", ret);
