@@ -44,7 +44,7 @@ using namespace std;
 FILE* fin = fopen("palpath.in", "r");
 FILE* fout = nullptr;
 
-const int MAXSZ = 30; // todo
+const int MAXSZ = 300; // todo
 int n;
 char farm[MAXSZ][MAXSZ];
 unordered_set<string> pals;
@@ -52,8 +52,8 @@ unordered_set<string> pals2;
 
 void firstWalk(cn  i, cn j, string s)
 {
-  s = s + string{farm[i][j]};
-  if (i+j+1 == n)
+  s = s + string{farm[i][j]}; // add to the tracker
+  if (i+j+1 == n) // if on the diagonal
   {
 //    fprintf(stderr, " %s", s.c_str());
     pals.insert(s);
@@ -80,7 +80,7 @@ void secondWalk(cn i, cn j, string s)
 }
 
 int compare()
-{
+{ // instead of using unordered_set.erase() in the base case of secondWalk
   int ret=0;
   for (const string &s : pals)
   {
@@ -107,7 +107,7 @@ int main ()
   }
   
   firstWalk(0, 0, "");
-  fprintf(stderr, "\n");
+  //fprintf(stderr, "\n");
   secondWalk(n-1, n-1, "");
 
   fprintf(fout, "%d\n", compare());
