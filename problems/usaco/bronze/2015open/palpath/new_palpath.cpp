@@ -6,12 +6,9 @@ LANG: C++14
 
 /*
  * Problem palpath (usaco/bronze/2015open/palpath)
- * Created Sun Dec 15 2019 @ 08:56 (PST)
+ * Created Mon 06 Jan 2020 @ 20:13 (PST)
  * Accepted [!meta:end!]
- ! 2x DFS going from one corner to the center diagonal line
  */
-
-#include <bits/stdc++.h>
 
 #include <iostream>
 #include <cstdio>
@@ -26,6 +23,7 @@ LANG: C++14
 #include <tuple>
 #include <string>
 #include <vector>
+#include <unordered_set>
 #include <unordered_map>
 #include <queue>
 #include <stack>
@@ -43,79 +41,76 @@ LANG: C++14
 #define PI 3.14159265358979323846264338
 
 using namespace std;
-FILE *fin = fopen("palpath.in", "r");
-FILE *fout = nullptr;
+FILE* fin = fopen("palpath.in", "r");
+FILE* fout = nullptr;
 
 const int MAXSZ = 30; // todo
 int n;
 char farm[MAXSZ][MAXSZ];
-set<string> pals;
+unordered_set<string> pals;
+unordered_set<string> pals2;
 
-void walk(cl i, cl j, const string &p = "")
+void firstWalk(cn  i, cn j, string s)
 {
-  if (!farm[i][j]) // out of bounds
-    return;
-  // if (i == n && j == n) // at the end
-  // {
-  //   printf((p + "\n").c_str());
-  //   // check if its a palendrome
-  //   for (int i=1; i<p.length(); ++i)
-  //   {
-  //     if (p[i] != p[p.length()-i]) return;
-  //   }
-  //   printf(("palendrome: " + p + "\n").c_str());
-  //   pals.insert(p);
-  //   return;
-  // }
-  if (i + j - 2 > n && (p[2 * n - i - j + 1] != p[i + j - 3])) // if this step makes it a non-palendrome
+  s = s + string{farm[i][j]};
+  if (i+j+1 == n)
   {
-    printf("\n%d, %d", 2 * n - i - j + 1, i + j - 3);
-    printf("\n%c == %c\n", p[2 * n - i - j + 1], p[i + j - 3]);
-    printf(("not a palendrome: " + p + "\n").c_str());
+//    fprintf(stderr, " %s", s.c_str());
+    pals.insert(s);
     return;
   }
-  if (i == n && j == n) // if this is the end and we still have a palendrome
-  {
-    printf("made it to the end!\n");
-    pals.insert(p);
-    return;
-  }
-  walk(i + 1, j, p + string{farm[i][j]});
-  walk(i, j + 1, p + string{farm[i][j]});
+  if (i+1<n)
+    firstWalk(i+1, j, s);
+  if (j+1<n)
+    firstWalk(i, j+1, s);
 }
 
-int main()
+void secondWalk(cn i, cn j, string s)
 {
-  if (fin)
+  s =  s + string{farm[i][j]};
+  if (i+j+1 == n)
   {
-    fout = fopen("palpath.out", "w+");
+    pals2.insert(s);
+    return;
   }
-  else
+  if (i-1>=0)
+    secondWalk(i-1, j, s);
+  if (j-1>=0)
+    secondWalk(i, j-1, s);
+}
+
+int compare()
+{
+  int ret=0;
+  for (const string &s : pals)
   {
-    fin = stdin;
-    fout = stdout;
+    if (pals2.find(s) != pals2.end())
+    {
+      ++ret;
+    }
   }
+  return ret;
+}
+
+int main ()
+{
+  if (fin) { fout = fopen("palpath.out", "w+"); } else { fin = stdin; fout = stdout; }
 
   fscanf(fin, "%d", &n);
-  for (int i = 0; i <= n + 1; ++i)
-    for (int j = 0; j <= n + 1; ++j)
-      farm[i][j] = '\0';
-  for (int i = 1; i <= n; ++i)
+  for (int i=0; i<n; ++i)
   {
     fscanf(fin, "\n");
-    for (int j = 1; j <= n; ++j)
+    for (int j=0; j<n; ++j)
     {
       fscanf(fin, "%c", &farm[i][j]);
     }
   }
-  if (farm[1][1] != farm[n][n]) // dfs only checks for palendromes in the center (since you must start at beginning and end at end)
-  {
-    printf("0\n");
-    return 0;
-  }
-  walk(1, 1);
+  
+  firstWalk(0, 0, "");
+  fprintf(stderr, "\n");
+  secondWalk(n-1, n-1, "");
 
-  fprintf(fout, "%d\n", pals.size());
+  fprintf(fout, "%d\n", compare());
 
   return 0;
 }

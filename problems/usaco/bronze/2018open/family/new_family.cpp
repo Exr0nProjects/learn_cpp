@@ -6,7 +6,7 @@ LANG: C++14
 
 /*
  * Problem family (usaco/bronze/2018open/family)
- * Created Mon 06 Dec 2019 @ 18:32 (PST)
+ * Created Mon 06 Dec 2020 @ 18:32 (PST)
  * Accepted [!meta:end!]
  * 
  */
