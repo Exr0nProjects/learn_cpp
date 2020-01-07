@@ -50,12 +50,15 @@ int n, ret=0;
 char farm[MAXSZ][MAXSZ];
 unordered_set<string> pals;
 
+int function_calls = 0; // incremented to 62 for sample case, more than double the new version... why?
+
 void firstWalk(cn  i, cn j, string s)
 {
+  ++function_calls;
   s = s + string{farm[i][j]};
   if (i+j+1 == n)
   {
-    fprintf(stderr, " %s", s.c_str());
+//    fprintf(stderr, " %s", s.c_str());
     pals.insert(s);
     return;
   }
@@ -67,16 +70,17 @@ void firstWalk(cn  i, cn j, string s)
 
 void secondWalk(cn i, cn j, string s)
 {
+  ++function_calls;
   s =  s + string{farm[i][j]};
   if (i+j+1 == n)
   {
     if (pals.find(s) != pals.end())
     {
       pals.erase(s);
-      fprintf(stderr, " %s", s.c_str());
+//      fprintf(stderr, " %s", s.c_str());
       ++ret;
-      return;
     }
+    return;
   }
   if (i-1>=0)
     secondWalk(i-1, j, s);

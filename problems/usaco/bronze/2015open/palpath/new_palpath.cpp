@@ -50,8 +50,11 @@ char farm[MAXSZ][MAXSZ];
 unordered_set<string> pals;
 unordered_set<string> pals2;
 
+int function_calls = 0; // incremented to 30 for sample test case
+
 void firstWalk(cn  i, cn j, string s)
 {
+  ++function_calls;
   s = s + string{farm[i][j]}; // add to the tracker
   if (i+j+1 == n) // if on the diagonal
   {
@@ -67,6 +70,7 @@ void firstWalk(cn  i, cn j, string s)
 
 void secondWalk(cn i, cn j, string s)
 {
+  ++function_calls;
   s =  s + string{farm[i][j]};
   if (i+j+1 == n)
   {
@@ -80,7 +84,8 @@ void secondWalk(cn i, cn j, string s)
 }
 
 int compare()
-{ // instead of using unordered_set.erase() in the base case of secondWalk
+{ // FIX: instead of using unordered_set.erase() in the base case of secondWalk
+  ++function_calls;
   int ret=0;
   for (const string &s : pals)
   {
