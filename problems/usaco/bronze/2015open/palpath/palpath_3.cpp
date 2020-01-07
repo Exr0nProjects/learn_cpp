@@ -72,7 +72,7 @@ void secondWalk(cn i, cn j, string s)
 {
   ++function_calls;
   s =  s + string{farm[i][j]};
-  if (i+j+1 == n)
+  if (i+j+1 >= n) // FIX: this also would've solved the problem, although a little less percisely
   {
     if (pals.find(s) != pals.end())
     {
@@ -80,7 +80,7 @@ void secondWalk(cn i, cn j, string s)
 //      fprintf(stderr, " %s", s.c_str());
       ++ret;
     }
-    return;
+    return; // FIX: return even when we don't find a palendrome, because otherwise we start going past the diagonal and don't recover until we hit the top corner!
   }
   if (i-1>=0)
     secondWalk(i-1, j, s);
