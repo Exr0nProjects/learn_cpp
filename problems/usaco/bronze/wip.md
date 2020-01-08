@@ -5,7 +5,6 @@
 **These problems have yet to be solved.**
 
 - [bronze18open family](./2018open/family/main_family.cpp)
-- [bronze18open milkorder] (not started)
 
 ## Badly needs purification
 - [bronze19open evolution](./2019open/xevolution/xstash_evolution_wip.cpp)
@@ -35,4 +34,5 @@
 [bronze2017dec billboard](./2017dec/xbillboard/xmain_billboard.cpp) | Used bashy method instead of mathy one
 [bronze2017dec measurement](./2017dec/xmeasurement/purify_measurement.cpp) | Rewrote to use less varibables and no bitwise
 [bronze18open tttt](./2018open/xtttt/xmain_tttt.cpp) | Needed to ensure that both cows in the pair contribute to a pair win
+[bronze18open milkorder](./2018open/xmilkorder/xmain_milkorder.cpp) | Had no idea how to do problem, found better method after looking at solution (put every cow in as optimally as possible and then try to insert cow 1)
 [bronze19open buckets](./2019open/xbuckets/xmain_buckets.cpp) | Rewrote to use math (only one rock) instead of bfs
