@@ -8,7 +8,7 @@ LANG: C++14
  * Problem family (usaco/bronze/2018open/family)
  * Created Tue 31 Dec 2019 @ 15:37 (PST)
  * Accepted [!meta:end!]
- * 
+ *
  */
 
 #include <iostream>
@@ -57,43 +57,77 @@ int main ()
   ios_base::sync_with_stdio(false);
   cin.tie(NULL);
   cin >> N;
+  string _a, _b;
   cin >> _a >> _b;
   a.push_back(_a);
   b.push_back(_b);
-  for (int i=0; i<N: ++i)
+  for (int i=0; i<N; ++i)
   {
     string f, s;
     cin >> f >> s;
     if (s == a[a.size()-1]) a.push_back(f);
     if (s == b[b.size()-1]) b.push_back(f);
   }
+  
+  fprintf(_, "\na:\n");
+  for (ca s : a) fprintf(_, "%s\n", s.c_str());
+  
+  fprintf(_, "b:\n");
+  for (ca s : b) fprintf(_, "%s\n", s.c_str());
 
+  int dist_a=-1, dist_b=-1;
   for (int i=0; i<a.size(); ++i)
   {
     for (int j=0; j<b.size(); ++j)
     {
-      if (a[i] == b[j])
+      fprintf(_, "%s == %s\n", a[i].c_str(), b[j].c_str());
+      if (a[i] == b[j]) // common anscestor found!
       {
-        if (i > 1 && j > 1)
-        {
-          printf("COUSINS");
-          return 0;
-        }
-
-        else if (i == 0)
-        {
-          if (j == 1) printf("%s is mother of %s")
-        }
-        else if (i == 1)
-        {
-
-          if (j == 2) printf("%s is aunt of %s", a[i], b[j]);
-          if (j == 1) printf("SIBLINGS", a[i], b[j]);
-          if (j == 0) printf("%s is the mother of %s", b[j], a[i]);
-        }
-        
+        dist_a = i;
+        dist_b = j;
+        break;
       }
     }
+    if (dist_a>0 || dist_b>0) break; // should never be one but not the other, but just in case
+  }
+  fprintf(_, "dist_a = %d, dist_b = %d\n", dist_a, dist_b);
+  if (dist_a+dist_b < 0)
+  {
+    printf("NOT RELATED\n");
+    return 0;
+  }
+  if (dist_a == 0 && dist_b == 0)
+  {
+    printf("SIBLINGS\n");
+    return 0;
+  }
+  if (dist_a > 1 && dist_b > 1)
+  {
+    printf("COUSINS\n");
+    return 0;
+  }
+
+  if (dist_a > dist_b)
+  {
+    // swap
+    swap(a[0], b[0]);
+    swap(dist_a, dist_b);
+  }
+  printf("%s is the ", a[0].c_str());
+  for (int i=2; i<dist_b; ++i) printf("great-");
+  if (dist_a == 0)
+  {
+    // direct descendant
+    if (dist_b >= 2) printf("grand-");
+    printf("mother of %s\n", b[0].c_str());
+    return 0;
+  }
+  else if (dist_a == 1)
+  {
+    // aunt
+//    if (dist_b >= 2) printf("great-");
+    printf("aunt of %s\n", b[0].c_str());
+    return 0;
   }
 
   return 0;
