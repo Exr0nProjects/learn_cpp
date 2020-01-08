@@ -7,7 +7,7 @@ LANG: C++14
 /*
  * Problem palpath (usaco/bronze/2015open/palpath)
  * Created Mon 06 Jan 2020 @ 21:14 (PST)
- * Accepted [!meta:end!]
+ * Accepted Tue 07 Jan 2020 @ 19:44 (PST)
  * This is a copy of palpath_3, with the fatal flaw fixed (where in the second dfs, if a palendrome was not found then it kept going instead of stopping on the diagonal)
  * It fixes the bug where it thinks there are palendromes when the two segments end in different places
  */
@@ -50,6 +50,7 @@ const int MAXSZ = 30; // todo
 int n, ret=0;
 char farm[MAXSZ][MAXSZ];
 set<pair<int, string> > pals; // FIX: check ending location of each string, only need one int because the string can only end on a diagonal, where each location on the diagonal is gaurenteed to have distinct x and y values
+unordered_set<string> final_sift;
 
 int function_calls = 0; // incremented to 62 for sample case, more than double the new version... why?
 
@@ -78,7 +79,8 @@ void secondWalk(cn i, cn j, string s)
     auto search = make_pair(i, s);
     if (pals.find(search) != pals.end())
     {
-//      pals.erase(search); // FIX: not actually needed (multiple first parts should be able to match to a palendromic-complement second part)
+      pals.erase(search);
+      final_sift.insert(s);
       fprintf(stderr, "secnd: %d %s\n", i, s.c_str());
       ++ret;
     }
@@ -108,18 +110,20 @@ int main ()
   fprintf(stderr, "\n");
   secondWalk(n-1, n-1, "");
 
-  fprintf(fout, "%d\n", ret);
+  fprintf(fout, "%d\n", final_sift.size());
 
   return 0;
 }
 
 /*
+ count distinct palendromes, not paths
  3
  ABC
  DEB
  FBA
- => 3
+ => 2
  
+ count connected paths
  4
  AAAA
  BCDE
@@ -133,4 +137,11 @@ int main ()
  GHIJ
  KAAA
  => 0
+ 
+ dont overcount different unconnected paths
+ 3
+ ABC
+ DCB
+ EFA
+ => 1
  */
