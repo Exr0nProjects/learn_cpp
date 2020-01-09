@@ -47,8 +47,10 @@ FILE *_ = stderr;
 
 const int MAXSZ = 110; // todo
 int N;
-vector<string> a;
-vector<string> b;
+//vector<string> a;
+//vector<string> b;
+
+unordered_map<string, string> parent;
 
 
 int main ()
@@ -59,39 +61,58 @@ int main ()
   cin >> N;
   string _a, _b;
   cin >> _a >> _b;
-  a.push_back(_a);
-  b.push_back(_b);
+//  a.push_back(_a);
+//  b.push_back(_b);
   for (int i=0; i<N; ++i)
   {
     string f, s;
     cin >> f >> s;
-    if (s == a[a.size()-1]) a.push_back(f);
-    if (s == b[b.size()-1]) b.push_back(f);
+    parent[s] = f;
+//    if (s == a[a.size()-1]) a.push_back(f);
+//    if (s == b[b.size()-1]) b.push_back(f);
   }
   
-  fprintf(_, "\na:\n");
-  for (ca s : a) fprintf(_, "%s\n", s.c_str());
+//  fprintf(_, "\na:\n"); for (ca s : a) fprintf(_, "%s\n", s.c_str());
   
-  fprintf(_, "b:\n");
-  for (ca s : b) fprintf(_, "%s\n", s.c_str());
+  //fprintf(_, "b:\n"); for (ca s : b) fprintf(_, "%s\n", s.c_str());
 
+/// old code from bad vector version
+//  for (int i=0; i<a.size(); ++i)
+//  {
+//    for (int j=0; j<b.size(); ++j)
+//    {
+//      fprintf(_, "%s == %s\n", a[i].c_str(), b[j].c_str());
+//      if (a[i] == b[j]) // common anscestor found!
+//      {
+//        dist_a = i;
+//        dist_b = j;
+//        break;
+//      }
+//    }
+//    if (dist_a>0 || dist_b>0) break; // should never be one but not the other, but just in case
+//  }
   int dist_a=-1, dist_b=-1;
-  for (int i=0; i<a.size(); ++i)
+  bool flag=true;
+  for (string a=_a; flag; a=parent[a])
   {
-    for (int j=0; j<b.size(); ++j)
+    ++dist_a;
+    dist_b = -1; // FIX: forgot to reset for each iter of loop
+    for (string b=_b; true; b=parent[b])
     {
-      fprintf(_, "%s == %s\n", a[i].c_str(), b[j].c_str());
-      if (a[i] == b[j]) // common anscestor found!
+      ++dist_b;
+      fprintf(_, "at step [%d %d] %s==%s\n", dist_a, dist_b, a.c_str(), b.c_str());
+      if (a == b)
       {
-        dist_a = i;
-        dist_b = j;
+        fprintf(_, "YEP!\n");
+        flag=false;
         break;
       }
+      if (!parent.count(b)) break; // end of chain
     }
-    if (dist_a>0 || dist_b>0) break; // should never be one but not the other, but just in case
+    if (!parent.count(a)) break; // end of chain
   }
   fprintf(_, "dist_a = %d, dist_b = %d\n", dist_a, dist_b);
-  if (dist_a+dist_b < 0)
+  if (flag) // FIX: forgot that flag was negative
   {
     printf("NOT RELATED\n");
     return 0;
@@ -110,25 +131,36 @@ int main ()
   if (dist_a > dist_b)
   {
     // swap
-    swap(a[0], b[0]);
+    swap(_a, _b);
     swap(dist_a, dist_b);
   }
-  printf("%s is the ", a[0].c_str());
+  printf("%s is the ", _a.c_str());
   for (int i=2; i<dist_b; ++i) printf("great-");
   if (dist_a == 0)
   {
     // direct descendant
     if (dist_b >= 2) printf("grand-");
-    printf("mother of %s\n", b[0].c_str());
+    printf("mother of %s\n", _b.c_str());
     return 0;
   }
   else if (dist_a == 1)
   {
     // aunt
 //    if (dist_b >= 2) printf("great-");
-    printf("aunt of %s\n", b[0].c_str());
+    printf("aunt of %s\n", _b.c_str());
     return 0;
   }
 
   return 0;
 }
+
+/*
+ 1 AA BB
+ AA BB
+ => AA is mother of BB
+ 
+ 2 AA BB
+ AA mother
+ mother BB
+ => AA is grand-mother of BB
+ */
