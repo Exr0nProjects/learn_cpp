@@ -112,12 +112,12 @@ int main ()
     if (!parent.count(a)) break; // end of chain
   }
   fprintf(_, "dist_a = %d, dist_b = %d\n", dist_a, dist_b);
-  if (flag) // FIX: forgot that flag was negative
+  if (flag) // FIX: flag is negative so no need to negate it again in if statement
   {
     printf("NOT RELATED\n");
     return 0;
   }
-  if (dist_a == 0 && dist_b == 0)
+  if (dist_a == 1 && dist_b == 1) // siblings should not be self
   {
     printf("SIBLINGS\n");
     return 0;
@@ -155,12 +155,26 @@ int main ()
 }
 
 /*
- 1 AA BB
- AA BB
- => AA is mother of BB
- 
- 2 AA BB
- AA mother
- mother BB
- => AA is grand-mother of BB
+1 AA BB
+AA BB
+=> AA is mother of BB
+
+2 AA BB
+AA mother
+mother BB
+=> AA is grand-mother of BB
+
+0 AA BB
+=> NOT RELATED
+
+3 AA BB
+ans BB
+ans CC
+CC AA
+=> BB is the aunt of AA
+
+2 AA BB
+m AA
+m BB
+=> SIBLINGS
  */

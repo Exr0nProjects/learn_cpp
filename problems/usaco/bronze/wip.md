@@ -4,7 +4,7 @@
 
 **These problems have yet to be solved.**
 
-- [bronze18open family](./2018open/family/main_family.cpp)
+Hooray there's nothing here!
 
 ## Badly needs purification
 - [bronze19open evolution](./2019open/xevolution/xstash_evolution_wip.cpp)
@@ -35,4 +35,5 @@
 [bronze2017dec measurement](./2017dec/xmeasurement/purify_measurement.cpp) | Rewrote to use less varibables and no bitwise
 [bronze18open tttt](./2018open/xtttt/xmain_tttt.cpp) | Needed to ensure that both cows in the pair contribute to a pair win
 [bronze18open milkorder](./2018open/xmilkorder/xmain_milkorder.cpp) | Had no idea how to do problem, found better method after looking at solution (put every cow in as optimally as possible and then try to insert cow 1)
+[bronze18open family](./2018open/xfamily/xmain_family.cpp) | Also didn't know how to write, had to look at soln and use map instead of vector version incase some parents got added before child (see commit history) and various other fixes
 [bronze19open buckets](./2019open/xbuckets/xmain_buckets.cpp) | Rewrote to use math (only one rock) instead of bfs
