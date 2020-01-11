@@ -1,1 +1,1 @@
-usaco/silver/2015dec/highcard
+usaco/silver/2016jan/gates
