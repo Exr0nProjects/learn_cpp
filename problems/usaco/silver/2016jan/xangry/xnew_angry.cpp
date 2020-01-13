@@ -7,7 +7,7 @@ LANG: C++14
 /*
  * Problem angry (usaco/silver/2016jan/angry)
  * Create time: Sun 12 Jan 2020 @ 14:13 (PST)
- * Accept time: [!meta:end!]
+ * Accept time: Sun 12 Jan 2020 @ 16:34 (PST)
  *
  */
 
