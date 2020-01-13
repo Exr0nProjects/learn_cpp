@@ -71,13 +71,15 @@ int works(cn r)
 
 int search(cn low, cn high)
 {
+  fprintf(_, "search %d..%d, works=%d\n", low, high, works((low + high) / 2));
   if (high <= low)
     return high;
 
-  if (works(low + high / 2))
-    return search(low, low + high / 2);
+  int mid = (low + high) / 2;
+  if (works(mid))
+    return search(low, mid);
   else
-    return search(low + high / 2 + 1, high);
+    return search(mid + 1, high);
 }
 
 int main()
