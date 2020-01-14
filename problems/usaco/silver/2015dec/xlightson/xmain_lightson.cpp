@@ -7,8 +7,8 @@ LANG: C++14
 /*
  * Problem lightson (usaco/silver/2015dec/lightson)
  * Create time: Mon 13 Jan 2020 @ 07:58 (PST)
- * Accept time: [!meta:end!]
- * 
+ * Accept time: Mon 13 Jan 2020 @ 19:20 (PST)
+ *
  */
 
 #include <iostream>
@@ -49,23 +49,51 @@ const int MAXSZ = 110; // todo
 int N, M;
 vector<pair<int, int> > switches[MAXSZ][MAXSZ];
 bool on[MAXSZ][MAXSZ];
-bool vis[MAXSZ][MAXSZ];
+int vis[MAXSZ][MAXSZ];
 int dy[] = {0, 1, 0, -1};
 int dx[] = {1, 0, -1, 0};
 
+void debug()
+{
+  return;
+  fprintf(_, "         ");
+  for (int i=0; i<=N+1; ++i) fprintf(_, "%3d", i);
+  
+  fprintf(_, "\n    on:\n");
+  for (int i=0; i<=N+1; ++i)
+  {
+    fprintf(_, "    %3d: ", i);
+    for (int j=0; j<=N+1; ++j)
+    {
+      fprintf(_, "%3c", on[i][j] ? 'X' : '.');
+    }
+    fprintf(_, "\n");
+  }
+  
+  fprintf(_, "________________\n\n");
+}
+
 void search(cn i, cn j)
 {
+//  fprintf(_, "called search %d, %d\n", i, j);
+  debug();
   if (vis[i][j]) return;
   vis[i][j] = true;
+  // turn on all lights from this room and search those if possible
   for (ca nxt : switches[i][j])
   {
     on[nxt.first][nxt.second] = true;
-    // check if it has a visited neighbor
+    // check if it has a visited neighbor, if so visit it
     for (int id=0; id<4; ++id)
-      if (vis[nxt.first+dy[id]][nxt.second+dx[id]])
+    {
+//      fprintf(_, "  id %d: %2d + %2d = %2d     %2d + %2d = %2d\n", id, nxt.first, dy[id], nxt.first+dy[id], nxt.second, dx[id], nxt.second+dx[id]);
+      if (vis[nxt.first+dy[id]][nxt.second+dx[id]]>0 && !vis[nxt.first][nxt.second])
+      {
         search(nxt.first, nxt.second);
+      }
+    }
   }
-  // visit unvisited neighbors
+  // visit unvisited neighbors (aka follow the chain from this location)
   for (int idx=0; idx<4; ++idx)
     if (on[i+dy[idx]][j+dx[idx]])
       search(i+dy[idx], j+dx[idx]);
@@ -77,7 +105,7 @@ int main ()
   scanf("%d%d", &N, &M);
   for (int i=0; i<=N+1; ++i)
   { // set search boundaries
-    vis[i][0] = vis[i][N+1] = vis[0][i] = vis[N+1][i] = true;
+    vis[i][0] = vis[i][N+1] = vis[0][i] = vis[N+1][i] = -1;
   }
   for (int i=0; i<M; ++i)
   {
@@ -86,8 +114,9 @@ int main ()
     switches[a][b].push_back(make_pair(c, d));
   }
 
-  queue<pair<int, int> > q;
-  q.push(make_pair(1, 1));
+//  queue<pair<int, int> > q;
+//  q.push(make_pair(1, 1));
+  on[1][1] = true;
   search(1, 1);
 
   // Count the number of lights
@@ -99,3 +128,13 @@ int main ()
 
   return 0;
 }
+
+/*
+ 
+// unvisitable lights
+ 3 2
+ 1 1 2 3
+ 2 3 3 3
+ => 2
+ 
+ */
