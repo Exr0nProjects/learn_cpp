@@ -4,7 +4,7 @@
 
 **These problems have yet to be solved.**
 
-Nothing here yet.
+- Check everything in 2016feb
 
 ## Badly needs purification
 

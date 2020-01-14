@@ -73,7 +73,7 @@ int main()
   stable_sort(pos_y, pos_y + N);
   stable_sort(pos_x, pos_x + N);
 
-  int ret = INT16_MAX;
+  int ret = INT32_MAX;
   for (int i = max(0, N / 2 - 100); i < min(N, N / 2 + 100); ++i)
   //  for (int i=0; i<N; ++i)
   {

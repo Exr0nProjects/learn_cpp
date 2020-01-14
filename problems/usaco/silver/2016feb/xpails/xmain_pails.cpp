@@ -51,13 +51,12 @@ int a, b, K, M;
 
 int recurse(cn i, cn j, cn k) // i = milk in a, j = milk in b, k = steps remaining + fencepost corrections
 {
+//  printf("%3d %3d   %3d\n", i, j, k);
+  if (k <= 0) return (int) abs(i + j - M);
   if (mem[i][j][k] > 0) return mem[i][j][k];
   
-  if (k == 1) return abs(i + j - M);
-
-  int ret = INT32_MAX;
   // do nothing
-  ret = min(ret, recurse(i, j, k-1));
+  int ret = abs(i+j-M);
   // empty one of the buckets
   ret = min(ret, min(
     recurse(0, j, k-1),
@@ -66,7 +65,7 @@ int recurse(cn i, cn j, cn k) // i = milk in a, j = milk in b, k = steps remaini
   // fill one of the buckets
   ret = min(ret, min(
     recurse(a, j, k-1),
-    recurse(b, j, k-1)
+    recurse(i, b, k-1)
   ));
   // pour one into the other
   ret = min(ret, min(
@@ -90,6 +89,8 @@ int main ()
 //  }
 
   scanf("%d%d%d%d", &a, &b, &K, &M);
+  
+//  fprintf(_, "%d %d %d %d\n", a, b, K, M);
 
   printf("%d\n", recurse(0, 0, K));
 
@@ -107,4 +108,8 @@ int main ()
  10 10 7 1 => 8 0
  10 10 9 10 => 10 9
  10 10 10 5 => 10 5
+ 
+ 
+ 10 100 8 80 => 0
+ 10 100 2 80 => 10
  */
