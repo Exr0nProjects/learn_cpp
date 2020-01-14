@@ -64,16 +64,24 @@ int main()
     pos.push_back(make_pair(pos_y[i], pos_x[i]));
   }
 
+  if (N <= 2)
+  {
+    printf("1\n");
+    return 0;
+  }
+
   stable_sort(pos_y, pos_y + N);
   stable_sort(pos_x, pos_x + N);
 
   int ret = INT16_MAX;
-  for (int dy : pos_y)
+  for (int i = max(0, N / 2 - 100); i < min(N, N / 2 + 100); ++i)
+  //  for (int i=0; i<N; ++i)
   {
-    for (int dx : pos_x)
+    int dy = pos_y[i] + 1;
+    for (int j = max(0, N / 2 - 100); j < min(N, N / 2 + 100); ++j)
+    //    for (int j=0; j<N; ++j)
     {
-      ++dy;
-      ++dx;
+      int dx = pos_x[i] + 1;
       int a, b, c, d, mx;
       a = b = c = d = mx = 0;
       for (ca cow : pos)
