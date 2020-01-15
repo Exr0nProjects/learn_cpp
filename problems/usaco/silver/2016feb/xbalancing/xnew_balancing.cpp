@@ -7,7 +7,7 @@ LANG: C++14
 /*
  * Problem balancing (usaco/silver/2016feb/balancing)
  * Create time: Tue 14 Jan 2020 @ 19:29 (PST)
- * Accept time: [!meta:end!]
+ * Accept time: Tue 14 Jan 2020 @ 20:10 (PST)
  *
  */
 

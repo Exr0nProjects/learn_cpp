@@ -18,4 +18,5 @@ Nothing here yet.
 |----|----|
 [2015dec lightson](./2015dec/xlightson/xmain_lightson.cpp) | Didn't know how to search while gaurenteeing visiting all locations. Soln checks each location when first switched on, and visits chains so that connecting a new lighted reigon gets visited by chaining.
 [2016jan angry](./2016jan/xangry/xnew_angry.cpp) | Didn't think of binary searching for `R`
-[2016jan div7](./2016jan/xdiv7/xmain_div7.cpp) | Didn't understand how to use prefix trees with modulo, or notice that two prefixes with same mod 7 meant interval between them was a multiple of  7
+[2016jan div7](./2016jan/xdiv7/xmain_div7.cpp) | Didn't understand how to use prefix trees with modulo, or notice that two prefixes with same mod 7 meant interval between them was a multiple of 7.
+[2016feb balancing](./2016feb/xbalancing/xnew_balancing.cpp) | Didn't know how to count cows in each quadrant given a fence crossing, but the Usaco soln uses a running count as it sweeps the vertical fence across, thus obtaining `O(n^2)` complexity instead of my original `O(n^3)`.

@@ -28,6 +28,7 @@ Didn't know how to use the key insight that we want all cows to walk as little a
 ### Problem 2: balancing
 
 Didn't know how to write O(n) single fence sweep, so my soln was N^3 which is too slow, while using a little more logic we can get that down to N^2.
+Basically, in the usaco soln, for each possible y value of the fence, we count how many cows are above and below. Then, we jump the x fence from left to right, adding the number of cows jumped over at each jump to the left quadrant of top or bottom. Then, the number of cows in the top right quadrant at that x fence position is the number of total cows above the horizontal fence minus the number of cows on the top left, and similarly for the bottom. (In my code I used `above_idx` for top left and `below_idx` for bottom left).
 
 ### Problem 3: pails
 
