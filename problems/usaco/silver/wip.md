@@ -4,7 +4,7 @@
 
 **These problems have yet to be solved.**
 
-- Check everything in 2016feb
+- `2016feb cbarn`
 
 ## Badly needs purification
 
