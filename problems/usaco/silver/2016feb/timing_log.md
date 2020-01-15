@@ -21,14 +21,14 @@
 
 ## Purify Notes
 
-### Problem 1:
+### Problem 1: cbarn
 
--
+Didn't know how to use the key insight that we want all cows to walk as little as possible, rathar than having one cow walk really far.
 
-### Problem 2:
+### Problem 2: balancing
 
--
+Didn't know how to write O(n) single fence sweep, so my soln was N^3 which is too slow, while using a little more logic we can get that down to N^2.
 
-### Problem 3:
+### Problem 3: pails
 
--
+This problem was written with top down dp while the usaco soln used bottom up DP. It defined the problem as `bool dp[i][j] = whether or not we can end up with i milk in a and j milk in b`, while I defined it as `int dp[k][i][j] = best soln if after k steps we have i milk in a and j milk in b`. These definitions yield the same time complexity (n^3).
