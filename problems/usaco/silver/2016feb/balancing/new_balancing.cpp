@@ -75,30 +75,37 @@ int main()
   int ret = INT32_MAX;
   for (auto divy : pos)
   {
-    int top_left=0, bot_left=0, top=0, bot=0;
+//    fprintf(_, "divy @ %d\n", divy.second+1);
+    int top=0, bot=0;
     
-    map<int, int> above; // map<x_coord, count_of_cows_with_that_x_coord>
-    map<int, int> below;
+    vector<int> above; // map<x_coord, count_of_cows_with_that_x_coord>
+    vector<int> below;
     for (ca p : pos) // count the number of cows above and below the horizontal fence
     {
       if (p.second > divy.second +1)
       {
         ++bot;
-        if (below.count(p.first)) ++below[p.first];
-        else below[p.first] = 1;
+        below.push_back(p.first);
       }
       else
       {
         ++top;
-        if (above.count(p.first)) ++above[p.first];
-        else above[p.first] = 1;
+        above.push_back(p.first);
       }
     }
-    for (ca p : pos)
+    int below_idx=0, above_idx=0;
+    for (; below_idx < below.size() || above_idx < above.size();)
     {
-      if (above.count(p.first)) top_left += above[p.first];
-      if (below.count(p.first)) bot_left += below[p.first];
-      ret = min(ret, max(max(top_left, top-top_left), max(bot_left, bot-bot_left)));
+      int border = INT32_MAX;
+      if (below_idx < below.size()) // can increment below
+        border = min(border, below[below_idx]); // move to the next one
+      if (above_idx < above.size()) // can increment in above
+        border = min(border, above[above_idx]); // move to the next one (minned with above so its the next over the entire data not just below the yborder)
+      // increment along each list to count the cows that are now on the left of the xborder
+      for (; below_idx < below.size() && below[below_idx] == border; ++below_idx);
+      for (; above_idx < above.size() && above[above_idx] == border; ++above_idx);
+      // min answer with this division with all others
+      ret = min(ret, max(max(above_idx, top-above_idx), max(below_idx, bot-below_idx)));
     }
   }
 
