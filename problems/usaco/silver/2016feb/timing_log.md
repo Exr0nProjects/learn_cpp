@@ -24,6 +24,8 @@
 ### Problem 1: cbarn
 
 Didn't know how to use the key insight that we want all cows to walk as little as possible, rathar than having one cow walk really far.
+new_cbarn was based off [thecodingwizard's solution](https://github.com/thecodingwizard/competitive-programming/blob/master/USACO/2016feb/gold/cbarn.cpp), which runs in N^2 (instead of O(N)like the usaco soln), but doesn't use fancy math and is easier to reason about. It's still plenty fast.  
+The way it works is first, it finds a suitable starting location by looping through the barn twice and finding a proper ending location, and then adding one. Then, it starts going around the rooms from that starting location and puts all cows it encounters in a queue, where each cow in the queue started in the same or an earlier room than the previous one. Then, at each new room it drops off the first cow and picks up the cows that were there already, thus gaurenteeing that the cow that walked furthest stays in each new room. Time: `O(N)`, space: `O(N)`.
 
 ### Problem 2: balancing
 
