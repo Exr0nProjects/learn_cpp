@@ -1,1 +1,1 @@
-usaco/silver/2016dec/haybales
+usaco/silver/2016dec/moocast

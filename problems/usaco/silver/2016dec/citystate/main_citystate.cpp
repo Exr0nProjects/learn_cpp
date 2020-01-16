@@ -64,7 +64,7 @@ int main ()
     ++locs[make_pair(make_pair(c1, c2), make_pair(s1, s2))];
   }
 
-  int ret = 0;
+  ll ret = 0;
   for (ca p : locs)
   {
 //    printf("checking %c%c:%c%c -> %d\n", p.first.first.first, p.first.first.second, p.first.second.first, p.first.second.second, p.second);
@@ -73,12 +73,12 @@ int main ()
       ret += p.second * locs.at(make_pair(p.first.second, p.first.first)); // FIX: originally forgot to multiply by p.second
       if (p.first.first == p.first.second) // if the reverse would match itself
       {
-        -- ret; // don't overcount
+        ret -= p.second; // don't overcount, FIX: subtract p.second instead of just 1
       }
     }
   }
 
-  printf("%d\n", ret/2);
+  printf("%lld\n", ret/2);
 
   return 0;
 }
@@ -89,4 +89,24 @@ int main ()
  BBA AA
  BBB AA
  => 2
+ 
+ 4
+ AA BB
+ AA BB
+ BB AA
+ BB AA
+ => 4
+ 
+ 2
+ ABCDEFGHIJ AA
+ EPIKKK AA
+ => 0
+ 
+ 5
+ AA AA
+ AA AA
+ AA AA
+ AA AA
+ AA AA
+ => 10
  */
