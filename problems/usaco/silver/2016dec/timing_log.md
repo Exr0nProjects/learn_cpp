@@ -12,6 +12,9 @@
 21:31 | no clue why #3 is RE | debugging #2
 21:41 | fixed one problem in #2, now 4/10 (others WA) | debugging #2
 21:50 | fixed under anti-overcount, made ret ll, still 4/10 | pause
+16 Jan 2020 19:41 | continue | debugging #2
+19:54 | AC #2 | debugging #3 (a bunch of REs??)
+
 
 ## Purify Notes
 
