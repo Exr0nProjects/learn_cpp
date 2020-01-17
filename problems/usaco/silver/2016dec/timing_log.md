@@ -14,7 +14,7 @@
 21:50 | fixed under anti-overcount, made ret ll, still 4/10 | pause
 16 Jan 2020 19:41 | continue | debugging #2
 19:54 | AC #2 | debugging #3 (a bunch of REs??)
-
+20:33 | AC #3 | rest and purify (total time: 2h 10m)
 
 ## Purify Notes
 

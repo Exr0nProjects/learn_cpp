@@ -7,7 +7,7 @@ LANG: C++14
 /*
  * Problem moocast (usaco/silver/2016dec/moocast)
  * Create time: Wed 15 Jan 2020 @ 21:13 (PST)
- * Accept time: [!meta:end!]
+ * Accept time: Thu 16 Jan 2020 @ 20:31 (PST)
  *
  */
 
@@ -123,7 +123,8 @@ int main ()
 //    for (int e=head[s]; e; e=edges[e].n)
 //      printf("%02d ", edges[e].t);
 //    printf("\n");
-//    for (int j=1; j<=N; ++j) vis[j] = false;
+  
+  for (int j=1; j<=N; ++j) vis[j] = false; // FIX: accedentally comented out this line
     
     ret = max(ret, dfs(s));
   }
