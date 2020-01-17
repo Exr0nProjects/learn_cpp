@@ -25,6 +25,7 @@ LANG: C++14
 #include <unordered_map>
 #include <tuple>
 #include <string>
+#include <cstring>
 #include <vector>
 #include <queue>
 #include <stack>
