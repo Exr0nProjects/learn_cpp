@@ -18,14 +18,16 @@
 
 ## Purify Notes
 
-### Problem 1:
+All solutions used the same logic, analysis, and algorithm as the usaco soln. There was no significant purification.
+
+### Problem 1: haybales
 
 -
 
-### Problem 2:
+### Problem 2: citystate
 
--
+Didn't read the problem properly. Had to skip any city state where the city and state were the same (to avoid counting pairs within one state).
 
-### Problem 3:
+### Problem 3: moocast
 
--
+Termination condition didn't work. Was setting `vis` array after recursive calls so the DFS was still visiting already visited nodes.
