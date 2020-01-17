@@ -74,15 +74,24 @@ void addEdge(cn a, cn b)
 
 // traversial
 int mem[MAXSZ];
-int dfs(cn s)
+bool vis[MAXSZ];
+int recurse_depth=0;
+int dfs(cn s, cn p=0)
 {
-  if (mem[s] > 0) return mem[s];
+//  fprintf(_, "dfs(%d) recurse depth: %d\n", s, ++recurse_depth);
+//   if (vis[s]) return mem[s];
+  if (vis[s]) return 0;
+  vis[s] = true; // FIX: mem was getting set after the recurse calls so relying on mem for vis was faulty
+  
   int ret=1; // myself
   for (int e=head[s]; e; e=edges[e].n)
   {
-    ret += dfs(edges[e].t);
+    if (edges[e].t == p) continue; // don't visit the previous node
+    ret += dfs(edges[e].t, s);
   }
+  
   mem[s] = ret;
+  --recurse_depth;
   return ret;
 }
 
@@ -90,11 +99,11 @@ int main ()
 {
   if (fin) { stdin = fin; stdout = fopen("moocast.out", "w+"); }
   scanf("%d", &N);
-  for (int i=0; i<N; ++i)
+  for (int i=1; i<=N; ++i) // FIX: make everything one indexed (cuz we use edgelist)
   {
     scanf("%d%d%d", &rawx[i], &rawy[i], &rawp[i]);
 
-    for (int j=0; j<i; ++j)
+    for (int j=1; j<i; ++j)
     {
       if (dist(i, j) < (double) rawp[i]) // can go from i to j
       {
@@ -108,13 +117,14 @@ int main ()
   }
   
   int ret=0;
-  for (int s=0; s<N; ++s)
+  for (int s=1; s<=N; ++s)
   {
 //    printf("cow %02d can transmit directly to ", s);
 //    for (int e=head[s]; e; e=edges[e].n)
 //      printf("%02d ", edges[e].t);
 //    printf("\n");
-
+//    for (int j=1; j<=N; ++j) vis[j] = false;
+    
     ret = max(ret, dfs(s));
   }
   
@@ -122,3 +132,44 @@ int main ()
 
   return 0;
 }
+
+/*
+1
+1 1 1
+=> 1
+
+0
+=> 0
+
+20
+1 1 2
+2 2 2
+3 3 2
+4 4 2
+5 5 2
+6 6 2
+7 7 2
+8 8 2
+9 9 2
+10 10 2
+11 11 2
+12 12 2
+13 13 2
+14 14 2
+15 15 2
+16 16 2
+17 17 2
+18 18 2
+19 19 1
+20 20 1
+=> 19
+
+6
+1 11 1
+1 12 1
+1 13 1
+1 14 1
+1 17 7
+1 8 8
+=> 5
+*/

@@ -36,6 +36,20 @@ void addEdge(cn a, cn b)
   ++ecnt;
 }
 
+// traversial
+int mem[MAXSZ];
+int dfs(cn s)
+{
+  if (mem[s] > 0) return mem[s];
+  int ret=1; // myself
+  for (int e=head[s]; e; e=edges[e].n)
+  {
+    ret += dfs(edges[e].t);
+  }
+  mem[s] = ret;
+  return ret;
+}
+
 int main()
 {
   if (fin) { stdin = fin; stdout = fopen("moocast.out", "w+"); }
