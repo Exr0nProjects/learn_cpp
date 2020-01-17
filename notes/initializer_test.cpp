@@ -7,25 +7,26 @@
  * ! You can only use memset on vectors if the vector contains Plain Old Data (https://stackoverflow.com/questions/4178175/what-are-aggregates-and-pods-and-how-why-are-they-special/7189821)
  */
 
-const int SIZE = 1000000000;
+const int SIZE = 1000000;
 
 
 #include <cstdio>
 #include <chrono>
 #include <vector>
+#include <cstring>
 #include <algorithm>
 
 typedef long double ld;
 
 using namespace std;
 
-// const char UNITS[] = "\xC2\xB5s,"; // https://stackoverflow.com/a/5060616
-const char UNITS[] = "s,";
+const char UNITS[] = "\xC2\xB5s,"; // https://stackoverflow.com/a/5060616
+// const char UNITS[] = "s,";
 
 inline ld getTime()
 {
   // https://stackoverflow.com/a/41582957/
-  return (ld) std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch()).count() / 1000 / 1000;
+  return (ld) std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 }
 
 int arr[SIZE];
@@ -47,7 +48,7 @@ int main()
   printf("\"for loop over array\": %Lf%s\n", getTime()-start_time, UNITS);
 
   start_time = getTime();
-  for (int i : arr)
+  for (int &i : arr)
   {
     i = 0;
   }
@@ -72,7 +73,7 @@ int main()
   vec.assign(vec.size(), 1);
   
   start_time = getTime();
-  for (int r : vec)
+  for (int &r : vec)
   {
     r = 0;
   }
