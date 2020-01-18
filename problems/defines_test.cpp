@@ -56,7 +56,7 @@ LANG: C++14
 #define TRAV(a,x) for (auto& a: x)
 #define SORTV(v) std::sort((v).begin()+1, (v).end())
 
-void setIO();
+void setIO(const string &name="[!meta:pid!]");
 
 typedef struct {
   int f, t, w, n;
@@ -79,13 +79,13 @@ int main()
 }
 
 // boilerplate functions
-void setIO()
+void setIO(const string &name)
 {
   ios_base::sync_with_stdio(0); cin.tie(0); // fast cin/cout
-  if (fopen("[!meta:pid!].in", "r") != nullptr)
+  if (fopen((name+".in").c_str(), "r") != nullptr)
   {
-    freopen("[!meta:pid!].in", "r", stdin);
-    freopen("[!meta:pid!].out", "w", stdout);
+    freopen((name+".in").c_str(), "r", stdin);
+    freopen((name+".out").c_str(), "w+", stdout);
   }
 }
 

@@ -56,17 +56,17 @@ LANG: C++14
 #define TRAV(a,x) for (auto& a: x)
 #define SORTV(v) std::sort((v).begin()+1, (v).end())
 
-void setIO();
+void setIO(const std::string &name="milkvisits");
 
 typedef struct {
   int f, t, w, n;
 } Edge;
 #define TRAVE(s,e) for (int e=head[s]; e; e=edges[e].n)
 
-const int MX=100010;
+const int MX=1000010; // FIX: this made it work somehow
 #define __USING_EDGELIST
 void addEdge(cn a, cn b, cn w=1);
-Edge edges[MX*MX];
+Edge edges[MX]; // FIX: no need to square because it's a tree
 int ect=1, head[MX];
 
 using namespace std;
@@ -93,7 +93,7 @@ int main()
   setIO();
   scanf("%d%d", &N, &V);
   scanf("%s", type+1);
-  FOR(i, N)
+  FOR(i, N-1) // FIX: only N-1 edges
   {
     int a, b;
     scanf("%d%d", &a, &b);
@@ -108,13 +108,12 @@ int main()
   
 //  for (int i=1; i<=N; ++i) printf("%2d (%c): %3d\n", i, type[i], group[i]);
   
-  for (int i=1; i<=V; ++i)
+  FOR(i, V)
   {
     int a, b;
     char c;
-//    scanf("%d%d%c", &a, &b, &c);
-    cin >> a >> b >> c;
-    printf("%d : %d (%c)\n", a, b, c);
+    scanf("%d%d %c", &a, &b, &c);
+    // printf("%d : %d (%c)\n", a, b, c);
     if (group[a] == group[b]) printf("%d", type[a] == c);
     else printf("1");
   }
@@ -122,14 +121,37 @@ int main()
   return 0;
 }
 
+/*
+ 5 10
+ HHGHG
+ 1 2
+ 2 3
+ 2 4
+ 1 5
+ 1 4 H
+ 1 4 G
+ 1 3 G
+ 1 3 H
+ 5 5 H
+ 1 4 H
+ 1 4 G
+ 1 3 G
+ 1 3 H
+ 5 5 H
+ => 1011010110
+ */
+
+
+
+
 // boilerplate functions
-void setIO()
+void setIO(const string &name)
 {
   ios_base::sync_with_stdio(0); cin.tie(0); // fast cin/cout
-  if (fopen("[!meta:pid!].in", "r") != nullptr)
+  if (fopen((name+".in").c_str(), "r") != nullptr)
   {
-    freopen("[!meta:pid!].in", "r", stdin);
-    freopen("[!meta:pid!].out", "w", stdout);
+    freopen((name+".in").c_str(), "r", stdin);
+    freopen((name+".out").c_str(), "w+", stdout);
   }
 }
 
