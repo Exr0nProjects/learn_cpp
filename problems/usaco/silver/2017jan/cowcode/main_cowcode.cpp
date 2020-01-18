@@ -32,7 +32,7 @@ LANG: C++14
 
 #define cn const int
 #define ca const auto &
-#define ll unsigned long long
+#define ll long long
 #define cl const long long
 #define UN unsigned
 #define ST static
@@ -49,36 +49,43 @@ FILE *_ = stderr;
 const ll MAXSZ = 50; // todo
 ll N;
 int len;
-char code[MAXSZ];
 
 bool isPwr2(cl n)
 {
-  return n == (1ll << (int)log2(n));
+  return n && (!(n&(n-1))); // https://www.geeksforgeeks.org/program-to-find-whether-a-no-is-power-of-two/
 }
 
 ll pos(cl i)
 {
   if (i < len) return i;
+  
   int l = (int) log2(i/len);
-//  printf("i=%d, l=%d\n", i, l);
+//  printf("i=%llu, l=%d\n", i, l);
+  
   if (isPwr2(i/len) && i%len == 0)
   {
 //    printf("new segment! %llu\n", 1llu << l);
     return pos(i-1); // i/len is a power of 2
   }
-  else return pos(i - len*(l+1) - 1);
+  else
+  {
+//    printf("folding at %llu\n", len*((1ll<<l)));
+    return pos(i - len*(1ll<<l) - 1);
+  }
 }
 
 int main ()
 {
   if (fin) { stdin = fin; stdout = fopen("cowcode.out", "w+"); }
+  char code[MAXSZ];
   scanf("%s%n%lld", code, &len, &N);
-//
-//  for (int i=0; i<20; ++i)
-//  {
-//    printf("%3d -> %3llu\n", i, pos(i));
-////    if (isPwr2(i)) printf("%d\n", i);
-//  }
+  
+  if (len == 1)
+  {
+    printf("%c\n", code[0]);
+    return 0;
+  }
+  
   printf("%c\n", code[pos(N-1)]);
 
   return 0;
