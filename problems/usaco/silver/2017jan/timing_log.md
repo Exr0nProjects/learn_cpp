@@ -9,6 +9,8 @@
 16:39 | 8/10 #1 (4, 10 WA) | coding #2
 16:56 | AC #2 | coding #3
 17:02 | misunderstood #3 | analysing #3
+18:09 | AC #3 | debugging #1
+
 
 ## Purify Notes
 

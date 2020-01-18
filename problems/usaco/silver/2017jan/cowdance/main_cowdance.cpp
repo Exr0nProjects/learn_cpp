@@ -50,26 +50,26 @@ const int MAXSZ = 10010; // todo
 int N, T;
 int dur[MAXSZ];
 
-int perform(cn k)
+ll perform(cn k)
 { // klogk + nlogn
-  priority_queue<int, deque<int>, greater<int>> pq;
+  priority_queue<ll, deque<ll>, greater<ll>> pq;
   for (int i=0; i<k; ++i) pq.push(0);
   for (int i=1; i<=N && !pq.empty(); ++i)
   {
 //    printf("is pq empty? %d, i=%d\n", pq.empty(), i);
-    int n = pq.top() + dur[i];
+    ll n = pq.top() + dur[i];
     pq.pop(); // hecka slow, these lines should be combinable
     pq.push(n);
   }
   
-  int ret=0;
+  ll ret=0;
   for (; !pq.empty(); pq.pop())
   {
 //    printf("%3d", pq.top());
 //    printf("\n");
     ret = pq.top();
   }
-  fprintf(_, "Stage of size %d -> %d\n", k, ret);
+//  fprintf(_, "Stage of size %d -> %d\n", k, ret);
   return ret;
 }
 
@@ -92,7 +92,7 @@ int main ()
     scanf("%d", &dur[i]);
   }
 
-  printf("%d\n", binarySearch(1, N));
+  printf("%d\n", min(N, binarySearch(1, N)));
 //  printf("%d\n", perform(1));
 
   return 0;
@@ -102,4 +102,11 @@ int main ()
  6 6
  1 1 1 1 1 1
  => 1
+ 
+ 0 10
+ => 0
+ 
+ 6 1
+ 1 1 1 1 1 1
+ => 6
  */
