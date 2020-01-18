@@ -1,15 +1,14 @@
-#include <bits/stdc++.h>
+#include <cstdio>
+#include <iostream>
 #define ll long long
 #define cl const long long
 using namespace std;
 
-int arr[100];
-
 int main()
 {
-	printf("Hello World!");
-	stdout = stderr;
-	printf("Goodbye world!");
+	freopen("out.txt", "w+", stdout);
+	cout << "cout" << endl;
+	printf("printf\n");
 
 	return 0;
 }

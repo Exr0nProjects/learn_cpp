@@ -13,22 +13,23 @@ LANG: C++14
 
 #include <iostream>
 #include <cstdio>
-#include <utility>
-#include <exception>
-#include <algorithm>
-#include <functional>
-#include <cmath>
-#include <random>
+#include <tuple>
+#include <vector>
+#include <string>
+#include <cstring>
+#include <queue>
+#include <stack>
 #include <set>
 #include <map>
 #include <unordered_set>
 #include <unordered_map>
-#include <tuple>
-#include <string>
-#include <cstring>
-#include <vector>
-#include <queue>
-#include <stack>
+#include <cmath>
+#include <random>
+#include <chrono>
+#include <utility>
+#include <exception>
+#include <algorithm>
+#include <functional>
 
 #define cn const int
 #define ca const auto &
@@ -43,17 +44,24 @@ LANG: C++14
 #define PI 3.14159265358979323846264338
 
 using namespace std;
-FILE *fin = fopen("[!meta:pid!].in", "r");
-FILE *_ = stderr;
-
-const int MAXSZ = -1; // todo
+void setIO();
+const int MX = -1; // todo
 
 
 
 int main ()
 {
-  if (fin) { stdin = fin; stdout = fopen("[!meta:pid!].out", "w+"); }
-
+  setIO();
 
   return 0;
+}
+
+void setIO()
+{
+  ios_base::sync_with_stdio(0); cin.tie(0); // fast cin/cout
+  if (fopen("[!meta:pid!].in", "r") != nullptr)
+  {
+    freopen("[!meta:pid!].in", "r", stdin);
+    freopen("[!meta:pid!].out", "w", stdout);
+  }
 }
