@@ -4,6 +4,7 @@
 
 **These problems have yet to be solved.**
 
+- [2017feb helpcross](./2017feb/helpcross/main_helpcross.cpp)
 - [2019dec meetings](./2019dec/meetings/main_meetings.cpp)
 
 ## Badly needs purification
