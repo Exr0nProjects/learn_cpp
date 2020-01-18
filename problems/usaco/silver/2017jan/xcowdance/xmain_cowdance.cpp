@@ -7,7 +7,7 @@ LANG: C++14
 /*
  * Problem cowdance (usaco/silver/2017jan/cowdance)
  * Create time: Fri 17 Jan 2020 @ 16:09 (PST)
- * Accept time: [!meta:end!]
+ * Accept time: Fri 17 Jan 2020 @ 18:27 (PST)
  *
  */
 
@@ -91,8 +91,11 @@ int main ()
   {
     scanf("%d", &dur[i]);
   }
+  int ans = binarySearch(1, N);
+  while (perform(ans-1) <= T) -- ans; // overshot
+  while (perform(ans) > T) ++ ans; // undershot // FIX: Sometimes this was the case, so I had to add this condition to meet the final two test cases.
 
-  printf("%d\n", min(N, binarySearch(1, N)));
+  printf("%d\n", min(N, ans));
 //  printf("%d\n", perform(1));
 
   return 0;
