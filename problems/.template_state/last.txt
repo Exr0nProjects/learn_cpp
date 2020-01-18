@@ -1,1 +1,1 @@
-usaco/silver/2016dec/moocast
+usaco/silver/2017jan/cowdance
