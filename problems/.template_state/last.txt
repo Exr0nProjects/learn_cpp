@@ -1,1 +1,1 @@
-usaco/silver/2017jan/hps
+usaco/silver/2017jan/cowcode
