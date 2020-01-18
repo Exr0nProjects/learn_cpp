@@ -43,7 +43,7 @@ LANG: C++14
 #define MP make_pair
 #define PB push_back
 #define F first
-#define B second
+#define S second
 #define INF 0x7FFFFFFF
 
 // for macro overloading, see https://stackoverflow.com/questions/11761703/overloading-macro-on-number-of-arguments
@@ -87,7 +87,7 @@ int main()
   {
     int a, b;
     scanf("%d%d", &a, &b);
-    cow[i] = MP(a, b);
+    cow[i] = MP(b, a);
   }
   SORT(chicken, C);
   SORT(cow, N);
@@ -98,9 +98,9 @@ int main()
     auto &p = cow[i];
     if (id > C)
       break; // no more chickens to check
-    for (; chicken[id] < p.first; ++id)
+    for (; chicken[id] < p.S; ++id)
       ; // find a chicken that works
-    if (chicken[id] > p.second)
+    if (chicken[id] > p.F)
       continue; // no chickens for this cow
     ++ret;
     ++id;

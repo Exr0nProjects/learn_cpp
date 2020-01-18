@@ -7,7 +7,7 @@ LANG: C++14
 
 /*
  * Problem helpcross (usaco/silver/2017feb/helpcross)
- * Create time: Sat 18 Jan 2020 @ 11:46 (PST)
+ * Create time: Sat 18 Jan 2020 @ 12:20 (PST)
  * Accept time: [!meta:end!]
  *
  */
@@ -73,7 +73,7 @@ const int MX = 20010;
 
 using namespace std;
 int C, N;
-int chickens[MX];
+set<int> chickens;
 pii cows[MX];
 
 int main()
@@ -82,7 +82,9 @@ int main()
   scanf("%d%d", &C, &N);
   FOR(i, C)
   {
-    scanf("%d", &chickens[i]);
+    int a;
+    scanf("%d", &a);
+    chickens.insert(a);
   }
   FOR(i, N)
   {
@@ -90,20 +92,17 @@ int main()
     scanf("%d%d", &a, &b);
     cows[i] = MP(b, a); // so it sorts by end time
   }
-  SORT(chickens, C);
   SORT(cows, N);
 
   int id = 1, ret = 0;
-  FOR(i, C)
+  FOR(i, N)
   {
-    if (id > N)
-      break; // no more cows
-    for (; cows[id].F < chickens[i]; ++id)
-      ; // find a cow with an end time later than my time
-    if (cows[id].S > chickens[i])
-      continue; // if the cows start time is larger than my time, then there's no cows i can help
-    ++id;
-    ++ret;
+    auto which = chickens.lower_bound(cows[i].S);
+    if (which != chickens.end() && *which <= cows[i].F)
+    {
+      ++ret;
+      chickens.erase(which);
+    }
   }
 
   printf("%d\n", ret);
