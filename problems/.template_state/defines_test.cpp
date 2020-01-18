@@ -37,13 +37,13 @@ LANG: C++14
 #define ca const auto &
 
 #define vi vector<int>
-#define ii pair<int, int>
-#define vii vector<ii>
+#define pii pair<int, int>
+#define vii vector<pii>
 
 #define MP make_pair
 #define PB push_back
 #define F first
-#define B second
+#define S second
 #define INF 0x7FFFFFFF
 
 // for macro overloading, see https://stackoverflow.com/questions/11761703/overloading-macro-on-number-of-arguments
@@ -56,7 +56,7 @@ LANG: C++14
 #define TRAV(a,x) for (auto& a: x)
 #define SORTV(v) std::sort((v).begin()+1, (v).end())
 
-void setIO(const string &name="[!meta:pid!]");
+void setIO(const std::string &name="[!meta:pid!]");
 
 typedef struct {
   int f, t, w, n;
