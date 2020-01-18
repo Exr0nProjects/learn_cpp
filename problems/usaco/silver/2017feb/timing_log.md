@@ -9,6 +9,8 @@
 10:55 | AC #2 | coding #3
 11:34 | AC #3 (had name colision which took super long to debug) | analysing #1
 11:46 | have bashy plan for #1 | coding #1
+11:55 | 5/10 helpcross (2, 5, 6, 8, 9 WA) | debugging
+12:11 | still WA, dunno why | end
 
 ## Purify Notes
 

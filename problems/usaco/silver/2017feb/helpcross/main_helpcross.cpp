@@ -93,8 +93,9 @@ int main()
   SORT(cow, N);
 
   int id = 1, ret = 0;
-  TRAV(p, cow)
+  FOR(i, N)
   {
+    auto &p = cow[i];
     if (id > C)
       break; // no more chickens to check
     for (; chicken[id] < p.first; ++id)
@@ -105,7 +106,7 @@ int main()
     ++id;
   }
 
-  printf("%d\n", ret);
+  printf("%d\n", max(0, min(ret, min(N, C))));
 
   return 0;
 }
@@ -115,6 +116,45 @@ int main()
  1
  1 1
  => 1
+ 
+ 1 1
+ 2
+ 1 1
+ => 0
+ 
+ 1 1
+ 1
+ 1 100
+ => 1
+ 
+ 1 1
+ 100
+ 1 100
+ => 1
+ 
+ 5 1
+ 1 1 1 1 1
+ 1 1
+ => 1
+ 
+ 1 5
+ 1
+ 1 1
+ 1 1
+ 1 1
+ 1 1
+ 1 1
+ => 1
+ 
+ 10 10
+ 0 1 2 3 4 5 6 7 8 9
+ 0 0 1 1 2 2 3 3 4 4 5 5 6 6 7 7 9 9 10 10
+ => 9
+ 
+ 2 5
+ 0 2
+ 0 3 1 4 2 5 9 12 12 15
+ => 2
  
  */
 
