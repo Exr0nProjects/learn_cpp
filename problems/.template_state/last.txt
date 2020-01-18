@@ -1,1 +1,1 @@
-usaco/silver/2017feb/countcross
+usaco/silver/2017feb/helpcross
