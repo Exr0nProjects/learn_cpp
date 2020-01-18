@@ -1,1 +1,1 @@
-usaco/silver/2017feb/maxcross
+usaco/silver/2017feb/countcross
