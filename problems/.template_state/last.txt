@@ -1,1 +1,1 @@
-usaco/silver/2017feb/helpcross
+usaco/2017jan/cowdance
