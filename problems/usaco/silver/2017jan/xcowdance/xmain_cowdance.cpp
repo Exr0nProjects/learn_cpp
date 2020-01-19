@@ -49,6 +49,7 @@ FILE *_ = stderr;
 const int MAXSZ = 10010; // todo
 int N, T;
 int dur[MAXSZ];
+int dummy[MAXSZ];
 
 ll perform(cn k)
 { // klogk + nlogn
@@ -83,6 +84,11 @@ int binarySearch(cn l, cn r)
   else return binarySearch(l, m);
 }
 
+bool cmp(cn i, cn v)
+{
+  return perform(i) < v;
+}
+
 int main ()
 {
   if (fin) { stdin = fin; stdout = fopen("cowdance.out", "w+"); }
@@ -91,9 +97,17 @@ int main ()
   {
     scanf("%d", &dur[i]);
   }
-  int ans = binarySearch(1, N);
-  while (perform(ans-1) <= T) -- ans; // overshot
-  while (perform(ans) > T) ++ ans; // undershot // FIX: Sometimes this was the case, so I had to add this condition to meet the final two test cases.
+
+  // These two lines work in place of binary search but result in N^2 log N instead of N log^2 N
+  // int ans=1;
+  // while (perform(ans) > T) ++ans;
+
+  // int ans = binarySearch(1, N);
+  // while (perform(ans-1) <= T) -- ans; // overshot
+  // while (perform(ans) > T) ++ ans; // undershot // FIX: Sometimes this was the case, so I had to add this condition to meet the final two test cases.
+
+  iota(dummy, dummy+N, 1);
+  int ans = lower_bound(dummy, dummy+N, T, cmp);
 
   printf("%d\n", min(N, ans));
 //  printf("%d\n", perform(1));
