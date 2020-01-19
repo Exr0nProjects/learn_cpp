@@ -105,17 +105,12 @@ int main()
 
   setIO();
   scanf("%lld%lld%lld", &N, &K, &M);
-  
-  if (K > 1000 && K < 100000) { printf("%d\n", arr[2]); return 1000; }
-  if (K > 1000000000) { infinite(); return 0; }
-  if (K < 1000000) {
-    // FOR(i, N+5) printf("%2d : %3d\n", i+1, sim(i+1));
-    ll ans = binarySearch(1, N+10);
-    //  while (sim(ans+1)) ++ans;
-    //  while (!sim(ans)) --ans;
-    printf("%lld\n", ans);
-  }
 
+  // FOR(i, N+5) printf("%2d : %3d\n", i+1, sim(i+1));
+  ll ans = binarySearch(1, N+10);
+  //  while (sim(ans+1)) ++ans;
+  //  while (!sim(ans)) --ans;
+  printf("%lld\n", ans);
 
   return 0;
 }
