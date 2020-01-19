@@ -49,12 +49,12 @@ LANG: C++14
 // for macro overloading, see https://stackoverflow.com/questions/11761703/overloading-macro-on-number-of-arguments
 // this set is designed for one indexed collections
 #define FOR_(i,b,e) for (int i=(b); i<(e); ++i)
-#define FOR(i,e) FOR_(i,1,(e)+1)
-#define FORR_(i,b,e) for (int i=(e); i>=(b); --i)
-#define FORR(i,e) FORR_(i,1,e)
-#define SORT(a,n) std::sort((a)+1, (a)+(n)+1)
+#define FOR(i,e) FOR_(i,0,(e))
+#define FORR_(i,b,e) for (int i=(e)-1; i>=(b); --i)
+#define FORR(i,e) FORR_(i,0,e)
+#define SORT(a,n) std::sort((a), (a)+(n))
 #define TRAV(a,x) for (auto& a: x)
-#define SORTV(v) std::sort((v).begin()+1, (v).end())
+#define SORTV(v) std::sort((v).begin(), (v).end())
 
 void setIO(const std::string &name="[!meta:pid!]");
 
