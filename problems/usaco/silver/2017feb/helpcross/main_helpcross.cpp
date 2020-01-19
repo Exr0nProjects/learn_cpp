@@ -8,7 +8,8 @@ LANG: C++14
  * Problem helpcross (usaco/silver/2017feb/helpcross)
  * Create time: Sat 18 Jan 2020 @ 11:46 (PST)
  * Accept time: [!meta:end!]
- *
+ * gameplan:
+ * make test cases (with python)
  */
 
 #include <iostream>

@@ -20,3 +20,22 @@ This is the core of my understanding of competative programming. It is applicabl
 
 My complexities graph can be found here: <https://www.desmos.com/calculator/bhq70wfqsx>.
 <img src="./notes/random_intuitions/time_complexity.png" style="border: 1px solid black;">
+
+10^8 operations is usually safe.
+
+## Test Cases
+
+1. Sample test cases
+2. Size edge cases
+   1. 0, 1, max N
+3. Special properties
+   1. Try to trick the greedy algorithm or something
+4. Graphs
+   1. No nodes
+   2. One node
+   3. Fully connected
+   4. Cycles
+   5. Negative edges
+   6. Disjoint graphs
+5. Recursion
+   1. Base case
