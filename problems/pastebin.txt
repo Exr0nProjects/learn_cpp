@@ -1,0 +1,8 @@
+// TEST BY: create array with 1-100 odds, then check all odds, and then check all evens
+ll binarySearch(ll l, ll r, ll v) // include l, exclude r
+{
+  if (l+1 >= r) return l;
+  ll m = (l+r)/2;
+  if (m < v) return binarySearch(m, r, v);
+  else return binarySearch(l, m, v);
+}

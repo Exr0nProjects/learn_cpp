@@ -89,17 +89,6 @@ void setIO(const string &name)
   }
 }
 
-#ifdef __USING_EDGELIST
-void addEdge(cn a, cn b, cn w)
-{
-  edges[ect].f = a;
-  edges[ect].t = b;
-  edges[ect].w = w;
-  edges[ect].n = head[a];
-  head[a] = ect++;
-}
-#endif
-
 /*
 Benjamin Qi
 #define FOR(i,a,b) for (int i = (a); i < (b); ++i)
