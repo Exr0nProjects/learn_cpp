@@ -13,5 +13,6 @@ mkdir -p $1
     | sed "s/\[\!meta\:beg\!\]$/$(date "$dateformat")/g"\
     >> "$1/main_$(basename $1).cpp"\
   && echo "$1" > "$cache"\
-  && ./list_completed.sh 
+  && ./list_completed.sh\
+	&& echo "$1"
 [[ -s "$1/main_$(basename $1).cpp" ]] && printf "File exists!\n" | exit 1
