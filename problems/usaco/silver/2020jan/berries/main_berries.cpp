@@ -76,6 +76,8 @@ int baskets[MX];
 int b_from[MX];
 
 void pick()
+{
+}
 
 void for_trees(cn b)
 {
@@ -94,7 +96,7 @@ int main()
 {
   setIO();
   scanf("%d%d", &N, &K);
-  FOR(i, N) scanf("%d", trees[i]);
+  FOR(i, N) scanf("%d", &trees[i]);
 
   FOR(b, K)
   {
