@@ -90,11 +90,11 @@ int main()
     ll ret = 0;
     FOR(i, N)
     {
-      ll prod = 1;
-      FOR_(j, i, N+1)
+      ll prod = seq[i];
+      FOR_(j, i+1, N+1) // N+1 to update ret for j=N
       {
-        prod *= seq[j];
         ret = max(ret, prod);
+        prod *= seq[j];
       }
     }
     printf("Case #%d: The maximum product is %lld.", cs, ret);
