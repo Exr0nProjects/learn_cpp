@@ -61,7 +61,7 @@ void setIO(const std::string &name="[!meta:pid!]");
 typedef struct {
   int f, t, w, n;
 } Edge;
-#define TRAVE(s,e) for (int e=head[s]; e; e=edges[e].n)
+#define TRAVE(e,s) for (int e=head[s]; e; e=edges[e].n)
 
 const int MX=-1;
 //#define __USING_EDGELIST
