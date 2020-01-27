@@ -7,7 +7,7 @@ LANG: C++14
 /*
  * Problem 524 (onlinejudge/pid/524)
  * Create time: Sun 26 Jan 2020 @ 15:21 (PST)
- * Accept time: [!meta:end!]
+ * Accept time: Sun 26 Jan 2020 @ 16:11 (PST)
  *
  */
 
@@ -97,9 +97,9 @@ void test(cn tc, cn dep = 1)
   {
     if (nums.size() > 1 && isPrime(nums[0] + nums[nums.size() - 1]))
     {
-      TRAV(i, nums)
-      printf("%d ", i);
-      printf("\n");
+      FOR(i, nums.size() - 1)
+      printf("%d ", nums[i]);
+      printf("%d\n", nums[nums.size() - 1]);
     }
   }
   FOR_(i, 2, tc + 1)
@@ -127,6 +127,8 @@ int main()
 
   for (int tc = 1; cin >> N; ++tc)
   {
+    if (tc > 1)
+      printf("\n");
     if (N > 1)
       printf("Case %d:\n", tc);
 
