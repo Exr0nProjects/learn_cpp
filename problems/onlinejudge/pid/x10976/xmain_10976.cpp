@@ -7,7 +7,7 @@ LANG: C++14
 /*
  * Problem 10976 (onlinejudge/pid/10976)
  * Create time: Sun 26 Jan 2020 @ 14:55 (PST)
- * Accept time: [!meta:end!]
+ * Accept time: Sun 26 Jan 2020 @ 16:26 (PST)
  * 
  * WHY IS IT WRONG ANSWER
  */
@@ -78,21 +78,18 @@ int main()
 {
   for (int cs = 1; cin >> N; ++cs)
   {
-    if (cs > 1)
-      printf("\n");
-
     vii pairs;
     FOR_(i, N + 1, 2 * N + 1)
     {
-      if (N * i / (i - N) * (i - N) == N * i)
+      if (N * i % (i - N) == 0)
       {
         pairs.push_back(make_pair(N * i / (i - N), i));
       }
     }
 
-    printf("%d", pairs.size());
+    printf("%d\n", pairs.size());
     TRAV(p, pairs)
-    printf("\n1/%d = 1/%d + 1/%d", N, p.F, p.S);
+    printf("1/%d = 1/%d + 1/%d\n", N, p.F, p.S);
   }
 
   return 0;
