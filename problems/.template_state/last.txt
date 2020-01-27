@@ -1,1 +1,1 @@
-onlinejudge/pid/10976
+onlinejudge/pid/524

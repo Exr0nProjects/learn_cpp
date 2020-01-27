@@ -1,15 +1,14 @@
 /*
 ID: spoytie2
-TASK: 11059
+TASK: 524
 LANG: C++14
 */
 
 /*
- * Problem 11059 (onlinejudge/pid/11059)
- * Create time: Sun 26 Jan 2020 @ 14:22 (PST)
+ * Problem 524 (onlinejudge/pid/524)
+ * Create time: Sun 26 Jan 2020 @ 15:21 (PST)
  * Accept time: [!meta:end!]
- * 
- * This is wrong answer somehow??
+ *
  */
 
 #include <iostream>
@@ -57,7 +56,7 @@ LANG: C++14
 #define TRAV(a, x) for (auto &a : x)
 #define SORTV(v) std::sort((v).begin(), (v).end())
 
-void setIO(const std::string &name = "11059");
+void setIO(const std::string &name = "524");
 
 typedef struct
 {
@@ -73,31 +72,65 @@ const int MX = 20;
 
 using namespace std;
 int N;
-int seq[MX];
+int used[MX];
+vi nums;
+
+bool isPrime(cn n)
+{
+  return (
+      n == 2 ||
+      n == 3 ||
+      n == 5 ||
+      n == 7 ||
+      n == 11 ||
+      n == 13 ||
+      n == 17 ||
+      n == 19 ||
+      n == 23 ||
+      n == 29 ||
+      n == 31);
+}
+
+void test(cn tc, cn dep = 1)
+{
+  if (dep == tc)
+  {
+    if (nums.size() > 1 && isPrime(nums[0] + nums[nums.size() - 1]))
+    {
+      TRAV(i, nums)
+      printf("%d ", i);
+      printf("\n");
+    }
+  }
+  FOR_(i, 2, tc + 1)
+  {
+    if (!used[i])
+    {
+      used[i] = true;
+      if (nums.size() == 0 || isPrime(nums[nums.size() - 1] + i))
+      {
+        nums.push_back(i);
+        //        TRAV(i, nums) printf("%3d", i); printf("\n");
+        test(tc, dep + 1);
+        nums.pop_back();
+      }
+      used[i] = false;
+    }
+  }
+}
 
 int main()
 {
   setIO();
 
-  for (int cs = 1; cin >> N; ++cs)
+  nums.push_back(1);
+
+  for (int tc = 1; cin >> N; ++tc)
   {
-    if (cs > 1)
-      printf("\n\n");
+    if (N > 1)
+      printf("Case %d:\n", tc);
 
-    FOR(i, N)
-    scanf("%d", &seq[i]);
-
-    ll ret = 0;
-    FOR(i, N)
-    {
-      ll prod = 1;
-      FOR_(j, i, N+1)
-      {
-        prod *= seq[j];
-        ret = max(ret, prod);
-      }
-    }
-    printf("Case #%d: The maximum product is %lld.", cs, ret);
+    test(N);
   }
 
   return 0;
