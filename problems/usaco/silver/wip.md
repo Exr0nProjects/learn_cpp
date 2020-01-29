@@ -1,4 +1,18 @@
-# Unsolved Problems
+# usaco/silver/wip.md
+
+## Sector summary
+
+The values in the confidence column below are internally relative, meaning that I feel twice as confident with something labeled 2 as with something labeled 1. **100 is not the maximum possible value.**
+
+| Approach | Confidence (points) | Problems |
+|----------|------------|----------|
+Binary Search | 80 | [2016dec/haybales](2016dec/xhaybales/xmain_haybales.cpp), [2016dec/citystate](2016dec/xcitystate/xmain_citystate.cpp), [2017jan/cowdance](2017jan/xcowdance/xmain_cowdance.cpp)
+Flood Fill | 100 | [2015dec/lightson](2015dec/xlightson/xmain_lightson.cpp), [2017feb/countcross](2017feb/xcountcross/xmain_countcross.cpp)
+Basic Greedy | 95 | [2015dec/highcard](2015dec/xhighcard/xmain_highcard.cpp), [2016feb/cbarn](2016feb/xcbarn/xnew_cbarn.cpp), [2017feb/helpcross](2017feb/helpcross/main_helpcross.cpp)
+Prefix Sums | 80 | [2015dec/bcount](2015dec/xbcount/xmain_bcount.cpp), [2016jan/div7](2016jan/xdiv7/xnew_div7.cpp), [2017jan/hps](2017jan/xhps/xmain_hps.cpp), [2017feb/maxcross](2017feb/xmaxcross/xmain_maxcross.cpp)
+Generic DP | 95 | [2016feb/pails](2016feb/xpails/xmain_pails.cpp)
+Graph Traversal | 100 | [2016dec/moocast](2016dec/xmoocast/xpurify_moocast.cpp)
+Ad hoc/Simulation | 100 | [2016jan/angry](2016jan/xangry/xnew_angry.cpp), [2016jan/gates](2016jan/xgates/xmain_gates.cpp), [2016feb/balancing](2016jan/../2016feb/xbalancing/xnew_balancing.cpp), [2017jan/cowcode](2017jan/xcowcode/xmain_cowcode.cpp)
 
 ## Still unsolved
 
@@ -6,6 +20,7 @@
 
 - [2017feb helpcross](./2017feb/helpcross/main_helpcross.cpp)
 - [2019dec meetings](./2019dec/meetings/main_meetings.cpp)
+- 2020jan *
 
 ## Badly needs purification
 
