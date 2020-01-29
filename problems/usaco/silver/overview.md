@@ -1,8 +1,8 @@
-# usaco/silver/wip.md
+# usaco/silver/overview.md
 
 ## Sector summary
 
-The values in the confidence column below are internally relative, meaning that I feel twice as confident with something labeled 2 as with something labeled 1. **100 is not the maximum possible value.**
+The values in the confidence column below are internally relative, meaning that I feel twice as confident with something labeled `2` as with something labeled `1`. Note: **100 is not the maximum possible value.**
 
 | Approach | Confidence (points) | Problems |
 |----------|------------|----------|
