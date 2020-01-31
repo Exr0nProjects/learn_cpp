@@ -1,1 +1,1 @@
-usaco/silver/2017dec/homework
+usaco/silver/2017dec/shuffle
