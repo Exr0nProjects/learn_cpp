@@ -65,17 +65,6 @@ typedef struct
 #define TRAVE(e, s) for (int e = head[s]; e; e = edges[e].n)
 
 const int MX = 10;
-#define __USING_EDGELIST
-Edge edges[MX * MX];
-int ect = 1, head[MX];
-void addEdge(cn a, cn b)
-{
-  edges[ect].f = a;
-  edges[ect].t = b;
-  edges[ect].n = head[a];
-  ++ect;
-}
-
 using namespace std;
 
 int main()
@@ -83,6 +72,8 @@ int main()
   while (true)
   {
     set<int> nodes;
+    vector<int> u;
+    vector<int> v;
 
     // input
     while (true)
@@ -91,7 +82,7 @@ int main()
       scanf("%c:", &a);
       if (a == '#')
         return 0;
-      a -= 'B';
+      a -= 'A';
       nodes.insert(a);
 
       char b = 0;
@@ -100,68 +91,56 @@ int main()
         scanf("%c", &b);
         if (b == ';' || b == '\n')
           break;
-        b -= 'B';
+        b -= 'A';
 
         nodes.insert(b);
-        addEdge(a, b);
-        addEdge(b, a);
+        u.emplace_back(a);
+        v.emplace_back(b);
       }
       if (b == '\n')
         break; // end of this graph
     }
 
-    for (int i = 0; i < 100; ++i)
-      printf("%3d", edges[i].t);
-
-    FOR(i, nodes.size())
-    {
-      printf("%d ->", i);
-      TRAVE(e, i + 1)
-      {
-        printf("%3d", edges[e].t);
-      }
-      printf("\n");
-    }
-
-    // actual computation
-    vector<int> letters; // ordering[i] is the position of i in the ordering
     vector<int> ret;
-    TRAV(n, nodes)
-    letters.push_back(n);
-
-    vector<int> ordering(letters.size());
+    vector<int> ordering(nodes.size()); // ordering[i] is the position of i in the ordering
     iota(ordering.begin(), ordering.end(), 0);
 
     int lowest = INF;
-    while (next_permutation(ordering.begin(), ordering.end()))
+    do
     {
       int bandwidth = 0;
-      for (int j = 0; j < ordering.size(); ++j)
-      { // for each node
-        //        printf("%d\n", head[j+1]);
-        for (int e = head[j + 1]; e; e = edges[e].n)
-        { // for each relation
-          bandwidth = max(bandwidth, abs(ordering[j] - ordering[edges[e].t]));
-          printf("dist between %d and %d = %d\n", j, edges[e].t, abs(ordering[j] - ordering[edges[e].t]));
-        }
+      for (int e = 0; e < u.size(); ++e)
+      {
+
+        bandwidth = max(bandwidth, abs(ordering[u[e]] - ordering[v[e]]));
       }
-      if (bandwidth < lowest) // not <= to preserve lexographical ordering
+      if (bandwidth < lowest)
       {
         lowest = bandwidth;
         ret = ordering;
       }
-    }
+    } while (next_permutation(ordering.begin(), ordering.end()));
 
-    char out[MX];
+    char out[2 * MX] = {};
     FOR(i, ret.size())
-    out[ret[i]] = i + 'B';
-    FOR(i, ret.size())
-    printf("%c ", out[i]);
-    printf("-> %d\n", lowest);
+    {
+      out[2 * ordering[i]] = i + 'A';
+      out[2 * ordering[i] + 1] = ' ';
+    }
+    printf("%s-> %d\n", out, lowest);
   }
 
   return 0;
 }
+
+/*
+ // TODO: Doesn't work
+ A:B
+ B:C
+ #
+ -> A B -> 1
+ -> B C -> 1
+ */
 
 // boilerplate functions
 void setIO(const string &name)
