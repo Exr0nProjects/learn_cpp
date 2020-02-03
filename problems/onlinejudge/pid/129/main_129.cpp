@@ -82,6 +82,13 @@ int main()
     string og = "A";
 
     scanf("%d%d", &N, &L);
+
+    for (int i='B'; og.length() < L; ++i)
+    {
+      og = og + string(i) + og;
+    }
+
+    printf("%s\n", og);
   }
 
   return 0;

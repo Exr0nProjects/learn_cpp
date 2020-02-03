@@ -9,7 +9,6 @@ LANG: C++14
  * Create time: Sun 26 Jan 2020 @ 14:55 (PST)
  * Accept time: Sun 26 Jan 2020 @ 16:26 (PST)
  * 
- * WHY IS IT WRONG ANSWER
  */
 
 #include <iostream>
