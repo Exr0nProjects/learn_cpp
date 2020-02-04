@@ -63,7 +63,7 @@ typedef struct {
 } Edge;
 #define TRAVE(s,e) for (int e=head[s]; e; e=edges[e].n)
 
-const int MX=-1;
+const int MX=100;
 //#define __USING_EDGELIST
 //void addEdge(cn a, cn b, cn w=1);
 //Edge edges[MX*MX];
@@ -71,24 +71,52 @@ const int MX=-1;
 
 using namespace std;
 int N, L;
+char S[MX] = {};
 queue<string> seq;
+
+bool construct(cn pos)
+{
+  printf("%d construct %s\n", pos ,S);
+  if (pos == N)
+  {
+    // TODO
+    return 1;
+  }
+  FOR(l, L)
+  {
+    printf("trying %c\n", 'A'+l);
+    S[l] = 'A'+l;
+    FOR(ln, pos/2+1)
+    {
+      if (ln == pos/2) // got to end of for loop
+      {
+        if (construct(pos+1))
+          return 1; // sucess
+        break;
+      }
+      FOR(j, ln)
+      {
+        if (S[pos-j] == S[pos-ln-j])
+        {
+          printf("  %d vs %d\n", pos-j, pos-ln-j);
+          ln = pos; // break out of previous layer
+          break;
+        }
+      }
+    }
+  }
+  S[pos] = 0;
+  return 0;
+}
 
 int main()
 {
-
   scanf("%d%d", &N, &L);
-  while (N && L)
+  while (N || L)
   {
-    string og = "A";
-
+    construct(0);
+    printf("%s\n", S);
     scanf("%d%d", &N, &L);
-
-    for (int i='B'; og.length() < L; ++i)
-    {
-      og = og + string(i) + og;
-    }
-
-    printf("%s\n", og);
   }
 
   return 0;
