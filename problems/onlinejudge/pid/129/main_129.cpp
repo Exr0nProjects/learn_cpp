@@ -48,22 +48,23 @@ LANG: C++14
 
 // for macro overloading, see https://stackoverflow.com/questions/11761703/overloading-macro-on-number-of-arguments
 // this set is designed for one indexed collections
-#define FOR_(i,b,e) for (int i=(b); i<(e); ++i)
-#define FOR(i,e) FOR_(i,0,(e))
-#define FORR_(i,b,e) for (int i=(e)-1; i>=(b); --i)
-#define FORR(i,e) FORR_(i,0,e)
-#define SORT(a,n) std::sort((a), (a)+(n))
-#define TRAV(a,x) for (auto& a: x)
+#define FOR_(i, b, e) for (int i = (b); i < (e); ++i)
+#define FOR(i, e) FOR_(i, 0, (e))
+#define FORR_(i, b, e) for (int i = (e)-1; i >= (b); --i)
+#define FORR(i, e) FORR_(i, 0, e)
+#define SORT(a, n) std::sort((a), (a) + (n))
+#define TRAV(a, x) for (auto &a : x)
 #define SORTV(v) std::sort((v).begin(), (v).end())
 
-void setIO(const std::string &name="129");
+void setIO(const std::string &name = "129");
 
-typedef struct {
+typedef struct
+{
   int f, t, w, n;
 } Edge;
-#define TRAVE(s,e) for (int e=head[s]; e; e=edges[e].n)
+#define TRAVE(s, e) for (int e = head[s]; e; e = edges[e].n)
 
-const int MX=100;
+const int MX = 100;
 //#define __USING_EDGELIST
 //void addEdge(cn a, cn b, cn w=1);
 //Edge edges[MX*MX];
@@ -76,7 +77,10 @@ queue<string> seq;
 
 bool construct(cn pos)
 {
-  printf("%d construct %s\n", pos ,S);
+  printf("\n%d construct\n", pos);
+  FOR(i, pos)
+  printf("%c", S[i]);
+  printf("\n");
   if (pos == N)
   {
     // TODO
@@ -84,25 +88,27 @@ bool construct(cn pos)
   }
   FOR(l, L)
   {
-    printf("trying %c\n", 'A'+l);
-    S[l] = 'A'+l;
-    FOR(ln, pos/2+1)
+    printf("trying %c\n", 'A' + l);
+    S[pos] = 'A' + l;
+    bool works = true;
+    FOR(ln, (pos + 1) / 2)
     {
-      if (ln == pos/2) // got to end of for loop
-      {
-        if (construct(pos+1))
-          return 1; // sucess
-        break;
-      }
+      bool this_sequence_works = true;
       FOR(j, ln)
       {
-        if (S[pos-j] == S[pos-ln-j])
+        if (S[pos - j] != S[pos - ln - j])
         {
-          printf("  %d vs %d\n", pos-j, pos-ln-j);
-          ln = pos; // break out of previous layer
-          break;
+          printf("  %d vs %d\n", pos - j, pos - ln - j);
+          this_sequence_works = true;
         }
       }
+      works &= this_sequence_works;
+    }
+    if (works)
+    {
+      if (construct(pos + 1))
+        return 1; // sucess
+      break;
     }
   }
   S[pos] = 0;
@@ -125,10 +131,11 @@ int main()
 // boilerplate functions
 void setIO(const string &name)
 {
-  ios_base::sync_with_stdio(0); cin.tie(0); // fast cin/cout
-  if (fopen((name+".in").c_str(), "r") != nullptr)
+  ios_base::sync_with_stdio(0);
+  cin.tie(0); // fast cin/cout
+  if (fopen((name + ".in").c_str(), "r") != nullptr)
   {
-    freopen((name+".in").c_str(), "r", stdin);
-    freopen((name+".out").c_str(), "w+", stdout);
+    freopen((name + ".in").c_str(), "r", stdin);
+    freopen((name + ".out").c_str(), "w+", stdout);
   }
 }
