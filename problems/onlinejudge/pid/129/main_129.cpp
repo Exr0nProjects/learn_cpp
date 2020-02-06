@@ -71,34 +71,34 @@ const int MX = 100;
 //int ect=1, head[MX];
 
 using namespace std;
-int N, L;
+int N, L, cnt = 0, pos = 0;
 char S[MX] = {};
 queue<string> seq;
 
-bool construct(cn pos)
+bool construct()
 {
-  printf("\n%d construct\n", pos);
-  FOR(i, pos)
-  printf("%c", S[i]);
-  printf("\n");
-  if (pos == N)
+  //  printf("\n%d construct\n", pos);
+  //  FOR(i, pos) printf("%c", S[i]); printf("\n");
+  if (cnt++ == N)
   {
     // TODO
     return 1;
   }
   FOR(l, L)
   {
-    printf("trying %c\n", 'A' + l);
+    //    printf("trying %c\n", 'A'+l);
     S[pos] = 'A' + l;
     bool works = true;
-    FOR(ln, (pos + 1) / 2)
+    //    printf("  checking ln = 0 - %d\n", (pos)/2+1);
+    FOR_(ln, 1, (pos + 1) / 2 + 1)
     {
-      bool this_sequence_works = true;
+      //      printf("    ln = %d\n", ln);
+      bool this_sequence_works = false;
       FOR(j, ln)
       {
+        //        printf("    %d vs %d\n", pos-j, pos-ln-j);
         if (S[pos - j] != S[pos - ln - j])
         {
-          printf("  %d vs %d\n", pos - j, pos - ln - j);
           this_sequence_works = true;
         }
       }
@@ -106,12 +106,17 @@ bool construct(cn pos)
     }
     if (works)
     {
-      if (construct(pos + 1))
+      //      printf("  seems legit!\n");
+      ++pos;
+      if (construct())
+      {
         return 1; // sucess
-      break;
+      }
+      --pos;
     }
   }
   S[pos] = 0;
+  //  printf("pos %d: didn't work :(\n", pos);
   return 0;
 }
 
@@ -120,8 +125,30 @@ int main()
   scanf("%d%d", &N, &L);
   while (N || L)
   {
-    construct(0);
-    printf("%s\n", S);
+    pos = cnt = 0;
+    construct();
+    int chr = 0, group = 0;
+    FOR(i, pos)
+    {
+      if (chr == 4)
+      {
+        if (group == 15)
+        {
+          printf("\n");
+          group = 0;
+        }
+        else
+        {
+          printf(" ");
+          ++group;
+        }
+        chr = 0;
+      }
+      printf("%c", S[i]);
+      ++chr;
+    }
+    printf("\n%d\n", pos);
+
     scanf("%d%d", &N, &L);
   }
 
