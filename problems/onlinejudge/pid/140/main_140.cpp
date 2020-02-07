@@ -105,15 +105,26 @@ int main()
     vector<int> ordering(nodes.size()); // ordering[i] is the position of i in the ordering
     iota(ordering.begin(), ordering.end(), 0);
 
+    printf("  edges:\n");
+    FOR(i, u.size())
+    {
+      printf("  %d - %d\n", u[i], v[i]);
+    }
+
     int lowest = INF;
     do
     {
+      printf("  ");
+      TRAV(i, ordering)
+      printf("%d ", i);
+      printf("\n");
       int bandwidth = 0;
       for (int e = 0; e < u.size(); ++e)
       {
-
+        printf("    e = %d\n", e);
         bandwidth = max(bandwidth, abs(ordering[u[e]] - ordering[v[e]]));
       }
+      printf("    bandwidth: %d\n", bandwidth);
       if (bandwidth < lowest)
       {
         lowest = bandwidth;
@@ -121,13 +132,11 @@ int main()
       }
     } while (next_permutation(ordering.begin(), ordering.end()));
 
-    char out[2 * MX] = {};
-    FOR(i, ret.size())
+    TRAV(n, nodes)
     {
-      out[2 * ordering[i]] = i + 'A';
-      out[2 * ordering[i] + 1] = ' ';
+      printf("%c ", n + 'A');
     }
-    printf("%s-> %d\n", out, lowest);
+    printf("-> %d\ndone\n", lowest);
   }
 
   return 0;
