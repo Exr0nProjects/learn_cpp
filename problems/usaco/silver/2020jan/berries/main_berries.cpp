@@ -48,80 +48,95 @@ LANG: C++14
 
 // for macro overloading, see https://stackoverflow.com/questions/11761703/overloading-macro-on-number-of-arguments
 // this set is designed for one indexed collections
-#define FOR_(i,b,e) for (int i=(b); i<(e); ++i)
-#define FOR(i,e) FOR_(i,0,(e))
-#define FORR_(i,b,e) for (int i=(e)-1; i>=(b); --i)
-#define FORR(i,e) FORR_(i,0,e)
-#define SORT(a,n) std::sort((a), (a)+(n))
-#define TRAV(a,x) for (auto& a: x)
+#define FOR_(i, b, e) for (int i = (b); i < (e); ++i)
+#define FOR(i, e) FOR_(i, 0, (e))
+#define FORR_(i, b, e) for (int i = (e)-1; i >= (b); --i)
+#define FORR(i, e) FORR_(i, 0, e)
+#define SORT(a, n) std::sort((a), (a) + (n))
+#define TRAV(a, x) for (auto &a : x)
 #define SORTV(v) std::sort((v).begin(), (v).end())
 
-void setIO(const std::string &name="berries");
+void setIO(const std::string &name = "berries");
 
-typedef struct {
+typedef struct
+{
   int f, t, w, n;
 } Edge;
-#define TRAVE(s,e) for (int e=head[s]; e; e=edges[e].n)
+#define TRAVE(s, e) for (int e = head[s]; e; e = edges[e].n)
 
-const int MX=1010;
+const int MX = 1010;
 //#define __USING_EDGELIST
 //void addEdge(cn a, cn b, cn w=1);
 //Edge edges[MX*MX];
 //int ect=1, head[MX];
 
 using namespace std;
-int N, K;
+int N, K, tree_max = 0;
 int trees[MX];
-int baskets[MX];
-int b_from[MX];
-
-void pick()
-{
-}
-
-void for_trees(cn b)
-{
-  FOR(t, N) pick();
-}
-
-void for_buckets()
-{
-  FOR(i, K)
-  {
-    for_trees(i);
-  }
-}
 
 int main()
 {
   setIO();
   scanf("%d%d", &N, &K);
-  FOR(i, N) scanf("%d", &trees[i]);
-
-  FOR(b, K)
+  FOR(i, N)
   {
-    FOR(t, N)
-    {
-      FOR(i, trees[t])
-      {
-        b_from[b] = i;
-        baskets[b] = i;
-        trees[t] -= i;
-      }
-    }
+    scanf("%d", &trees[i]);
+    tree_max = max(tree_max, trees[i]);
   }
+
+  int ret = 0;
+  FOR_(b, 1, tree_max + 1)
+  {
+    int full = 0;
+    FOR(i, N)
+    full += trees[i] / b;
+    if (full < K / 2)
+      break; // b isn't the least amount of berries in a bucket that elsie gets
+    if (full > K)
+    {
+      ret = max(ret, K / 2 * b);
+      continue;
+    }
+
+    printf("  only filled %d buckets each with %d berries, now filling rest with remaining...\n", full, b);
+    // not all buckets filled evenly with b berries
+    sort(trees, trees + N, [&](cn l, cn r) { return l % b < r % b; });
+    int sum = (full - (K / 2)) * b;
+    FOR(i, K - full)
+    {
+      sum += trees[i] % b; // fill each bucket with the biggest remaining tree
+    }
+    ret = max(ret, sum);
+  }
+
+  printf("%d\n", ret);
 
   return 0;
 }
 
+/*
+ 1 2
+ 2
+ => 1
+ 
+ 2 2
+ 5 10
+ => 5
+ 
+ 3 4
+ 6 4 4
+ => 6
+ */
+
 // boilerplate functions
 void setIO(const string &name)
 {
-  ios_base::sync_with_stdio(0); cin.tie(0); // fast cin/cout
-  if (fopen((name+".in").c_str(), "r") != nullptr)
+  ios_base::sync_with_stdio(0);
+  cin.tie(0); // fast cin/cout
+  if (fopen((name + ".in").c_str(), "r") != nullptr)
   {
-    freopen((name+".in").c_str(), "r", stdin);
-    freopen((name+".out").c_str(), "w+", stdout);
+    freopen((name + ".in").c_str(), "r", stdin);
+    freopen((name + ".out").c_str(), "w+", stdout);
   }
 }
 
