@@ -1,1 +1,1 @@
-usaco/silver/2017dec/shuffle
+usaco/silver/2020jan/wormsort
