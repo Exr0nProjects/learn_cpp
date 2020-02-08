@@ -22,6 +22,8 @@ Bold means that I don't yet understand the given solution.
 
 - **[2016open diamond](./2016open/diamond/main_diamond.cpp)**
 - [2017feb helpcross](./2017feb/helpcross/main_helpcross.cpp)
+- **[2017open cownomics](not started)**
+- **[2017open where](not started)**
 - [2019dec meetings](./2019dec/meetings/main_meetings.cpp)
 - [2020jan berries](./2020jan/berries/main_berries.cpp)
 - [2020jan loan](./2020jan/loan/main_loan.cpp)
