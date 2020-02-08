@@ -1,1 +1,1 @@
-usaco/silver/2016open/reduce
+usaco/silver/2017open/pairup
