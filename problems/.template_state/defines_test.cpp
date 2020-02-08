@@ -5,7 +5,7 @@ LANG: C++14
 */
 
 /*
- * Problem [!meta:pid!] [!meta:srcpath!]
+ * Problem [!meta:pid!] ([!meta:srcpath!])
  * Create time: [!meta:beg!]
  * Accept time: [!meta:end!]
  *
