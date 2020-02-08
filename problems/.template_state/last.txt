@@ -1,1 +1,1 @@
-usaco/silver/2017open/pairup
+usaco/silver/2017open/cownomics
