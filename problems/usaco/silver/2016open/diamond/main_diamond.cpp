@@ -83,32 +83,39 @@ int main()
     scanf("%d", &diamonds[i]);
   }
   sort(diamonds, diamonds + N);
+  //  FOR(i, N) printf("%3d", i); printf("\n");
+  //  FOR(i, N) printf("%3d", diamonds[i]); printf("\n");
 
   int best = 0, best_upper = 0, best_lower = 0;
   FOR(i, N)
   {
-    best_lower = lower_bound(diamonds, diamonds + N, diamonds[i] - K) - diamonds;
-    if (i - best_lower > best)
+    int lower = lower_bound(diamonds, diamonds + N, diamonds[i] - K) - diamonds;
+    if (i - lower > best)
     {
-      best = i - best_lower;
+      best = i - lower;
       best_upper = i;
+      best_lower = lower;
     }
   }
-  //  printf("best = %d (%d - %d)\n", best, best_lower, best_upper);
+  //  printf("best = %d (%d..%d)\n", best, best_lower, best_upper);
 
-  int second_best = 0;
+  int second_best = 0, second_best_lower = 0, second_best_upper = 0;
   FOR(i, N)
   {
     if (best_lower <= i && i <= best_upper)
       continue; // ignore upper in preivous range
-    int second_best_lower = lower_bound(diamonds, diamonds + N, diamonds[i] - K) - diamonds;
-    if (best_lower <= second_best_lower && second_best_lower <= best_upper)
-      second_best_lower = best_upper + 1; // ignore lower in prev range
-    if (i - second_best_lower > second_best)
+    int lower = lower_bound(diamonds, diamonds + N, diamonds[i] - K) - diamonds;
+    if (best_lower <= lower && lower <= best_upper)
+      lower = best_upper + 1; // ignore lower in prev range
+    if (i - lower > second_best)
     {
-      second_best = i - second_best_lower;
+      second_best = i - lower;
+      second_best_upper = i;
+      second_best_lower = lower;
     }
   }
+
+  //  printf("second best = %d (%d..%d)\n", second_best, second_best_lower, second_best_upper);
 
   printf("%d", best + second_best + 2);
 
