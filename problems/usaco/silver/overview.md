@@ -21,12 +21,10 @@ Ad hoc/Simulation | 100 | [2016jan/angry](2016jan/xangry/xnew_angry.cpp), [2016j
 Bold means that I don't yet understand the given solution.
 
 - **[2016open diamond](./2016open/diamond/main_diamond.cpp)**
-- [2017feb helpcross](./2017feb/helpcross/main_helpcross.cpp)
-- **[2017open cownomics](not started)**
 - **[2017open where](not started)**
 - [2019dec meetings](./2019dec/meetings/main_meetings.cpp)
 - [2020jan berries](./2020jan/berries/main_berries.cpp)
-- [2020jan loan](./2020jan/loan/main_loan.cpp)
+- **[2020jan loan](./2020jan/loan/main_loan.cpp)**
 
 ## Badly needs purification
 
@@ -44,5 +42,7 @@ Nothing here yet.
 [2016feb balancing](./2016feb/xbalancing/xnew_balancing.cpp) | Didn't know how to count cows in each quadrant given a fence crossing, but the Usaco soln uses a **running count** as it sweeps the vertical fence across, thus obtaining `O(n^2)` complexity instead of my original `O(n^3)`.
 [2016feb cbarn](./2016feb/xcbarn/xnew_cbarn.cpp) | Wrote based on [thecodingwizard's soln](https://github.com/thecodingwizard/competitive-programming/blob/master/USACO/2016feb/gold/cbarn.cpp), which uses a queue and is **more understandable** than [the usaco soln by Mark Gordon](http://usaco.org/current/data/sol_cbarn_gold_feb16.html).
 [2016dec moocast](./2016dec/xmoocast/xmain_moocast.cpp) | All the test cases (except sample) were RE when grading due to a faulty base case in the `dfs`. The problem was setting the `vis[s]` to true _after_ the recursive calls, but did not appear with the small test cases I was using. **If many REs: check base case, try larger test cases**.
+[2017feb helpcross](./2017feb/helpcross/main_helpcross.cpp) | Don't try to math it, just use **multiset.lower_bound()**.
+[2017open cownomics](./2017open/xcownomics/xmain_cownomics.cpp) | Didn't understand what the problem meant by "sufficient to explain", but I just coded it so that it counts if there isn't the same triplet in a spotty and a non-spotty.
 [2019dec milkvisits](./2019dec/xmilkvisits/xnew_milkvisits.cpp) | Didn't think of using simple disjoint set (dfs)
 [2020jan wormsort](./2020jan/xwormsort/xmain_wormsort.cpp) | Didn't see as a disjoint set problem, the key realization is any cow can be sorted (through a series of swaps) if it is in the same disjoint set as its target position.

@@ -71,7 +71,6 @@ const int MX=1;
 
 using namespace std;
 ll N, K, M;
-int arr[MX];
 
 bool sim(cl x)
 {
@@ -94,12 +93,6 @@ ll binarySearch(ll l, ll r) // include l, exclude r
   else return binarySearch(l, m);
 }
 
-void infinite()
-{
-  FOR(i, 10000)
-    infinite();
-}
-
 int main()
 {
 
@@ -108,8 +101,8 @@ int main()
 
   // FOR(i, N+5) printf("%2d : %3d\n", i+1, sim(i+1));
   ll ans = binarySearch(1, N+10);
-  //  while (sim(ans+1)) ++ans;
-  //  while (!sim(ans)) --ans;
+  // while (sim(ans+1)) ++ans;
+  // while (!sim(ans)) --ans;
   printf("%lld\n", ans);
 
   return 0;
