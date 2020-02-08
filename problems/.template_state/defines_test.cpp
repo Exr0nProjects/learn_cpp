@@ -57,8 +57,8 @@ LANG: C++14
 
 void setIO(const std::string &name="[!meta:pid!]");
 
-const int MX=-1;
 using namespace std;
+const int MX=-1;
 
 
 
