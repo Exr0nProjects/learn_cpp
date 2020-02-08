@@ -86,7 +86,7 @@ ll reduce(cn rem)
     //    printf("          area: %d * %d = %d\n", horz, vert, horz*vert);
     return horz * vert;
   }
-  ll best = 1 << 30;
+  ll best = (long long) 1 << 31; // FIX: i was shifting the defaulted int(1) instead of a (long long)(1) so I could only shift up to int sizes
   FOR(i, N)
   {
     if (removed[i])
