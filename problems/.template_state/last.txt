@@ -1,1 +1,1 @@
-usaco/silver/2016open/closing
+usaco/silver/2016open/diamond

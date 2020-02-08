@@ -7,6 +7,7 @@
 16:54 | start | reading problems
 17:08 | have plans for 2, 3 | coding #3
 17:26 | 1/10 #3 | coding #2
+17:49 | 2/10 #2 | debugging #2
 
 ## Purify Notes
 
