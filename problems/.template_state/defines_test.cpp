@@ -46,30 +46,21 @@ LANG: C++14
 #define S second
 #define INF 0x7FFFFFFF
 
-// for macro overloading, see https://stackoverflow.com/questions/11761703/overloading-macro-on-number-of-arguments
-// this set is designed for one indexed collections
 #define FOR_(i,b,e) for (int i=(b); i<(e); ++i)
 #define FOR(i,e) FOR_(i,0,(e))
 #define FORR_(i,b,e) for (int i=(e)-1; i>=(b); --i)
 #define FORR(i,e) FORR_(i,0,e)
 #define SORT(a,n) std::sort((a), (a)+(n))
 #define TRAV(a,x) for (auto& a: x)
+#define TRAVE(e, s) for (int e = head[s]; e; e = edges[e].n)
 #define SORTV(v) std::sort((v).begin(), (v).end())
 
 void setIO(const std::string &name="[!meta:pid!]");
 
-typedef struct {
-  int f, t, w, n;
-} Edge;
-#define TRAVE(e,s) for (int e=head[s]; e; e=edges[e].n)
-
 const int MX=-1;
-//#define __USING_EDGELIST
-//void addEdge(cn a, cn b, cn w=1);
-//Edge edges[MX*MX];
-//int ect=1, head[MX];
-
 using namespace std;
+
+
 
 int main()
 {
@@ -78,7 +69,8 @@ int main()
   return 0;
 }
 
-// boilerplate functions
+
+
 void setIO(const string &name)
 {
   ios_base::sync_with_stdio(0); cin.tie(0); // fast cin/cout
