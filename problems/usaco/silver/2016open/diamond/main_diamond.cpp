@@ -71,7 +71,7 @@ const int MX = 50010;
 //int ect=1, head[MX];
 
 using namespace std;
-int diamonds[MX];
+ll diamonds[MX];
 int N, K;
 
 int main()
@@ -86,10 +86,10 @@ int main()
   //  FOR(i, N) printf("%3d", i); printf("\n");
   //  FOR(i, N) printf("%3d", diamonds[i]); printf("\n");
 
-  int best = 0, best_upper = 0, best_lower = 0;
+  ll best = 0, best_upper = 0, best_lower = 0;
   FOR(i, N)
   {
-    int lower = lower_bound(diamonds, diamonds + N, diamonds[i] - K) - diamonds;
+    ll lower = lower_bound(diamonds, diamonds + N, diamonds[i] - K) - diamonds;
     if (i - lower > best)
     {
       best = i - lower;
@@ -99,12 +99,12 @@ int main()
   }
   //  printf("best = %d (%d..%d)\n", best, best_lower, best_upper);
 
-  int second_best = 0, second_best_lower = 0, second_best_upper = 0;
+  ll second_best = 0, second_best_lower = 0, second_best_upper = 0;
   FOR(i, N)
   {
     if (best_lower <= i && i <= best_upper)
       continue; // ignore upper in preivous range
-    int lower = lower_bound(diamonds, diamonds + N, diamonds[i] - K) - diamonds;
+    ll lower = lower_bound(diamonds, diamonds + N, diamonds[i] - K) - diamonds;
     if (best_lower <= lower && lower <= best_upper)
       lower = best_upper + 1; // ignore lower in prev range
     if (i - lower > second_best)
@@ -117,10 +117,24 @@ int main()
 
   //  printf("second best = %d (%d..%d)\n", second_best, second_best_lower, second_best_upper);
 
-  printf("%d", best + second_best + 2);
+  printf("%d\n", min(best + second_best + 2, (long long)N)); // incase all diamonds are held in one case, then the +2 should just be +1
 
   return 0;
 }
+
+/*
+ 5 1
+ 3 3 3 3 3
+ => 5
+ 
+ 6 1
+ 1 2 3 4 5 6
+ => 4
+ 
+ 6 1
+ 1 1 2 2 3 3
+ => 6
+ */
 
 // boilerplate functions
 void setIO(const string &name)
