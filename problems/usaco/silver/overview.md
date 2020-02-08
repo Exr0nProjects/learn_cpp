@@ -18,7 +18,9 @@ Ad hoc/Simulation | 100 | [2016jan/angry](2016jan/xangry/xnew_angry.cpp), [2016j
 
 **These problems have yet to be solved.**
 
-- [2016open diamond](./2016open/diamond/main_diamond.cpp)
+Bold means that I don't yet understand the given solution.
+
+- **[2016open diamond](./2016open/diamond/main_diamond.cpp)**
 - [2017feb helpcross](./2017feb/helpcross/main_helpcross.cpp)
 - [2019dec meetings](./2019dec/meetings/main_meetings.cpp)
 - [2020jan berries](./2020jan/berries/main_berries.cpp)
