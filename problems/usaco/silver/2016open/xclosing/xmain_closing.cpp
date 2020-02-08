@@ -7,7 +7,7 @@ LANG: C++14
 /*
  * Problem closing (usaco/silver/2016open/closing)
  * Create time: Fri 07 Feb 2020 @ 17:09 (PST)
- * Accept time: [!meta:end!]
+ * Accept time: Fri 07 Feb 2020 @ 18:03 (PST)
  *
  */
 
@@ -128,14 +128,21 @@ int main()
     //    FOR(j, N) if (closed[j]) printf("%3d", j); printf("\n");
     //    djs_debug();
 
-    int prev = find(0);
+    int prev = -1;
     FOR(j, N)
     {
-      if (!closed[i] && find(j) != prev)
+      //      printf("  prev=%d\n", prev);
+      if (!closed[j])
       {
-        printf("NO\n");
-        prev = -1;
-        break;
+        //        printf("    found open barn %d!\n", j);
+        if (prev < 0)
+          prev = find(j);
+        if (prev != find(j))
+        {
+          printf("NO\n");
+          prev = -1;
+          break;
+        }
       }
     }
     if (prev >= 0)
@@ -149,6 +156,14 @@ int main()
 
   return 0;
 }
+
+/*
+ 2 1
+ 1 2
+ 1
+ 2
+ => YES YES
+ */
 
 // boilerplate functions
 void setIO(const string &name)
