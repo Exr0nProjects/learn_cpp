@@ -1,1 +1,1 @@
-usaco/silver/2017open/cownomics
+onlinejudge/pid/10474
