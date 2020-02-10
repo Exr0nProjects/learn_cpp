@@ -114,7 +114,7 @@ int getTime()
   {
     total_weight -= 2*p.S;
     // printf("  w: %d\n", total_weight);
-    if (total_weight < 0)
+    if (total_weight <= 0) // FIX: le because its "at least", not "more than"
     {
       return p.F;
     }
