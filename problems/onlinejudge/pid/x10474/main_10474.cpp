@@ -76,6 +76,8 @@ int main()
       scanf("%d", &a);
       marbles.emplace_back(a);
     }
+    sort(marbles.begin(), marbles.end());
+
     printf("CASE# %d:\n", kase);
     FOR(i, Q)
     {
@@ -89,16 +91,8 @@ int main()
       }
       else
       {
-        printf("%d found at %d\n", q, *found);
+        printf("%d found at %d\n", q, found - marbles.begin() + 1);
       }
-      // if (pos[q] > 0)
-      // {
-      //   printf("%d found at %d\n", q, pos[q]);
-      // }
-      // else
-      // {
-      //   printf("%d not found\n", q);
-      // }
     }
   }
 
