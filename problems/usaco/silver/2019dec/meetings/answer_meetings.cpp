@@ -48,7 +48,7 @@ int N,L;
 vi w,x,d;
  
 void init() {
-//  setIO("meetings");
+ setIO("meetings");
   cin >> N >> L;
   w.rsz(N), x.rsz(N), d.rsz(N);
   F0R(i,N) cin >> w[i] >> x[i] >> d[i];
@@ -84,7 +84,7 @@ int getTime() {
 int main() {
   init();
   int t = getTime();
-  printf("%d\n", t);
+  printf("t = %d\n", t);
   queue<int> rig;
   int ans = 0;
   F0R(i,N) {

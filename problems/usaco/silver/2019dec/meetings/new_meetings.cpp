@@ -110,11 +110,16 @@ int getTime()
   sort(endings.begin(), endings.end());
 
   int i=endings.size()-1;
-  for (int done = total_weight; done > total_weight/2; --i)
+  TRAV(p, endings)
   {
-    done -= endings[i].S;
+    total_weight -= 2*p.S;
+    // printf("  w: %d\n", total_weight);
+    if (total_weight < 0)
+    {
+      return p.F;
+    }
   }
-  return endings[i].F;
+  return 0;
 }
 
 int countCollisions(cn t)
@@ -145,6 +150,7 @@ int main()
   int t = getTime();
   int n = countCollisions(t);
 
+  // printf("t=%d, ", t);
   printf("%d\n", n);
 
   return 0;
