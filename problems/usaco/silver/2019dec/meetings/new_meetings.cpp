@@ -64,17 +64,88 @@ typedef struct
 } Edge;
 #define TRAVE(e, s) for (int e = head[s]; e; e = edges[e].n)
 
-const int MX = -1;
+const int MX = 50010;
 //#define __USING_EDGELIST
 //void addEdge(cn a, cn b, cn w=1);
 //Edge edges[MX*MX];
 //int ect=1, head[MX];
 
 using namespace std;
+int N, L;
+vector<pair<int, pii>> cows;
+vi left_going, right_going;
+vii endings; // <time, weight>
+
+void input()
+{
+  scanf("%d%d", &N, &L);
+  FOR(i, N)
+  {
+    int w, x, d;
+    scanf("%d%d%d", &w, &x, &d);
+    cows.emplace_back(x, MP(w, d));
+  }
+  sort(cows.begin(), cows.end());
+}
+
+int getTime()
+{
+  int total_weight = 0;
+  TRAV(p, cows)
+  {
+    if (p.S.S == -1)
+    {
+      left_going.emplace_back(p.F);
+    }
+    else
+    {
+      right_going.emplace_back(p.F);
+    }
+    total_weight += p.S.F;
+  }
+  
+  FOR(i, left_going.size()) endings.emplace_back(left_going[i], cows[i].S.F); // first z weights
+  FOR(i, right_going.size()) endings.emplace_back(L-right_going[i], cows[i+left_going.size()].S.F); // other weights (sorted by reverse time taken)
+
+  sort(endings.begin(), endings.end());
+
+  int i=endings.size()-1;
+  for (int done = total_weight; done > total_weight/2; --i)
+  {
+    done -= endings[i].S;
+  }
+  return endings[i].F;
+}
+
+int countCollisions(cn t)
+{
+  int count = 0;
+  FOR(r, right_going.size())
+  {
+    FOR(l, left_going.size())
+    {
+//      printf("right: %d, left: %d\n", right_going[r], left_going[l]);
+      if (left_going[l] > right_going[r] && left_going[l] - t <= right_going[r] + t)
+      {
+        ++count;
+      }
+    }
+  }
+  return count;
+}
 
 int main()
 {
   setIO();
+  input();
+  TRAV(p, cows)
+  {
+//    printf("cow at %d with %d going %d\n", p.F, p.S.F, p.S.S);
+  }
+  int t = getTime();
+  int n = countCollisions(t);
+
+  printf("%d\n", n);
 
   return 0;
 }
