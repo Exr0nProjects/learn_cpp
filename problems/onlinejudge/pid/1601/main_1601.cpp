@@ -58,36 +58,62 @@ LANG: C++14
 void setIO(const std::string &name = "1601");
 
 using namespace std;
-const int MX = 16;               // 3/4 * grid size
+const int MX = 16;    
+const int MX_CELLS = 200;         // 3/4 * grid size
 const int dx = {0, 1, 0, -1, 0}; // four directions + noop
 const int dy = {1, 0, -1, 0, 0};
+int W, H, N;
 
-int maze[MX][MX];
+// cell: empty positions on the input board
+typedef cell int; // ! one indexed
+int x[MX_CELLS], y[MX_CELLS]; // map cell_id to <w, h>
+cell maze[MX][MX]; // map <w, h> to cell_id
+cell start[3], dest[3], cell_id=0; // starting and dest cells of each ghost
+void setup()
+{
+  scanf("%d%d%d", &W, &H, &N);
+  FOR(h, H)
+  {
+    scanf("\n");
+    FOR(w, W)
+    {
+      char c;
+      scanf("%c", &c);
+      if (c != '#')
+      {
+        ++cell_id;
+        x[cell_id] = w;
+        y[cell_id] = h;
+        maze[w][h] = cell_id;
+        if (isLower(c)) s[c-'a'] = cell_id;
+        if (isUpper(c)) s[c-'A'] = cell_id;
+      }
+    }
+  }
+}
 
+// state: combo of the locations of three ghosts
 // typedef state int;
 struct state
 {
-  int ax, ay, bx, by, cx, cy;
+  cell a, b, c;
   state(){};
-  state(cn a, cn b, cn c, cn d, cn e, cn f) : ax(a), ay(b), bx(c), by(d), cx(e), cy(f) {}
+  state(cell a, cell b, cell c) : a(a), b(b), c(c) {}
   state(const state &src, cn da, cn db, cn dc)
   {
-    ax = src.ax + dx[da];
-    ay = src.ay + dy[da];
-    bx = src.bx + dx[db];
-    by = src.by + dy[db];
-    cx = src.cx + dx[dc];
-    cy = src.cy + dy[dc];
+    a = maze[x[src.a]+dx[da]][y[src.a]+dy[da]];
+    b = maze[x[src.b]+dx[db]][y[src.b]+dy[db]];
+    c = maze[x[src.c]+dx[dc]][y[src.c]+dy[dc]];
   }
-} win_condition;
+};
 
-vector<state> neighbors(state src, vector<state> &ret)
+vector<state> neighbors(state src)
 {
-  auto illegalPos = [](cn x, cn y) { return maze[x][y] == -1; };
-  auto illegalMove = [](cn ax0, cn ay0, cn bx0, cn by0, cn ax1, cn ay1, cn bx1, cn by1) {
-    return (ax1 == bx1 && ay1 == by1) ||
-           ((ax0 == bx1 && ay0 == by1) || (ax1 == bx0 && ay1 == by1));
+  auto illegalPos = [](cell c) { return c == 0; };
+  auto illegalMove = [](cell a0, cell a1, cell b0, cell b1) {
+    return a1 == b1 || (a0 == b1 && b0 == a1);
   };
+  vector<state> ret;
   FOR(da, 5)
   FOR(db, 5) FOR(dc, 5)
   {
@@ -95,19 +121,25 @@ vector<state> neighbors(state src, vector<state> &ret)
     // in a wall
     if (illegalPos(next.ax, next.ay) || illegalPos(next.bx, next.by) || illegalPos(next.cx, next.cy))
       continue;
-    if (illegalMove(src.ax, src.ay, src.bx, src.by, next.ax, next.ay, next.bx, next.by) ||)
+    if (illegalMove(src.a next.a, src.b, next.b)
+     || illegalMove(src.b, next.b, src.c, next.c)
+     || illegalMove(src.c, next.c, src.a, next.a))
+      continue;
+    ret.push_back(next);
   }
   return ret;
 }
 
 inline bool win(state s)
 {
-  return s == win_condition;
+  return s.a == dest[0] && s.b == dest[1] && s.c == dest[2];
 }
 
 int bfs(state start)
 {
   static queue<state> q;
+  static map<state, int> dist;
+  dist[start] = 0;
   for (q.push(start); !q.empty(); q.pop())
   {
     if (win(q.front()))
@@ -115,6 +147,8 @@ int bfs(state start)
 
     TRAV(n, neighbors(q.front()))
     {
+      if (dist.count(q.front())) continue; // dejavu: already been here before
+      dist[n] = dist[q.front()]+1;
       q.push(n);
     }
   }
@@ -124,6 +158,28 @@ int bfs(state start)
 int main()
 {
   setIO();
+  setup();
+
+  // put additional ghosts in the corner to fill all three
+  if (N <= 1)
+  {
+    ++cell_id;
+    maze[0][0] = cell_id;
+    x[cell_id] = y[cell_id] = 0;
+    start[2] = dest[2] = cell_id;
+  }
+  if (N <= 2)
+  {
+    ++cell_id;
+    maze[W-1][0] = cell_id;
+    x[cell_id] = W-1;
+    y[cell_id] = 0;
+    start[2] = dest[2] = cell_id;
+  }
+
+  // go!
+  state start(s[0], s[1], s[2]);
+  printf("%d\n", bfs(start));
 
   return 0;
 }
