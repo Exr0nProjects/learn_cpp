@@ -7,7 +7,7 @@ LANG: C++14
 /*
  * Problem meetings usaco/silver/2019dec/meetings
  * Create time: Fri 07 Feb 2020 @ 19:50 (PST)
- * Accept time: [!meta:end!]
+ * Accept time: Sun 09 Feb 2020 @ 20:20 (PST)
  *
  */
 

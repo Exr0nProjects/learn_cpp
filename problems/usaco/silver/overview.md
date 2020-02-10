@@ -22,7 +22,6 @@ Bold means that I don't yet understand the given solution.
 
 - **[2016open diamond](./2016open/diamond/main_diamond.cpp)**
 - **[2017open where](not started)**
-- [2019dec meetings](./2019dec/meetings/main_meetings.cpp)
 - [2020jan berries](./2020jan/berries/main_berries.cpp)
 - **[2020jan loan](./2020jan/loan/main_loan.cpp)**
 
@@ -45,4 +44,5 @@ Nothing here yet.
 [2017feb helpcross](./2017feb/helpcross/main_helpcross.cpp) | Don't try to math it, just use **multiset.lower_bound()**.
 [2017open cownomics](./2017open/xcownomics/xmain_cownomics.cpp) | Didn't understand what the problem meant by "sufficient to explain", but I just coded it so that it counts if there isn't the same triplet in a spotty and a non-spotty.
 [2019dec milkvisits](./2019dec/xmilkvisits/xnew_milkvisits.cpp) | Didn't think of using simple disjoint set (dfs)
+[2019dec meetings](./2019dec/meetings/main_meetings.cpp) | So many transformations
 [2020jan wormsort](./2020jan/xwormsort/xmain_wormsort.cpp) | Didn't see as a disjoint set problem, the key realization is any cow can be sorted (through a series of swaps) if it is in the same disjoint set as its target position.
