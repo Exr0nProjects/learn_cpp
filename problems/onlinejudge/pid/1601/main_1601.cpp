@@ -69,6 +69,9 @@ typedef char cell;                   // ! one indexed
 int x[MX_CELLS], y[MX_CELLS];        // map cell_id to <w, h>
 cell maze[MX][MX];                   // map <w, h> to cell_id
 cell start[3], dest[3], cell_id = 0; // starting and dest cells of each ghost
+
+int dist[MX_CELLS][MX_CELLS][MX_CELLS]; // distance from source
+
 bool setup()
 {
   // reset globals
@@ -79,6 +82,8 @@ bool setup()
   FOR(i, 3)
   start[i] = dest[i] = 0;
   cell_id = 0;
+  FOR(i, MX_CELLS)
+  FOR(j, MX_CELLS) FOR(k, MX_CELLS) dist[i][j][k] = 0;
 
   // input
   scanf("%d%d%d", &W, &H, &N);
@@ -151,20 +156,20 @@ inline bool win(state s)
 int bfs(state src)
 {
   queue<state> q;
-  map<state, int> dist;
-  dist[src] = 1;
+  dist[src.a][src.b][src.c] = 1;
   for (q.push(src); !q.empty(); q.pop())
   {
-    //    FOR(i, dist[q.front()]) printf("  "); printf("%d %d %d", q.front().a, q.front().b, q.front().c); printf("\n");
-    if (win(q.front()))
-      return dist[q.front()] - 1;
+    state c = q.front();
+    //    printf("%d...", dist[c.a][c.b][c.c]); FOR(i, dist[c.a][c.b][c.c]) printf(" "); printf("%d %d %d", c.a, c.b, c.c); printf("\n");
+    if (win(c))
+      return dist[c.a][c.b][c.c] - 1;
 
     TRAV(n, neighbors(q.front()))
     {
       //      printf(". %d %d %d: %d\n", n.a, n.b, n.c, dist[n]);
-      if (dist[n] > 0)
+      if (dist[n.a][n.b][n.c] > 0)
         continue; // dejavu: already been here before
-      dist[n] = dist[q.front()] + 1;
+      dist[n.a][n.b][n.c] = dist[c.a][c.b][c.c] + 1;
       q.push(n);
     }
   }
@@ -228,7 +233,7 @@ int main()
     // go!
     state src{start[0], start[1], start[2]};
 
-    printf("%d %d %d -> %d %d %d\n", start[0], start[1], start[2], dest[0], dest[1], dest[2]);
+    //      printf("%d %d %d -> %d %d %d\n", start[0], start[1], start[2], dest[0], dest[1], dest[2]);
 
     //  find neighbors works...
     //  TRAV(s, neighbors(src))
