@@ -20,6 +20,7 @@ LANG: C++14
 #include <cstring>
 #include <queue>
 #include <stack>
+#include <list>
 #include <set>
 #include <map>
 #include <unordered_set>
@@ -59,9 +60,9 @@ LANG: C++14
 void setIO(const std::string &name = "101");
 
 using namespace std;
-const int MX = 25;
+const int MX = 50;
 
-deque<int> world[MX];
+list<int> world[MX];
 int loc[MX]; // location of block n
 
 int N, src, dst;
@@ -75,7 +76,6 @@ int read(int &op)
     return 0;
   }
 
-  printf("%s ", buf);
   op = 0;
   if (buf[0] == 'm')
     op |= 2;
@@ -83,7 +83,6 @@ int read(int &op)
   if (buf[1] == 'n')
     op |= 1;
   scanf("%d", &dst);
-  printf("%s ", buf);
   return 1;
 }
 
@@ -112,24 +111,55 @@ int main()
   scanf("%d", &N);
   FOR(i, N)
   world[i].push_back(i);
+  iota(loc, loc + N, 0);
+
+  //  output();
 
   int operation;
   while (read(operation))
   {
-    printf("(%d) %d -> %d\n", operation, src, dst);
+    //    printf("(%d) %d -> %d\n", operation, src, dst);
+    if (loc[src] == loc[dst])
+      continue;
+
+    auto &s_pile = world[loc[src]];
+    auto &d_pile = world[loc[dst]];
+
     if (operation & 2) // move type
     {
-      for (; world[src].size() > 1; world[src].pop_back()) // TODO: move to where block n is, not position n. Also only take from block src up, not the entire stack
-        world[world[src].back()].push_back(world[src].back());
+      for (; s_pile.back() != src; s_pile.pop_back())
+      {
+        loc[s_pile.back()] = s_pile.back();
+        world[s_pile.back()].push_back(s_pile.back());
+      }
     }
     if (operation & 1) // onto type
     {
-      for (; world[dst].size() > 1; world[dst].pop_back())
-        world[world[dst].back()].push_back(world[dst].back());
+      for (; d_pile.back() != dst; d_pile.pop_back())
+      {
+        loc[d_pile.back()] = d_pile.back();
+        world[d_pile.back()].push_back(d_pile.back());
+      }
     }
-    for (; !world[src].empty(); world[src].pop_front())
-      world[dst].push_back(world[src].front());
-    output();
+    // do the final move
+    bool found = 0;
+    for (auto it = s_pile.begin(); it != s_pile.end() && !s_pile.empty();)
+    {
+      //      printf("checking %d found? %d\n", *it, found);
+      if (*it == src)
+        found = true;
+      if (found)
+      {
+        loc[*it] = dst;
+        d_pile.push_back(*it);
+        it = s_pile.erase(it);
+      }
+      else
+      {
+        ++it;
+      }
+    }
+    //    output();
   }
 
   output();
