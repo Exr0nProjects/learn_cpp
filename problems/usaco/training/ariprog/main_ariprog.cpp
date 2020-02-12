@@ -60,7 +60,7 @@ void setIO(const std::string &name = "ariprog");
 using namespace std;
 const int MX = 125010;
 int N, M;
-unordered_set<int> bisquares;
+bool bisquares[MX];
 deque<int> next_bisquare;
 set<pii> ret;
 
@@ -74,7 +74,7 @@ int main()
     {
         int bisq = p*p+q*q;
         next_bisquare.push_back(bisq);
-        bisquares.insert(bisq);
+        bisquares[bisq] = 1;
         largest_bisquare = max(largest_bisquare, bisq);
     }
 
@@ -89,7 +89,7 @@ int main()
             bool ok = 1;
             FOR(n, N)
             {
-                if (!bisquares.count(a + n * b))
+                if (!bisquares[a + n * b])
                 {
                     ok = 0;
                     break;
