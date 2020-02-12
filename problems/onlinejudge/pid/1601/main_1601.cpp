@@ -79,12 +79,14 @@ bool setup()
   FOR(i, MX_CELLS)
   x[i] = y[i] = 0;
   FOR(i, MX)
-  FOR(j, MX) maze[i][j] = 0;
+  FOR(j, MX)
+  maze[i][j] = 0;
   FOR(i, 3)
   start[i] = dest[i] = 0;
   cell_id = 0;
   FOR(i, MX_CELLS)
-  FOR(j, MX_CELLS) FOR(k, MX_CELLS) dist[i][j][k] = 0;
+  FOR(j, MX_CELLS)
+  FOR(k, MX_CELLS) dist[i][j][k] = 0;
 
   // input
   scanf("%d%d%d", &W, &H, &N);
@@ -151,6 +153,7 @@ vector<state> neighbors(state src)
 
 inline bool win(state s)
 {
+  //  printf("    win: %d && %d && %d\n", s.a == dest[0], s.b == dest[1], s.c == dest[2]);
   return s.a == dest[0] && s.b == dest[1] && s.c == dest[2];
 }
 
@@ -161,7 +164,7 @@ int bfs(state src)
   for (q.push(src); !q.empty(); q.pop())
   {
     state c = q.front();
-    //    printf("%d...", dist[c.a][c.b][c.c]); FOR(i, dist[c.a][c.b][c.c]) printf(" "); printf("%d %d %d", c.a, c.b, c.c); printf("\n");
+    //        printf("%d...", dist[c.a][c.b][c.c]); FOR(i, dist[c.a][c.b][c.c]) printf(" "); printf("%d %d %d", c.a, c.b, c.c); printf("\n");
     if (win(c))
       return dist[c.a][c.b][c.c] - 1;
 
@@ -218,7 +221,7 @@ int main()
       ++cell_id;
       maze[0][0] = cell_id;
       x[cell_id] = y[cell_id] = 0;
-      start[2] = dest[2] = cell_id;
+      start[1] = dest[1] = cell_id; // FIX: set the second ghost, not the third
     }
     if (N <= 2)
     {
@@ -234,7 +237,7 @@ int main()
     // go!
     state src{start[0], start[1], start[2]};
 
-    //      printf("%d %d %d -> %d %d %d\n", start[0], start[1], start[2], dest[0], dest[1], dest[2]);
+    //          printf("%d %d %d -> %d %d %d\n", start[0], start[1], start[2], dest[0], dest[1], dest[2]);
 
     //  find neighbors works...
     //  TRAV(s, neighbors(src))
@@ -276,6 +279,14 @@ int main()
  #        #    ##
  ################
  0 0 0
+
+
+ 5 5 1
+ #####
+ #A  #
+ # # #
+ #  a#
+ #####
  */
 
 void setIO(const string &name)
