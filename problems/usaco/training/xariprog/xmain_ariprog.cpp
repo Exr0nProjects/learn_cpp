@@ -7,7 +7,7 @@ LANG: C++14
 /*
  * Problem ariprog ([!meta:srcpath!])
  * Create time: Tue 11 Feb 2020 @ 19:29 (PST)
- * Accept time: [!meta:end!]
+ * Accept time: Tue 11 Feb 2020 @ 20:21 (PST)
  *
  */
 
@@ -58,30 +58,33 @@ LANG: C++14
 void setIO(const std::string &name = "ariprog");
 
 using namespace std;
-const int MX = 125010;
+const int MX = 63000;
 int N, M;
-bool bisquares[MX];
-deque<int> next_bisquare;
+bool bisquares[2*MX];
+int next_bisquare[MX];
 set<pii> ret;
 
 int main()
 {
     setIO();
     scanf("%d%d", &N, &M);
-    int largest_bisquare = 0;
+    int largest_bisquare = 0, num_bisquares=0;
     FOR(p, M + 1)
-    FOR(q, M + 1)
+    FOR_(q, p,  M + 1)
     {
         int bisq = p*p+q*q;
-        next_bisquare.push_back(bisq);
+        next_bisquare[num_bisquares++] = bisq;
         bisquares[bisq] = 1;
         largest_bisquare = max(largest_bisquare, bisq);
     }
+    sort(next_bisquare, next_bisquare+num_bisquares);
 
-    TRAV(a, next_bisquare)
+    FOR(_a, num_bisquares)
     {
-        for (int b : next_bisquare)
+        int a = next_bisquare[_a];
+        FOR_(_b, _a+1, num_bisquares)
         {
+            int b = next_bisquare[_b];
             if (b <= a) continue;
             b = b-a;
             if (a + (N-1)*b > largest_bisquare) continue;
