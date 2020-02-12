@@ -1,1 +1,1 @@
-usaco/training/ariprog
+usaco/training/milk3
