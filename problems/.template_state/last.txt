@@ -1,1 +1,1 @@
-usaco/training/skidesign
+usaco/training/ariprog
