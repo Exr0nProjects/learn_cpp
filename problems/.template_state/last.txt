@@ -1,1 +1,1 @@
-onlinejudge/pid/101
+usaco/training/skidesign
