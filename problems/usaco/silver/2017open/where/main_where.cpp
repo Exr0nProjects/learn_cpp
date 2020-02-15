@@ -62,7 +62,8 @@ const int MX = 30;
 int N;
 struct PCL
 {
-    int i1, j1, i2, j2;
+    int ai, aj, bi, bj;
+    PCL(int ai, int aj, int bi, int bj): ai(ai), aj(aj), bi(bi), bj(bj) {};
 };
 
 string img[MX];
@@ -88,7 +89,7 @@ void dfs(cn y, cn x, cn ai, cn aj, cn bi, cn bj, char id)
         }
     }
 }
-bool isPCL(cn ai, cn aj, int bi, int bj)
+bool isPCL(cn ai, cn aj, cn bi, cn bj)
 {
     //printf("checking (%d, %d), (%d, %d)\n", ai, aj, bi, bj);
     FOR_(i, ai, bi+1) FOR_(j, aj, bj+1) vis[i][j] = 0; // reset vis array
@@ -112,44 +113,29 @@ bool isPCL(cn ai, cn aj, int bi, int bj)
 }
 
 // PCL checking
-vector<PCL> V;
-//bool contains(cn i, cn o)
-//{
-    //return (
-            //pcls[o].ai <= pcls[i].ai
-            //&&pcls[o].bi >= pcls[i].bi
-            //&&pcls[o].aj <= pcls[i].aj
-            //&&pcls[o].bj >= pcls[i].bj
-           //);
-//}
-
-bool PCL_in_PCL(int x, int y)
+vector<PCL> pcls;
+bool contains(cn i, cn o)
 {
-  return V[x].i1 >= V[y].i1
-    && V[x].i2 <= V[y].i2
-    && V[x].j1 >= V[y].j1
-    && V[x].j2 <= V[y].j2;
+    return (
+            pcls[o].ai <= pcls[i].ai
+            &&pcls[o].bi >= pcls[i].bi
+            &&pcls[o].aj <= pcls[i].aj
+            &&pcls[o].bj >= pcls[i].bj
+           );
 }
 
-bool PCL_maximal(int x)
+int checked=0, checked_out =0;
+bool isLargest(cn i)
 {
-  for (int i=0; i<V.size(); i++)
-    if (i!=x && PCL_in_PCL(x,i)) return false;
-  return true;
+    ++checked;
+    FOR(o, pcls.size())
+    {
+        if (i == o) continue;
+        if (contains(i, o)) return false; // FIX: should check if j contains i not if i contains j
+    }
+    ++checked_out;
+    return true;
 }
-
-//int checked=0, checked_out =0;
-//bool isLargest(cn i)
-//{
-    //++checked;
-    //FOR(o, V.size())
-    //{
-        //if (i == o) continue;
-        //if (PCL_in_PCL(i, o)) return false; // FIX: should check if j contains i not if i contains j
-    //}
-    //++checked_out;
-    //return true;
-//}
 
 int main()
 {
@@ -168,25 +154,22 @@ int main()
         {
             if (isPCL(ai, aj, bi, bj))
             {
-                PCL pcl = {ai, aj, bi, bj};
-                V.push_back(pcl);
+                pcls.emplace_back(ai, aj, bi, bj);
                 //printf("(%d, %d) (%d, %d) is a PCL!\n", ai, aj, bi, bj);
             }
         }
 
     int ret = 0;
-    FOR(i, V.size())
+    FOR(i, pcls.size())
     {
-        if (PCL_maximal(i))
+        if (isLargest(i))
         {
             ++ret;
-            //printf("-> (%d, %d), (%d, %d)\n", pcls[i].ai, pcls[i].aj, pcls[i].bi, pcls[i].bj);
+            printf("-> (%d, %d), (%d, %d)\n", pcls[i].ai, pcls[i].aj, pcls[i].bi, pcls[i].bj);
         }
     }
 
-    printf("pcl size: %d\n", V.size());
-
-    //printf("checking went from %d -> %d\n", checked, checked_out);
+    //printf("pcl size: %d\n", pcls.size());
 
     printf("%d\n", ret);
 
