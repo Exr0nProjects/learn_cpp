@@ -21,3 +21,5 @@ rm -rf "$modpath"
 ./list_completed.sh
 
 "$(dirname $cache)/live_commit.sh" "./$modpath ./$newpath working.txt completed.txt" "AC $modpath (script)"
+
+gg
