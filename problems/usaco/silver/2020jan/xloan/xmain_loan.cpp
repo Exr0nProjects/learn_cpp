@@ -7,7 +7,7 @@ LANG: C++14
 /*
  * Problem loan (usaco/silver/2020jan/loan)
  * Create time: Sun 19 Jan 2020 @ 07:59 (PST)
- * Accept time: [!meta:end!]
+ * Accept time: Sat 15 Feb 2020 @ 08:08 (PST)
  *
  */
 
@@ -59,7 +59,7 @@ LANG: C++14
 void setIO(const std::string &name="loan");
 
 typedef struct {
-  int f, t, w, n;
+    int f, t, w, n;
 } Edge;
 #define TRAVE(s,e) for (int e=head[s]; e; e=edges[e].n)
 
@@ -74,75 +74,81 @@ ll N, K, M;
 
 bool sim(cl x)
 {
-  ll i=0, n = N, y=0;
-  for (; n>=0; n -= y, ++i)
-  {
-//    printf("day %2d: remain %d\n", i, n);
-    if (i > M) return false;
-    y = n/x;
-    if (y <= K) return K * (M-i) > n;
-  }
-  return true;
+    // https://www.youtube.com/watch?v=gaSGtzlumwA&feature=youtu.be&t=520
+    ll days=0, given=0;
+    while (days <= K && given <= N)
+    {
+        ll y = (N-given)/x;
+        if (y < M)
+        {
+            return (K-days)*M >= N-given;
+        }
+        ll max_given = N-(x*y); // max value of given and still get the same value of y
+        ll n_days = (max_given-given)/y +1; // n_days giving this y of milk - +1 because when max_given == given we still give for one day, and etc
+        days += n_days;
+        given += n_days*y;
+    }
+    return given >= N;
 }
 
 ll binarySearch(ll l, ll r) // include l, exclude r
 {
-  if (l+1 >= r) return l;
-  ll m = (l+r)/2;
-  if (sim(m)) return binarySearch(m, r);
-  else return binarySearch(l, m);
+    if (l+1 >= r) return l;
+    ll m = (l+r)/2;
+    if (sim(m)) return binarySearch(m, r);
+    else return binarySearch(l, m);
 }
 
 int main()
 {
 
-  setIO();
-  scanf("%lld%lld%lld", &N, &K, &M);
+    setIO();
+    scanf("%lld%lld%lld", &N, &K, &M);
 
-  // FOR(i, N+5) printf("%2d : %3d\n", i+1, sim(i+1));
-  ll ans = binarySearch(1, N+10);
-  // while (sim(ans+1)) ++ans;
-  // while (!sim(ans)) --ans;
-  printf("%lld\n", ans);
+    // FOR(i, N+5) printf("%2d : %3d\n", i+1, sim(i+1));
+    ll ans = binarySearch(1, N+10);
+    // while (sim(ans+1)) ++ans;
+    // while (!sim(ans)) --ans;
+    printf("%lld\n", ans);
 
-  return 0;
+    return 0;
 }
 
 // boilerplate functions
 void setIO(const string &name)
 {
-  ios_base::sync_with_stdio(0); cin.tie(0); // fast cin/cout
-  if (fopen((name+".in").c_str(), "r") != nullptr)
-  {
-    freopen((name+".in").c_str(), "r", stdin);
-    freopen((name+".out").c_str(), "w+", stdout);
-  }
+    ios_base::sync_with_stdio(0); cin.tie(0); // fast cin/cout
+    if (fopen((name+".in").c_str(), "r") != nullptr)
+    {
+        freopen((name+".in").c_str(), "r", stdin);
+        freopen((name+".out").c_str(), "w+", stdout);
+    }
 }
 
 #ifdef __USING_EDGELIST
 void addEdge(cn a, cn b, cn w)
 {
-  edges[ect].f = a;
-  edges[ect].t = b;
-  edges[ect].w = w;
-  edges[ect].n = head[a];
-  head[a] = ect++;
+    edges[ect].f = a;
+    edges[ect].t = b;
+    edges[ect].w = w;
+    edges[ect].n = head[a];
+    head[a] = ect++;
 }
 #endif
 
 /*
-Benjamin Qi
+   Benjamin Qi
 #define FOR(i,a,b) for (int i = (a); i < (b); ++i)
 #define F0R(i,a) FOR(i,0,a)
 #define ROF(i,a,b) for (int i = (b)-1; i >= (a); --i)
 #define R0F(i,a) ROF(i,0,a)
 #define trav(a,x) for (auto& a: x)
- 
+
 #define pb push_back
 */
 
 /*
-thecodingwizard
+   thecodingwizard
 
 #define FOR(i, a, b) for (int i=a; i<(b); i++)
 #define F0R(i, a) for (int i=0; i<(a); i++)
