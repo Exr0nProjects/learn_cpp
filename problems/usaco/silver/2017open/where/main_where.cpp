@@ -77,40 +77,35 @@ int dfs(cn y, cn x, cn ai, cn aj, cn bi, cn bj, char id)
     const int delta_y[4] = {0, 1, 0, -1};
     const int delta_x[4] = {1, 0, -1, 0};
 
-    TRAV(dy, delta_y) TRAV(dx, delta_x)
+    TRAV(dy, delta_y) TRAV(dx, delta_x) // FIX: name colision, originally was const int dx[4]...; FOR(dx, 4)...; (forgot that dx was index and not actual value in array)
     {
         if ( ai <= y+dy && y+dy <= bi && aj <= x+dx && x+dx <= bj
          &&  img[y][x] == img[y+dy][x+dx] && !vis[y+dy][x+dx])
         {
-            printf("      %d %d\n", y+dy, x+dx);
             dfs(y+dy, x+dx, ai, aj, bi, bj, id);
         }
     }
 }
 bool isPCL(cn ai, cn aj, int bi, int bj)
 {
-    printf("checking (%d, %d), (%d, %d)\n", ai, aj, bi, bj);
-    //++bi; ++bj; // bi and bj are excluded in this function
+    //printf("checking (%d, %d), (%d, %d)\n", ai, aj, bi, bj);
     FOR_(i, ai, bi+1) FOR_(j, aj, bj+1) vis[i][j] = 0; // reset vis array
 
-    printf("VIS:\n");
-    FOR(i, N) { FOR(j, N) printf("%2c", vis[i][j] ? vis[i][j] : '.'); printf("\n"); }
-    printf("\n");
+    //printf("VIS:\n");
+    //FOR(i, N) { FOR(j, N) printf("%2c", vis[i][j] ? vis[i][j] : '.'); printf("\n"); }
+    //printf("\n");
 
     map<char, int> color_count;
     FOR_(i, ai, bi+1) FOR_(j, aj, bj+1)
     {
         if (vis[i][j]) continue;
-        printf("  new color section at %d %d!\n", i, j);
-    printf("VIS:\n");
-    FOR(i, N) { FOR(j, N) printf("%2c", vis[i][j] ? vis[i][j] : '.'); printf("\n"); }
-    printf("\n");
+        //printf("  new color section at %d %d!\n", i, j);
         ++color_count[img[i][j]];
         dfs(i, j, ai, aj, bi, bj, img[i][j]);
     }
     int sum = 0; // FIX: forgot to initialize with zero
     TRAV(p, color_count) sum += p.S;
-    printf("num colors: %d, num reigons: %d\n\n", color_count.size(), sum);
+    //printf("num colors: %d, num reigons: %d\n\n", color_count.size(), sum);
     return color_count.size() == 2 && sum == 3;
 }
 
