@@ -1,1 +1,1 @@
-usaco/training/milk3
+test

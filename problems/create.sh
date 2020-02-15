@@ -15,4 +15,9 @@ mkdir -p $1
   && echo "$1" > "$cache"\
   && ./list_completed.sh\
 	&& echo "$1"
-[[ -s "$1/main_$(basename $1).cpp" ]] && printf "File exists!\n" | exit 1
+cat ./.template_state/Makefile\
+    | sed "s/\[\!meta\:pid\!\]/$(basename $1)/g"\
+    >> "$1/Makefile"
+
+cd $1
+#[[ -s "$1/main_$(basename $1).cpp" ]] && printf "File exists!\n" | exit 1
