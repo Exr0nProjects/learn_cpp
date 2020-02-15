@@ -1,1 +1,1 @@
-usaco/silver/2016open/diamond/
+usaco/silver/2017open/where
