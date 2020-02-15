@@ -70,15 +70,18 @@ string img[MX];
 
 // PCL finding
 int vis[MX][MX];
-int dfs(cn y, cn x, cn ai, cn aj, cn bi, cn bj, char id)
+void dfs(cn y, cn x, cn ai, cn aj, cn bi, cn bj, char id)
 {
     //printf("    connecting with %d %d\n", y, x);
     vis[y][x] = id;
     const int delta_y[4] = {0, 1, 0, -1};
     const int delta_x[4] = {1, 0, -1, 0};
 
-    TRAV(dy, delta_y) TRAV(dx, delta_x) // FIX: name colision, originally was const int dx[4]...; FOR(dx, 4)...; (forgot that dx was index and not actual value in array)
+    FOR(d, 4)
     {
+        int dy = delta_y[d];
+        int dx = delta_x[d];
+        //printf("%+d, %+d\n", dy, dx);
         if ( ai <= y+dy && y+dy <= bi && aj <= x+dx && x+dx <= bj
          &&  img[y][x] == img[y+dy][x+dx] && !vis[y+dy][x+dx])
         {
@@ -111,10 +114,10 @@ bool isPCL(cn ai, cn aj, int bi, int bj)
 
 // PCL checking
 vector<PCL> pcls;
-bool contains(cn o, cn i)
+bool contains(cn i, cn o)
 {
-    PCL &outer = pcls[o];
     PCL &inner = pcls[i];
+    PCL &outer = pcls[o];
     return (
             outer.ai <= inner.ai
             &&outer.bi >= inner.bi
@@ -128,7 +131,7 @@ bool isLargest(cn i)
     FOR(j, pcls.size())
     {
         if (i == j) continue;
-        if (contains(i, j)) return false;
+        if (contains(i, j)) return false; // FIX: should check if j contains i not if i contains j
     }
     return true;
 }
@@ -143,7 +146,7 @@ int main()
     scanf("%d", &N);
     FOR(i, N) cin >> img[i];
 
-    FOR(i, N) FOR(j, N) vis[i][j] = 1; // create PCL flood fill boundaries with vis array
+    FOR(i, N) FOR(j, N) vis[i][j] = '#'; // create PCL flood fill boundaries with vis array
 
     FOR(ai, N) FOR(aj, N)
         FOR_(bi, ai, N) FOR_(bj, aj, N)
@@ -158,7 +161,11 @@ int main()
     int ret = 0;
     FOR(i, pcls.size())
     {
-        if (isLargest(i)) ++ret;
+        if (isLargest(i))
+        {
+            ++ret;
+            //printf("-> (%d, %d), (%d, %d)\n", pcls[i].ai, pcls[i].aj, pcls[i].bi, pcls[i].bj);
+        }
     }
 
     //printf("pcl size: %d\n", pcls.size());
