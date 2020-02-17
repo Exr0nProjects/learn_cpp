@@ -110,7 +110,7 @@ int main()
     setIO();
     scanf("%d", &N);
     FOR(i, N)
-    world[i].push_back(i);
+    world[i].push_back(i); // TODO: use list.splice();
     iota(loc, loc + N, 0);
 
     //  output();

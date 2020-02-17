@@ -64,35 +64,38 @@ set<string> dict;
 
 int main()
 {
-  setIO();
-  string s;
-  char c;
-  while (scanf("%c", &c) > 0)
-  {
-    if (isalpha(c)) s += tolower(c);
-    else
+    setIO();
+    string s;
+    char c;
+    while (scanf("%c", &c) > 0)
     {
-      dict.insert(s);
-      s = "";
+        if (isalpha(c)) s += tolower(c); // TODO: can rewrite using stringstream
+        else
+        {
+            dict.insert(s);
+            s = "";
+        }
     }
-  }
 
-  TRAV(s, dict)
-  {
-    printf("%s\n\n", s.c_str());
-  }
+    bool first=true;
+    TRAV(s, dict)
+    {
+        if (first) first=false;
+        else printf("\n");
+        printf("%s", s.c_str());
+    }
 
-  return 0;
+    return 0;
 }
 
 
 
 void setIO(const string &name)
 {
-  ios_base::sync_with_stdio(0); cin.tie(0); // fast cin/cout
-  if (fopen((name+".in").c_str(), "r") != nullptr)
-  {
-    freopen((name+".in").c_str(), "r", stdin);
-    freopen((name+".out").c_str(), "w+", stdout);
-  }
+    ios_base::sync_with_stdio(0); cin.tie(0); // fast cin/cout
+    if (fopen((name+".in").c_str(), "r") != nullptr)
+    {
+        freopen((name+".in").c_str(), "r", stdin);
+        freopen((name+".out").c_str(), "w+", stdout);
+    }
 }
