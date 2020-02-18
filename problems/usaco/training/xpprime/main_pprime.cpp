@@ -73,14 +73,29 @@ bool isPrime(cn n)
     return true;
 }
 
-bool isPalindrome(cn n)
+int pivotPal(int n)
 {
-    string s = to_string(n);
-    FOR(i, s.size()/2)
+    int ret = n;
+    n /= 10;
+    while (n)
     {
-        if (s[i] != s[s.size()-1-i]) return false;
+        ret *= 10;
+        ret += n%10;
+        n /= 10;
     }
-    return true;
+    return ret;
+}
+
+int reflectPal(int n)
+{
+    int ret = n;
+    while (n)
+    {
+        ret *= 10;
+        ret += n%10;
+        n /= 10;
+    }
+    return ret;
 }
 
 int main()
@@ -89,9 +104,20 @@ int main()
     scanf("%d%d", &a, &b);
     if (a > b) swap(a, b);
 
-    FOR_(n, a, b+1)
+    vector<int> pals;
+    FOR(i, b)
     {
-        if (isPrime(n) && isPalindrome(n)) printf("%d\n", n);
+        if (pivotPal(i) > b) break;
+        if (reflectPal(i) < a) continue;
+        pals.push_back(pivotPal(i));
+        pals.push_back(reflectPal(i));
+    }
+
+    sort(pals.begin(), pals.end());
+    TRAV(n, pals)
+    {
+        if (n > b) break;
+        if (n >= a && isPrime(n)) printf("%d\n", n);
     }
 
     return 0;
