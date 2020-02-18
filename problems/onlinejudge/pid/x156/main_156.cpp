@@ -59,10 +59,39 @@ void setIO(const std::string &name = "156");
 
 using namespace std;
 const int MX = -1;
+map<string, int> id_count;
+map<string, string> id_original;
+
+string normalize(const string word)
+{
+    string ret = word;
+    TRAV(c, ret) c = tolower(c);
+    sort(ret.begin(), ret.end());
+    return ret;
+}
 
 int main()
 {
     setIO();
+    string s;
+    while (cin >> s)
+    {
+        if (s[0] == '#') break;
+        string repr = normalize(s);
+        //printf("%s\n", repr.c_str());
+        ++ id_count[repr];
+        id_original[repr] = s;
+    }
+
+    set<string> ret;
+    TRAV(p, id_count)
+    {
+        if (p.S == 1) // only one of id
+        {
+            ret.insert(id_original[p.F]);
+        }
+    }
+    TRAV(str, ret) printf("%s\n", str.c_str());
 
     return 0;
 }
