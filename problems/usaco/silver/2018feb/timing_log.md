@@ -11,6 +11,7 @@
 8:26 | have O((N+B) log B) plan | coding #2
 8:51 | PLM #2, network outage still | analysing #1
 9:00 | have plan for #1 O(n) and nlogn sort | coding #1
+9:21 | PLM #1 | still network outage | end
 
 ## Purify Notes
 
