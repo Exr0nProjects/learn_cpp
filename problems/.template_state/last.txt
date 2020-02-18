@@ -1,1 +1,1 @@
-usaco/training/pprime
+usaco/training/sprime
