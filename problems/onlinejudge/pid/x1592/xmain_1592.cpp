@@ -7,11 +7,12 @@ LANG: C++14
 /*
  * Problem 1592 ([!meta:srcpath!])
  * Create time: Mon 17 Feb 2020 @ 10:43 (PST)
- * Accept time: [!meta:end!]
+ * Accept time: Tue 18 Feb 2020 @ 13:14 (PST)
  *
  */
 
 #include <iostream>
+#include <sstream>
 #include <cstdio>
 #include <tuple>
 #include <vector>
@@ -58,11 +59,75 @@ LANG: C++14
 void setIO(const std::string &name = "1592");
 
 using namespace std;
-const int MX = -1;
+
+map<string, int> id_str;
+vector<string> str_id;
+
+int encode(string s)
+{
+    if (! id_str.count(s))
+    {
+        id_str[s] = id_str.size();
+        str_id.push_back(s);
+    }
+    return id_str[s];
+}
+
+int db[10010][20];
+
+void test(cn h, cn w)
+{
+    FOR(c1, w) FOR_(c2, c1+1, w)
+    {
+        map<pii, int> at;
+        FOR(i, h)
+        {
+            pii rep(db[i][c1], db[i][c2]);
+            if (at.count(rep))
+            {
+                printf("NO\n%d %d\n%d %d\n", at[rep]+1, i+1, c1+1, c2+1);
+                return;
+            }
+            at[rep] = i;
+        }
+    }
+    printf("YES\n");
+}
 
 int main()
 {
     setIO();
+    int h, w;
+    char cell[90];
+    //while (scanf("%d %d\n", &h, &w) > 0)
+    while (scanf("%[^\n]\n", cell))
+    {
+        stringstream ss(cell);
+        if (!(ss >> h >> w)) break;
+
+        id_str.clear();
+        str_id.clear();
+
+        FOR(i, h)
+        {
+            FOR(j, w)
+            {
+                scanf("%[^,\n]%*c", cell);
+                //printf("got %s\n", cell);
+                db[i][j] = encode(cell);
+            }
+        }
+        //FOR(i, h)
+        //{
+        //FOR(j, w)
+        //{
+        //printf("%3d", db[i][j]);
+        //}
+
+        //printf("\n");
+        //}
+        test(h, w);
+    }
 
     return 0;
 }
