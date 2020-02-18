@@ -1,1 +1,1 @@
-usaco/silver/2018feb/snowboots
+usaco/silver/2018feb/reststops

@@ -1,12 +1,12 @@
 /*
 ID: spoytie2
-TASK: teleport
+TASK: reststops
 LANG: C++14
 */
 
 /*
- * Problem teleport ([!meta:srcpath!])
- * Create time: Tue 18 Feb 2020 @ 08:12 (PST)
+ * Problem reststops ([!meta:srcpath!])
+ * Create time: Tue 18 Feb 2020 @ 09:01 (PST)
  * Accept time: [!meta:end!]
  *
  */
@@ -55,37 +55,45 @@ LANG: C++14
 #define TRAVE(e, s) for (int e = head[s]; e; e = edges[e].n)
 #define SORTV(v) std::sort((v).begin(), (v).end())
 
-void setIO(const std::string &name = "teleport");
+void setIO(const std::string &name = "reststops");
 
 using namespace std;
 const int MX = 100010;
-int N;
-pii pile[MX];
+int L, N, dR;
+pii stops[MX];
+int best_after[MX]; // best rest stop after stop #i
 
 int main()
 {
     setIO();
-    scanf("%d", &N);
+    int rf, rb;
+    scanf("%d%d%d%d", &L, &N, &rf, &rb);
+    dR = rf - rb;
     FOR(i, N)
     {
-        int s, d;
-        scanf("%d%d", &s, &d);
-        pile[i] = {d, s};
+        int x, c;
+        scanf("%d%d", &x, &c);
+        stops[i] = {x, c};
     }
-    sort(pile, pile+N);
-
-    int ret=INF;
-    FOR(yi, N)
+    sort(stops, stops+N);
+    FORR(i, N) // suffix max
     {
-        int y = pile[yi].F;
-        int cost = 0;
-        FOR(i, N)
-        {
-            cost += min(abs(pile[i].F - pile[i].S), abs(pile[i].S) + abs(pile[i].F - y));
-        }
-        //printf("y=%d, cost=%d\n", y, cost);
-        ret = min(ret, cost); // FIX: should be min not max
+        best_after[i] = i;
+        if (i < N-1 && stops[best_after[i+1]].S > stops[i].S) best_after[i] = best_after[i+1];
+        //printf("best after %d is %d\n", i, best_after[i]);
     }
+    //FOR(i, N) printf("%3d", i); printf("\n");
+    //FOR(i, N) printf("%3d", best_after[i]); printf("\n");
+
+    int idx=0, lead=0, prev=0, ret=0;
+    do
+    {
+        idx = best_after[idx];
+        lead = (stops[idx].F - prev)*dR;
+        prev = stops[idx].F;
+        ret += lead * stops[idx].S;
+        ++idx;
+    } while (idx < N);
 
     printf("%d\n", ret);
 
