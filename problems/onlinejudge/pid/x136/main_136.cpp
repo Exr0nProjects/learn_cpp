@@ -59,10 +59,31 @@ void setIO(const std::string &name = "136");
 
 using namespace std;
 const int MX = -1;
+const int P[] = {2, 3, 5};
 
 int main()
 {
     setIO();
+    set<ll> vis;
+    priority_queue<ll, deque<ll>, greater<ll> > pq;
+    vis.insert(1);
+    pq.push(1);
+    for(int i=1;; ++i) // i=1 because we already push 1
+    {
+        ll ith = pq.top();
+        pq.pop();
+        //printf("%dth: %d\n", i, ith);
+        if (i == 1500)
+        {
+            printf("The 1500'th ugly number is %d.\n", ith); // FIX: needed newline
+            return 0;
+        }
+        TRAV(p, P) if (vis.count(ith*p) == 0)
+        {
+            vis.insert(ith*p);
+            pq.push(ith*p);
+        }
+    }
 
     return 0;
 }
