@@ -1,1 +1,1 @@
-usaco/silver/2018feb/teleport
+usaco/silver/2018feb/snowboots
