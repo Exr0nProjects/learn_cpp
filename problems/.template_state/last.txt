@@ -1,1 +1,1 @@
-usaco/training/numtri
+usaco/training/pprime

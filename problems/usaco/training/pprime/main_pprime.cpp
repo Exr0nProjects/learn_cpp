@@ -1,12 +1,12 @@
 /*
 ID: spoytie2
-TASK: [!meta:pid!]
+TASK: pprime
 LANG: C++14
 */
 
 /*
- * Problem [!meta:pid!] ([!meta:srcpath!])
- * Create time: [!meta:beg!]
+ * Problem pprime ([!meta:srcpath!])
+ * Create time: Tue 18 Feb 2020 @ 14:31 (PST)
  * Accept time: [!meta:end!]
  *
  */
@@ -57,14 +57,42 @@ LANG: C++14
 #define TRAVE(e, s) for (int e = head[s]; e; e = edges[e].n)
 #define SORTV(v) std::sort((v).begin(), (v).end())
 
-void setIO(const std::string &name = "[!meta:pid!]");
+void setIO(const std::string &name = "pprime");
 
 using namespace std;
-const int MX = -1;
+int a, b;
+
+bool isPrime(cn n)
+{
+    //printf("n: %d, sqrt(n): %d\n", n, (int) sqrt(n));
+    FOR_(i, 2, (int) sqrt(n) +1) // FIX: start at 2, everything is divisible by one
+    {
+        //printf("    divisible by %d ? %d\n", i, n%(i));
+        if (n%i == 0) return false;
+    }
+    return true;
+}
+
+bool isPalindrome(cn n)
+{
+    string s = to_string(n);
+    FOR(i, s.size()/2)
+    {
+        if (s[i] != s[s.size()-1-i]) return false;
+    }
+    return true;
+}
 
 int main()
 {
     setIO();
+    scanf("%d%d", &a, &b);
+    if (a > b) swap(a, b);
+
+    FOR_(n, a, b+1)
+    {
+        if (isPrime(n) && isPalindrome(n)) printf("%d\n", n);
+    }
 
     return 0;
 }
