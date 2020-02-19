@@ -86,7 +86,7 @@ int main()
     //FOR(i, N) printf("%3d", i); printf("\n");
     //FOR(i, N) printf("%3d", best_after[i]); printf("\n");
 
-    int idx=0, lead=0, prev=0, ret=0;
+    ll idx=0, lead=0, prev=0, ret=0;
     do
     {
         idx = best_after[idx];
@@ -96,7 +96,7 @@ int main()
         ++idx;
     } while (idx < N);
 
-    printf("%d\n", ret);
+    printf("%lld\n", ret);
 
     return 0;
 }
