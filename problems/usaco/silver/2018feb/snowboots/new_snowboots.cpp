@@ -78,6 +78,7 @@ int dp(cn pos, cn boot, cn layer=0)
     }
     if (boot < B-1)
     {
+        printf("bus err: pos %d boot %d\n", pos, boot);
         //ret = min(ret, dp(pos, boot+1, layer+1));
     }
     tab[pos][boot] = ret;
