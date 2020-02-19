@@ -1,1 +1,1 @@
-usaco/training/sprime
+usaco/training/chap2/castle
