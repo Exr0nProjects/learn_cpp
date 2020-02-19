@@ -10,17 +10,17 @@
 10:18 | can check if all ranges overlap in N^2 | analysing #5
 10:23 | check ranges in O(n) by taking intersection each time | analysing how to use binary search on #5
 10:26 | have plan for #5 (multiply times and distances) | coding #5
+11:03 | WA #5 | analysing #2 although nearly ready to end
+11:09 | still don't understand what #2 is even asking | end
 
 ## Purify Notes
 
-### Problem 1:
+### Problem 1: simple binary search
 
--
+### Problem 2: **TODO**: unkown
 
-### Problem 2:
+### Problem 3: binary search with a `works` function, dealing with floats
 
--
+### Problem 4: simple `works` binary search
 
-### Problem 3:
-
--
+### Problem 5: `works` binary search with floats and dp
