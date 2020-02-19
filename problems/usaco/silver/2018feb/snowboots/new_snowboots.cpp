@@ -79,6 +79,7 @@ int dp(cn pos, cn boot, cn layer=0)
     if (boot < B-1)
     {
         printf("bus err: pos %d boot %d\n", pos, boot);
+        //dp(pos, boot+1);
         //ret = min(ret, dp(pos, boot+1, layer+1));
     }
     tab[pos][boot] = ret;
@@ -89,13 +90,9 @@ int dp(cn pos, cn boot, cn layer=0)
 int main()
 {
     setIO();
-    printf("uhhhh\n\n");
     scanf("%d%d", &N, &B);
-    printf("not done w/ input yet..\n");
     FOR(i, N) scanf("%d", &depth[i]);
     FOR(i, B) scanf("%d%d", &si[i], &di[i]);
-
-    printf("pree\n\n\n");
 
     printf("%d\n", dp(0, 0));
 

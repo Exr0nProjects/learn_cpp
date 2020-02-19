@@ -22,6 +22,8 @@ Bold means that I don't yet understand the given solution.
 
 - **[2017open where](not started)**
 - [2020jan berries](./2020jan/berries/main_berries.cpp)
+- [2018feb snowboots](./2018feb/snowboots/new_snowboots.cpp)
+- [2018feb teleportation](./2018feb/teleport/main_teleport.cpp)
 
 ## Badly needs purification
 

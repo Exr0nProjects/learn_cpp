@@ -92,7 +92,7 @@ int main()
         lens[i] = l*100;
     }
 
-    printf("%.2lf\n", (double) binarySearch(0, 10000010)/100);
+    printf("%.2lf", (double) binarySearch(0, 10000010)/100);
 
     return 0;
 }
