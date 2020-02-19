@@ -82,6 +82,7 @@ int main()
         FOR(i, N)
         {
             cost += min(abs(pile[i].F - pile[i].S), abs(pile[i].S) + abs(pile[i].F - y));
+            if (cost > ret) break;
         }
         //printf("y=%d, cost=%d\n", y, cost);
         ret = min(ret, cost); // FIX: should be min not max
