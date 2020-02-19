@@ -1,1 +1,1 @@
-usaco/training/chap2/castle
+contests/dev.xjoi/dev.xjoi-1363/1
