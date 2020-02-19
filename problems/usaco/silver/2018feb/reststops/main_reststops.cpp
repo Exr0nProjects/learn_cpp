@@ -65,7 +65,8 @@ int best_after[MX]; // best rest stop after stop #i
 
 int main()
 {
-    setIO();
+    freopen("reststops.in", "r", stdin);
+    freopen("reststops.out", "w+", stdout);
     int rf, rb;
     scanf("%d%d%d%d", &L, &N, &rf, &rb);
     dR = rf - rb;
@@ -104,9 +105,6 @@ void setIO(const string &name)
 {
     ios_base::sync_with_stdio(0);
     cin.tie(0); // fast cin/cout
-    if (fopen((name + ".in").c_str(), "r") != nullptr)
-    {
-        freopen((name + ".in").c_str(), "r", stdin);
-        freopen((name + ".out").c_str(), "w+", stdout);
-    }
+    freopen((name + ".in").c_str(), "r", stdin);
+    freopen((name + ".out").c_str(), "w+", stdout);
 }
