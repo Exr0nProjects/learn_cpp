@@ -7,7 +7,7 @@ LANG: C++14
 /*
  * Problem castle ([!meta:srcpath!])
  * Create time: Tue 18 Feb 2020 @ 16:35 (PST)
- * Accept time: [!meta:end!]
+ * Accept time: Tue 18 Feb 2020 @ 18:28 (PST)
  *
  */
 
@@ -118,17 +118,17 @@ int main()
         }
     }
 
-    printf("   "); FOR(i, W) printf("%3d", i); printf("\n");
-    FOR(i, H)
-    {
-        printf("%3d", i);
-        FOR(j, W)
-            printf("%3c", '@' + find(coord_id(i, j)));
-        printf("\n");
-    }
-    set<int> _debug_rooms;
-    FOR(c, H*W) _debug_rooms.insert(find(c+1));
-    TRAV(r, _debug_rooms) printf("room %c has size %d\n", '@' + r, djs_s[r]);
+    //printf("   "); FOR(i, W) printf("%3d", i); printf("\n");
+    //FOR(i, H)
+    //{
+        //printf("%3d", i);
+        //FOR(j, W)
+            //printf("%3c", '@' + find(coord_id(i, j)));
+        //printf("\n");
+    //}
+    //set<int> _debug_rooms;
+    //FOR(c, H*W) _debug_rooms.insert(find(c+1));
+    //TRAV(r, _debug_rooms) printf("room %c has size %d\n", '@' + r, djs_s[r]);
 
 
     // output og castle stats
@@ -145,29 +145,29 @@ int main()
     // wall removal
     pair<pii, char> to_remove;
     int result_size = 0;
-    FOR(c, W-1)
+    FOR(c, W)
     {
-        FORR_(r, 1, H)
+        FORR(r, H)
         {
-            printf("trying %d %d - ", c, r);
+            //printf("trying %d %d - ", c, r);
             room_id curr = find(coord_id(r, c));
+            room_id north = r > 0 ? find(coord_id(r-1, c)) : -1;
             room_id east = find(coord_id(r, c+1));
-            room_id north = find(coord_id(r+1, c));
-            if (curr != north) // north is a different room
+            if (r > 0 && curr != north) // north is a different room
                 if (djs_s[curr]+djs_s[north] > result_size)
                 {
                     result_size = djs_s[curr] + djs_s[north];
                     to_remove = {{c, r}, 'N'};
-                    printf("north(%d) ", result_size);
+                    //printf("north(%d) ", result_size);
                 }
-            if (curr != east) // east is a different room
+            if (c < W-1 && curr != east) // east is a different room
                 if (djs_s[curr] + djs_s[east] > result_size)
                 {
                     result_size = djs_s[curr] + djs_s[east];
                     to_remove = {{c, r}, 'E'};
-                    printf("east(%d) ", result_size);
+                    //printf("east(%d) ", result_size);
                 }
-            printf("\n");
+            //printf("\n");
         }
     }
 
