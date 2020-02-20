@@ -20,8 +20,9 @@ Ad hoc/Simulation | 100 | [2016jan/angry](2016jan/xangry/xnew_angry.cpp), [2016j
 
 Bold means that I don't yet understand the given solution.
 
-- **[2017open where](not started)**
+- [2017open where](./2017open/where/main_where.cpp)
 - [2020jan berries](./2020jan/berries/main_berries.cpp)
+- 2018jan *
 - [2018feb snowboots](./2018feb/snowboots/new_snowboots.cpp)
 - [2018feb teleportation](./2018feb/teleport/main_teleport.cpp)
 

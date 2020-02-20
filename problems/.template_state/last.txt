@@ -1,1 +1,1 @@
-contests/dev.xjoi/dev.xjoi-1363/5
+usaco/silver/2018jan/lifegaurds
