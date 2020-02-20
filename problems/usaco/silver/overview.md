@@ -21,10 +21,10 @@ Ad hoc/Simulation | 100 | [2016jan/angry](2016jan/xangry/xnew_angry.cpp), [2016j
 Bold means that I don't yet understand the given solution.
 
 - [2017open where](./2017open/where/main_where.cpp)
-- [2020jan berries](./2020jan/berries/main_berries.cpp)
 - 2018jan *
 - [2018feb snowboots](./2018feb/snowboots/new_snowboots.cpp)
 - [2018feb teleportation](./2018feb/teleport/main_teleport.cpp)
+- [2019feb revegetate](./2019feb/revegetate/main_revegetate.cpp)
 
 ## Badly needs purification
 
@@ -49,5 +49,6 @@ Nothing here yet.
 [2019feb paintbarn](./2019feb/xpaintbarn/xmain_paintbarn.cpp) | Didn't think of using dp
 [2019dec milkvisits](./x2019dec/xmilkvisits/xnew_milkvisits.cpp) | Didn't think of using simple disjoint set (dfs)
 [2019dec meetings](./x2019dec/xmeetings/xmain_meetings.cpp) | So many transformations
+[2020jan berries](./x2020jan/xberries/xmain_berries.cpp) | Didn't realize a simple greedy approach would work, debugging: was sorting by increasing instead of decreasing oops
 [2020jan wormsort](./x2020jan/xwormsort/xmain_wormsort.cpp) | Didn't see as a disjoint set problem, the key realization is any cow can be sorted (through a series of swaps) if it is in the same disjoint set as its target position.
 [2020jan loan](./x2020jan/xloan/xmain_loan.cpp) | Didn't understand the math to figure out how many days in a row give y milk
