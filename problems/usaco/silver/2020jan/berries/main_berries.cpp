@@ -91,7 +91,7 @@ int main()
     for (int i=0; i<N; ++i) full += trees[i] / b;
     if (full < K / 2)
       break; // b isn't the least amount of berries in a bucket that elsie gets
-    if (full > K)
+    if (full >= K)
     {
       ret = max(ret, K / 2 * b);
       continue;
@@ -101,7 +101,7 @@ int main()
     // not all buckets filled evenly with b berries
     sort(trees, trees + N, [&](cn l, cn r) { return l % b < r % b; });
     int sum = (full - (K / 2)) * b;
-    for (int i=0; i<K-full; ++i)
+    for (int i=0; i<K+full; ++i)
     {
       sum += trees[i] % b; // fill each bucket with the biggest remaining tree
     }
