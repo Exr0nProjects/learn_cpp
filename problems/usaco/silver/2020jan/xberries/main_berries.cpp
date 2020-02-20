@@ -60,7 +60,7 @@ void setIO(const std::string &name = "berries");
 
 typedef struct
 {
-  int f, t, w, n;
+    int f, t, w, n;
 } Edge;
 #define TRAVE(s, e) for (int e = head[s]; e; e = edges[e].n)
 
@@ -76,82 +76,82 @@ int trees[MX];
 
 int main()
 {
-  setIO();
-  scanf("%d%d", &N, &K);
+    setIO();
+    scanf("%d%d", &N, &K);
     for (int i=0; i<N; ++i)
-  {
-    scanf("%d", &trees[i]);
-    tree_max = max(tree_max, trees[i]);
-  }
+    {
+        scanf("%d", &trees[i]);
+        tree_max = max(tree_max, trees[i]);
+    }
 
-  int ret = 0;
+    int ret = 0;
     for (int b=1; b<tree_max+1; ++b)
-  {
-    int full = 0;
-    for (int i=0; i<N; ++i) full += trees[i] / b;
-    if (full < K / 2)
-      break; // b isn't the least amount of berries in a bucket that elsie gets
-    if (full >= K)
     {
-      ret = max(ret, K / 2 * b);
-      continue;
+        int full = 0;
+        for (int i=0; i<N; ++i) full += trees[i] / b;
+        if (full < K / 2)
+            break; // b isn't the least amount of berries in a bucket that elsie gets
+        if (full >= K)
+        {
+            ret = max(ret, K / 2 * b);
+            continue;
+        }
+
+        //printf("  only filled %d buckets each with %d berries, now filling rest with remaining...\n", full, b);
+        // not all buckets filled evenly with b berries
+        sort(trees, trees + N, [&](cn l, cn r) { return (l % b) > (r % b); }); // FIX: sort to decreasing order
+        int sum = (full - (K / 2)) * b;
+        for (int i=0; i+full<K; ++i)
+        {
+            sum += trees[i] % b; // fill each bucket with the biggest remaining tree
+        }
+        ret = max(ret, sum);
     }
 
-    //printf("  only filled %d buckets each with %d berries, now filling rest with remaining...\n", full, b);
-    // not all buckets filled evenly with b berries
-    sort(trees, trees + N, [&](cn l, cn r) { return l % b < r % b; });
-    int sum = (full - (K / 2)) * b;
-    for (int i=0; i<K+full; ++i)
-    {
-      sum += trees[i] % b; // fill each bucket with the biggest remaining tree
-    }
-    ret = max(ret, sum);
-  }
+    printf("%d\n", ret);
 
-  printf("%d\n", ret);
-
-  return 0;
+    return 0;
 }
 
 /*
- 1 2
- 2
- => 1
+   1 2
+   2
+   => 1
 
- 2 2
- 5 10
- => 5
+   2 2
+   5 10
+   => 5
 
- 3 4
- 6 4 4
- => 6
- */
+   3 4
+   6 4 4
+   => 6
+   */
 
 // boilerplate functions
 void setIO(const string &name)
 {
-  ios_base::sync_with_stdio(0);
-  cin.tie(0); // fast cin/cout
-  if (fopen((name + ".in").c_str(), "r") != nullptr)
-  {
-    freopen((name + ".in").c_str(), "r", stdin);
-    freopen((name + ".out").c_str(), "w+", stdout);
-  }
+    ios_base::sync_with_stdio(0);
+    cin.tie(0); // fast cin/cout
+    if (fopen((name + ".in").c_str(), "r") != nullptr)
+    {
+        freopen((name + ".in").c_str(), "r", stdin);
+        freopen((name + ".out").c_str(), "w+", stdout);
+    }
 }
 
 #ifdef __USING_EDGELIST
 void addEdge(cn a, cn b, cn w)
 {
-  edges[ect].f = a;
-  edges[ect].t = b;
-  edges[ect].w = w;
-  edges[ect].n = head[a];
-  head[a] = ect++;
+    edges[ect].f = a;
+    edges[ect].t = b;
+    edges[ect].w = w;
+    edges[ect].n = head[a];
+    head[a] = ect++;
 }
 #endif
 
 /*
-Benjamin Qi
+   Benjamin Qi
 #define FOR(i,a,b) for (int i = (a); i < (b); ++i)
 #define F0R(i,a) FOR(i,0,a)
 #define ROF(i,a,b) for (int i = (b)-1; i >= (a); --i)
@@ -162,7 +162,7 @@ Benjamin Qi
 */
 
 /*
-thecodingwizard
+   thecodingwizard
 
 #define FOR(i, a, b) for (int i=a; i<(b); i++)
 #define F0R(i, a) for (int i=0; i<(a); i++)
