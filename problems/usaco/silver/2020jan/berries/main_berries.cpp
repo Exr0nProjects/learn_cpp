@@ -78,18 +78,17 @@ int main()
 {
   setIO();
   scanf("%d%d", &N, &K);
-  FOR(i, N)
+    for (int i=0; i<N; ++i)
   {
     scanf("%d", &trees[i]);
     tree_max = max(tree_max, trees[i]);
   }
 
   int ret = 0;
-  FOR_(b, 1, tree_max + 1)
+    for (int b=1; b<tree_max+1; ++b)
   {
     int full = 0;
-    FOR(i, N)
-    full += trees[i] / b;
+    for (int i=0; i<N; ++i) full += trees[i] / b;
     if (full < K / 2)
       break; // b isn't the least amount of berries in a bucket that elsie gets
     if (full > K)
@@ -98,11 +97,11 @@ int main()
       continue;
     }
 
-    printf("  only filled %d buckets each with %d berries, now filling rest with remaining...\n", full, b);
+    //printf("  only filled %d buckets each with %d berries, now filling rest with remaining...\n", full, b);
     // not all buckets filled evenly with b berries
     sort(trees, trees + N, [&](cn l, cn r) { return l % b < r % b; });
     int sum = (full - (K / 2)) * b;
-    FOR(i, K - full)
+    for (int i=0; i<K-full; ++i)
     {
       sum += trees[i] % b; // fill each bucket with the biggest remaining tree
     }
@@ -118,11 +117,11 @@ int main()
  1 2
  2
  => 1
- 
+
  2 2
  5 10
  => 5
- 
+
  3 4
  6 4 4
  => 6
@@ -158,7 +157,7 @@ Benjamin Qi
 #define ROF(i,a,b) for (int i = (b)-1; i >= (a); --i)
 #define R0F(i,a) ROF(i,0,a)
 #define trav(a,x) for (auto& a: x)
- 
+
 #define pb push_back
 */
 

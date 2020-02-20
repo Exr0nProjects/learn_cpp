@@ -1,2 +1,3 @@
 priv*
 *.DS_Store
+.ccls-cache/
