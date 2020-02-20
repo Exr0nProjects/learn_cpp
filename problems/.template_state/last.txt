@@ -1,1 +1,1 @@
-usaco/silver/2019feb/revegetate
+usaco/silver/2019feb/paintbarn
