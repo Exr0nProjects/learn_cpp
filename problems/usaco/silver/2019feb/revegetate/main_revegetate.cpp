@@ -103,18 +103,18 @@ int main()
         // TODO: this logic to check if there is a type conflict overreacts
         //if (seen[a] && seen[b])
         //{
-            //if (color[a] == color[b] && c == 'D') // conflict
-            //{
-                //printf("0\n");
-                //return 0;
-            //}
+        //if (color[a] == color[b] && c == 'D') // conflict
+        //{
+        //printf("0\n");
+        //return 0;
+        //}
         //}
         //else if (seen[a] && !seen[b]) color[b] = (color[a] + (c == 'D'))%2;
         //else if (seen[b] && !seen[a]) color[a] = (color[b] + (c == 'D'))%2;
         //else
         //{
-            //color[a] = 0;
-            //color[b] = (c == 'D');
+        //color[a] = 0;
+        //color[b] = (c == 'D');
         //}
         seen[a] = seen[b] = true;
     }
