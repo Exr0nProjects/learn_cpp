@@ -7,7 +7,7 @@ LANG: C++14
 /*
  * Problem where ([!meta:srcpath!])
  * Create time: Sat 15 Feb 2020 @ 09:33 (PST)
- * Accept time: [!meta:end!]
+ * Accept time: Fri 21 Feb 2020 @ 11:21 (PST)
  *
  */
 
@@ -92,24 +92,31 @@ void dfs(cn y, cn x, cn ai, cn aj, cn bi, cn bj, char id)
 bool isPCL(cn ai, cn aj, cn bi, cn bj)
 {
     //printf("checking (%d, %d), (%d, %d)\n", ai, aj, bi, bj);
+
     FOR_(i, ai, bi+1) FOR_(j, aj, bj+1) vis[i][j] = 0; // reset vis array
 
     //printf("VIS:\n");
     //FOR(i, N) { FOR(j, N) printf("%2c", vis[i][j] ? vis[i][j] : '.'); printf("\n"); }
     //printf("\n");
 
-    map<char, int> color_count;
+    int num_colors=0, num_of[26]={}; // FIX: init variables
     FOR_(i, ai, bi+1) FOR_(j, aj, bj+1)
     {
         if (vis[i][j]) continue;
+        int c = img[i][j]-'A';
         //printf("  new color section at %d %d!\n", i, j);
-        ++color_count[img[i][j]];
+        if (!num_of[c]) ++num_colors;
+        ++num_of[c];
         dfs(i, j, ai, aj, bi, bj, img[i][j]);
     }
-    int sum = 0; // FIX: forgot to initialize with zero
-    TRAV(p, color_count) sum += p.S;
-    //printf("num colors: %d, num reigons: %d\n\n", color_count.size(), sum);
-    return color_count.size() == 2 && sum == 3;
+    bool found_one=0, found_many=0;
+    FOR(i, 26)
+    {
+        //printf("    num_of[%d] = %d\n", i, num_of[i]);
+        if (num_of[i] == 1) found_one=1;
+        if (num_of[i] > 1) found_many=1;
+    }
+    return num_colors==2 && found_one && found_many; // FIX: was checking that there were exactly 3 reigons instead of there one of one color and possibly many of another, aka I DIDNT READ THE PROBLEM
 }
 
 // PCL checking
@@ -165,7 +172,7 @@ int main()
         if (isLargest(i))
         {
             ++ret;
-            printf("-> (%d, %d), (%d, %d)\n", pcls[i].ai, pcls[i].aj, pcls[i].bi, pcls[i].bj);
+            //printf("-> (%d, %d), (%d, %d)\n", pcls[i].ai, pcls[i].aj, pcls[i].bi, pcls[i].bj);
         }
     }
 
