@@ -6,13 +6,13 @@ The values in the confidence column below are internally relative, meaning that 
 
 | Approach | Confidence (points) | Problems |
 |----------|------------|----------|
-Binary Search | 80 | [2016dec/haybales](2016dec/xhaybales/xmain_haybales.cpp), [2016dec/citystate](2016dec/xcitystate/xmain_citystate.cpp), [2017jan/cowdance](2017jan/xcowdance/xmain_cowdance.cpp)
-Flood Fill | 100 | [2015dec/lightson](2015dec/xlightson/xmain_lightson.cpp), [2017feb/countcross](2017feb/xcountcross/xmain_countcross.cpp)
-Basic Greedy | 95 | [2015dec/highcard](2015dec/xhighcard/xmain_highcard.cpp), [2016feb/cbarn](2016feb/xcbarn/xnew_cbarn.cpp), [2017feb/helpcross](2017feb/helpcross/main_helpcross.cpp)
-Prefix Sums | 80 | [2015dec/bcount](2015dec/xbcount/xmain_bcount.cpp), [2016jan/div7](2016jan/xdiv7/xnew_div7.cpp), [2017jan/hps](2017jan/xhps/xmain_hps.cpp), [2017feb/maxcross](2017feb/xmaxcross/xmain_maxcross.cpp)
-Generic DP | 95 | [2016feb/pails](2016feb/xpails/xmain_pails.cpp)
-Graph Traversal | 100 | [2016dec/moocast](2016dec/xmoocast/xpurify_moocast.cpp)
-Ad hoc/Simulation | 100 | [2016jan/angry](2016jan/xangry/xnew_angry.cpp), [2016jan/gates](2016jan/xgates/xmain_gates.cpp), [2016feb/balancing](2016jan/../2016feb/xbalancing/xnew_balancing.cpp), [2017jan/cowcode](2017jan/xcowcode/xmain_cowcode.cpp)
+Binary Search | 80 | [2016dec/haybales](x2016dec/xhaybales/xmain_haybales.cpp), [2016dec/citystate](x2016dec/xcitystate/xmain_citystate.cpp), [2017jan/cowdance](x2017jan/xcowdance/xmain_cowdance.cpp)
+Flood Fill | 100 | [2015dec/lightson](x2015dec/xlightson/xmain_lightson.cpp), [2017feb/countcross](x2017feb/xcountcross/xmain_countcross.cpp)
+Basic Greedy | 95 | [2015dec/highcard](x2015dec/xhighcard/xmain_highcard.cpp), [2016feb/cbarn](x2016feb/xcbarn/xnew_cbarn.cpp), [2017feb/helpcross](x2017feb/helpcross/main_helpcross.cpp)
+Prefix Sums | 80 | [2015dec/bcount](x2015dec/xbcount/xmain_bcount.cpp), [2016jan/div7](x2016jan/xdiv7/xnew_div7.cpp), [2017jan/hps](x2017jan/xhps/xmain_hps.cpp), [2017feb/maxcross](x2017feb/xmaxcross/xmain_maxcross.cpp)
+Generic DP | 95 | [2016feb/pails](x2016feb/xpails/xmain_pails.cpp), [2019feb paintbarn](./x2019feb/paintbarn/xmain_paintbarn.cpp), [2016open diamond](./x2016open/xdiamond/xmain_diamond.cpp)
+Graph Traversal | 100 | [2016dec/moocast](x2016dec/xmoocast/xpurify_moocast.cpp)
+Ad hoc/Simulation | 100 | [2016jan/angry](x2016jan/xangry/xnew_angry.cpp), [2016jan/gates](x2016jan/xgates/xmain_gates.cpp), [2016feb/balancing](x2016jan/../2016feb/xbalancing/xnew_balancing.cpp), [2017jan/cowcode](x2017jan/xcowcode/xmain_cowcode.cpp)
 
 ## Still unsolved
 
