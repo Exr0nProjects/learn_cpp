@@ -61,30 +61,30 @@ using namespace std;
 const int MX = 260;
 int N, B, depth[MX], si[MX], di[MX]; // si is depth, di is distance
 int tab[MX][MX];
+int best=INF; // FIX: for some reason this makes it not bus error? I suppose it's simpler...
 
-int dp(cn pos, cn boot, cn layer=0)
+void dp(cn pos, cn boot, cn layer=0)
 { // FIX: remember what si and di mean
-    FOR(i, layer) printf("| "); printf("p %d b %d\n", pos, boot);
-    if (tab[pos][boot]) return tab[pos][boot];
-    if (pos >= N-1) return boot; // made it
-    int ret = INF;
+    //FOR(i, layer) printf("| "); printf("p %d b %d\n", pos, boot);
+    if (tab[pos][boot]) return;
+    tab[pos][boot] = true;
+    if (pos >= N-1) { best = min(best, boot); return; }; // made it
     if (depth[pos] <= si[boot]) // can step w/ curr boots
     {
-        FOR(step, di[boot])
+        for (int step=pos+1; step<=pos+di[boot] && step<N; ++step)
         {
-            if (depth[pos + step + 1] > si[boot]) continue;
-            ret = min(ret, dp(pos + step + 1, boot, layer+1));
+            if (depth[step] > si[boot]) continue;
+            dp(step, boot, layer+1);
         }
     }
     if (boot < B-1)
     {
-        printf("bus err: pos %d boot %d\n", pos, boot);
-        //dp(pos, boot+1);
+        //printf("bus err: pos %d boot %d\n", pos, boot);
+        dp(pos, boot+1);
         //ret = min(ret, dp(pos, boot+1, layer+1));
     }
-    tab[pos][boot] = ret;
     //printf("p %d b %d -> %d\n", pos, boot, ret);
-    return ret;
+    return;
 }
 
 int main()
@@ -93,8 +93,8 @@ int main()
     scanf("%d%d", &N, &B);
     FOR(i, N) scanf("%d", &depth[i]);
     FOR(i, B) scanf("%d%d", &si[i], &di[i]);
-
-    printf("%d\n", dp(0, 0));
+    dp(0, 0);
+    printf("%d\n", best);
 
     return 0;
 }
