@@ -25,6 +25,7 @@ Bold means that I don't yet understand the given solution.
 - [2018feb snowboots](./2018feb/snowboots/new_snowboots.cpp)
 - [2018feb teleportation](./2018feb/teleport/main_teleport.cpp)
 - [2019feb revegetate](./2019feb/revegetate/main_revegetate.cpp)
+- [2019feb herding] (not started)
 
 ## Badly needs purification
 
