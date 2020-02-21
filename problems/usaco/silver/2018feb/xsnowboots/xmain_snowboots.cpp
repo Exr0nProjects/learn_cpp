@@ -6,8 +6,8 @@ LANG: C++14
 
 /*
  * Problem snowboots ([!meta:srcpath!])
- * Create time: Wed 19 Fex 2020 @ 12:10 (PST)
- * Accept time: [!meta:end!]
+ * Create time: Tue 18 Feb 2020 @ 08:27 (PST)
+ * Accept time: Fri 21 Feb 2020 @ 12:45 (PST)
  *
  */
 
@@ -59,32 +59,36 @@ void setIO(const std::string &name = "snowboots");
 
 using namespace std;
 const int MX = 260;
-int N, B, depth[MX], si[MX], di[MX]; // si is depth, di is distance
-int tab[MX][MX];
-int best=INF; // FIX: for some reason this makes it not bus error? I suppose it's simpler...
+int N, B, depth[MX], si[MX], di[MX];
 
-void dp(cn pos, cn boot, cn layer=0)
-{ // FIX: remember what si and di mean
-    //FOR(i, layer) printf("| "); printf("p %d b %d\n", pos, boot);
-    if (tab[pos][boot]) return;
-    tab[pos][boot] = true;
-    if (pos >= N-1) { best = min(best, boot); return; }; // made it
-    if (depth[pos] <= si[boot]) // can step w/ curr boots
+bool canReach(cn max_discard, cn pos=0, cn boot=0)
+{
+    //printf("    canReach from pos %d with boot %d\n", pos, boot);
+    if (boot > max_discard) return false;
+    if (pos >= N) return true;
+
+    int next = pos+di[boot];
+    bool ret = 0;
+    if (si[boot] >= depth[pos])
     {
-        for (int step=pos+1; step<=pos+di[boot] && step<N; ++step)
+        for (; next > pos; --next)
         {
-            if (depth[step] > si[boot]) continue;
-            dp(step, boot, layer+1);
+            if (depth[next] <= si[boot]){
+                ret |= canReach(max_discard, next, boot);
+            }
         }
     }
-    if (boot < B-1)
-    {
-        //printf("bus err: pos %d boot %d\n", pos, boot);
-        dp(pos, boot+1);
-        //ret = min(ret, dp(pos, boot+1, layer+1));
-    }
-    //printf("p %d b %d -> %d\n", pos, boot, ret);
-    return;
+    ret |= canReach(max_discard, pos, boot+1);
+    return ret;
+}
+
+int binarySearch(cn l, cn r) // inc l exc r
+{
+    //printf("binary search %d - %d\n", l, r);
+    if (l+1 >= r) return l;
+    int m = (l+r)/2;
+    if (canReach(m)) return binarySearch(l, m);
+    else return binarySearch(m, r);
 }
 
 int main()
@@ -93,28 +97,11 @@ int main()
     scanf("%d%d", &N, &B);
     FOR(i, N) scanf("%d", &depth[i]);
     FOR(i, B) scanf("%d%d", &si[i], &di[i]);
-    dp(0, 0);
-    printf("%d\n", best);
+
+    printf("%d\n", binarySearch(0, B)+1); // +1 because binarySearch returns the last one that we cannot reach with
 
     return 0;
 }
-
-/*
-1 1
-1
-1 1
-=> 0
-
-2 1
-1 1
-1 1
-=> 0
-2 2
-1 2
-1 1
-1 2
-=> 1
-*/
 
 void setIO(const string &name)
 {
