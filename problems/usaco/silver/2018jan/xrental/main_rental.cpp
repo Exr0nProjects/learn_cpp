@@ -64,7 +64,7 @@ const int MX = 1000010;
 int N, M, R;
 int production[MX], rental[MX];
 vii shops;
-ll milk_profit[MX], rent_profit[MX]; // profit if we use the i cows for milk/rent
+ll milk_profit[MX]; // profit if we use the i cows for milk/rent
 
 int main()
 {
@@ -86,7 +86,7 @@ int main()
         milk_profit[i+1] = milk_profit[i]; // dp
         while (shop_idx < M && production[i] >0)
         {
-            int sold = min(shops[shop_idx].S, production[i]);
+            ll sold = min(shops[shop_idx].S, production[i]);
             milk_profit[i+1] += sold*shops[shop_idx].F; // milk_profit[i+1] because milk_profit[0] is the profit if we keep the 0 best cows which is zero
             shops[shop_idx].S -= sold;
             production[i] -= sold;
@@ -95,18 +95,28 @@ int main()
     }
 
     sort(rental, rental+R, greater<int>{});
-    FOR(i, N) // caluculate rent profit
+    ll rent_profit=0, rent_idx=0;
+    FORR(i, N)
     {
-        rent_profit[i+1] = rent_profit[i] + rental[i]; // FIX: add rental[i] not rental[i+1], because otherwise rental[0] isn't even considered
+        if (N-i-1 >= R) break;
+        rent_profit += rental[N-i-1];
+        //printf("%d = rent: %d + milk: %d\n", milk_profit[i]+rent_profit, rent_profit, milk_profit[i]);
+        milk_profit[i] += rent_profit;
+        ++rent_idx;
     }
+    //ll rent_profit=0, ret=0;
+    //FOR(i, R) // caluculate rent profit
+    //{
+        //rent_profit[i+1] = rent_profit[i] + rental[i]; // FIX: add rental[i] not rental[i+1], because otherwise rental[0] isn't even considered
+    //}
 
     ll ret=0;
-    FOR(i, N)
+    FOR(i, N+1) // FIX: fencepost, dp actually goes one further
     {
         //printf("%d = %d + %d\n", milk_profit[i] + rent_profit[N-i], milk_profit[i], rent_profit[N-i]);
-        ret = max(ret, milk_profit[i] + rent_profit[N-i]);
+        ret = max(ret, milk_profit[i]);
     }
-    printf("%d\n", ret);
+    printf("%lld\n", ret);
 
     return 0;
 }
