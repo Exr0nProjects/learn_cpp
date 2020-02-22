@@ -1,22 +1,25 @@
 /*
 ID: spoytie2
-TASK: teleport
+TASK: 247
 LANG: C++14
 */
 
 /*
- * Problem teleport ([!meta:srcpath!])
- * Create time: Tue 18 Feb 2020 @ 08:12 (PST)
- * Accept time: Sat 22 Feb 2020 @ 11:21 (PST)
+ * Problem 247 ([!meta:srcpath!])
+ * Create time: Sat 22 Feb 2020 @ 09:02 (PST)
+ * Accept time: [!meta:end!]
  *
+ * Graph problem #3 https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=853&page=show_problem&problem=183
  */
 
 #include <iostream>
+#include <sstream>
 #include <cstdio>
 #include <tuple>
 #include <vector>
 #include <string>
 #include <cstring>
+#include <list>
 #include <queue>
 #include <stack>
 #include <set>
@@ -55,40 +58,53 @@ LANG: C++14
 #define TRAVE(e, s) for (int e = head[s]; e; e = edges[e].n)
 #define SORTV(v) std::sort((v).begin(), (v).end())
 
-void setIO(const std::string &name = "teleport");
+void setIO(const std::string &name = "247");
 
 using namespace std;
-const int MX = 100010;
-int N;
-pii pile[MX];
+const int MX = 30;
+map<string, int> name_id;
+vector<string> id_name;
+int id(const string &s)
+{
+    if (name_id.count(s)) return name_id[s];
+    name_id[s] = id_name.size();
+    id_name.push_back(s);
+    return id_name.size()-1;
+}
+
+int dist[MX][MX];
 
 int main()
 {
     setIO();
-    scanf("%d", &N);
-    FOR(i, N)
+    int N, M;
+    while (scanf("%d%d", &N, &M) > 0)
     {
-        int s, d;
-        scanf("%d%d", &s, &d);
-        pile[i] = {d, s};
-    }
-    sort(pile, pile+N);
-
-    int ret=INF;
-    FOR(yi, N)
-    {
-        int y = pile[yi].F;
-        int cost = 0;
-        FOR(i, N)
+        if (N == 0 && M == 0) return 0;
+        name_id.clear();
+        id_name.clear();
+        FOR(i, MX) FOR(j, MX) dist[i][j] = INF;
+        FOR(i, M)
         {
-            cost += min(abs(pile[i].F - pile[i].S), abs(pile[i].S) + abs(pile[i].F - y));
-            if (cost > ret) break;
+            string A, B;
+            cin >> A >> B;
+            int a = id(A);
+            int b = id(B);
+            dist[a][b] = 1;
         }
-        //printf("y=%d, cost=%d\n", y, cost);
-        ret = min(ret, cost); // FIX: should be min not max
+        FOR(k, N)
+        {
+            FOR(i, N) FOR(j, N) if (dist[i][j] < dist[i][k] + dist[k][j])
+            {
+                dist[i][j] = dist[i][k] + dist[k][j];
+            }
+        }
     }
 
-    printf("%d\n", ret);
+    FOR(i, N) FOR(j, N)
+    {
+        // TODO: how to convert back to scc?
+    }
 
     return 0;
 }

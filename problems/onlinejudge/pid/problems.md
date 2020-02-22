@@ -32,3 +32,10 @@
 10. https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=835&page=show_problem&problem=143
 11. https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=835&page=show_problem&problem=755
 12. https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=835&page=show_problem&problem=157
+
+## Graph Problems
+1. https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=853&page=show_problem&problem=4141
+2. https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=853&page=show_problem&problem=3592
+3. https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=853&page=show_problem&problem=183
+4. https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=853&page=show_problem&problem=989
+5. https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=853&page=show_problem&problem=599

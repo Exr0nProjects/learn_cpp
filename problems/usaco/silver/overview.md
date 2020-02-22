@@ -21,7 +21,6 @@ Ad hoc/Simulation | 100 | [2016jan/angry](x2016jan/xangry/xnew_angry.cpp), [2016
 Bold means that I don't yet understand the given solution.
 
 - [2018feb teleport](./2018feb/teleport/main_teleport.cpp)
-- [2019feb revegetate](./2019feb/revegetate/main_revegetate.cpp)
 
 ## Badly needs purification
 
@@ -48,8 +47,9 @@ Nothing here yet.
 [2018jan mootube](./x2018jan/xmootube/xmain_mootube.cpp) | My edgelist impl was flawwed, **use stl list<int>[MX] instead** to reduce chance of error.
 [2018feb reststops](./x2018feb/xreststops/xmain_reststops.cpp) | Didn't use **long long**
 [2018feb snowboots](./x2018feb/xsnowboots/xnew_snowboots.cpp) | Didn't use DP, debug: missing **recursive base case**, sometimes you need more than one.
-[2019feb paintbarn](./2019feb/xpaintbarn/xmain_paintbarn.cpp) | Didn't think of using dp
-[2019feb herding](./2019feb/xherding/xmain_herding.cpp) | Didn't understand basic range based approach, and didn't realize that which cow is which doesn't matter. Insight: we want to eliminate as many/few "gaps" in the range as possible.
+[2019feb paintbarn](./x2019feb/xpaintbarn/xmain_paintbarn.cpp) | Didn't think of using dp
+[2019feb herding](./x2019feb/xherding/xmain_herding.cpp) | Didn't understand basic range based approach, and didn't realize that which cow is which doesn't matter. Insight: we want to eliminate as many/few "gaps" in the range as possible.
+[2019feb revegetate](./x2019feb/xrevegetate/xmain_revegetate.cpp) | Didn't realize that I had to check whether it was even possible, that check made it hard to use disjoint sets so I ended up having to rewrite it with flood fill.
 [2019dec milkvisits](./x2019dec/xmilkvisits/xnew_milkvisits.cpp) | Didn't think of using simple disjoint set (dfs)
 [2019dec meetings](./x2019dec/xmeetings/xmain_meetings.cpp) | So many transformations
 [2020jan berries](./x2020jan/xberries/xmain_berries.cpp) | Didn't realize a simple greedy approach would work, debugging: was sorting by increasing instead of decreasing oops
