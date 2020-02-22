@@ -20,10 +20,9 @@ Ad hoc/Simulation | 100 | [2016jan/angry](x2016jan/xangry/xnew_angry.cpp), [2016
 
 Bold means that I don't yet understand the given solution.
 
-- [2018jan rental](./2018jan/rental/main_rental.cpp)
 - [2018jan mootube](./2018jan/mootube/main_mootube.cpp)
+- [2018feb teleport](./2018feb/teleport/main_teleport.cpp)
 - [2019feb revegetate](./2019feb/revegetate/main_revegetate.cpp)
-- [2019feb herding] (not started)
 
 ## Badly needs purification
 
@@ -46,10 +45,11 @@ Nothing here yet.
 [2017open where](./x2017open/xwhere/xmain_where.cpp) | Didn't realize such a brute forcey solution would work, debugging failed because I was checking the wrong PCL conditions, so **Read the problem**
 [2017open cownomics](./x2017open/xcownomics/xmain_cownomics.cpp) | Didn't understand what the problem meant by "sufficient to explain", but I just coded it so that it counts if there isn't the same triplet in a spotty and a non-spotty.
 [2018jan lifeguards](./2018jan/xlifegaurds/xmain_lifegaurds.cpp) | Didn't think of storing life guard alone times seperately and processing events one at a time (instead of as segments). Some things need to stay together, but the events in this problem were easier to work with when split apart and reorganized.
+[2018jan rental](./2018jan/rental/main_rental.cpp) | Didn't realize simple dp/scan approach, debug: dp increased check space by one, so we actually have to max from `[0, N+1)` instead of `[0, N)`.
 [2018feb reststops](./x2018feb/xreststops/xmain_reststops.cpp) | Didn't use **long long**
 [2018feb snowboots](./x2018feb/xsnowboots/xnew_snowboots.cpp) | Didn't use DP, debug: missing **recursive base case**, sometimes you need more than one.
-[2018feb teleportation](./x2018feb/xteleport/xmain_teleport.cpp) | Didn't realize the range based scanning solution, which requires greedy insight.
 [2019feb paintbarn](./2019feb/xpaintbarn/xmain_paintbarn.cpp) | Didn't think of using dp
+[2019feb herding](./2019feb/xherding/xmain_herding.cpp) | Didn't understand basic range based approach, and didn't realize that which cow is which doesn't matter. Insight: we want to eliminate as many/few "gaps" in the range as possible.
 [2019dec milkvisits](./x2019dec/xmilkvisits/xnew_milkvisits.cpp) | Didn't think of using simple disjoint set (dfs)
 [2019dec meetings](./x2019dec/xmeetings/xmain_meetings.cpp) | So many transformations
 [2020jan berries](./x2020jan/xberries/xmain_berries.cpp) | Didn't realize a simple greedy approach would work, debugging: was sorting by increasing instead of decreasing oops
