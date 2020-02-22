@@ -64,31 +64,44 @@ const int MX = 5010;
 int N, Q;
 int relevance[MX][MX];
 
-struct Edge
-{
-    int f, t, w, n;
-} edges[MX]; // not MX^2 cuz its a tree
-int head[MX], ect=1;
+// FIX: edgelist impl was flawwed, using more stl instead
+list<pair<int, int> > head[MX];
 void addEdge(cn a, cn b, cn w)
 {
-    edges[ect].f = a;
-    edges[ect].t = b;
-    edges[ect].w = w;
-    edges[ect].n = head[a];
-    head[a] = ect;
-    ++ect;
+    head[a].emplace_back(b, w);
 }
+
+//struct Edge
+//{
+    //int f, t, w, n;
+//} edges[MX]; // not MX^2 cuz its a tree
+//int head[MX], ect=1;
+//void addEdge(cn a, cn b, cn w)
+//{
+    //edges[ect].f = a;
+    //edges[ect].t = b;
+    //edges[ect].w = w;
+    //edges[ect].n = head[a];
+    //head[a] = ect;
+    //++ect;
+//}
 
 void getDistances(cn src, cn cur, cn prev=0, cn dist=INF)
 {
     //printf("getting dist from %d -> %d\n", src, cur);
     if (relevance[src][cur]) return;
     relevance[src][cur] = dist;
-    TRAVE(e, cur)
+
+    TRAV(p, head[cur])
     {
-        if (edges[e].t == prev) continue;
-        getDistances(src, edges[e].t, cur, min(dist, edges[e].w));
+        if (p.F == prev) continue;
+        getDistances(src, p.F, cur, min(dist, p.S));
     }
+    //TRAVE(e, cur)
+    //{
+        //if (edges[e].t == prev) continue;
+        //getDistances(src, edges[e].t, cur, min(dist, edges[e].w));
+    //}
 }
 
 int main()
