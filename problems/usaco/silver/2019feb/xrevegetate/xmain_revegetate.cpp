@@ -7,8 +7,13 @@ LANG: C++14
 /*
  * Problem revegetate ([!meta:srcpath!])
  * Create time: Thu 20 Feb 2020 @ 08:42 (PST)
- * Accept time: [!meta:end!]
+ * Accept time: Sat 22 Feb 2020 @ 11:24 (PST)
  *
+ * The problem was that I had forgotten to check if the whole thing was even possible, and it was
+ * hard to check that with my disjoint set method because it's hard to know whether to default
+ * a connection or not w/o floodfilling the entire thing...
+ *
+ * Thus, I rewrote it with flood fill like the usaco soln uses, and it worked!
  */
 
 #include <iostream>
@@ -61,72 +66,69 @@ void setIO(const std::string &name = "revegetate");
 
 using namespace std;
 const int MX = 100010;
-int N, M;
+int N, M, vis[MX];
+list<int> same[MX];
+list<int> diff[MX];
+bool impossible=0;
 
-int djs_f[MX];
-int djs_s[MX];
-int find(cn n)
+void floodFill(cn node, cn color)
 {
-    if (djs_f[n] != n)
+    vis[node] = color;
+    TRAV(next, same[node])
     {
-        djs_f[n] = find(djs_f[n]);
+        if (!vis[next]) floodFill(next, color);
+        if (vis[next] != color)
+        {
+            impossible=1;
+            return;
+        }
     }
-    return djs_f[n];
+    TRAV(next, diff[node])
+    {
+        if (!vis[next]) floodFill(next, 3-color);
+        if (vis[next] == color)
+        {
+            impossible=1;
+            return;
+        }
+    }
 }
-void merge(int a, int b)
-{
-    a = find(a);
-    b = find(b);
-    if (a == b) return;
-    if (a < b) swap(a, b);
-    djs_s[a] += djs_s[b];
-    djs_f[b] = a;
-}
-
-bool color[MX]; // FIX: also need to check if it is even colorable
-bool seen[MX]; // have we seen this field before?
 
 int main()
 {
     setIO();
     scanf("%d%d", &N, &M);
-    // init djs
-    iota(djs_f, djs_f+N, 0);
-    FOR(i, N) djs_s[i] = 1;
     // build djs
     FOR(i, M)
     {
         char c;
         int a, b;
         scanf("\n%c%d%d", &c, &a, &b);
-        merge(a, b);
-        // TODO: this logic to check if there is a type conflict overreacts
-        //if (seen[a] && seen[b])
-        //{
-        //if (color[a] == color[b] && c == 'D') // conflict
-        //{
-        //printf("0\n");
-        //return 0;
-        //}
-        //}
-        //else if (seen[a] && !seen[b]) color[b] = (color[a] + (c == 'D'))%2;
-        //else if (seen[b] && !seen[a]) color[a] = (color[b] + (c == 'D'))%2;
-        //else
-        //{
-        //color[a] = 0;
-        //color[b] = (c == 'D');
-        //}
-        seen[a] = seen[b] = true;
+        if (c == 'S')
+        {
+            same[a].push_back(b);
+            same[b].push_back(a);
+        }
+        else if (c == 'D')
+        {
+            diff[a].push_back(b);
+            diff[b].push_back(a);
+        }
     }
 
-    set<int> components;
-    FOR(i, N)
+    int ret=0;
+    FOR_(i, 1, N+1)
     {
-        components.insert(find(i));
+        if (! vis[i])
+        {
+            ++ret;
+            floodFill(i, 1);
+        }
     }
 
+    if (impossible) { printf("0\n"); return 0; }
     printf("1");
-    FOR(i, components.size()) printf("0"); // string bitshifting
+    FOR(i, ret) printf("0"); // string bitshifting
     printf("\n");
 
     return 0;
