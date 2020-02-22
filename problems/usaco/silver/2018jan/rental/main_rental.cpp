@@ -6,7 +6,7 @@ LANG: C++14
 
 /*
  * Problem rental ([!meta:srcpath!])
- * Create time: Wed 19 Feb 2020 @ 18:55 (PST)
+ * Create time: Fri 21 Feb 2020 @ 18:37 (PST)
  * Accept time: [!meta:end!]
  *
  */
@@ -60,18 +60,53 @@ LANG: C++14
 void setIO(const std::string &name = "rental");
 
 using namespace std;
-const int MX = 100010;
-int N, production[MX];
-int M, buy_amount[MX], buy_price[MX];
-int R, rent_price[MX];
+const int MX = 1000010;
+int N, M, R;
+int production[MX], rental[MX];
+vii shops;
+ll milk_profit[MX], rent_profit[MX]; // profit if we use the i cows for milk/rent
 
 int main()
 {
     setIO();
     scanf("%d%d%d", &N, &M, &R);
     FOR(i, N) scanf("%d", &production[i]);
-    FOR(i, M) scanf("%d%d", &buy_amount[i], &buy_price[i]);
-    FOR(i, R) scanf("%d", &rent_price[i]);
+    FOR(i, M) { int a, p; scanf("%d%d", &a, &p); shops.emplace_back(p, a); }
+    FOR(i, R) scanf("%d", &rental[i]);
+
+    sort(production, production+N, greater<int>{});
+    sort(shops.begin(), shops.end(), greater<pair<int, int> >{}); // FIX: sort shops in increasing order
+
+    //printf("production: "); FOR(i, N) printf("%3d", production[i]); printf("\n");
+    //printf("shops:\n"); FOR(i, M) printf("    buy %d at %d\n", shops[i].S, shops[i].F);
+
+    int shop_idx=0;
+    FOR(i, N) // calculate milk profit
+    {
+        milk_profit[i+1] = milk_profit[i]; // dp
+        while (shop_idx < M && production[i] >0)
+        {
+            int sold = min(shops[shop_idx].S, production[i]);
+            milk_profit[i+1] += sold*shops[shop_idx].F; // milk_profit[i+1] because milk_profit[0] is the profit if we keep the 0 best cows which is zero
+            shops[shop_idx].S -= sold;
+            production[i] -= sold;
+            if (shops[shop_idx].S == 0) ++shop_idx;
+        }
+    }
+
+    sort(rental, rental+R, greater<int>{});
+    FOR(i, N) // caluculate rent profit
+    {
+        rent_profit[i+1] = rent_profit[i] + rental[i]; // FIX: add rental[i] not rental[i+1], because otherwise rental[0] isn't even considered
+    }
+
+    ll ret=0;
+    FOR(i, N)
+    {
+        //printf("%d = %d + %d\n", milk_profit[i] + rent_profit[N-i], milk_profit[i], rent_profit[N-i]);
+        ret = max(ret, milk_profit[i] + rent_profit[N-i]);
+    }
+    printf("%d\n", ret);
 
     return 0;
 }

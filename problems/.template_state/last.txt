@@ -1,1 +1,1 @@
-usaco/silver/2019feb/herding
+usaco/silver/2018jan/rental
