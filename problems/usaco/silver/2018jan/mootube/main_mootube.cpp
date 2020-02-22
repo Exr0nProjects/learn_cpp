@@ -60,7 +60,7 @@ LANG: C++14
 void setIO(const std::string &name = "mootube");
 
 using namespace std;
-const int MX = 50010;
+const int MX = 5010;
 int N, Q;
 int relevance[MX][MX];
 
@@ -82,6 +82,7 @@ void addEdge(cn a, cn b, cn w)
 void getDistances(cn src, cn cur, cn prev=0, cn dist=INF)
 {
     //printf("getting dist from %d -> %d\n", src, cur);
+    if (relevance[src][cur]) return;
     relevance[src][cur] = dist;
     TRAVE(e, cur)
     {
