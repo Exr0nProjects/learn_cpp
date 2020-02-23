@@ -7,7 +7,7 @@ LANG: C++14
 /*
  * Problem 3 ([!meta:srcpath!])
  * Create time: Wed 19 Feb 2020 @ 09:22 (PST)
- * Accept time: [!meta:end!]
+ * Accept time: Sun 23 Feb 2020 @ 09:28 (PST)
  *
  */
 
@@ -76,10 +76,13 @@ bool canCut(double len)
 
 double binarySearch(double l, double r)
 {
-    if (r-l < 0.00001) return l;
-    double m = (l+r)/2; // FIX: need to change `m` from int to double also
-    if (canCut(m)) return binarySearch(m, r);
-    else return binarySearch(l, m);
+    for (int i=0; i<100; i++)
+    {
+        double m = (r + l) /2;
+        if (canCut(m)) l=m;
+        else r=m;
+    }
+    return l;
 }
 
 int main()
