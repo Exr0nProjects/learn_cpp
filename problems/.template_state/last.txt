@@ -1,1 +1,1 @@
-usaco/silver/2020jan_purify/loan
+usaco/silver/2020feb/swap
