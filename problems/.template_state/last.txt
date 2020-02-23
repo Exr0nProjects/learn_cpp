@@ -1,1 +1,1 @@
-xjoi.net/1228_purify
+usaco/silver/2020jan_purify/berries
