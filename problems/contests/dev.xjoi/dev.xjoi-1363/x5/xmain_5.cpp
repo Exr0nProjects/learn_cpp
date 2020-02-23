@@ -7,7 +7,7 @@ LANG: C++14
 /*
  * Problem 5 ([!meta:srcpath!])
  * Create time: Wed 19 Feb 2020 @ 10:27 (PST)
- * Accept time: [!meta:end!]
+ * Accept time: Sun 23 Feb 2020 @ 08:59 (PST)
  *
  */
 
@@ -61,14 +61,13 @@ void setIO(const std::string &name = "5");
 
 using namespace std;
 const int MX = 60010;
-const int scalar = 100000;
 int N;
 ll pos[MX], vel[MX];
 
-bool overlap(const ll time)
+bool overlap(const double time)
 {
     // compare min end and max begin
-    ll mn=pos[0]+vel[0]*time, mx=pos[0]-vel[0]*time;
+    double mn=pos[0]+vel[0]*time, mx=pos[0]-vel[0]*time;
     FOR_(i, 1, N)
     {
         mn = min(mn, pos[i] + vel[i]*time);
@@ -77,10 +76,10 @@ bool overlap(const ll time)
     return mn >= mx;
 }
 
-ll binarySearch(ll l, ll r)
+double binarySearch(double l, double r)
 {
-    if (l+1 >= r) return l;
-    ll m = (l+r)/2;
+    if (r-l < 0.0000001) return l;
+    double m = (l+r)/2;
     if (overlap(m)) return binarySearch(l, m);
     else return binarySearch(m, r);
 }
@@ -92,7 +91,6 @@ int main()
     FOR(i, N)
     {
         scanf("%lld", &pos[i]);
-        pos[i] *= scalar;
     }
     FOR(i, N) scanf("%lld", &vel[i]);
 
@@ -103,7 +101,7 @@ int main()
     //}
 
 
-    printf("%0.5lf\n", (double)(binarySearch(0, (double) (1<<30) * scalar)+1)/scalar);
+    printf("%0.5lf\n", binarySearch(0, (double) (1<<30)));
 
     return 0;
 }
