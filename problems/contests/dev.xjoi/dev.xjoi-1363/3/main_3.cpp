@@ -61,22 +61,23 @@ void setIO(const std::string &name = "3");
 
 using namespace std;
 const int MX = 10010;
-int N, K, lens[MX];
+int N, K;
+double lens[MX];
 
-bool canCut(cn len)
+bool canCut(double len)
 {
     int num=0;
     FOR(i, N)
     {
-        num += lens[i]/len;
+        num += floor(lens[i]/len);
     }
     return num >= K;
 }
 
-int binarySearch(cn l, cn r)
+double binarySearch(double l, double r)
 {
-    if (l+1 >= r) return l;
-    int m = (l+r)/2;
+    if (r-l < 0.00001) return l;
+    double m = (l+r)/2; // FIX: need to change `m` from int to double also
     if (canCut(m)) return binarySearch(m, r);
     else return binarySearch(l, m);
 }
@@ -87,12 +88,10 @@ int main()
     scanf("%d%d", &N, &K);
     FOR(i, N)
     {
-        double l;
-        scanf("%lf", &l);
-        lens[i] = l*100;
+        scanf("%lf", &lens[i]);
     }
 
-    printf("%.2lf\n", (double) binarySearch(0, 10000010)/100);
+    printf("%.2lf\n", floor(binarySearch(0, 1<<30)*100)/100);
 
     return 0;
 }
