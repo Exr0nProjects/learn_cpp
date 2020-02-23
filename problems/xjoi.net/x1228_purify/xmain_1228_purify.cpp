@@ -7,7 +7,7 @@ LANG: C++14
 /*
  * Problem 1228_purify ([!meta:srcpath!])
  * Create time: Sat 22 Feb 2020 @ 20:40 (PST)
- * Accept time: [!meta:end!]
+ * Accept time: Sat 22 Feb 2020 @ 21:08 (PST)
  *
  */
 
@@ -62,24 +62,21 @@ void setIO(const std::string &name = "1228_purify");
 using namespace std;
 const int MX = 16;
 int N, ret=0;
-bool vert[MX], horz[MX], diag1[MX*2], diag2[MX*2];
+bool horz[MX], diag1[MX*2], diag2[MX*2];
 
-void dfs(cn placed, cn start=0)
+void dfs(cn col)
 {
-    if (placed == N)
+    if (col == N) // can get away with this because we can only put one queen per col anyways
     {
         ++ret;
         return;
     }
-    FOR_(i, start, N)
+    FOR(i, N)
     {
-        FOR(j, N)
-        {
-            if (horz[i] || vert[j] || diag1[i+j] || diag2[i+N-j]) continue;
-            horz[i] = vert[j] = diag1[i+j] = diag2[i+N-j] = 1;
-            dfs(placed+1, i);
-            horz[i] = vert[j] = diag1[i+j] = diag2[i+N-j] = 0;
-        }
+        if (horz[i] || diag1[i+col] || diag2[i+N-col]) continue;
+        horz[i] = diag1[i+col] = diag2[i+N-col] = 1;
+        dfs(col+1);
+        horz[i] = diag1[i+col] = diag2[i+N-col] = 0;
     }
 }
 
