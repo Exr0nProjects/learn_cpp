@@ -65,40 +65,23 @@ const int scalar = 100000;
 int N;
 ll pos[MX], vel[MX];
 
-bool canMeet(const ll time)
+bool overlap(const ll time)
 {
-    // make ranges
-    vector<pair<ll, ll> > ranges;
-    FOR(i, N)
+    // compare min end and max begin
+    ll mn=pos[0]+vel[0]*time, mx=pos[0]-vel[0]*time;
+    FOR_(i, 1, N)
     {
-        pair<ll, ll> r(pos[i] - vel[i]*time, pos[i] + vel[i]*time);
-        //printf("pushing range (p %lld v %lld) -> %lld..%lld\n", pos[i], vel[i], r.F, r.S);
-        ranges.push_back(r);
+        mn = min(mn, pos[i] + vel[i]*time);
+        mx = max(mx, pos[i] - vel[i]*time);
     }
-    // check if they overlap
-    pair<ll, ll> overlap = ranges[0];
-    TRAV(p, ranges)
-    {
-        if ((p.F <= overlap.F && overlap.F <= p.S)
-         || (overlap.F <= p.F && p.F <= overlap.S))
-        {
-            // if overlap
-            overlap = {max(p.F, overlap.F), min(p.S, overlap.S)};
-        }
-        else
-        {
-            //printf("ERR! %lld..%lld X %lld..%lld\n", overlap.F, overlap.S, p.F, p.S);
-            return false; // this one doesn't make it!
-        }
-    }
-    return true;
+    return mn >= mx;
 }
 
 ll binarySearch(ll l, ll r)
 {
     if (l+1 >= r) return l;
     ll m = (l+r)/2;
-    if (canMeet(m)) return binarySearch(l, m);
+    if (overlap(m)) return binarySearch(l, m);
     else return binarySearch(m, r);
 }
 
