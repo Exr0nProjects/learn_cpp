@@ -13,6 +13,7 @@
 15:23 | have N^2 method for #3, which should be plenty fast | coding #3
 16:05 | after 20 mins of debugging, i realized that my program was right and I was wrong, AC #3 | coding bashy #2
 16:14 | 6/10 bashy #2 | analysing #2 for actual solution
+16:54 | AC #2  with 1 min 42 seconds to spare | end
 
 ## Purify Notes
 
