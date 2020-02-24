@@ -64,7 +64,8 @@ const int MX = -1;
 const ll mod = pow(10, 9) + 7;
 int N;
 vii points;
-map<int, vi> horz, vert;
+map<pii, pii> point_prefix_idx;
+map<int, vector<ll> > horz, vert;
 
 int main()
 {
@@ -75,24 +76,82 @@ int main()
         int x, y;
         scanf("%d%d", &x, &y);
         points.push_back(MP(x, y));
-        horz[x].PB(y);
-        vert[y].PB(x);
     }
+
+    sort(points.begin(), points.end());
+    TRAV(p, points)
+    {
+        horz[p.F].PB(p.S);
+        if (horz[p.F].size() > 1)
+            horz[p.F][horz[p.F].size()-1] += horz[p.F][horz[p.F].size()-2]; // prefix sum
+        point_prefix_idx[p].F = horz[p.F].size()-1;
+        swap(p.F, p.S); // to sort by y the next time around
+    }
+
+    sort(points.begin(), points.end());
+    TRAV(p, points)
+    {
+        vert[p.F].PB(p.S);
+        if (vert[p.F].size() >1)
+            vert[p.F][vert[p.F].size()-1] += vert[p.F][vert[p.F].size()-2]; // prefix sum
+        swap(p.F, p.S); // to sort by y the next time around
+        point_prefix_idx[p].S = vert[p.S].size()-1;
+    }
+
+    //TRAV(p, horz)
+    //{
+        ////printf("horizontal prefix sum %d:", p.F);
+        //TRAV(n, p.S) printf("%7lld", n);
+        //printf("\n");
+    //}
+    //TRAV(p, vert)
+    //{
+        //printf("vertical prefix sum %d:", p.F);
+        //TRAV(n, p.S) printf("%7lld", n);
+        //printf("\n");
+    //}
 
     ll ret=0;
     TRAV(p, points)
     {
-        ll hsum=0, vsum=0;
-        TRAV(y, horz[p.F]) hsum += abs(p.S-y);
-        TRAV(x, vert[p.S]) vsum += abs(p.F-x);
-        //printf("    point (%lld %lld) hsum %lld vsum %lld\n", p.F, p.S, hsum, vsum);
-        ret = (ret + hsum*vsum%mod) % mod;
+        //ll hsum=0, vsum=0;
+        //TRAV(y, horz[p.F]) hsum += abs(p.S-y);
+        //TRAV(x, vert[p.S]) vsum += abs(p.F-x);
+        auto &idx = point_prefix_idx[p];
+        auto &h = horz[p.F];
+        auto &v = vert[p.S];
+        ll hsum_l = idx.F > 0 ? ((idx.F*p.S) - (h[idx.F-1])) : 0;
+        ll hsum_r = ((h[h.size()-1]-h[idx.F])-((h.size()-1-idx.F)*p.S));
+
+        ll vsum_l = idx.S > 0 ? ((idx.S*p.F) - (v[idx.S-1])) : 0;
+        ll vsum_r = ((v[v.size()-1]-v[idx.S])-((v.size()-1-idx.S)*p.F));
+
+        //printf("    point (%lld %lld) w/ idx (%lld %lld) hsum %lld+%lld vsum %lld+%lld\n", p.F, p.S, idx.F, idx.S, hsum_l, hsum_r, vsum_l, vsum_r);
+
+        ret = (ret + (hsum_l + hsum_r)*(vsum_l + vsum_r)%mod) % mod;
     }
 
     printf("%d\n", (int) (ret%mod));
 
     return 0;
 }
+
+/*
+
+4
+0 0
+0 1
+1 0
+1 2
+=> 3
+
+4
+0 0
+0 1
+2 0
+5 0
+=> 7
+*/
 
 void setIO(const string &name)
 {
