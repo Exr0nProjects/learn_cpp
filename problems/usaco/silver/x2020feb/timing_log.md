@@ -17,6 +17,13 @@
 
 ## Purify Notes
 
+1. Knowledge
+problem one was adhoc, I used a bunch of modular arithmatic. I used prefix sums for problem 2, and stl things. This one was hard to debug. I used dfs for problem 3, which was pretty straight forward
+2. Strategy
+I started by reading all the problems and doing the first one which was relatievly easier. I then tried the second one but I realized that my method would be really hard to code so then I went to the third one. After coding that one I came back with about 40 minutes left, and wrote a really fast brute force solution for #2 which got 6/10 cases. I then started writing the scuffed full solution for #2 which I almost didn't finish debugging. I managed to submit it with about 2 minutes to spare, so maybe strategy can be improved on that part.
+3. Action item
+ I spent a lot of time doing previous contests this week which I think made me much more familiar with how to approach problems. I also flunked three tests in a row this week before taking the real one which is similar to what happened last time with bronze (failing practice tests before taking the real one) which is interesting. I think looking at previous problems and purifying them was helpful for giving me inspiration for how to solve the problems, although I didn't recall any specific problems during the test.
+
 ### Problem 1:
 
 -
