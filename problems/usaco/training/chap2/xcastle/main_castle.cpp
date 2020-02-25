@@ -1,5 +1,4 @@
 /*
-ID: spoytie2
 TASK: castle
 LANG: C++14
 */
