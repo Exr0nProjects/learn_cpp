@@ -215,6 +215,19 @@ int main()
 29 30
 30 31
 => 1110110001000010000000000000001
+
+// cause problem by having multiple bads in a row but that can be cancelled out later
+10
+1 2
+2 3
+3 4
+2 5
+5 6
+2 7
+7 8
+2 9
+2 10
+=> 101000000
 */
 
 void setIO(const string &name)
