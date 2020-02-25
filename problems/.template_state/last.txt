@@ -1,1 +1,1 @@
-usaco/silver/2020feb/clocktree
+usaco/gold/2020feb/timeline
