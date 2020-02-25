@@ -68,30 +68,48 @@ bool dont_try[MX], impossible=0;
 
 int dfs(int curr, int len, int prev=0, int layer=0)
 {
-    FOR(i, layer) printf("|   "); printf("%d -> %d\n", prev, curr);
-    int shift=0, badcount=0;
+    //FOR(i, layer) printf("|   "); printf("%d -> %d\n", prev, curr);
+    int shift=0;
+    map<int, int> from_count;
     TRAV(next, head[curr])
     {
         if (next == prev) continue;
-        int from = dfs(next, len, curr, layer+1);
-        if (from) ++ badcount;
-        shift = (shift + from) % len;
-        if (shift == 0) badcount=0; // two subtrees canceled out
-
-        FOR(i, layer) printf("|   "); printf("shift= %d\n", shift);
-
-        if (badcount >= 2)
-        //if (shift-from && from) // two children need to pass by this and can't complete eachother
+        int from = dfs(next, len, curr, layer+1) % len;
+        if (from)
         {
-            FOR(i, layer) printf("|   "); printf("Impossible! (badcount %d)\n", badcount);
-            impossible = 1;
+            if (from_count.count(len-from)) // FIX: have to do .count cuz otherwise risk empty constructing things
+            {
+                --from_count[len-from]; // cancel with another partial branch
+                if (from_count[len-from]==0)
+                {
+                    //FOR(i, layer) printf("    "); printf("erasing %d!", len-from);
+                    from_count.erase(len-from); // if that count is gone, remove it from from_count.size()
+                }
+            }
+            else ++from_count[from]; // nothing to cancel with, so just note it for now
         }
 
+        // still update shift so we know what to return
+        shift += from;
+        shift %= len;
 
-
-        if (impossible) return 0;
+        //FOR(i, layer) printf("|   "); printf("shift= %d\n", shift);
     }
-    FOR(i, layer) printf("|   "); printf("=> %d\n", shift+1);
+    // check if its impossible
+    if (from_count.size() > 1)
+    {
+        //FOR(i, layer) printf("|   ");
+        //printf("Impossible! (from_count (%d):", from_count.size());
+        //TRAV(p, from_count) printf("  (%d: %d)", p.F, p.S);
+        //printf("\n");
+
+        impossible = 1;
+        return 0;
+    }
+
+
+
+    //FOR(i, layer) printf("|   "); printf("=> %d\n", shift+1);
     return (shift+1) % len;
 }
 
@@ -121,7 +139,7 @@ int main()
             continue;
         }
         impossible = 0;
-        printf("\n=====================\nchecking %d\n", i);
+        //printf("\n=====================\nchecking %d\n", i);
         if (dfs(leaf, i) == 1 && !impossible) printf("1");
         else
         {
@@ -215,6 +233,41 @@ int main()
 29 30
 30 31
 => 1110110001000010000000000000001
+
+33
+1 2
+    2 4
+        4 10
+            10 11
+                11 12
+                    12 13
+    2 5
+        5 14
+            14 15
+                15 16
+                    16 18
+                        18 24
+                            24 25
+                                25 26
+                    16 17
+                        17 27
+                            27 28
+    2 6
+        6 19
+            19 29
+                29 20
+        6 21
+            21 30
+                30 31
+                    31 32
+                        32 33
+1 3
+    3 22
+    3 7
+        7 8
+            8 9
+                9 23
+=> 1101000...
 
 // cause problem by having multiple bads in a row but that can be cancelled out later
 10
