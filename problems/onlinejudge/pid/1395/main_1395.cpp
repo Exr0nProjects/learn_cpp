@@ -93,7 +93,6 @@ int main()
     while (scanf("%d%d", &N, &M) > 0)
     {
         if (!N && !M) break;
-        if (!M) { printf("-1\n"); continue; } // FIX: needs this because ret gets inited to 1<<30 (cuz min)
 
         vector<pair<int, pii> > edges;
         set<int> weights;
@@ -107,33 +106,30 @@ int main()
             weights.insert(w);
         }
 
+        // sort edges for kruskal
+        sort(edges.begin(), edges.end());
+
         int ret = 1<<30;
-        TRAV(w, weights)
+        for (int mn=0; mn<edges.size(); ++mn)
         {
             // FIX: reset djs each time we build a new MST
             iota(djs_f, djs_f+MX, 0); // FIX: start iota at zero for index zero, even if everything else is one indexed
             FOR(i, N) djs_s[i] = 1;
-            // sort edges for kruskal
-            sort(edges.begin(), edges.end(), [&](pair<int, pii> l, pair<int, pii> r){ return abs(l.F-w) < abs(r.F-w); });
 
             //printf("checking with w=%d\n", w);
-            int cnt=1, wmin=1<<30, wmax=0;
-            for (pair<int, pii> e : edges)
+            int cnt=1, e;
+            for (e=mn; e < edges.size(); ++e)
             {
-                //printf("edge endpoints = %d, %d with weight %d\n", e.S.F, e.S.S, e.F);
-                if (find(e.S.F) == find(e.S.S)) continue;
+                //printf("edge endpoints = %d, %d with weight %d\n", edges[e].S.F, edges[e].S.S, edges[e].F);
+                if (find(edges[e].S.F) == find(edges[e].S.S)) continue;
                 //printf("merging groups %d (from %d) and %d (from %d), %d nodes total\n", find(e.S.S), e.S.S, find(e.S.F), e.S.F, cnt+1);
                 ++cnt;
-                merge(e.S.S, e.S.F);
-                wmin = min(wmin, e.F);
-                wmax = max(wmax, e.F);
-                if (cnt == N) break;
+                merge(edges[e].S.S, edges[e].S.F);
+                if (cnt == N) ret = min(ret, edges[e].F - edges[mn].F);
             }
-            //printf("checking if connected... cnt %d < N %d?\n", cnt, N);
-            if (cnt < N) {ret = -1; break;}
-            ret = min(ret, wmax-wmin);
         }
-        printf("%d\n", ret);
+        printf("%d\n", ret == 1<<30 ? -1 : ret); // FIX: output -1
+        //printf("%d\n", ret);
     }
 
     return 0;
