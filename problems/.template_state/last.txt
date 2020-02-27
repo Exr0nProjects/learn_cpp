@@ -1,1 +1,1 @@
-usaco/training/chap2/frac1
+usaco/training/holstein
