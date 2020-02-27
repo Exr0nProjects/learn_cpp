@@ -68,6 +68,7 @@ int djs_f[MX];
 int djs_s[MX];
 int find(int n)
 {
+    //printf("finding father of %d\n", n);
     if (djs_f[n] != n)
     {
         djs_f[n] = find(djs_f[n]);
@@ -86,14 +87,17 @@ void merge(int a, int b)
 
 int main()
 {
-    setIO();
+    //setIO();
+
+
     while (scanf("%d%d", &N, &M) > 0)
     {
+        if (!N && !M) break;
+        if (!M) { printf("-1\n"); continue; } // FIX: needs this because ret gets inited to 1<<30 (cuz min)
+
         vector<pair<int, pii> > edges;
         set<int> weights;
 
-        iota(djs_f, djs_f+N, 1);
-        FOR(i, N) djs_s[i] = 1;
 
         FOR(i, M)
         {
@@ -106,17 +110,26 @@ int main()
         int ret = 1<<30;
         TRAV(w, weights)
         {
+            // FIX: reset djs each time we build a new MST
+            iota(djs_f, djs_f+MX, 0); // FIX: start iota at zero for index zero, even if everything else is one indexed
+            FOR(i, N) djs_s[i] = 1;
+            // sort edges for kruskal
             sort(edges.begin(), edges.end(), [&](pair<int, pii> l, pair<int, pii> r){ return abs(l.F-w) < abs(r.F-w); });
+
+            //printf("checking with w=%d\n", w);
             int cnt=1, wmin=1<<30, wmax=0;
-            TRAV(e, edges)
+            for (pair<int, pii> e : edges)
             {
+                //printf("edge endpoints = %d, %d with weight %d\n", e.S.F, e.S.S, e.F);
                 if (find(e.S.F) == find(e.S.S)) continue;
+                //printf("merging groups %d (from %d) and %d (from %d), %d nodes total\n", find(e.S.S), e.S.S, find(e.S.F), e.S.F, cnt+1);
                 ++cnt;
                 merge(e.S.S, e.S.F);
                 wmin = min(wmin, e.F);
                 wmax = max(wmax, e.F);
                 if (cnt == N) break;
             }
+            //printf("checking if connected... cnt %d < N %d?\n", cnt, N);
             if (cnt < N) {ret = -1; break;}
             ret = min(ret, wmax-wmin);
         }
@@ -125,6 +138,70 @@ int main()
 
     return 0;
 }
+
+/*
+3 2
+1 2 1
+2 3 2
+=> 1
+
+
+
+4 5
+1 2 3
+1 3 5
+1 4 6
+2 4 6
+3 4 7
+4 6
+1 2 10
+1 3 100
+1 4 90
+2 3 20
+2 4 80
+3 4 40
+2 1
+1 2 1
+3 0
+3 1
+1 2 1
+3 3
+1 2 2
+2 3 5
+1 3 6
+5 10
+1 2 110
+1 3 120
+1 4 130
+1 5 120
+2 3 110
+2 4 120
+2 5 130
+3 4 120
+3 5 110
+4 5 120
+5 10
+1 2 9384
+1 3 887
+1 4 2778
+1 5 6916
+2 3 7794
+2 4 8336
+2 5 5387
+3 4 493
+3 5 6650
+4 5 1422
+5 8
+1 2 1
+2 3 100
+3 4 100
+4 5 100
+1 5 50
+2 5 50
+3 5 50
+4 1 150
+0 0
+*/
 
 void setIO(const string &name)
 {
