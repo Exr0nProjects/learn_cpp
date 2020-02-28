@@ -6,7 +6,7 @@ LANG: C++14
 /*
  * Problem 1151 (onlinejudge/pid/1151)
  * Create time: Thu 27 Feb 2020 @ 17:50 (PST)
- * Accept time: Thu 27 Feb 2020 @ 19:44 (PST)
+ * Accept time: [!meta:end!]
  *
  */
 
@@ -103,9 +103,9 @@ int dfs(int city_idx=0, int chosen=0)
 {
     if (city_idx == Q)
     {
-        //printf("checking with cities");
-        //FOR(i, 10) if (chosen & 1 << i) printf("%3d", i);
-        //printf("\n");
+        printf("checking with cities");
+        FOR(i, 10) if (chosen & 1 << i) printf("%3d", i);
+        printf("\n");
 
 
         // reset djs
@@ -123,6 +123,7 @@ int dfs(int city_idx=0, int chosen=0)
                 merge(c, MX-1);
             }
         }
+        printf("    added networks, cost is %d\n", cost);
         TRAV(e, mst)
         {
             if (find(e.S.F) == find(e.S.S)) continue;
@@ -131,7 +132,7 @@ int dfs(int city_idx=0, int chosen=0)
             cost += e.F;
             if (djs_s[find(MX-1)] >= N) break;
         }
-        //printf("    cost = %d, found all? %d >= %d\n\n", cost, djs_s[find(MX-1)], N);
+        printf("    cost = %d, found all? %d >= %d\n\n", cost, djs_s[find(MX-1)], N);
         debug_djs();
         if (djs_s[find(MX-1)] >= N) return cost;
         return 1<<30;
@@ -166,7 +167,7 @@ int main()
             scanf("%d%d", &tx, &ty);
             FOR(o, posx.size())
             {
-                edges.EB((int) sqrt(pow(abs(tx-posx[o]), 2) + pow(abs(ty-posy[o]), 2)), MP(n, o));
+                edges.EB((int) pow(abs(tx-posx[o]), 2) + pow(abs(ty-posy[o]), 2), MP(n, o));
             }
             posx.PB(tx);
             posy.PB(ty);
@@ -203,15 +204,15 @@ int main()
 0 0
 0 4
 0 8
-=> 5
+=> 17
 
 1
 3 1
-2 10 1 2
+2 200 1 2
 0 0
 0 4
 0 8
-=> 8
+=> 32
 
 */
 
