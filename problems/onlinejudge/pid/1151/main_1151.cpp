@@ -80,32 +80,54 @@ void merge(int a, int b)
     djs_f[b] = a;
 }
 
-void debug_djs()
+void debug_djs(int indent=1)
 {
     return;
     map<int, set<int> > belongs;
-    for (int i=0; i<MX; ++i)
+    for (int i=0; i<N; ++i)
     {
-      if (find(i) != i) belongs[find(i)].insert(i);
+        if (find(i) != i) belongs[find(i)].insert(i);
     }
     for (auto &p : belongs)
     {
-      printf("    %d (size %d):", p.first, djs_s[find(p.first)]);
-      for (auto &n : p.second)
-      {
-        printf("%3d", n);
-      }
-      printf("\n");
+        FOR(i, indent) printf("    ");
+        printf("%d (size %d):", p.first, djs_s[find(p.first)]);
+        for (auto &n : p.second)
+        {
+            printf("%3d", n);
+        }
+        printf("\n");
     }
+}
+
+int MST(int groups, const vector<pair<int, pii> > &edges, vector<pair<int, pii> > &mst)
+{
+    // reset djs
+    iota(djs_f, djs_f+MX, 0);
+    FOR(i, MX) djs_s[i] = 1;
+
+    int cost=0;
+    TRAV(p, edges)
+    {
+        if (find(p.S.F) == find(p.S.S)) continue;
+        merge(p.S.F, p.S.S);
+        cost += p.F;
+        mst.PB(p);
+        --groups;
+        if (groups == 1) break;
+    }
+    if (groups == 1) return cost;
+    return -1;
 }
 
 int dfs(int city_idx=0, int chosen=0)
 {
-    if (city_idx == Q)
+    int ret=0;
+    FOR(chosen, 1<<Q)
     {
-        printf("checking with cities");
-        FOR(i, 10) if (chosen & 1 << i) printf("%3d", i);
-        printf("\n");
+        //printf("checking with cities");
+        //FOR(i, 10) if (chosen & 1 << i) printf("%3d", i);
+        //printf("\n");
 
 
         // reset djs
@@ -120,30 +142,30 @@ int dfs(int city_idx=0, int chosen=0)
             cost += network_cost[i];
             TRAV(c, networks[i])
             {
-                merge(c, MX-1);
+                merge(c, networks[i][0]);
             }
         }
-        printf("    added networks, cost is %d\n", cost);
+        //printf("    added networks, cost is %d\n", cost);
+        debug_djs(3);
         TRAV(e, mst)
         {
             if (find(e.S.F) == find(e.S.S)) continue;
-            merge(e.S.F, MX-1); // FIX: need to combine with "final" node manually too, not just in the existing networks
-            merge(e.S.S, MX-1);
+            //printf("        %d %d not connected! Constructing edge for %d...\n", e.S.F, e.S.S, e.F);
+            merge(e.S.F, e.S.S); // FIX: can't just nievely connect everything to everything
             cost += e.F;
-            if (djs_s[find(MX-1)] >= N) break;
+            debug_djs(3);
+            if (djs_s[find(0)] >= N) break;
         }
-        printf("    cost = %d, found all? %d >= %d\n\n", cost, djs_s[find(MX-1)], N);
+        //printf("    cost = %d, found all? %d >= %d\n\n", cost, djs_s[find(MX-1)], N);
         debug_djs();
-        if (djs_s[find(MX-1)] >= N) return cost;
-        return 1<<30;
+        if (djs_s[find(0)] >= N) ret = min(ret, cost);
     }
-
-    return min(dfs(city_idx+1, chosen), dfs(city_idx+1, chosen | 1<<city_idx));
+    return ret;
 }
 
 int main()
 {
-    setIO();
+    //setIO();
     int kases;
     scanf("%d", &kases);
     FOR(kase, kases)
@@ -215,14 +237,3 @@ int main()
 => 32
 
 */
-
-void setIO(const string &name)
-{
-    ios_base::sync_with_stdio(0);
-    cin.tie(0); // fast cin/cout
-    if (fopen((name + ".in").c_str(), "r") != nullptr)
-    {
-        freopen((name + ".in").c_str(), "r", stdin);
-        freopen((name + ".out").c_str(), "w+", stdout);
-    }
-}
