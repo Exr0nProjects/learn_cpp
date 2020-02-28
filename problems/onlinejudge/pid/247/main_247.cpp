@@ -77,33 +77,61 @@ int dist[MX][MX];
 int main()
 {
     setIO();
-    int N, M;
+    int N, M, kase=1;
     while (scanf("%d%d", &N, &M) > 0)
     {
         if (N == 0 && M == 0) return 0;
         name_id.clear();
         id_name.clear();
-        FOR(i, MX) FOR(j, MX) dist[i][j] = INF;
+        FOR(i, MX) FOR(j, MX) dist[i][j] = 1; // FIX: don't int overflow
         FOR(i, M)
         {
             string A, B;
             cin >> A >> B;
             int a = id(A);
             int b = id(B);
-            dist[a][b] = 1;
+            dist[a][b] = 0;
+            //printf("dist[%d][%d] = %d\n", a, b, dist[a][b]);
         }
         FOR(k, N)
         {
-            FOR(i, N) FOR(j, N) if (dist[i][j] < dist[i][k] + dist[k][j])
+            FOR(i, N) FOR(j, N) if (dist[i][j] > dist[i][k] + dist[k][j])
             {
                 dist[i][j] = dist[i][k] + dist[k][j];
             }
         }
-    }
-
-    FOR(i, N) FOR(j, N)
-    {
-        // TODO: how to convert back to scc?
+        // figure out sccs from floyd
+        map<int, set<int> > circles;
+        bool vis[MX] = {};
+        FOR(i, N)
+        {
+            if (vis[i]) continue;
+            vis[i] = 1;
+            circles[i]; // FIX: add lonely members to output as well
+            FOR(j, N)
+            {
+                //printf("%3d", dist[i][j]);
+                // TODO: how to convert back to scc?
+                if (i == j) continue;
+                if (!dist[i][j] && !dist[j][i]) // FIX: use 0 to mean connected
+                {
+                    vis[j] = j;
+                    circles[i].insert(j);
+                }
+            }
+            //printf("\n");
+        }
+        printf("Calling circles for data set %d:\n", kase);
+        TRAV(p, circles)
+        {
+            printf("%s", id_name[p.F].c_str());
+            TRAV(id, p.S)
+            {
+                printf(", %s", id_name[id].c_str());
+            }
+            printf("\n");
+        }
+        ++kase;
     }
 
     return 0;
