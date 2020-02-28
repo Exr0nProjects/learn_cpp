@@ -1,1 +1,1 @@
-usaco/training/holstein
+onlinejudge/pid/1151
