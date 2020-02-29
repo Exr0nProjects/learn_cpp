@@ -52,10 +52,8 @@ LANG: C++14
 #define FORR(i, e) FORR_(i, 0, e)
 #define TRAV(a, x) for (auto &a : x)
 
-void setIO(const std::string &name = "1151");
-
 using namespace std;
-const int MX = 1010;
+const int MX = 10010;
 vi posx, posy;
 vector<pair<int, pii> > edges, mst;
 
@@ -103,8 +101,8 @@ void debug_djs(int indent=1)
 int MST(int groups, const vector<pair<int, pii> > &edges, vector<pair<int, pii> > &mst)
 {
     // reset djs
-    iota(djs_f, djs_f+MX, 0);
-    FOR(i, MX) djs_s[i] = 1;
+    iota(djs_f, djs_f+N+5, 0);
+    FOR(i, N+5) djs_s[i] = 1;
 
     int cost=0;
     TRAV(p, edges)
@@ -116,13 +114,14 @@ int MST(int groups, const vector<pair<int, pii> > &edges, vector<pair<int, pii> 
         --groups;
         if (groups == 1) break;
     }
+    //printf("    MST ended, cost = %d\n", cost);
     if (groups == 1) return cost;
     return -1;
 }
 
-int dfs(int city_idx=0, int chosen=0)
+int solve()
 {
-    int ret=0;
+    int ret=1<<30;
     FOR(chosen, 1<<Q)
     {
         //printf("checking with cities");
@@ -131,41 +130,30 @@ int dfs(int city_idx=0, int chosen=0)
 
 
         // reset djs
-        iota(djs_f, djs_f+MX, 0);
-        FOR(i, MX) djs_s[i] = 1;
-        djs_s[MX-1] = 0; // FIX: this one doesn't count as a city
+        iota(djs_f, djs_f+N+5, 0);
+        FOR(i, N+5) djs_s[i] = 1;
 
-        int cost=0;
+        int cost=0, groups=N;
         // add the existing networks
         FOR(i, 10) if (chosen & 1 << i)
         {
             cost += network_cost[i];
             TRAV(c, networks[i])
             {
+                if (find(c) != find(networks[i][0])) --groups;
                 merge(c, networks[i][0]);
             }
         }
         //printf("    added networks, cost is %d\n", cost);
         debug_djs(3);
-        TRAV(e, mst)
-        {
-            if (find(e.S.F) == find(e.S.S)) continue;
-            //printf("        %d %d not connected! Constructing edge for %d...\n", e.S.F, e.S.S, e.F);
-            merge(e.S.F, e.S.S); // FIX: can't just nievely connect everything to everything
-            cost += e.F;
-            debug_djs(3);
-            if (djs_s[find(0)] >= N) break;
-        }
-        //printf("    cost = %d, found all? %d >= %d\n\n", cost, djs_s[find(MX-1)], N);
-        debug_djs();
-        if (djs_s[find(0)] >= N) ret = min(ret, cost);
+        vector<pair<int, pii> > dummy;
+        ret = min(ret, cost + MST(groups, mst, dummy));
     }
     return ret;
 }
 
 int main()
 {
-    //setIO();
     int kases;
     scanf("%d", &kases);
     FOR(kase, kases)
@@ -197,23 +185,13 @@ int main()
 
         // first MST
         sort(edges.begin(), edges.end());
-        int cnt=0, cost=0;
-        iota(djs_f, djs_f+MX, 0);
-        FOR(i, MX) djs_s[i] = 1;
-        TRAV(e, edges)
-        {
-            if (find(e.S.F) == find(e.S.S)) continue;
-            merge(e.S.F, e.S.S);
-            mst.PB(e);
-            ++cnt;
-            cost += e.F;
-            if (cnt >= N) break;
-        }
+        iota(djs_f, djs_f+N+5, 0);
+        FOR(i, N+5) djs_s[i] = 1;
+        MST(N, edges, mst);
         sort(mst.begin(), mst.end());
-        //printf("first mst found (%d):\n", cost);
-        //TRAV(e, mst) printf("%d %d\n", e.S.F, e.S.S);
 
-        printf("%d\n\n", dfs());
+        if (kase) printf("\n");
+        printf("%d\n", solve());
     }
 
     return 0;
@@ -235,5 +213,20 @@ int main()
 0 4
 0 8
 => 32
+
+// provided sample
+1
+7 3
+2 4 1 2
+3 3 3 6 7
+3 9 2 4 5
+0 2
+4 0
+2 0
+4 2
+1 3
+0 5
+4 4
+=> 17
 
 */
