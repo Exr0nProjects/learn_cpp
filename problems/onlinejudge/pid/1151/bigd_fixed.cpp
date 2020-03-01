@@ -43,7 +43,7 @@ int network_cost[10];
 
 int djs_f[MX];
 int djs_s[MX];
-int find(int n)
+int fnd(int n)
 {
     if (djs_f[n] != n) djs_f[n] = find(djs_f[n]);
     return djs_f[n];
@@ -81,8 +81,8 @@ void debug_djs(int indent=1)
 int MST(int groups, const vector<pair<int, pair<int, int> > > &edges, vector<pair<int, pair<int, int> > > &mst)
 {
     // reset djs
-    iota(djs_f, djs_f+N+5, 0);
-    for (int i=0; i<N+5; ++i) djs_s[i] = 1;
+    //iota(djs_f, djs_f+N+5, 0);
+    //for (int i=0; i<N+5; ++i) djs_s[i] = 1;
 
     int cost=0;
     for (auto &p : edges)
@@ -101,7 +101,7 @@ int MST(int groups, const vector<pair<int, pair<int, int> > > &edges, vector<pai
 
 int solve()
 {
-    int ret=1<<30;
+    long long ret=1000000000000;
     for (int chosen=0; chosen<1<<Q; ++chosen)
     {
         //printf("checking with cities");
@@ -113,21 +113,23 @@ int solve()
         iota(djs_f, djs_f+N+5, 0);
         for (int i=0; i<N+5; ++i) djs_s[i] = 1;
 
-        int cost=0, groups=N;
+        long long cost=0, groups=N;
         // add the existing networks
-        for (int i=0; i<10; ++i) if (chosen & 1<<i)
+        for (int i=0; i<10; ++i) if (chosen & (1<<i))
         {
             cost += network_cost[i];
             for (auto &c : networks[i])
             {
-                if (find(c) != find(networks[i][0])) --groups;
-                merge(c, networks[i][0]);
+                if (find(c) != find(networks[i][0])) {
+					--groups;
+                	merge(c, networks[i][0]);
+                }
             }
         }
         //printf("    added networks, cost is %d\n", cost);
-        debug_djs(3);
+        //debug_djs(3);
         vector<pair<int, pair<int, int> > > dummy;
-        ret = min(ret, cost + MST(groups, mst, dummy));
+        ret = min(ret, (long long)cost + MST(groups, mst, dummy));
     }
     return ret;
 }
@@ -138,6 +140,10 @@ int main()
     scanf("%d", &kases);
     for (int kase=0; kase<kases; ++kase)
     {
+    	edges.clear();
+    	mst.clear();
+    	posx.clear();
+    	posy.clear();
         // input
         scanf("%d%d", &N, &Q);
         for (int q=0; q<Q; ++q)
@@ -211,3 +217,4 @@ int main()
 => 17
 
 */
+i
