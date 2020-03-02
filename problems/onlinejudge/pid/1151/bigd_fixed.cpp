@@ -43,7 +43,7 @@ int network_cost[10];
 
 int djs_f[MX];
 int djs_s[MX];
-int fnd(int n)
+int find(int n)
 {
     if (djs_f[n] != n) djs_f[n] = find(djs_f[n]);
     return djs_f[n];
@@ -217,4 +217,3 @@ int main()
 => 17
 
 */
-i

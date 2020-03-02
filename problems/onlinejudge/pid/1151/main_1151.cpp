@@ -78,12 +78,9 @@ void debug_djs(int indent=1)
     }
 }
 
-int MST(int groups, const vector<pair<int, pair<int, int> > > &edges, vector<pair<int, pair<int, int> > > &mst)
+long long MST(int groups, const vector<pair<int, pair<int, int> > > &edges, vector<pair<int, pair<int, int> > > &mst)
 {
-    // reset djs
-    iota(djs_f, djs_f+N+5, 0);
-    for (int i=0; i<N+5; ++i) djs_s[i] = 1;
-
+    // FIX: don't reset MST because we might start in the middle
     int cost=0;
     for (auto &p : edges)
     {
@@ -94,14 +91,14 @@ int MST(int groups, const vector<pair<int, pair<int, int> > > &edges, vector<pai
         --groups;
         if (groups == 1) break;
     }
-    //printf("    MST ended, cost = %d\n", cost);
+    printf("    MST ended, cost = %d\n", cost);
     if (groups == 1) return cost;
     return -1;
 }
 
-int solve()
+long long solve()
 {
-    int ret=1<<30;
+    long long ret=(long long)1<<60;
     for (int chosen=0; chosen<1<<Q; ++chosen)
     {
         //printf("checking with cities");
@@ -124,10 +121,12 @@ int solve()
                 merge(c, networks[i][0]);
             }
         }
-        //printf("    added networks, cost is %d\n", cost);
+        printf("\n    added networks, cost is %d\n", cost);
         debug_djs(3);
+        sort(edges.begin(), edges.end());
+        iota(djs_f, djs_f+N+5, 0);
         vector<pair<int, pair<int, int> > > dummy;
-        ret = min(ret, cost + MST(groups, mst, dummy));
+        ret = min(ret, (long long)cost + MST(groups, mst, dummy));
     }
     return ret;
 }
@@ -138,6 +137,10 @@ int main()
     scanf("%d", &kases);
     for (int kase=0; kase<kases; ++kase)
     {
+        posx.clear();
+        posy.clear();
+        edges.clear();
+        mst.clear();
         // input
         scanf("%d%d", &N, &Q);
         for (int q=0; q<Q; ++q)
@@ -172,7 +175,7 @@ int main()
         sort(mst.begin(), mst.end());
 
         if (kase) printf("\n");
-        printf("%d\n", solve());
+        printf("%lld\n", solve());
     }
 
     return 0;
@@ -209,5 +212,19 @@ int main()
 0 5
 4 4
 => 17
+
+1
+7 3
+2 4 1 2
+3 3 3 6 7
+3 9 2 4 5
+0 3000
+2999 0
+2 0
+0 1
+1 2
+99 97
+4 4
+=> 21
 
 */
