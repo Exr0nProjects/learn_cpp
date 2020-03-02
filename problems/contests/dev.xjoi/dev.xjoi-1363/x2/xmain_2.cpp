@@ -7,7 +7,7 @@ LANG: C++14
 /*
  * Problem 2 ([!meta:srcpath!])
  * Create time: Wed 19 Feb 2020 @ 09:09 (PST)
- * Accept time: [!meta:end!]
+ * Accept time: Sun 01 Mar 2020 @ 19:58 (PST)
  *
  */
 
@@ -62,15 +62,15 @@ void setIO(const std::string &name = "2");
 using namespace std;
 const int MX = 500010;
 int N, K, value[MX], weight[MX];
+dl math[MX];
 
 bool test(dl ans)
 {
-    vector<dl> math;
     FOR(i, N)
     {
-        math.PB(value[i] - weight[i]*ans);
+        math[i] = value[i] - weight[i]*ans;
     }
-    sort(math.begin(), math.end(), greater<dl>{});
+    sort(math, math+N, greater<dl>{});
     dl sum=0;
     FOR(i, K) sum += math[i];
     return sum >= 0;
@@ -78,7 +78,7 @@ bool test(dl ans)
 
 dl binarySearch(dl l, dl r)
 {
-    FOR(i, 100)
+    FOR(i, 45) // FIX: make sure we have enough precision
     {
         dl m = (l+r)/2;
         if (test(m)) l=m;
@@ -94,7 +94,7 @@ int main()
     FOR(i, N) scanf("%d", &weight[i]);
     FOR(i, N) scanf("%d", &value[i]);
 
-    printf("%.2lf\n", binarySearch(0, 1<<30));
+    printf("%.2lf\n", binarySearch(0, 1<<12));
 
     return 0;
 }
