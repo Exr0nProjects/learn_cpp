@@ -35,7 +35,7 @@ LANG: C++14
 
 #define cn const int
 #define ll long long
-#define cl const long long
+#define dl double
 #define ca const auto &
 
 #define vi vector<int>
@@ -61,39 +61,40 @@ void setIO(const std::string &name = "2");
 
 using namespace std;
 const int MX = 500010;
-int N, K, weight[MX];
+int N, K, value[MX], weight[MX];
+
+bool test(dl ans)
+{
+    vector<dl> math;
+    FOR(i, N)
+    {
+        math.PB(value[i] - weight[i]*ans);
+    }
+    sort(math.begin(), math.end(), greater<dl>{});
+    dl sum=0;
+    FOR(i, K) sum += math[i];
+    return sum >= 0;
+}
+
+dl binarySearch(dl l, dl r)
+{
+    FOR(i, 100)
+    {
+        dl m = (l+r)/2;
+        if (test(m)) l=m;
+        else r=m;
+    }
+    return l;
+}
 
 int main()
 {
     //setIO();
     scanf("%d%d", &N, &K);
     FOR(i, N) scanf("%d", &weight[i]);
-    priority_queue<double> best;
-    FOR(i, N)
-    {
-        int v;
-        scanf("%d", &v);
-        double ratio = (double) v/(double)weight[i];
-        //printf("inserting %lf\n", ratio);
-        best.push(ratio);
-    }
+    FOR(i, N) scanf("%d", &value[i]);
 
-    double ret = 0;
-    FOR(i, K)
-    {
-        //printf("adding %lf\n", best.top());
-        ret += best.top();
-        best.pop();
-    }
-
-    //printf("sum: %lf\n", ret);
-
-    /*
-     * idk whats going on cuz the sample test case says the answer should be 0.75
-     * but we can actually get 0.8??
-     */
-
-    printf("%.2lf\n", ret/K);
+    printf("%.2lf\n", binarySearch(0, 1<<30));
 
     return 0;
 }
