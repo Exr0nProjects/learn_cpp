@@ -121,6 +121,8 @@ int main()
             }
             //printf("\n");
         }
+        // output
+        if (kase > 1) printf("\n");
         printf("Calling circles for data set %d:\n", kase);
         TRAV(p, circles)
         {
