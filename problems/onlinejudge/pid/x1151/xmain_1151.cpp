@@ -6,7 +6,7 @@ LANG: C++14
 /*
  * Problem 1151 (onlinejudge/pid/1151)
  * Create time: Thu 27 Feb 2020 @ 17:50 (PST)
- * Accept time: [!meta:end!]
+ * Accept time: Sun 01 Mar 2020 @ 20:35 (PST)
  *
  */
 
@@ -78,7 +78,7 @@ void debug_djs(int indent=1)
     }
 }
 
-long long MST(int groups, const vector<pair<int, pair<int, int> > > &edges, vector<pair<int, pair<int, int> > > &mst)
+int MST(int groups, const vector<pair<int, pair<int, int> > > &edges, vector<pair<int, pair<int, int> > > &mst)
 {
     // FIX: don't reset MST because we might start in the middle
     int cost=0;
@@ -91,14 +91,14 @@ long long MST(int groups, const vector<pair<int, pair<int, int> > > &edges, vect
         --groups;
         if (groups == 1) break;
     }
-    printf("    MST ended, cost = %d\n", cost);
+    //printf("    MST ended, cost = %d\n", cost);
     if (groups == 1) return cost;
     return -1;
 }
 
-long long solve()
+int solve()
 {
-    long long ret=(long long)1<<60;
+    int ret=1<<30;
     for (int chosen=0; chosen<1<<Q; ++chosen)
     {
         //printf("checking with cities");
@@ -121,12 +121,11 @@ long long solve()
                 merge(c, networks[i][0]);
             }
         }
-        printf("\n    added networks, cost is %d\n", cost);
+        //printf("\n    added networks, cost is %d\n", cost);
         debug_djs(3);
-        sort(edges.begin(), edges.end());
-        iota(djs_f, djs_f+N+5, 0);
+        // FIX: don't reset before finishing MST
         vector<pair<int, pair<int, int> > > dummy;
-        ret = min(ret, (long long)cost + MST(groups, mst, dummy));
+        ret = min(ret, cost + MST(groups, mst, dummy));
     }
     return ret;
 }
