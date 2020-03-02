@@ -124,15 +124,16 @@ int main()
         // output
         if (kase > 1) printf("\n");
         printf("Calling circles for data set %d:\n", kase);
-        TRAV(p, circles)
-        {
-            printf("%s", id_name[p.F].c_str());
-            TRAV(id, p.S)
+        if (M > 0)
+            TRAV(p, circles)
             {
-                printf(", %s", id_name[id].c_str());
+                printf("%s", id_name[p.F].c_str());
+                TRAV(id, p.S)
+                {
+                    printf(", %s", id_name[id].c_str());
+                }
+                printf("\n");
             }
-            printf("\n");
-        }
         ++kase;
     }
 
