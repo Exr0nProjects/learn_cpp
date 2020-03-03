@@ -1,1 +1,1 @@
-contests/dev.xjoi/dev.xjoi-1363/2
+onlinejudge/pid/10048
