@@ -111,7 +111,6 @@ int main()
             FOR(j, N)
             {
                 //printf("%3d", dist[i][j]);
-                // TODO: how to convert back to scc?
                 if (i == j) continue;
                 if (!dist[i][j] && !dist[j][i]) // FIX: use 0 to mean connected
                 {
