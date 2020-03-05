@@ -114,7 +114,7 @@ int main()
                 if (i == j) continue;
                 if (!dist[i][j] && !dist[j][i]) // FIX: use 0 to mean connected
                 {
-                    vis[j] = j;
+                    vis[j] = 1;
                     circles[i].insert(j);
                 }
             }
