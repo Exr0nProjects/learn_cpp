@@ -124,21 +124,22 @@ int main()
                 if (c == '+') create |= (1<<n);
                 if (c == '-') fix |= (1<<n);
             }
-            printf("    patch +%d -%d => +%d -%d\n", need, neednt, fix, create);
+            //printf("    patch +%d -%d => +%d -%d\n", need, neednt, fix, create);
             patches.EB(t, MP(MP(need, neednt), MP(fix, create)));
         }
-        printf("patches avaliable: %d\n", patches.size());
+        //printf("patches avaliable: %d\n", patches.size());
         if (kase++) printf("\n");
         printf("Product %d\n", kase);
         bugset src = (1<<N)-1;
         pq.emplace(0, src);
-        for (; !pq.empty(); pq.pop())
+        while (!pq.empty())
         {
-            printf("pq size: %d\n", pq.size());
+            //printf("pq size: %d\n", pq.size());
             pair<int, bugset> cur = pq.top();
-            printf("cur pq state: %d after %d\n", cur.S, cur.F);
+            //printf("cur pq state: %d after %d\n", cur.S, cur.F);
             if (vis.count(cur.S)) continue;
             vis.insert(cur.S);
+            pq.pop(); // FIX: pop it before we insert anything else
 
             if (!cur.S)
             {
@@ -150,13 +151,12 @@ int main()
             {
                 if (canApply(cur.S, p.S.F))
                 {
-                    printf("    inserting %d\n", applyPatch(cur.S, p.S.S));
+                    //printf("    inserting %d\n", applyPatch(cur.S, p.S.S));
                     pq.emplace(cur.F + p.F, applyPatch(cur.S, p.S.S));
                 }
             }
         }
         if (pq.empty()) printf("Bugs cannot be fixed.\n");
-        printf("continuing...\n\n");
     }
 
     return 0;
