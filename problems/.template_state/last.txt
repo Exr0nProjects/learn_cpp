@@ -1,1 +1,1 @@
-onlinejudge/pid/658
+contests/hpi2020/k

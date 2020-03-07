@@ -65,6 +65,7 @@ int N, M;
 vector<pair<int, patch> > patches; // <dist, patch>
 
 priority_queue<pair<int, bugset> > pq;
+map<bugset, int> dist;
 set<bugset> vis;
 
 bool canApply(bugset cur, pre p)
@@ -97,7 +98,7 @@ int main()
         patches.clear();
         pq.empty();
         vis.clear();
-        printf("N = %d, M = %d\n", N, M);
+        //printf("N = %d, M = %d\n", N, M);
         // input
         FOR(m, M)
         {
@@ -139,20 +140,23 @@ int main()
             //printf("cur pq state: %d after %d\n", cur.S, cur.F);
             if (vis.count(cur.S)) continue;
             vis.insert(cur.S);
-            pq.pop(); // FIX: pop it before we insert anything else
 
             if (!cur.S)
             {
                 printf("Fastest sequence takes %d seconds.\n", cur.F);
                 break;
             }
+            pq.pop(); // FIX: pop it before we insert anything else but after we check the break condition
 
             TRAV(p, patches)
             {
-                if (canApply(cur.S, p.S.F))
+                bugset applied = applyPatch(cur.S, p.S.S);
+                if (!dist.count(applied)) dist[applied] = 1<<30;
+                if (canApply(cur.S, p.S.F) && cur.F + p.F < dist[applied])
                 {
                     //printf("    inserting %d\n", applyPatch(cur.S, p.S.S));
-                    pq.emplace(cur.F + p.F, applyPatch(cur.S, p.S.S));
+                    dist[applied] = cur.F + p.F;
+                    pq.emplace(cur.F + p.F, applied);
                 }
             }
         }
