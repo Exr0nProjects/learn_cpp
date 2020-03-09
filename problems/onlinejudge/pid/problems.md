@@ -1,5 +1,18 @@
 # OnlineJudge
 
+## DP Problems
+1, 9, 21..25
+21. https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=848&page=show_problem&problem=1226
+22. https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=848&page=show_problem&problem=1059
+23. https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=848&page=show_problem&problem=4504
+24. https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=848&page=show_problem&problem=4505
+25. https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=848&page=show_problem&problem=178
+26. https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=848&page=show_problem&problem=1664
+27. https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=848&page=show_problem&problem=4506
+28. https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=848&page=show_problem&problem=4507
+29. https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=848&page=show_problem&problem=1104
+30. https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=848&page=show_problem&problem=1582
+
 ## Brute Force Problems
 
 1. https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=841&page=show_problem&problem=666
