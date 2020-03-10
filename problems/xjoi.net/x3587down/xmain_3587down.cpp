@@ -6,7 +6,7 @@ LANG: C++14
 /*
  * Problem 3587down (xjoi.net/3587down)
  * Create time: Mon 09 Mar 2020 @ 18:00 (PDT)
- * Accept time: [!meta:end!]
+ * Accept time: Mon 09 Mar 2020 @ 18:24 (PDT)
  *
  */
 
@@ -61,28 +61,28 @@ char a[MX], b[MX];
 
 int recurse(int i, int j)
 {
+    if (i < 1 || j < 1) return 0;
     int &ret = dp[i][j];
     if (ret) return ret;
 
-    if (i) ret = max(ret, recurse(i-1, j));
-    if (j) ret = max(ret, recurse(i, j-1));
-    if (i && j) ret = max(ret, recurse(i-1, j-1)) + a[i] == b[j];
+    ret = max(ret, recurse(i-1, j));
+    ret = max(ret, recurse(i, j-1));
+    ret = max(ret, recurse(i-1, j-1) + (a[i] == b[j])); // FIX: order of ops, need to put equality in parens
 
-    printf("%d %d -> %d\n", i, j, ret);
-    dp[i][j] = ret;
+    // printf("%d %d -> %d\n", i, j, ret);
     return ret;
 }
 
 int main()
 {
     // setIO();
-    scanf("%s%n%s%n", a, &A, b, &B);
+    scanf("%s%n%s%n", a+1, &A, b+1, &B); // FIX: one index so recursive doesn't access negative array index
     B -= A; --B; // FIX: fencepost and adding of scanf's character count
-    printf("%d: %s\n%d: %s\n", A, a, B, b);
+    // printf("%d: %s\n%d: %s\n", A, a+1, B, b+1);
 
-    FOR(i, A) { FOR(j, B) printf("%3d", dp[i][j]); printf("\n"); }
+    printf("%d\n", recurse(A, B));
 
-    printf("%d\n", recurse(A-1, B-1));
+    // FOR(i, A+1) { FOR(j, B+1) printf("%3d", dp[i][j]); printf("\n"); }
 
     return 0;
 }
