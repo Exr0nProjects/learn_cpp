@@ -61,6 +61,12 @@ char name[MX];
 int R, C, maze[MX][MX], dist[MX][MX];
 list<pair<pii, pii> > edges;
 
+void testCycles(int r, int c, int l=0)
+{
+    FOR(i, l) printf("    "); printf("(%d %d)\n", r, c);
+    TRAV(p, edges) if (p.F.F == r && p.F.S == c) testCycles(p.S.F, p.S.S, l+1);
+}
+
 int main()
 {
     // setIO();
@@ -70,7 +76,9 @@ int main()
     {
         // FOR(i, MX) FOR(j, MX) dist[i][j] = (1<<30) * (i != j);
         FOR(i, MX) FOR(j, MX) dist[i][j] = 0;
+        memset(maze, 0, sizeof(maze));
         scanf("%s%d%d", name, &R, &C);
+        edges.clear(); // FIX: clear the edges
         FOR(r, R) FOR(c, C) scanf("%d", &maze[r][c]);
 
         FOR(r, R) FOR(c, C)
@@ -84,25 +92,26 @@ int main()
                 if (y<0 || y>=R || x<0 || x>=C) continue;
                 if (maze[y][x] < maze[r][c])
                 {
-                    printf("(%d %d) -> (%d %d)\n", r, c, y, x);
+                    // printf("(%d %d) -> (%d %d)\n", r, c, y, x);
                     edges.EB(MP(r, c), MP(y, x));
                 }
             }
         }
+
         FOR(i, R*C)
         {
             TRAV(e, edges)
             {
                 dist[e.S.F][e.S.S] = max(dist[e.S.F][e.S.S], dist[e.F.F][e.F.S] + 1);
             }
-        printf("\n"); FOR(r, R) { FOR(c, C) printf("%3d", dist[r][c]); printf("\n"); }
+        // printf("\n"); FOR(r, R) { FOR(c, C) printf("%3d", dist[r][c]); printf("\n"); }
         }
 
-        FOR(r, R) { FOR(c, C) printf("%3d", dist[r][c]); printf("\n"); }
+        // FOR(r, R) { FOR(c, C) printf("%3d", dist[r][c]); printf("\n"); }
 
         int ret=0;
         FOR(r, R) FOR(c, C) ret = max(ret, dist[r][c]);
-        printf("%s: %d\n", name, ret);
+        printf("%s: %d\n", name, ret+1);
     }
 
     return 0;
