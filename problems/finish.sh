@@ -22,4 +22,4 @@ rm -rf "$modpath"
 
 "$(dirname $cache)/live_commit.sh" "./$modpath ./$newpath working.txt completed.txt" "AC $modpath (script)"
 
-git push
+nohup git push > /dev/null &

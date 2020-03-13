@@ -1,1 +1,1 @@
-onlinejudge/pid/10285up
+onlinejudge/pid/10285graph
