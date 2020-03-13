@@ -56,44 +56,49 @@ void setIO(const std::string &name = "11584");
 
 using namespace std;
 const int MX = 1111;
-int N, dp[MX];
+int N, dp[MX][MX];
 char str[MX];
 
 int main()
 {
-    setIO();
+    // setIO();
     int kase;
     scanf("%d", &kase);
+    // printf("kase = %d\n", kase);
     FOR(i, kase)
     {
-        memset(dp, 0, MX*sizeof(int));
+        FOR(i, MX) FOR(j, MX) dp[i][j] = 1;
         memset(str, 0, MX*sizeof(char));
         scanf("%s%n", str, &N); --N; // scanf %n is one off
-        // printf("len: %d\n", N);
+        printf("len: %d\n", N);
 
-        // get length of same char stretch
-        FORR(i, N)
+        FOR(i, N) FOR_(j, i, N)
         {
-            if (str[i] != str[i+1]) dp[i] = 1;
-            else dp[i] = dp[i+1] + 1;
+            int legit=1;
+            int l=i, r=j-1;
+            while (l < r)
+            {
+                printf("l %d, r %d\n", l, r);
+                if (str[l] != str[r])
+                {
+                    legit = 0;
+                    break;
+                }
+                ++l; --r;
+            }
+            dp[i][j] = legit;
         }
-        // double extend pals (_bab_ -> ababa)
-        FORR(i, N-1)
-        {
-            if (i+1 + dp[i+1] < N && str[i] == str[i+1+dp[i+1]]) // jumping pal len of one over in range && this character wraps the one over pal with the char on the other side
-                dp[i] = max(dp[i], dp[i+1] +2);
-            else if (dp[i+1] >= dp[i]) dp[i] = 1; // don't be too greedy... TODO: sketchy
 
-        }
-
-        // FOR(i, N) printf("%3d", dp[i]); printf("\n");
+        printf("   "); FOR(i, N) printf("%3c", str[i]); printf("\n"); FOR(i, N) { printf("%3c", str[i]); FOR(j, N) printf("%3d", dp[i][j]); printf("\n"); }
 
         // skip count the palendrome groups
         int ret=0;
-        for (int i=0; i<N;)
+        for (int i=0; i<N; ++ret)
         {
-            ++ret;
-            i += dp[i];
+            int j;
+            for (j=N; j>=i; --j) if (dp[i][j]) break;
+            printf("i %d, j %d\n", i, j);
+            i = j;
         }
         printf("%d\n", ret);
     }
