@@ -1,0 +1,20 @@
+
+## XJOI Recursion
+1055
+3276
+3587
+3657
+
+## XJOI DFS Problems
+7988
+8461
+7993
+7077
+7986
+7992
+1460
+1013
+1226
+1592
+1876(slightly more complicated)
+3665
