@@ -6,7 +6,7 @@ LANG: C++14
 /*
  * Problem 11584 (onlinejudge/pid/11584)
  * Create time: Thu 12 Mar 2020 @ 17:00 (PDT)
- * Accept time: [!meta:end!]
+ * Accept time: Fri 13 Mar 2020 @ 14:29 (PDT)
  *
  */
 
@@ -56,7 +56,7 @@ void setIO(const std::string &name = "11584");
 
 using namespace std;
 const int MX = 1111;
-int N, dp[MX][MX];
+int N, ispal[MX][MX], split[MX];
 char str[MX];
 
 int main()
@@ -67,30 +67,34 @@ int main()
     // printf("kase = %d\n", kase);
     FOR(i, kase)
     {
-        FOR(i, MX) FOR(j, MX) dp[i][j] = (i == j);
+        FOR(i, MX) FOR(j, MX) ispal[i][j] = (i == j);
         memset(str, 0, MX*sizeof(char));
-        scanf("%s%n", str, &N); --N; // scanf %n is one off
+        memset(split, 0, sizeof(split));
+        scanf("%s%n", str+1, &N); --N; // scanf %n is one off
         // printf("len: %d\n", N);
 
-        FORR(i, N) FOR_(j, i+1, N)
+        FORR_(i, 1, N+1) FOR_(j, i+1, N+1)
         {
-            if (i+1 == j) { dp[i][j] = (str[i] == str[j]); continue; }
-            if (dp[i+1][j-1] && str[i] == str[j]) dp[i][j] = 1;
-            else dp[i][j] = 0;
+            if (i+1 == j) { ispal[i][j] = (str[i] == str[j]); continue; }
+            if (ispal[i+1][j-1] && str[i] == str[j]) ispal[i][j] = 1;
+            else ispal[i][j] = 0;
         }
 
-        printf("\n   "); FOR(i, N) printf("%3c", str[i]); printf("\n"); FOR(i, N) { printf("%3c", str[i]); FOR(j, N) printf("%3d", dp[i][j]); printf("\n"); }
+        // printf("\n   "); FOR_(i, 1, N+1) printf("%3c", str[i]); printf("\n"); FOR_(i, 1, N+1) { printf("%3c", str[i]); FOR_(j, 1, N+1) printf("%3d", ispal[i][j]); printf("\n"); }
 
-        // skip count the palendrome groups
-        int ret=0;
-        for (int i=0; i<N; ++ret)
+        // dp on split: least num pals needed to split string up to i
+        split[0] = 0;
+        FOR_(i, 1, N+1)
         {
-            int j;
-            for (j=N-1; j>=i; --j) if (dp[i][j]) break;
-            // printf("i %d, j %d\n", i, j);
-            i = j+1;
+            split[i] = 1<<30;
+            FOR(j, i)
+                if (ispal[j+1][i])
+                    split[i] = min(split[i], split[j] +1);
+            // printf("%3d", split[i]);
         }
-        printf("%d\n", ret);
+        // printf("\n");
+
+        printf("%d\n", split[N]);
     }
 
     return 0;
