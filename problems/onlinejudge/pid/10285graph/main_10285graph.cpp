@@ -53,28 +53,18 @@ LANG: C++14
 #define FORR(i, e) FORR_(i, 0, e)
 #define TRAV(a, x) for (auto &a : x)
 
-void setIO(const std::string &name = "10285graph");
-
 using namespace std;
 const int MX = 111;
 char name[MX];
 int R, C, maze[MX][MX], dist[MX][MX];
 list<pair<pii, pii> > edges;
 
-void testCycles(int r, int c, int l=0)
-{
-    FOR(i, l) printf("    "); printf("(%d %d)\n", r, c);
-    TRAV(p, edges) if (p.F.F == r && p.F.S == c) testCycles(p.S.F, p.S.S, l+1);
-}
-
 int main()
 {
-    // setIO();
     int kase;
     scanf("%d", &kase);
     FOR(ks, kase)
     {
-        // FOR(i, MX) FOR(j, MX) dist[i][j] = (1<<30) * (i != j);
         FOR(i, MX) FOR(j, MX) dist[i][j] = 0;
         memset(maze, 0, sizeof(maze));
         scanf("%s%d%d", name, &R, &C);
@@ -92,7 +82,6 @@ int main()
                 if (y<0 || y>=R || x<0 || x>=C) continue;
                 if (maze[y][x] < maze[r][c])
                 {
-                    // printf("(%d %d) -> (%d %d)\n", r, c, y, x);
                     edges.EB(MP(r, c), MP(y, x));
                 }
             }
@@ -104,7 +93,6 @@ int main()
             {
                 dist[e.S.F][e.S.S] = max(dist[e.S.F][e.S.S], dist[e.F.F][e.F.S] + 1);
             }
-        // printf("\n"); FOR(r, R) { FOR(c, C) printf("%3d", dist[r][c]); printf("\n"); }
         }
 
         // FOR(r, R) { FOR(c, C) printf("%3d", dist[r][c]); printf("\n"); }
@@ -117,13 +105,3 @@ int main()
     return 0;
 }
 
-void setIO(const string &name)
-{
-    ios_base::sync_with_stdio(0);
-    cin.tie(0); // fast cin/cout
-    if (fopen((name + ".in").c_str(), "r") != nullptr)
-    {
-        freopen((name + ".in").c_str(), "r", stdin);
-        freopen((name + ".out").c_str(), "w+", stdout);
-    }
-}
