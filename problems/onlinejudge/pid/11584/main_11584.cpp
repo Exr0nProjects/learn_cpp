@@ -67,38 +67,28 @@ int main()
     // printf("kase = %d\n", kase);
     FOR(i, kase)
     {
-        FOR(i, MX) FOR(j, MX) dp[i][j] = 1;
+        FOR(i, MX) FOR(j, MX) dp[i][j] = (i == j);
         memset(str, 0, MX*sizeof(char));
         scanf("%s%n", str, &N); --N; // scanf %n is one off
-        printf("len: %d\n", N);
+        // printf("len: %d\n", N);
 
-        FOR(i, N) FOR_(j, i, N)
+        FORR(i, N) FOR_(j, i+1, N)
         {
-            int legit=1;
-            int l=i, r=j-1;
-            while (l < r)
-            {
-                printf("l %d, r %d\n", l, r);
-                if (str[l] != str[r])
-                {
-                    legit = 0;
-                    break;
-                }
-                ++l; --r;
-            }
-            dp[i][j] = legit;
+            if (i+1 == j) { dp[i][j] = (str[i] == str[j]); continue; }
+            if (dp[i+1][j-1] && str[i] == str[j]) dp[i][j] = 1;
+            else dp[i][j] = 0;
         }
 
-        printf("   "); FOR(i, N) printf("%3c", str[i]); printf("\n"); FOR(i, N) { printf("%3c", str[i]); FOR(j, N) printf("%3d", dp[i][j]); printf("\n"); }
+        printf("\n   "); FOR(i, N) printf("%3c", str[i]); printf("\n"); FOR(i, N) { printf("%3c", str[i]); FOR(j, N) printf("%3d", dp[i][j]); printf("\n"); }
 
         // skip count the palendrome groups
         int ret=0;
         for (int i=0; i<N; ++ret)
         {
             int j;
-            for (j=N; j>=i; --j) if (dp[i][j]) break;
-            printf("i %d, j %d\n", i, j);
-            i = j;
+            for (j=N-1; j>=i; --j) if (dp[i][j]) break;
+            // printf("i %d, j %d\n", i, j);
+            i = j+1;
         }
         printf("%d\n", ret);
     }
