@@ -81,7 +81,7 @@ int main()
         {
             State state, og;
             FOR(i, PILES) state[i] = layer + (bool)(mod & (1<<i));
-            printf("    "); TRAV(n, state) printf("%3d", n); printf("\n");
+            printf("    "); TRAV(n, state) printf("%3d", n); printf(":  ");
             og = state;
 
             int best=0;
@@ -90,25 +90,27 @@ int main()
             {
                 int candy = 1<<piles[pile][state[pile]]; // TODO: state[pile] is backwards
                 ++state[pile];
-                printf("%d ", __builtin_popcount(tab[state]));
+                printf("pop %d, ", __builtin_popcount(tab[state]));
                 if (__builtin_popcount(tab[state]) >= 5) continue;
                 int update = tab[state] + (bool)(basket[state] & (1<<pile));
-                if (best < update)
+                printf("update = %d    ", update);
+                if (best <= update) // FIX: le so that we atleast try taking some candy
                 {
                     best = update;
                     basket[state] = basket[og] ^ (1<<pile);
-                    printf("        %d\n", basket[state]);
+                    // printf("        %d\n", basket[state]);
                 }
                     best = max(best, tab[state]);
                 --state[pile];
             }
             tab[state] = best;
+            printf("\n");
         }
 
         TRAV(p, tab)
         {
-            TRAV(n, p.F) printf("%3d", n);
-            printf(" -> %d (%d)\n", p.S, basket[p.F]);
+            // TRAV(n, p.F) printf("%3d", n);
+            // printf(" -> %d (%d)\n", p.S, basket[p.F]);
         }
 
         printf("%d\n", tab[{N-1, N-1, N-1, N-1}]);
