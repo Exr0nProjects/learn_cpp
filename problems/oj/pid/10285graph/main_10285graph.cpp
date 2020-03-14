@@ -105,3 +105,17 @@ int main()
     return 0;
 }
 
+/* DP doc section 2
+int dp(int i) {
+    &ans = d[i];
+    if (ans > 0) return ans;
+    ans = 1;
+    for (int j = 1; j <= n; ++j) {
+        if (g[i][j]) {
+            ans = max(ans, dp(j) +  int 1);
+        }
+    }
+    return ans;
+}
+*/
+
