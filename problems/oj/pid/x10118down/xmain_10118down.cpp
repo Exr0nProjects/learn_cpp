@@ -6,7 +6,7 @@ LANG: C++14
 /*
  * Problem 10118down (oj/pid/10118down)
  * Create time: Fri 13 Mar 2020 @ 16:23 (PDT)
- * Accept time: [!meta:end!]
+ * Accept time: Fri 13 Mar 2020 @ 20:51 (PDT)
  *
  */
 
@@ -69,9 +69,10 @@ int bestFrom(array<int, 4> state) // returns pair<score, bucket>
 
     int ret=0;
     if (__builtin_popcount(basket) >= 5) return ret; // if we can't add anything then just give up
-    FOR(i, 4) if (state[i]+1 <N) // for each pile if can take
+    FOR(i, 4) if (state[i] <N) // for each pile if can take; FIX: state[i] just has to be <N (not state[i]+1) because state[i] is the next one to take
     {
         int candy = (1<<piles[i][state[i]]);
+
         basket ^= candy; // add candy to basket
         ++state[i]; // update the pile index array
         int from = bestFrom(state);
@@ -85,6 +86,7 @@ int bestFrom(array<int, 4> state) // returns pair<score, bucket>
     }
 
     mem[state] = ret;
+    // TRAV(a, state) printf("%3d", a); printf(" -> %d\n", ret);
     return ret;
 }
 
@@ -116,18 +118,16 @@ int main()
 1 2 3 4
 5 6 7 8
 1 2 3 4
-5
+9
 1 2 3 4
-1 5 6 7
-2 3 3 3
-4 9 8 6
-8 7 2 1
-1
+4 5 3 6
+1 6 5 2
 1 2 3 4
-3
-1 2 3 4
-5 6 7 8
-1 2 3 4
+5 6 7 7
+8 1 1 2
+4 2 3 3
+3 4 5 6
+8 2 8 1
 0
 */
 
