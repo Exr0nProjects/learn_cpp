@@ -18,6 +18,6 @@ cat ./.template_state/Makefile\
     | sed "s/\[\!meta\:pid\!\]/$(basename $1)/g"\
     >> "$1/Makefile"
 
-tmux new-window -n "$(basename $1)" "cd $1 && tmux split-window -h && PROB=$(basename $1) && tmux selectp -L && nvim 'main_$(basename $1).cpp' -c 'normal 58G15l'"
+tmux new-window -n "$(basename $1)" "cd $1 && tmux split-window -h && PROB=$(basename $1) && tmux selectp -L && nvim 'main_$(basename $1).cpp' -c 'execute \"normal /-1;/\" | normal \"ggnn\" | noh'"
 
 #[[ -s "$1/main_$(basename $1).cpp" ]] && printf "File exists!\n" | exit 1
