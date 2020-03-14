@@ -6,7 +6,7 @@ LANG: C++14
 /*
  * Problem 10285graph (onlinejudge/pid/10285graph)
  * Create time: Fri 13 Mar 2020 @ 10:39 (PDT)
- * Accept time: [!meta:end!]
+ * Accept time: Sat 14 Mar 2020 @ 09:58 (PDT)
  *
  */
 
@@ -56,8 +56,19 @@ LANG: C++14
 using namespace std;
 const int MX = 111;
 char name[MX];
-int R, C, maze[MX][MX], dist[MX][MX];
-list<pair<pii, pii> > edges;
+int R, C, maze[MX][MX], mem[MX][MX];
+list<pair<int, int>> edges[MX][MX];
+
+int longest(int i, int j)
+{
+    int &ret=mem[i][j];
+    if (ret) return ret;
+
+    TRAV(p, edges[i][j])
+        ret = max(ret, longest(p.F, p.S)+1);
+
+    return ret;
+}
 
 int main()
 {
@@ -65,10 +76,10 @@ int main()
     scanf("%d", &kase);
     FOR(ks, kase)
     {
-        FOR(i, MX) FOR(j, MX) dist[i][j] = 0;
+        FOR(i, MX) FOR(j, MX) { mem[i][j] = 0; edges[i][j].clear(); }
         memset(maze, 0, sizeof(maze));
         scanf("%s%d%d", name, &R, &C);
-        edges.clear(); // FIX: clear the edges
+        // edges.clear(); // FIX: clear the edges
         FOR(r, R) FOR(c, C) scanf("%d", &maze[r][c]);
 
         FOR(r, R) FOR(c, C)
@@ -82,23 +93,15 @@ int main()
                 if (y<0 || y>=R || x<0 || x>=C) continue;
                 if (maze[y][x] < maze[r][c])
                 {
-                    edges.EB(MP(r, c), MP(y, x));
+                    edges[r][c].EB(y, x);
                 }
             }
         }
 
-        FOR(i, R*C)
-        {
-            TRAV(e, edges)
-            {
-                dist[e.S.F][e.S.S] = max(dist[e.S.F][e.S.S], dist[e.F.F][e.F.S] + 1);
-            }
-        }
-
-        // FOR(r, R) { FOR(c, C) printf("%3d", dist[r][c]); printf("\n"); }
-
         int ret=0;
-        FOR(r, R) FOR(c, C) ret = max(ret, dist[r][c]);
+        FOR(r, R) FOR(c, C)
+            ret = max(ret, longest(r, c));
+
         printf("%s: %d\n", name, ret+1);
     }
 
