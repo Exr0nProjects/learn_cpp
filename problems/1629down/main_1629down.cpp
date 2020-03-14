@@ -73,16 +73,36 @@ int countCherries(int i, int j, int k, int l)
     return ret;
 }
 
+int cut(int i, int j, int k, int l)
+{
+    int &ret = mem[i][j][k][l];
+    if (countCherries(i, j, k, l) <= 1) ret = 0;
+    if (ret < 1<<30) return ret;
+
+    // printf("(%d %d)(%d %d)\n", i, j, k, l);
+    // FOR_(h, i, k) printf("    (%d %d)(%d %d), (%d %d)(%d %d)\n", i, j, h, l, h+1, j, k, l);
+    // printf("\n");
+    // FOR_(v, j, l) printf("    (%d %d)(%d %d), (%d %d)(%d %d)\n", i, j, k, v, i, v+1, k, l);
+    // printf("\n");
+
+    FOR_(h, i, k) ret = min(ret, cut(i, j, h, l) + cut(h+1, j, k, l) + l-j+1);
+    FOR_(v, j, l) ret = min(ret, cut(i, j, k, v) + cut(i, v+1, k, l) + k-i+1);
+    return ret;
+}
+
 int main()
 {
     // setIO();
     int kase=0;
     while (scanf("%d%d%d", &N, &M, &K) == 3)
     {
-        printf("n %d, m %d, k %d\n", N, M, K);
+        // printf("n %d, m %d, k %d\n", N, M, K);
         memset(cake, 0, sizeof(cake));
         memset(cherries, 255, sizeof(cherries));
-        memset(mem, 0, sizeof(mem));
+        memset(mem, 0b01111111, sizeof(mem));
+
+        // printf("mem: %d\n", mem[2][2][2][2]);
+
         FOR(i, K)
         {
             int a, b;
@@ -92,16 +112,23 @@ int main()
 
         FOR_(i, 1, N) FOR_(j, 1, M) FOR_(k, 1, N) FOR_(l, 1, M) countCherries(i, j, k, l);
 
-        while (1)
-        {
-            int i, j, k, l;
-            scanf("%d%d%d%d", &i, &j, &k, &l);
-            printf("%3d\n", countCherries(i, j, k, l));
-        }
+        printf("Case %d: %d\n", ++kase, cut(1, 1, N, M));
+
+        // while (1)
+        // {
+            // int i, j, k, l;
+            // scanf("%d%d%d%d", &i, &j, &k, &l);
+            // printf("%3d\n", countCherries(i, j, k, l));
+        // }
     }
 
     return 0;
 }
+
+/*
+3 3 2 1 1 2 2
+
+*/
 
 void setIO(const string &name)
 {
