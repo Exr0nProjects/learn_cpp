@@ -17,6 +17,7 @@ LANG: C++14
 #include <vector>
 #include <string>
 #include <cstring>
+#include <array>
 #include <list>
 #include <queue>
 #include <stack>
@@ -40,9 +41,9 @@ LANG: C++14
 #define pii pair<int, int>
 #define vii vector<pii>
 
-#define PB push_back
-#define EB emplace_back
-#define MP make_pair
+#define pb push_back
+#define eb emplace_back
+#define mp make_pair
 #define F first
 #define S second
 #define g(t, i) get<i>(t)
@@ -59,21 +60,32 @@ void setIO(const std::string &name = "10118down");
 
 using namespace std;
 const int MX = 51;
-int N, baskets[5][MX];
+int N, piles[5][MX], basket=0;
+map<array<int, 4>, int> mem;
 
-tup<int, int> bestFrom(tup<int, int, int, int> state)
+int bestFrom(array<int, 4> state) // returns pair<score, bucket>
 {
-    if (g(state, 0)>=N && g(state, 1)>=N && g(state, 2)>=N && g(state, 3)>=N) return mt(0, 0);
+    if (mem.count(state)) return mem[state];
 
-    auto ret=mt(0, 0);
-    FOR(i, 4) if (g(state, i)+1 <N) // for each pile if can take
+    int ret=0;
+    if (__builtin_popcount(basket) >= 5) return ret; // if we can't add anything then just give up
+    FOR(i, 4) if (state[i]+1 <N) // for each pile if can take
     {
-        ++g(state, i);
-        auto from = bestFrom(state);
-        ret = max(ret, mt(g(from, 0) + 2*(bool)(g(from, 1) & (1<<i)), g(from, 2) ^ (1<<i)));
-        --g(state, i);
-        printf("popcount: %d\n", __builtin_popcount(g(from, 1)));
+        int candy = (1<<piles[i][state[i]]);
+        basket ^= candy; // add candy to basket
+        ++state[i]; // update the pile index array
+        int from = bestFrom(state);
+        --state[i]; // undo for backtracking
+        basket ^= candy;
+
+        if (basket & candy) // if basket already had one of this color
+            ret = max(ret, from +1);
+        else                // basket didn't have this color
+            ret = max(ret, from);
     }
+
+    mem[state] = ret;
+    return ret;
 }
 
 int main()
@@ -82,11 +94,42 @@ int main()
     while (scanf("%d", &N) == 1)
     {
         if (!N) break;
-        FOR(i, N) FOR(b, 4) scanf("%d", &baskets[b][i]);
+        FOR(i, 5) FOR(j, MX) piles[i][j] = 0;
+        mem.clear();
+        FOR(i, N) FOR(b, 4) scanf("%d", &piles[b][i]);
+        printf("%d\n", bestFrom(array<int, 4>{0, 0, 0, 0}));
     }
 
     return 0;
 }
+
+/*
+5
+1 2 3 4
+1 5 6 7
+2 3 3 3
+4 9 8 6
+8 7 2 1
+1
+1 2 3 4
+3
+1 2 3 4
+5 6 7 8
+1 2 3 4
+5
+1 2 3 4
+1 5 6 7
+2 3 3 3
+4 9 8 6
+8 7 2 1
+1
+1 2 3 4
+3
+1 2 3 4
+5 6 7 8
+1 2 3 4
+0
+*/
 
 void setIO(const string &name)
 {
