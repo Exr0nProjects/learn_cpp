@@ -18,6 +18,7 @@ LANG: C++14
 #include <string>
 #include <cstring>
 #include <list>
+#include <array>
 #include <queue>
 #include <stack>
 #include <set>
@@ -28,6 +29,7 @@ LANG: C++14
 #include <random>
 #include <chrono>
 #include <utility>
+#include <iterator>
 #include <exception>
 #include <algorithm>
 #include <functional>
@@ -40,11 +42,13 @@ LANG: C++14
 #define pii pair<int, int>
 #define vii vector<pii>
 
-#define MP make_pair
-#define PB push_back
-#define EB emplace_back
+#define pb push_back
+#define eb emplace_back
+#define mp make_pair
 #define F first
 #define S second
+#define g(t, i) get<i>(t)
+#define mt make_tuple
 
 #define FOR_(i, b, e) for (long long i = (b); i < (e); ++i)
 #define FOR(i, e) FOR_(i, 0, (e))
