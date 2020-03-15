@@ -7,7 +7,7 @@ LANG: C++14
  * Problem 658 (onlinejudge/pid/658)
  * Create time: Wed 04 Mar 2020 @ 18:12 (PST)
  * Accept time: [!meta:end!]
- *
+ ! FIX: didn't clear everything correctly
  */
 
 #include <iostream>
@@ -60,6 +60,7 @@ typedef int bugset;
 typedef pair<bugset, bugset> pre; // pair<need, needn't>
 typedef pair<bugset, bugset> post; // pair<fix, create>
 typedef pair<pre, post> patch; // pair< pre: <need, needn't>, post: <fix, create> >
+
 int N, M;
 
 vector<pair<int, patch> > patches; // <dist, patch>
@@ -96,7 +97,8 @@ int main()
     {
         if (!N && !M) break;
         patches.clear();
-        pq.empty();
+        pq = {}; // FIX: clear the pq... pq.empty() doesn't do anything! It's used to check whether the pq is empty, and I use it later in the code... should've known that.
+        dist.clear();
         vis.clear();
         //printf("N = %d, M = %d\n", N, M);
         // input

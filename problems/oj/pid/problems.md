@@ -52,3 +52,7 @@
 3. https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=853&page=show_problem&problem=183
 4. https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=853&page=show_problem&problem=989
 5. https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=853&page=show_problem&problem=599
+6. https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=854&page=show_problem&problem=762
+7. https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=854&page=show_problem&problem=3442
+8. https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=854&page=show_problem&problem=1742
+9. https://onlinejudge.org/index.php?option=onlinejudge&Itemid=8&page=show_problem&problem=4399
