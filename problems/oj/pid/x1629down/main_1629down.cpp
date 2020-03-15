@@ -76,17 +76,13 @@ int countCherries(int i, int j, int k, int l)
 int cut(int i, int j, int k, int l)
 {
     int &ret = mem[i][j][k][l];
-    if (countCherries(i, j, k, l) <= 1) ret = 0;
-    if (ret < 1<<30) return ret;
-
-    // printf("(%d %d)(%d %d)\n", i, j, k, l);
-    // FOR_(h, i, k) printf("    (%d %d)(%d %d), (%d %d)(%d %d)\n", i, j, h, l, h+1, j, k, l);
-    // printf("\n");
-    // FOR_(v, j, l) printf("    (%d %d)(%d %d), (%d %d)(%d %d)\n", i, j, k, v, i, v+1, k, l);
-    // printf("\n");
+    if (countCherries(i, j, k, l) == 1) ret = 0;
+    if (countCherries(i, j, k, l) == 0) ret = 1<<30; // FIX: each piece needs exactly one cherry
+    if (ret <= 1<<30) return ret;
 
     FOR_(h, i, k) ret = min(ret, cut(i, j, h, l) + cut(h+1, j, k, l) + l-j+1);
     FOR_(v, j, l) ret = min(ret, cut(i, j, k, v) + cut(i, v+1, k, l) + k-i+1);
+
     return ret;
 }
 
