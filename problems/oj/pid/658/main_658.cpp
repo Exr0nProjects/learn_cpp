@@ -66,8 +66,8 @@ int N, M;
 vector<pair<int, patch> > patches; // <dist, patch>
 
 priority_queue<pair<int, bugset> > pq;
-map<bugset, int> dist;
-set<bugset> vis;
+unordered_map<bugset, int> dist;
+unordered_set<bugset> vis;
 
 bool canApply(bugset cur, pre p)
 {
@@ -91,11 +91,12 @@ bugset applyPatch(bugset cur, post p)
 
 int main()
 {
-    setIO();
+    // setIO();
     int kase=0;
-    while (scanf("%d%d", &N, &M) == 2)
+    // while (scanf("%d%d", &N, &M) == 2)
+    while (cin >> N >> M)
     {
-        if (!N && !M) break;
+        if (!N || !M) break;
         patches.clear();
         pq = {}; // FIX: clear the pq... pq.empty() doesn't do anything! It's used to check whether the pq is empty, and I use it later in the code... should've known that.
         dist.clear();
@@ -140,7 +141,7 @@ int main()
             //printf("pq size: %d\n", pq.size());
             pair<int, bugset> cur = pq.top();
             //printf("cur pq state: %d after %d\n", cur.S, cur.F);
-            if (vis.count(cur.S)) continue;
+            if (vis.count(cur.S)) { pq.pop(); continue; };
             vis.insert(cur.S);
 
             if (!cur.S)
