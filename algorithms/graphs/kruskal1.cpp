@@ -1,7 +1,10 @@
+// https://dev.xjoi.net/problem/7265
 #include <cstdio>
 #include <vector>
 #include <algorithm>
 #include <numeric>
+
+#define int long long
 
 using namespace std;
 const int MX = 100111;
@@ -24,18 +27,18 @@ void merge(int a, int b)
     djf[b] = a;
 }
 
-int main()
+signed main()
 {
     // clear
     edges.clear();
     iota(djf, djf+MX, 0);
     for (int i=0; i<MX; ++i) djs[i] = 1;
     // input
-    scanf("%d%d", &N, &M);
+    scanf("%lld%lld", &N, &M);
     for (int i=0; i<M; ++i)
     {
         int u, v, w;
-        scanf("%d%d%d", &u, &v, &w);
+        scanf("%lld%lld%lld", &u, &v, &w);
         edges.emplace_back(w, make_pair(u, v));
     }
     // algo
@@ -52,6 +55,6 @@ int main()
             cost += edges[i].first;
         }
     }
-    printf("%d", cost);
+  printf("%lld", cost);
 }
 
