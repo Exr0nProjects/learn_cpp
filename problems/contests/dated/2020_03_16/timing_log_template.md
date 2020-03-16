@@ -7,6 +7,7 @@
 13:39 | start | reading problems
 14:02 | have plans for 324F, 73C, 213C | analysing framing the problem for 148E and 999F
 14:10 | still don't know how to represent states for 148E | coding 324F
+16:10 | this isn't working | pause...
 
 ## Purify Notes
 

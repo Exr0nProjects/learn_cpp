@@ -63,18 +63,18 @@ const int MX = 111;
 const int MXA = 6; // TODO: return to 26
 char name[MX], bonus[MXA+4][MXA+4];
 int N, K, M;
-int mem[MX][MXA][MX]; // tab[i][j][k] = best after letter i with letter i-1 = j and having k swaps remaining
+pii mem[MX][MX]; // tab[i][j][k] = best after letter i with letter i-1 = j and having k swaps remaining
 
-int dp(int i, int j, int k, int layer=0)
+pii dp(int i, int k, int layer=0)
 {
-    FOR(i, layer) printf("    "); printf("%d %d %d\n", i, j, k);
+    FOR(i, layer) printf("    "); printf("%d %d\n", i, k);
 
-    if (mem[i][j][k]) return mem[i][j][k];
-    if (i <= 0) return 0;
+    if (mem[i][k].F) return mem[i][k];
+    if (i <= 0) return {0, 0};
     if (k <= 0)
     {
-        if (name[i] == j) return dp(i-1, j, k, layer+1) + bonus[name[i-1]][name[i]];
-        else return 0; // impossible
+        pii pre = dp(i-1, k, layer+1);
+        return { pre.F + bonus[name[i-1]][name[i]], name[i] };
     }
     int ret = 0;
     FOR(pj, MXA) ret = max(ret, dp(i-1, pj, k, layer+1) + bonus[pj][j]);
