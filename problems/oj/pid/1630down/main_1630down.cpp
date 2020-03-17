@@ -67,7 +67,8 @@ map<list<char>, pair<list<char>, int> > mem;
 
 void populateFactors()
 {
-    FOR_(i, 2, MX)
+    // FOR_(i, 2, MX)
+    for (int i=2; i<MX; ++i)
         for (int j=2*i; j<MX; j+=i)
             factors[j].push_back(i);
 }
@@ -79,10 +80,12 @@ int fold(list<char> &src, int size, int layer=0)
         src = mem[src].F;
         return mem[src].S;
     }
-    FOR(i, layer) printf("|   "); printf("size %d\n", size);
+    // FOR(i, layer) printf("|   "); printf("size %d\n", size);
+    for (int i=0; i<layer; ++i) printf("|   "); printf("size %d\n", size);
     if (size <= 4) return size;
     // try folding
-    TRAV(len, factors[size])
+    // TRAV(len, factors[size])
+    for (auto &len : factors[size])
     {
         bool legit = 1;
         auto lit = src.begin(), rit = src.begin();
@@ -156,7 +159,8 @@ int main()
             ++len;
         }
         fold(s, len);
-        TRAV(c, s)
+        // TRAV(c, s)
+        for (auto &c : s)
         {
             printf("%c", c);
         }
