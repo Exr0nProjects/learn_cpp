@@ -68,27 +68,44 @@ map<list<char>, pair<list<char>, int> > mem;
 void populateFactors()
 {
     // FOR_(i, 2, MX)
-    for (int i=2; i<MX; ++i)
+    for (int i=1; i<MX; ++i)
         for (int j=2*i; j<MX; j+=i)
             factors[j].push_back(i);
+
+    // FOR(i, MX)
+    // {
+    //     printf("%d:", i);
+    //     TRAV(n, factors[i]) printf(" %d", n);
+    //     printf("\n");
+    // }
+}
+
+string print(const list<char> &str)
+{
+    string ret;
+    TRAV(c, str) ret.push_back(c);
+    return ret;
 }
 
 int fold(list<char> &src, int size, int layer=0)
 {
+    FOR(i, layer) printf("|   "); printf("input: %s (%d)\n", print(src).c_str(), size);
     if (mem.count(src))
     {
+        FOR(i, layer) printf("|   "); printf("already computed!\n");
+        int ret = mem[src].S;
         src = mem[src].F;
-        return mem[src].S;
+        return ret; // FIX: was returning based on a key that had changed the line above
     }
-    // FOR(i, layer) printf("|   "); printf("size %d\n", size);
-    for (int i=0; i<layer; ++i) printf("|   "); printf("size %d\n", size);
-    if (size <= 4) return size;
+    // for (int i=0; i<layer; ++i) printf("|   "); printf("size %d\n", size);
+    if (size <= 2) return size;
     // try folding
     // TRAV(len, factors[size])
     for (auto &len : factors[size])
     {
         bool legit = 1;
         auto lit = src.begin(), rit = src.begin();
+        // FOR(i, layer) printf("|   "); printf("  checking repetition of len %d\n", len);
         advance(rit, len);
 
         while (rit != src.end())
@@ -100,9 +117,10 @@ int fold(list<char> &src, int size, int layer=0)
 
         if (legit)
         {
+            // FOR(i, layer) printf("|   "); printf("legit with len %d\n", len);
             auto &ret = mem[src];
             int pre = size / len;
-            src.erase(src.begin(), next(src.begin(), len));
+            src.erase(next(src.begin(), len), src.end()); // FIX: erase the part we want to erase, not keep
             int post = fold(src, len, layer+1);
             src.push_front('(');
             while (pre)
@@ -116,19 +134,24 @@ int fold(list<char> &src, int size, int layer=0)
         }
     }
     // recurse if folding didn't work
-    // printf("folding didn't work...\n");
+    // FOR(i, layer) printf("|   "); printf("No repetitions found\n");
     list<char> ret;
-    int div = 0, minn = size;
+    int div = 1, minn = size;
     auto it = next(src.begin(), 1);
-    printf("it nexd...\n");
-    for (; it != src.end(); ++it)
+    for (; it != src.end();)
     {
+        // FOR(i, layer) printf("|   "); printf("it @ %d : %c\n", div, *it);
         list<char> lef, rig;
         // TODO: copy is slow...
         copy(src.begin(), it, back_inserter(lef));
         copy(it, src.end(), back_inserter(rig));
 
+        FOR(i, layer) printf("|   "); printf("%s:%s\n", print(lef).c_str(), print(rig).c_str());
+
         int post = fold(lef, div, layer+1) + fold(rig, size-div, layer+1);
+
+        FOR(i, layer) printf("|   "); printf("%s;%s\n\n", print(lef).c_str(), print(rig).c_str());
+
         if (post < minn)
         {
             ret.clear();
@@ -136,8 +159,11 @@ int fold(list<char> &src, int size, int layer=0)
             ret.splice(ret.end(), rig);
             minn = post;
         }
+
         ++div;
+        advance(it, 1);
     }
+    FOR(i, layer) printf("|   "); printf("=> %s\n\n\n", print(ret).c_str());
     mem[src] = {ret, minn};
     src = ret;
     return minn;
@@ -147,18 +173,14 @@ int main()
 {
     setIO();
     populateFactors();
-    while (true)
+    string str;
+    while (cin >> str)
     {
         s.clear();
         char c;
-        int len=0;
-        while (c != '\n')
-        {
-            scanf("%c", &c);
-            s.push_back(c);
-            ++len;
-        }
-        fold(s, len);
+        int len = str.length();
+        for (char c : str) s.push_back(c);
+       fold(s, len);
         // TRAV(c, s)
         for (auto &c : s)
         {
