@@ -89,10 +89,10 @@ string print(const list<char> &str)
 
 int fold(list<char> &src, int size, int layer=0)
 {
-    FOR(i, layer) printf("|   "); printf("input: %s (%d)\n", print(src).c_str(), size);
+    // FOR(i, layer) printf("|   "); printf("input: %s (%d)\n", print(src).c_str(), size);
     if (mem.count(src))
     {
-        FOR(i, layer) printf("|   "); printf("already computed!\n");
+        // FOR(i, layer) printf("|   "); printf("already computed!\n");
         int ret = mem[src].S;
         src = mem[src].F;
         return ret; // FIX: was returning based on a key that had changed the line above
@@ -118,7 +118,7 @@ int fold(list<char> &src, int size, int layer=0)
         if (legit)
         {
             // FOR(i, layer) printf("|   "); printf("legit with len %d\n", len);
-            auto &ret = mem[src];
+            auto og = src; // FIX: copy because otherwise to get a reference to the mem location, you have to empty init it (operato[])
             int pre = size / len;
             src.erase(next(src.begin(), len), src.end()); // FIX: erase the part we want to erase, not keep
             int post = fold(src, len, layer+1);
@@ -129,13 +129,14 @@ int fold(list<char> &src, int size, int layer=0)
                 pre /= 10;
             }
             src.push_back(')');
-            ret = {src, post};
+            // printf("assigning %s -> %s (%d)\n", print(og).c_str(), print(src).c_str(), post);
+            mem[og] = {src, post};
             return post;
         }
     }
     // recurse if folding didn't work
     // FOR(i, layer) printf("|   "); printf("No repetitions found\n");
-    list<char> ret;
+    list<char> ret = src; // FIX: always init ret with src, since we might not find something better
     int div = 1, minn = size;
     auto it = next(src.begin(), 1);
     for (; it != src.end();)
@@ -146,11 +147,11 @@ int fold(list<char> &src, int size, int layer=0)
         copy(src.begin(), it, back_inserter(lef));
         copy(it, src.end(), back_inserter(rig));
 
-        FOR(i, layer) printf("|   "); printf("%s:%s\n", print(lef).c_str(), print(rig).c_str());
+        // FOR(i, layer) printf("|   "); printf("%s:%s\n", print(lef).c_str(), print(rig).c_str());
 
         int post = fold(lef, div, layer+1) + fold(rig, size-div, layer+1);
 
-        FOR(i, layer) printf("|   "); printf("%s;%s\n\n", print(lef).c_str(), print(rig).c_str());
+        // FOR(i, layer) printf("|   "); printf("%s;%s\n\n", print(lef).c_str(), print(rig).c_str());
 
         if (post < minn)
         {
@@ -163,7 +164,7 @@ int fold(list<char> &src, int size, int layer=0)
         ++div;
         advance(it, 1);
     }
-    FOR(i, layer) printf("|   "); printf("=> %s\n\n\n", print(ret).c_str());
+    // FOR(i, layer) printf("|   "); printf("=> %s\n\n\n", print(ret).c_str());
     mem[src] = {ret, minn};
     src = ret;
     return minn;
@@ -171,7 +172,7 @@ int fold(list<char> &src, int size, int layer=0)
 
 int main()
 {
-    setIO();
+    // setIO();
     populateFactors();
     string str;
     while (cin >> str)
@@ -188,6 +189,11 @@ int main()
         }
         printf("\n");
     }
+
+    // TRAV(p, mem)
+    // {
+        // printf("%s -> %s (%d)\n", print(p.first).c_str(), print(p.S.F).c_str(), p.S.S);
+    // }
 
     return 0;
 }
