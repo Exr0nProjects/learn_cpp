@@ -1,3 +1,4 @@
+// Bellman ford, negative loop detection removed for submission to 1061
 #include <cstdio>
 #include <cstring>
 #include <utility>
@@ -7,41 +8,37 @@
 using namespace std;
 const int MX = 10010;
 
-int N, M, dist[MX];
+int S, T, N, M, dist[MX], pred[MX];
 list<pair<int, pair<int, int> > > edges;
 
 int main()
 {
     // clear
-    edges.clear();
     memset(dist, 0x7f, sizeof(dist));
+    memset(pred, 0, sizeof(pred));
+    edges.clear();
     // input
-    scanf("%d%d", &N, &M);
+    scanf("%d%d%d%d", &S, &T, &N, &M);
     for (int i=0; i<M; ++i)
     {
         int u, v, w;
         scanf("%d%d%d", &u, &v, &w);
       edges.emplace_back(w, make_pair(u, v));
+      edges.emplace_back(w, make_pair(v, u));
     }
     // algo
-    dist[1] = 0;
+    dist[T] = 0; // run bellman ford backwards so that predecesor is actually the path in the right order
     for (int k=1; k<N; ++k)
         for (auto e : edges)
-            dist[e.second.second] = min(dist[e.second.second], dist[e.second.first] + e.first);
-    //     check for negative loops
-    for (auto e : edges)
-        if (dist[e.second.second] > dist[e.second.first] + e.first)
-        {
-            printf("Error!\n");
-            return 0;
-        }
+            if (dist[e.second.first] + e.first < dist[e.second.second])
+            {
+                dist[e.second.second] = dist[e.second.first] + e.first;
+                pred[e.second.second] = e.second.first;
+            }
     // output
-    for (int i=1; i<=N; ++i)
-    {
-        if (dist[i] > 1<<30) printf("inf ");
-        else printf("%d ", dist[i]);
-    }
-    printf("\n");
+    printf("%d\n", dist[S]);
+    for (int n=S; n!=T; n=pred[n]) printf("%d ", n);
+    printf("%d\n", T);
     return 0;
 }
 
