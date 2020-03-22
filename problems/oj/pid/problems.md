@@ -12,6 +12,13 @@
 28. https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=848&page=show_problem&problem=4507
 29. https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=848&page=show_problem&problem=1104
 30. https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=848&page=show_problem&problem=1582
+31. https://codeforces.com/problemset/problem/234/F
+32. https://codeforces.com/problemset/problem/73/C
+33. https://codeforces.com/problemset/problem/148/E
+34. https://codeforces.com/problemset/problem/213/C
+35. https://codeforces.com/problemset/problem/999/F
+
+\*See `problems/contests/dated/2020_03_16` for problems 31 through 35
 
 ## Brute Force Problems
 

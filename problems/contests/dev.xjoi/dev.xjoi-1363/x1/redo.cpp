@@ -11,7 +11,7 @@ int main () {
     int l=0, r=N;
     for (int i=0; i<20; ++i)
     {
-        int m = (l+r)/2;
+        int m = l/2 + r/2 + (l%2&r%2);
         if (nums[m] >= S) r = m;
         else l = m;
     }
