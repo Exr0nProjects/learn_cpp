@@ -1,5 +1,40 @@
 # DP Framing 
 
+## Topological Structure
+**Common ways to frame the problem, organized by topological structure**
+
+- Linear
+    - Each subproblem only uses the solution of one smaller subproblem, although multiple may be considered.
+    - 1d
+        - `dp[i]` usually represents best value up to point `i`
+        - `dp[i]` sometimes represents best value "using" point `i`, because more is not always "better" or "eaiser" in some problems
+        - A problem using `dp[i][j]` may be considered one dimensional if `dp[i][j+1]` is completely unrelated to `dp[i][j]`, such as when `(i, j)` represents a node in a graph
+            - These problems can be thought of as one dimensional `dp[(i, j)]`
+    - 2d
+        - `dp[i][j]` often represents a range in a 1d problem structure.
+            - This often occurs when the value of `dp[0][i]` is not easily determinable from `dp[0][0:i]`
+            - This also shows up when the problem itself involves segments and arbitrary splitting.
+        - `dp[i][j]` can also represent the combinations between two 1d structures
+            - For example, in the Longest Common Subsequence problem, where finding the subsequences are treated as two connected but independant problems.
+        - `dp[i][j]` can represent two completely unrelated dimensions or constraints
+            - eg. Knapsack problem, where both dimensions represent unrelated constraints that are modified using external mappings (arrays for value and weight of each item)
+    - Higher Dimensions
+        - Number of dimensions needed is usually the number of "independant" choices to optimize over.
+- Tree
+    - Similar to the linear structure of selecting "cut" locations, except the order of those cuts matters.
+        - Where to "cut" is to choose from a range of options (such as indicies) along one dimension to split the problem into subproblems.
+        - Where the order of selection matters (selecting indicies 1, 2, 3 is different from selecting 2, 1, 3).
+        - Where the solution to a problem uses multiple subproblems, such as one for the left side and one for the right.
+    - Because trees often deal with "segments" of the subproblem, they usually involve ranges (`dp[i][j]`)
+        - The DP equation needs to select a way to "split" the subproblem, often by chosing `k : i < k < j`
+        - The problem may incorporate multiple dimensions of splitting such as by chosing `a: i < a < j || b: k < b < l`, such as in DP23
+- Graph
+    - DP Equation represents value at each node, and includes a clause for every edge going out of the node, if some condition holds for that edge.
+    - Problems with one "obvious" node may be longest path problems, which can be solved in `V+E` with a modified topological sort.
+    - Problems with two "obvious" nodes may be shortest path or a variant.
+    - Problems that care about all nodes are probably MST.
+
+## Per Problem
 | Problem | Structure | Frame | Equation |
 |---------|-------|-----------|----------|
 Number Triangle | Graph | `dp[r][c]` = Best score going down from `(r, c)` | `dp[r][c] = min(dp[r+1][c], dp[r+1][c+1])`
@@ -14,3 +49,4 @@ DP24 (UVa 1630) | 2b Tree | `dp[string]` = Minimum cost to fold `string` | `dp[s
 DP25 (UVa 242) | 1d Linear | `dp[i]` = Minimum number of stamps to be worth `i` money | `dp[i] = min(dp[j] + 1 : 0 <= j < i if i-j is a valid denomination of stamp)`
 
 Note on DP22: We store the basket state using a global that is updated through backtracking, which normally wouldn't work (because the basket state wouldn't necessarily be the same for each occurance of the subproblem) except that the basket state is already encoded in the frame the problem: the candies that have been through the basket can be determined by which candies have been taken, which is can be determined by how many candies have been taken from each pile. 
+
