@@ -6,6 +6,9 @@
 |----|----|----|
 15:40 | start | reading problems
 15:54 | have plans and prelim equations for 1, 2, 4, link to 3 seems broken... | coding #1
+16:13 | middle of debugging 1, infinite loops | debugging #1
+16:17 | `require` function was bad, should be ok now | submitting #1
+16:18 | AC #1 | Coding #2
 
 
 ## Purify Notes
