@@ -17,8 +17,12 @@
 33. https://codeforces.com/problemset/problem/148/E
 34. https://codeforces.com/problemset/problem/213/C
 35. https://codeforces.com/problemset/problem/999/F
+36. https://acm.timus.ru/problem.aspx?space=1&num=1018
+37. https://acm.timus.ru/problem.aspx?space=1&num=1039
 
 \*See `problems/contests/dated/2020_03_16` for problems 31 through 35
+
+Tree DP: 13 thru 15, 36 thru 37
 
 ## Brute Force Problems
 
