@@ -66,7 +66,10 @@ map<string, int> id_by_name;
 int id(string nm)
 {
     if (!id_by_name.count(nm))
+    {
+        printf("%s -> %d\n", nm.c_str(), id_by_name.size());
         id_by_name[nm] = id_by_name.size();
+    }
     return id_by_name[nm];
 }
 

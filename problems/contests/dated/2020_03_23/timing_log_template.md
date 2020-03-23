@@ -9,6 +9,7 @@
 16:13 | middle of debugging 1, infinite loops | debugging #1
 16:17 | `require` function was bad, should be ok now | submitting #1
 16:18 | AC #1 | Coding #2
+16:32 | 2 seems to work except uniqueness testing | analysing #2
 
 
 ## Purify Notes
