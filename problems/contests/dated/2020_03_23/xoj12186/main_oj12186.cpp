@@ -65,7 +65,7 @@ vector<int> child[MX];
 
 int require(int total)
 {
-    return total*100/T; // direct reporters required to pressure; TODO: might be wrong
+    return total*T/100 + (bool)(total*T%100); // direct reporters required to pressure; TODO: might be wrong
 }
 
 int op(int n)
@@ -73,7 +73,8 @@ int op(int n)
     if (mem[n]) return mem[n];
     if (child[n].size() == 0) return 1;
     sort(child[n].begin(), child[n].end(), [&](int l, int r){ return op(l) < op(r); }); // sort by workers required to pressure
-    printf("%d:", n); TRAV(c, child[n]) printf("%3d", c); printf("\n");
+    // printf("%d:", n); TRAV(c, child[n]) printf("%3d", c); printf("\n");
+    // printf("require %d%% of %d = %d\n", T, child[n].size(), require(child[n].size()));
     int ret=0;
     FOR(i, require(child[n].size())) ret += op(child[n][i]);
     mem[n] = ret;
