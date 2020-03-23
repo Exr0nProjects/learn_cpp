@@ -10,6 +10,9 @@
         - `dp[i]` sometimes represents best value "using" point `i`, because more is not always "better" or "eaiser" in some problems
         - A problem using `dp[i][j]` may be considered one dimensional if `dp[i][j+1]` is completely unrelated to `dp[i][j]`, such as when `(i, j)` represents a node in a graph
             - These problems can be thought of as one dimensional `dp[(i, j)]`
+        - If the topological structure of the problem (not of the equation) is a tree, then the problem is usually split by subtree.
+            - Tree "dp" problems may not have overlapping subproblems, but are considered dp because they have similar solutions - you similarly need to think about subproblem structure and states.
+            - Tree dp "sub dp"s usually use the height, weight, diameter, of subtrees.
     - 2d
         - `dp[i][j]` often represents a range in a 1d problem structure.
             - This often occurs when the value of `dp[0][i]` is not easily determinable from `dp[0][0:i]`
@@ -33,6 +36,8 @@
     - Problems with one "obvious" node may be longest path problems, which can be solved in `V+E` with a modified topological sort.
     - Problems with two "obvious" nodes may be shortest path or a variant.
     - Problems that care about all nodes are probably MST.
+- Sub DP
+    - If the dp equation for something is complete except requires knowing some property of the state, then it may be possible to run a "helper" dp to produce that value
 
 ## Per Problem
 | Problem | Structure | Frame | Equation |
@@ -47,6 +52,11 @@ DP22* (UVa 10118) | 4d  Linear | `dp[i, j, k, l]` = Most candies obtainable usin
 DP23 (UVa 1629) | 2b Tree in 2d Decision Space | `dp[i, j, k, l]` = Minimum cost to cut cake bounded by `i <= x < k` and `j <= y < l` | `dp[i, j, k, l] = min({topCost + bottomCost + width : j < y < l if both sides have atleast one cherry} U {leftCost + rightCost + height : i < x < k if both sides have atleast one cherry})`
 DP24 (UVa 1630) | 2b Tree | `dp[string]` = Minimum cost to fold `string` | `dp[string] = min({dp[string[:k]] + dp[string[k:]] : 0 < k < k.length-1}) if string is unfoldable **or** "${fold_count}(${dp[string[:prefix]]})"`
 DP25 (UVa 242) | 1d Linear | `dp[i]` = Minimum number of stamps to be worth `i` money | `dp[i] = min(dp[j] + 1 : 0 <= j < i if i-j is a valid denomination of stamp)`
+Tree Max Points Without Direct Connection | 1d Linear | `dp[i][0]` = best score in subtree of `i` without picking `i` and `dp[i][1]` = best score with picking `i` | `dp[i][0] = max{dp[k][0], dp[k][1] : k is a child of i}` and `dp[i][1] = max{dp[k][0] : k is a child of i} + 1` (+1 because we are picking `i`)
+Tree Diameter* | 2x 1d Linear | First, `height[i]` = the height of the subtree rooted at `i`. Then, `longest[i]` = longest path contained in the subtree rooted at `i` | `height[i] = max{height[k] : k is child of i}` and `longest[i] = max({longest[k] : k is child of i} U {height[l] + height[r] : l,r are children of i && l != r})` (longest[i] = longest of a subtree or sum of height of two subtrees)
+Tree Minimum Centroid | 2x 1d Linear | `weight[i]` = weight of the subtree rooted at `i`, and `cost[i]` = maximum weight of trees in the forest created by removing `i` | `weight[i] = sum{weight[k] : k is child of i} +1` and `cost[i] = max({weight[k] : k is child of i}, weight[root] - weight[i])` (`weight[root]-weight[i]` is the weight of the tree above the subtree `i`)
 
-Note on DP22: We store the basket state using a global that is updated through backtracking, which normally wouldn't work (because the basket state wouldn't necessarily be the same for each occurance of the subproblem) except that the basket state is already encoded in the frame the problem: the candies that have been through the basket can be determined by which candies have been taken, which is can be determined by how many candies have been taken from each pile. 
+Note on DP22: We store the basket state using a global that is updated through backtracking, which normally wouldn't work (because the basket state wouldn't necessarily be the same for each occurance of the subproblem) except that the basket state is already encoded in the frame the problem: the candies that have been through the basket can be determined by which candies have been taken, which is can be determined by how many candies have been taken from each pile.
+
+Note on Tree Diameter: Another way to do the tree diameter problem is with two search traversials of the tree. Start with some node `u`, and then find the fartherst node from that node, call it `v`. Then, find the farthest node from `v` and call it `w`. The path from `v` to `w` is maxamal, because the node `v` is a "corner" aka one of the two endpoints. `v` is a corner because were it not a corner, there would be two nodes `a` and `b` that form the diameter and are corners, but because `a` and `b` are closer to `u` than `v` (that's how we found `v`), replacing the farther from `v` of `a` and `b` with `v` would result in a longer path (with the other corner being the one not replaced). Thus, `v` is a corner and `w` is the farthest from a corner, another corner.
 
