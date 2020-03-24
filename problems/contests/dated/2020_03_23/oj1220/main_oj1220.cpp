@@ -67,7 +67,7 @@ int id(string nm)
 {
     if (!id_by_name.count(nm))
     {
-        printf("%s -> %d\n", nm.c_str(), id_by_name.size());
+        // printf("%s -> %d\n", nm.c_str(), id_by_name.size());
         id_by_name[nm] = id_by_name.size();
     }
     return id_by_name[nm];
@@ -93,8 +93,9 @@ int main()
     while (scanf("%d", &N) == 1)
     {
         if (!N) break;
-        memset(mem, 0, sizeof(mem));
-        FOR(i, MX) child[i].clear();
+        FOR(i, MX-5) mem[i][0] = mem[i][1] = 0;
+        FOR(i, MX-5) child[i].clear();
+        id_by_name.clear(); // FIX: also clear id_by_name;
 
         string c, f;
         cin >> f;
@@ -107,14 +108,14 @@ int main()
         printf("%d ", max(op(0, 0), op(0, 1)));
 
         // check unique
-        bool unq = 1;
-        FOR(i, N) printf("%d: %d %d\n", i, op(i, 0), op(i, 1));
-        FOR(i, N) if (op(i, 0) == op(i, 1))
-        {
-            unq = 0;
-            break;
-        }
-        if (unq) printf("Yes\n");
+        // bool unq = 1;
+        // FOR(i, N) printf("%d: %d %d\n", i, op(i, 0), op(i, 1));
+        // FOR(i, N) if (op(i, 0) == op(i, 1))
+        // {
+        //     unq = 0;
+        //     break;
+        // }
+        if (mem[0][0] != mem[0][1]) printf("Yes\n");
         else printf("No\n");
     }
 
