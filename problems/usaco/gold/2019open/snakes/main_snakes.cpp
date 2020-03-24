@@ -62,25 +62,37 @@ using namespace std;
 const int MX = 411;
 int N, K, size[MX];
 
-// ll mem[MX][1000010][MX];
+// ll mem[MX][1000010][MX]; // MLE
 
-ll op(ll i, ll s, ll c)
+map<pair<int, pii>, int> mem;
+
+ll op(ll i, ll s, ll c, int layer=0)
 {
-    if (i == N)
+    // if (mem.count(mp(i, mp(s, c)))) return mem[mp(i, mp(s, c))];
+    // FOR(i, layer) printf("|   "); printf("i %d, s %d, c %d\n", i, s, c);
+    if (i > N) // FIX: lt not le
     {
-        if (s >= size[i]) return s - size[i];
-        else return (ll) 1<<60;
+        return 0;
     }
 
     ll ret=(ll)1<<60;
+    // FOR(i, layer) printf("|   "); printf("> %lld\n", ret);
     if (s >= size[i]) // if we can grab this group with this size
-        ret = min(ret, op(i+1, s, c)); // don't change
+    {
+        ret = min(ret, op(i+1, s, c, layer+1) + s-size[i]); // don't change
+    }
+    // FOR(i, layer) printf("|   "); printf("> %lld\n", ret);
     FOR_(j, i, N+1)
     {
         if (size[j] < size[i] || size[j] == s) continue; // new size must be atleast size of this group
         if (c > 0) // if we can afford the change
-            ret = min(ret, op(i+1, size[j], c-1));
+        {
+            ret = min(ret, op(i+1, size[j], c-1, layer+1) + size[j] - size[i]);
+        }
+    // FOR(i, layer) printf("|   "); printf("|> %lld\n", ret);
     }
+    // FOR(i, layer) printf("|   "); printf("=> %lld\n", ret);
+    mem[mp(i, mp(s, c))] = ret;
     return ret;
 }
 
@@ -95,6 +107,14 @@ int main()
 
     return 0;
 }
+
+/*
+2 1 3 5
+=> 0
+
+2 0 3 5
+=> 2
+*/
 
 void setIO(const string &name)
 {
