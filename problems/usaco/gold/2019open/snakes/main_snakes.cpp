@@ -64,11 +64,11 @@ int N, K, size[MX];
 
 // ll mem[MX][1000010][MX]; // MLE
 
-map<pair<int, pii>, int> mem;
+map<pair<ll, pair<ll, ll> >, ll> mem; // FIX: mem type needs to be ll
 
 ll op(ll i, ll s, ll c, int layer=0)
 {
-    // if (mem.count(mp(i, mp(s, c)))) return mem[mp(i, mp(s, c))];
+    if (mem.count(mp(i, mp(s, c)))) return mem[mp(i, mp(s, c))];
     // FOR(i, layer) printf("|   "); printf("i %d, s %d, c %d\n", i, s, c);
     if (i > N) // FIX: lt not le
     {
