@@ -16,6 +16,7 @@
 17:12 | AC #4 | analysing uniqueness for #2
 17:27 | still don't know how to determine uniqueness... call a node quasi if it's subtree has the same value whether you take it or not. It's not that any quasi node prevents uniqueness, see sample test case 1. It's not that any non quasi node creates uniqueness, see (1, 2; 1, 3; 2, 4; 4, 5; 3, 6). It could be that whether the root is determined dictates whether the tree is determined, but I tried that and got wrong answer. Have been looking for counter examples to the root one, but haven't found any. Tried inductive proof but was complicated | continuing to chew at root quasi-ness determinism
 17:44 | Have idea for determining uniqueness | coding #2 uniqueness
+17:53 | plm new uniqueness check, got WA | debugging #2
 
 
 ## Purify Notes
