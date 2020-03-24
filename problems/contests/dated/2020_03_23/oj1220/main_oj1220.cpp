@@ -60,7 +60,7 @@ void setIO(const std::string &name = "oj1220");
 
 using namespace std;
 const int MX = 211;
-int N, mem[MX][2], parent[MX];
+int N, mem[MX][2];
 vector<int> child[MX];
 map<string, int> id_by_name;
 int id(string nm)
@@ -87,19 +87,14 @@ int op(int src, bool take)
     return sum;
 }
 
-bool globally_undet[MX];
-bool isGU(int n)
+bool unq(int src, bool take)
 {
-    if (globally_undet[n]) return globally_undet[n] > 0;
-    if (n == 0 && mem[0][0] == mem[0][1]) return true; // if is root and root is undet
-    if (mem[n][0] == mem[n][1] && // this is undet and (parent is globally undet or parent is det 0)
-            (isGU(parent[n]) || mem[parent[n]][0] > mem[parent[n]][1]))
+    TRAV(c, child[src])
     {
-        globally_undet[n] = 1;
-        return 1;
+        if (take && !unq(c, 0)) return false;
+        else if (!take && op(c, 0) == op(c, 1)) return false; // return false if determined 0 and child is quasi
     }
-    globally_undet[n] = 0;
-    return 0;
+    return true;
 }
 
 int main()
@@ -108,7 +103,7 @@ int main()
     while (scanf("%d", &N) == 1)
     {
         if (!N) break;
-        FOR(i, MX-5) globally_undet[i] = parent[i] = mem[i][0] = mem[i][1] = 0;
+        FOR(i, MX-5) mem[i][0] = mem[i][1] = 0;
         FOR(i, MX-5) child[i].clear();
         id_by_name.clear(); // FIX: also clear id_by_name;
 
@@ -118,20 +113,13 @@ int main()
         {
             cin >> c >> f;
             child[id(f)].push_back(id(c));
-            parent[id(c)] = id(f);
         }
 
-        printf("%d ", max(op(0, 0), op(0, 1)));
+        bool take_root = (op(0, 0) < op(0, 1) ? 1 : 0);
+        printf("%d ", op(0, take_root));
 
         // check unique
-        bool unq = 1;
-        // FOR(i, N) printf("%d: %d %d\n", i, op(i, 0), op(i, 1));
-        FOR(i, N) if (isGU(i))
-        {
-            unq = 0;
-            break;
-        }
-        if (unq) printf("Yes\n");
+        if (unq(0, take_root)) printf("Yes\n");
         else printf("No\n");
     }
 
