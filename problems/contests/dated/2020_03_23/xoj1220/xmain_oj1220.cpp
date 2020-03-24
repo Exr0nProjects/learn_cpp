@@ -6,7 +6,7 @@ LANG: C++14
 /*
  * Problem oj1220 (contests/dated/2020_03_23/oj1220)
  * Create time: Mon 23 Mar 2020 @ 16:19 (PDT)
- * Accept time: [!meta:end!]
+ * Accept time: Mon 23 Mar 2020 @ 18:19 (PDT)
  *
  */
 
@@ -109,6 +109,7 @@ int main()
 
         string c, f;
         cin >> f;
+        id(f); // FIX: mark this as the root
         FOR(i, N-1)
         {
             cin >> c >> f;
@@ -119,12 +120,60 @@ int main()
         printf("%d ", op(0, take_root));
 
         // check unique
-        if (unq(0, take_root)) printf("Yes\n");
+        if (op(0, 0) != op(0, 1) && unq(0, take_root)) printf("Yes\n");
         else printf("No\n");
     }
 
     return 0;
 }
+
+/*
+4 a
+b a
+c b
+d c
+=> 2 No
+
+6
+a
+b a
+c a
+d b
+e c
+f d
+=> 3 No
+
+3
+a
+b a
+c a
+=> 2 Yes
+
+3 a
+b a
+c b
+=> 2 Yes
+
+5 a
+b a
+c b
+d a
+e d
+=> 3 Yes
+
+4 a
+b a
+c b
+d a
+=> 2 No
+
+5 a
+b a
+c b
+d c
+e b
+=> 3 No
+*/
 
 void setIO(const string &name)
 {
