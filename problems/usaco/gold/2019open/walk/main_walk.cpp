@@ -60,12 +60,10 @@ void setIO(const std::string &name = "walk");
 
 using namespace std;
 const int MX = 7511;
-ll N, K;
+ll N, K, dist[MX][MX];
 
-inline ll dist(ll i, ll j)
+inline ll calcDist(ll i, ll j)
 {
-    // return (2019201913*i%2019201997+2019201949*j%2019201997) % 2019201997;
-    // return (2019201913*i+2019201949*j) % 2019201997;
     return max((2019201913*i+2019201949*j) % 2019201997, (2019201913*j+2019201949*i) % 2019201997); // FIX: order matters
 }
 
@@ -94,7 +92,7 @@ bool check(ll mindist)
     FOR_(i, 1, N+1) FOR_(j, 1, i) // FIX: one index
     {
         // printf("checking %d against %d\n", i, j);
-        if (dist(i, j) < mindist && find(i) != find(j))
+        if (dist[i][j] < mindist && find(i) != find(j))
         {
             // printf("collision %d %d! (%d < %d)\n", i, j, dist(i, j), mindist);
             merge(i, j);
@@ -111,10 +109,10 @@ int main()
     setIO();
     scanf("%lld%lld", &N, &K);
 
-    // FOR_(i, 1, N+1) FOR_(j, 1, N+1) printf("%d %d: %lld\n", i, j, dist(i, j));
+    FOR_(i, 1, N+1) FOR_(j, 1, N+1) dist[i][j] = calcDist(i, j);
 
-    ll l=0, r=(ll)1<<40;
-    FOR(i, 45)
+    ll l=0, r=(ll)1<<31;
+    FOR(i, 32)
     {
         // ll m = l/2 + r/2 + (l%2&r%2);
         ll m = (l+r)/2;
@@ -122,7 +120,8 @@ int main()
         else r=m;
     }
 
-    printf("%lld", l);
+    printf("%lld\n", l);
+    // printf("%lld\n", r);
 
     // FOR(i, 10)
     // {
