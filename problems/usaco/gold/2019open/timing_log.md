@@ -16,6 +16,7 @@
 17:44 | #2 doesn't work for sample test case, I think the binary search is broken.. | debugging #2
 17:58 | realize that order of `x` and `y` in dist matters, you have to take max, TLE (got 9/15) | debugging #2
 18:03 | #2 still TLE | analysing #3
+18:33 | Not sure how to do #3 | Giving up
 
 ## Contest Reflection
 
