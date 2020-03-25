@@ -1,5 +1,10 @@
 # Action Items
 
+- [ ] Redo missed USACO Gold Problems
+    - [ ] 2019open
+        - [ ] 1. snakes (TLE 4/12)
+        - [ ] 2. walk (TLE 9/15)
+        - [ ] 3. balance (not started)
 - [ ] Redo problems as bottom up
     - [ ] #1 dp13 oj12186
     - [ ] #2 dp14 oj1220
