@@ -61,47 +61,13 @@ void setIO(const std::string &name = "walk");
 using namespace std;
 const int MX = 7511;
 ll N, K, dist[MX][MX];
+bool vis[MX];
 
 inline ll calcDist(ll i, ll j)
 {
-    return max((2019201913*i+2019201949*j) % 2019201997, (2019201913*j+2019201949*i) % 2019201997); // FIX: order matters
-}
-
-ll djf[MX], djs[MX];
-ll find(ll n)
-{
-    if (djf[n] != n) djf[n] = find(djf[n]);
-    return djf[n];
-}
-void merge(ll a, ll b)
-{
-    a = find(a);
-    b = find(b);
-    if (a == b) return;
-    if (djs[a] < djs[b]) swap(a, b);
-    djs[a] += djs[b];
-    djf[b] = a;
-}
-
-bool check(ll mindist)
-{
-    iota(djf, djf+MX, 0);
-    FOR(i, MX) djs[i] = 1;
-    ll groups = N;
-
-    FOR_(i, 1, N+1) FOR_(j, 1, i) // FIX: one index
-    {
-        // printf("checking %d against %d\n", i, j);
-        if (dist[i][j] < mindist && find(i) != find(j))
-        {
-            // printf("collision %d %d! (%d < %d)\n", i, j, dist(i, j), mindist);
-            merge(i, j);
-            --groups;
-        }
-    }
-    // printf("groups: %d\n", groups);
-
-    return K <= groups;
+    return max(
+            (2019201913LL*i+2019201949LL*j) % 2019201997LL,
+            (2019201913LL*j+2019201949LL*i) % 2019201997LL); // FIX: order matters
 }
 
 int main()
@@ -111,16 +77,27 @@ int main()
 
     FOR_(i, 1, N+1) FOR_(j, 1, N+1) dist[i][j] = calcDist(i, j);
 
-    ll l=0, r=(ll)1<<31;
-    FOR(i, 32)
+    // prim
+    vector<ll> edges;
+    priority_queue<pair<ll, ll>, deque<pair<ll, ll> >, greater<pair<ll, ll> > > pq;
+    pq.push(mp(0, 1));
+    while (!pq.empty())
     {
-        // ll m = l/2 + r/2 + (l%2&r%2);
-        ll m = (l+r)/2;
-        if (check(m)) l=m;
-        else r=m;
+        pair<ll, ll> next = pq.top();
+        pq.pop();
+
+        edges.pb(next.F);
+        vis[next.S] = 1;
+
+        FOR_(i, 1, N+1)
+            if (!vis[i])
+                pq.push(mp(calcDist(next.S, i), i));
     }
 
-    printf("%lld\n", l);
+    sort(edges.begin(), edges.end());
+    // TRAV(e, edges) printf("%11d", e); printf("\n");
+
+    printf("%d\n", edges[N-K+1]);
     // printf("%lld\n", r);
 
     // FOR(i, 10)
