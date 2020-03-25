@@ -65,7 +65,8 @@ ll N, K;
 inline ll dist(ll i, ll j)
 {
     // return (2019201913*i%2019201997+2019201949*j%2019201997) % 2019201997;
-    return (2019201913*i+2019201949*j) % 2019201997;
+    // return (2019201913*i+2019201949*j) % 2019201997;
+    return max((2019201913*i+2019201949*j) % 2019201997, (2019201913*j+2019201949*i) % 2019201997); // FIX: order matters
 }
 
 ll djf[MX], djs[MX];
@@ -95,12 +96,14 @@ bool check(ll mindist)
         // printf("checking %d against %d\n", i, j);
         if (dist(i, j) < mindist && find(i) != find(j))
         {
+            // printf("collision %d %d! (%d < %d)\n", i, j, dist(i, j), mindist);
             merge(i, j);
             --groups;
         }
     }
+    // printf("groups: %d\n", groups);
 
-    return K < groups;
+    return K <= groups;
 }
 
 int main()
@@ -108,7 +111,7 @@ int main()
     setIO();
     scanf("%lld%lld", &N, &K);
 
-    FOR(i, N) FOR(j, N) printf("%d %d: %lld\n", i, j, dist(i, j));
+    // FOR_(i, 1, N+1) FOR_(j, 1, N+1) printf("%d %d: %lld\n", i, j, dist(i, j));
 
     ll l=0, r=(ll)1<<40;
     FOR(i, 45)
@@ -119,7 +122,14 @@ int main()
         else r=m;
     }
 
-    printf("%lld %lld\n", l, r);
+    printf("%lld", l);
+
+    // FOR(i, 10)
+    // {
+    //     ll mdst;
+    //     scanf("%lld", &mdst);
+    //     printf("%d\n", check(mdst));
+    // }
 
     return 0;
 }

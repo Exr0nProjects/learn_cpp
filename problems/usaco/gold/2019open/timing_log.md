@@ -13,6 +13,8 @@
 17:08 | actually works as long as each cow can be put into a group in O(N), which happens as long as one group is incompatible with the cow given some min dist, but what to do if no groups "collide"? | analysing #2
 17:17 | have idea for n^2 checking with disjoint set | psudo #2
 17:22 | psudocode should work | coding #2
+17:44 | #2 doesn't work for sample test case, I think the binary search is broken.. | debugging #2
+17:58 | realize that order of `x` and `y` in dist matters, you have to take max, TLE (got 9/15) | debugging #2
 
 ## Contest Reflection
 
