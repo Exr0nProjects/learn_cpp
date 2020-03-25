@@ -1,1 +1,1 @@
-usaco/gold/2019open/snakes
+usaco/gold/2019open/walk

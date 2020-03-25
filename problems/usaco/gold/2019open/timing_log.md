@@ -8,6 +8,11 @@
 15:56 | have vauge plans for 1, 2 | analysing #3
 16:13 | did some thinking on #3, some insights but still no plan | psudo-coding #1
 16:17 | finish `op` psudocoding for #1 | coding #1
+16:56 | TLE #1 4/12 (really bad) | psudo #2
+17:00 | may have a hard time writing N^2 check function | analysing #2
+17:08 | actually works as long as each cow can be put into a group in O(N), which happens as long as one group is incompatible with the cow given some min dist, but what to do if no groups "collide"? | analysing #2
+17:17 | have idea for n^2 checking with disjoint set | psudo #2
+17:22 | psudocode should work | coding #2
 
 ## Contest Reflection
 
