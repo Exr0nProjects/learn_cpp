@@ -60,50 +60,39 @@ void setIO(const std::string &name = "snakes");
 
 using namespace std;
 const int MX = 411;
-int N, K, size[MX];
+ll N, K, size[MX];
 
-// ll mem[MX][1000010][MX]; // MLE
-
-map<pair<ll, pair<ll, ll> >, ll> mem; // FIX: mem type needs to be ll
-
-ll op(ll i, ll s, ll c, int layer=0)
-{
-    if (mem.count(mp(i, mp(s, c)))) return mem[mp(i, mp(s, c))];
-    // FOR(i, layer) printf("|   "); printf("i %d, s %d, c %d\n", i, s, c);
-    if (i > N) // FIX: lt not le
-    {
-        return 0;
-    }
-
-    ll ret=(ll)1<<60;
-    // FOR(i, layer) printf("|   "); printf("> %lld\n", ret);
-    if (s >= size[i]) // if we can grab this group with this size
-    {
-        ret = min(ret, op(i+1, s, c, layer+1) + s-size[i]); // don't change
-    }
-    // FOR(i, layer) printf("|   "); printf("> %lld\n", ret);
-    FOR_(j, i, N+1)
-    {
-        if (size[j] < size[i] || size[j] == s) continue; // new size must be atleast size of this group
-        if (c > 0) // if we can afford the change
-        {
-            ret = min(ret, op(i+1, size[j], c-1, layer+1) + size[j] - size[i]);
-        }
-    // FOR(i, layer) printf("|   "); printf("|> %lld\n", ret);
-    }
-    // FOR(i, layer) printf("|   "); printf("=> %lld\n", ret);
-    mem[mp(i, mp(s, c))] = ret;
-    return ret;
-}
+ll tab[MX][MX]; // MLE
 
 int main()
 {
     setIO();
     scanf("%d%d", &N, &K);
-    FOR(i, N)
-        scanf("%d", &size[i+1]); // one index groups, the zero is a dummy index
 
-    printf("%lld\n", op(0, 0, K+1)); // K+1 to auto-select first size
+    ll tot=0, premax=0;
+    // dp
+    FOR_(n, 1, N+1)
+    {
+        scanf("%d", &size[n]); // one index groups, the zero is a dummy index
+        tot += size[n];
+        premax = max(premax, size[n]);
+        tab[n][0] = n * premax;
+        FOR_(k, 1, K+1)
+        {
+            ll mx=size[n];
+            tab[n][k] = (ll) 1<<60;
+            FORR(i, n)
+            // for (int i=n-1; i>=0; --i)
+            {
+                tab[n][k] = min(tab[n][k], tab[i][k-1]+(n-i)*mx);
+                mx = max(mx, size[i]);
+            }
+        }
+    }
+
+    // FOR(n, N+1) { FOR(k, K+1) printf("%5d", tab[n][k]); printf("\n"); }
+
+    printf("%lld\n", tab[N][K] - tot);
 
     return 0;
 }
@@ -119,7 +108,7 @@ int main()
 void setIO(const string &name)
 {
     ios_base::sync_with_stdio(0);
-    cin.tie(0); // fast cin/cout
+    // cin.tie(0); // fast cin/cout
     if (fopen((name + ".in").c_str(), "r") != nullptr)
     {
         freopen((name + ".in").c_str(), "r", stdin);
