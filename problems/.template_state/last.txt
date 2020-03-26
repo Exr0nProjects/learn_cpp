@@ -1,1 +1,1 @@
-usaco/gold/2018dec/dining
+usaco/gold/2015dec/feast
