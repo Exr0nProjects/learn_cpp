@@ -10,6 +10,7 @@
 16:17 | break to think | about #2
 16:27 | have plan for #2 | coding #2
 16:32 | WA 10/12 #2 | analysing #3
+16:36 | seems legit | coding #3
 
 ## Contest Reflection
 
