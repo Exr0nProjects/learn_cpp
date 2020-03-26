@@ -60,7 +60,7 @@ void setIO(const std::string &name = "walk");
 
 using namespace std;
 const int MX = 7511;
-ll N, K, dist[MX][MX];
+ll N, K, dist[MX];
 bool vis[MX];
 
 inline ll calcDist(ll i, ll j)
@@ -75,37 +75,24 @@ int main()
     setIO();
     scanf("%lld%lld", &N, &K);
 
-    FOR_(i, 1, N+1) FOR_(j, 1, N+1) dist[i][j] = calcDist(i, j);
-
     // prim
     vector<ll> edges;
-    priority_queue<pair<ll, ll>, deque<pair<ll, ll> >, greater<pair<ll, ll> > > pq;
-    pq.push(mp(0, 1));
-    while (!pq.empty())
+    FOR(i, N+1) dist[i] = (ll)1<<60; // FIX: one index everything because the dist relies on it
+    FOR(i, N) // add a node to the tree N times
     {
-        pair<ll, ll> next = pq.top();
-        pq.pop();
-
-        edges.pb(next.F);
-        vis[next.S] = 1;
-
-        FOR_(i, 1, N+1)
-            if (!vis[i])
-                pq.push(mp(calcDist(next.S, i), i));
+        // get nearest node
+        int idx = 0;
+        FOR_(j, 1, N+1) if (!vis[i]) if (dist[idx] > dist[j]) idx = j;
+        // add the node to the tree
+        vis[idx] = 1;
+        // update nearest node weights with new node
+        FOR_(j, 1, N+1) if (!vis[j]) dist[j] = min(dist[j], calcDist(j, idx));
     }
 
-    sort(edges.begin(), edges.end());
-    // TRAV(e, edges) printf("%11d", e); printf("\n");
+    sort(dist+1, dist+N+1, greater<ll>{}); // FIX: sort needs to be one indexed too
+    // FOR(i, N+1) printf("%20lld", dist[i]); printf("\n");
 
-    printf("%d\n", edges[N-K+1]);
-    // printf("%lld\n", r);
-
-    // FOR(i, 10)
-    // {
-    //     ll mdst;
-    //     scanf("%lld", &mdst);
-    //     printf("%d\n", check(mdst));
-    // }
+    printf("%lld\n", dist[K]);
 
     return 0;
 }
