@@ -59,7 +59,7 @@ LANG: C++14
 void setIO(const std::string &name = "teamwork");
 
 using namespace std;
-const int MX = 1111;
+const int MX = 10111; // FIX: 10^4 not 10^3
 int N, K, skill[MX];
 int best[MX][MX], tab[MX];
 
@@ -75,16 +75,16 @@ int main()
         else best[i][j] = max(best[i][j-1], skill[j-1]);
     }
 
-    FOR(i, N) { FOR(j, N) printf("%3d", best[i][j]); printf("\n"); }
+    // FOR(i, N) { FOR(j, N) printf("%3d", best[i][j]); printf("\n"); }
 
     FOR(i, N+1)
         FOR_(k, 1, K+1)
         {
             if (i-k < 0) break;
-            tab[i] = max(tab[i], tab[i-k]+best[i-k][i]);
+            tab[i] = max(tab[i], tab[i-k]+(int)k*best[i-k][i]); // FIX: forgot to multiply
         }
 
-    FOR(i, N) printf("%d\n", tab[i]); printf("\n");
+    // FOR(i, N) printf("%3d", tab[i]); printf("\n");
 
     printf("%d\n", tab[N]);
 

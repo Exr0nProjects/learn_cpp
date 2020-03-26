@@ -8,6 +8,9 @@
 18:03 | don't know how to do #1, have plans for 2, 3 | coding #2
 18:17 | TLE #2 (1/11) | coding #3
 18:39 | keep getting inc left and exclude rights messed up on #3 | debugging #2
+18:48 | using sets is too slow | attempting #2 with bitset
+18:53 | bitset's don't work the way I thought they did | analysing #2
+19:07 | binsearch, djs wouldn't work, can't think of how to make it a graph | debugging #3
 
 ## Contest Reflection
 
