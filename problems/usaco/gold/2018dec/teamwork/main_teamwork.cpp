@@ -61,7 +61,16 @@ void setIO(const std::string &name = "teamwork");
 using namespace std;
 const int MX = 10111; // FIX: 10^4 not 10^3
 int N, K, skill[MX];
-int best[MX][MX], tab[MX];
+// int best[MX][MX];
+int tab[MX];
+
+int best(int l, int r)
+{
+    // not memoized to save space
+    int ret=0;
+    FOR_(i, l, r) ret = max(ret, skill[i]);
+    return ret;
+}
 
 int main()
 {
@@ -69,11 +78,11 @@ int main()
     scanf("%d%d", &N, &K);
     FOR(i, N) scanf("%d", &skill[i]);
 
-    FOR_(j, 1, N+1) FOR(i, j) // inc i, exc j
-    {
-        if (i+1 == j) best[i][j] = skill[i];
-        else best[i][j] = max(best[i][j-1], skill[j-1]);
-    }
+    // FOR_(j, 1, N+1) FOR(i, j) // inc i, exc j
+    // {
+    //     if (i+1 == j) best[i][j] = skill[i];
+    //     else best[i][j] = max(best[i][j-1], skill[j-1]);
+    // }
 
     // FOR(i, N) { FOR(j, N) printf("%3d", best[i][j]); printf("\n"); }
 
@@ -81,7 +90,8 @@ int main()
         FOR_(k, 1, K+1)
         {
             if (i-k < 0) break;
-            tab[i] = max(tab[i], tab[i-k]+(int)k*best[i-k][i]); // FIX: forgot to multiply
+            // tab[i] = max(tab[i], tab[i-k]+(int)k*best[i-k][i]); // FIX: forgot to multiply
+            tab[i] = max(tab[i], tab[i-k]+(int)k*best(i-k, i));
         }
 
     // FOR(i, N) printf("%3d", tab[i]); printf("\n");
