@@ -1,1 +1,1 @@
-usaco/gold/2019open/walk
+usaco/gold/2018dec/cowpatibility
