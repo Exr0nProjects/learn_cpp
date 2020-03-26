@@ -6,7 +6,7 @@ LANG: C++14
 /*
  * Problem teamwork (usaco/gold/2018dec/teamwork)
  * Create time: Wed 25 Mar 2020 @ 18:17 (PDT)
- * Accept time: [!meta:end!]
+ * Accept time: Wed 25 Mar 2020 @ 21:23 (PDT)
  *
  */
 
@@ -60,21 +60,8 @@ void setIO(const std::string &name = "teamwork");
 
 using namespace std;
 const int MX = 10111; // FIX: 10^4 not 10^3
-const int memoize_factor = 500; // 0 to 10000
 int N, K, skill[MX];
-// int best[MX][MX];
 int tab[MX];
-
-map<pair<int, int>, int> mem;
-
-int best(int l, int r)
-{
-    if (r - l > memoize_factor && mem.count(mp(l, r))) return mem[mp(l, r)];
-    int ret=0;
-    FOR_(i, l, r) ret = max(ret, skill[i]);
-    if (r - l > memoize_factor) mem[mp(l, r)] = ret;
-    return ret;
-}
 
 int main()
 {
@@ -82,23 +69,16 @@ int main()
     scanf("%d%d", &N, &K);
     FOR(i, N) scanf("%d", &skill[i]);
 
-    // FOR_(j, 1, N+1) FOR(i, j) // inc i, exc j
-    // {
-    //     if (i+1 == j) best[i][j] = skill[i];
-    //     else best[i][j] = max(best[i][j-1], skill[j-1]);
-    // }
-
-    // FOR(i, N) { FOR(j, N) printf("%3d", best[i][j]); printf("\n"); }
-
     FOR(i, N+1)
+    {
+        int mx=0;
         FOR_(k, 1, K+1)
         {
             if (i-k < 0) break;
-            // tab[i] = max(tab[i], tab[i-k]+(int)k*best[i-k][i]); // FIX: forgot to multiply
-            tab[i] = max(tab[i], tab[i-k]+(int)k*best(i-k, i));
+            mx = max(mx, skill[i-k]); // FIX: running max instead of recomputing each time
+            tab[i] = max(tab[i], tab[i-k]+(int)k*mx);
         }
-
-    // FOR(i, N) printf("%3d", tab[i]); printf("\n");
+    }
 
     printf("%d\n", tab[N]);
 
