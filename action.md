@@ -2,9 +2,9 @@
 
 - [ ] Redo missed USACO Gold Problems
     - [ ] 2018dec
-        - [ ] 1. dining (not started)
+        - [x] 1. dining (not started)
         - [ ] 2. cowpatibility (TLE 1/11)
-        - [ ] 3. teamwork (TLE 8/10)
+        - [x] 3. teamwork (TLE 8/10)
     - [ ] 2019open
         - [x] 1. snakes (TLE 4/12)
         - [x] 2. walk (TLE 9/15)

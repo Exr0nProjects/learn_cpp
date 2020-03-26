@@ -1,1 +1,1 @@
-usaco/gold/2018dec/teamwork
+usaco/gold/2018dec/dining
