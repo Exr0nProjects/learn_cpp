@@ -68,11 +68,12 @@ int main()
 {
     setIO();
     scanf("%d", &N);
+    // printf("\n");
     ll tot=0;
     FOR(i, N)
     {
         cur.clear();
-        FOR(f, 4)
+        FOR(f, 5) // FIX: there are five flavors not four
         {
             int flavor;
             scanf("%d", &flavor);
@@ -80,6 +81,8 @@ int main()
                 cur.insert(likes[flavor].begin(), likes[flavor].end());
             likes[flavor].insert(i);
         }
+        // TRAV(p, likes) {printf("%d:", p.F); TRAV(a, p.S) printf("%3d", a); printf("\n");}
+        // printf("cur: %d:", i); TRAV(a, cur) printf("%3d", a); printf("\n");
         tot += cur.size();
     }
 
