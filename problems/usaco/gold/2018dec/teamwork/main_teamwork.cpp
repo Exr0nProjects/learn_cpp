@@ -60,15 +60,19 @@ void setIO(const std::string &name = "teamwork");
 
 using namespace std;
 const int MX = 10111; // FIX: 10^4 not 10^3
+const int memoize_factor = 500; // 0 to 10000
 int N, K, skill[MX];
 // int best[MX][MX];
 int tab[MX];
 
+map<pair<int, int>, int> mem;
+
 int best(int l, int r)
 {
-    // not memoized to save space
+    if (r - l > memoize_factor && mem.count(mp(l, r))) return mem[mp(l, r)];
     int ret=0;
     FOR_(i, l, r) ret = max(ret, skill[i]);
+    if (r - l > memoize_factor) mem[mp(l, r)] = ret;
     return ret;
 }
 

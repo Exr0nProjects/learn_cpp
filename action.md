@@ -1,15 +1,20 @@
 # Action Items
 
 - [ ] Redo missed USACO Gold Problems
+    - [ ] 2018dec
+        - [ ] 1. dining (not started)
+        - [ ] 2. cowpatibility (TLE 1/11)
+        - [ ] 3. teamwork (TLE 8/10)
     - [ ] 2019open
-        - [ ] 1. snakes (TLE 4/12)
-        - [ ] 2. walk (TLE 9/15)
+        - [x] 1. snakes (TLE 4/12)
+        - [x] 2. walk (TLE 9/15)
         - [ ] 3. balance (not started)
 - [ ] Redo problems as bottom up
     - [ ] #1 dp13 oj12186
     - [ ] #2 dp14 oj1220
     - [ ] #3 dp15 (redo as both top down and bottom up)
     - [ ] #4 dp37 tm1039
+    - [ ] dp36 (do as both)
 - [ ] Practice algebra with inequalities and the `floor` function.
-- [ ] "If there is some way to remember to step back and avoid my mistake in problem 2, that would be helpful as well but I don't know how to systematically avoid that."
+- [ ] "If there is some way to remember to step back and avoid my mistake in gold2019open problem 2, that would be helpful as well but I don't know how to systematically avoid that."
 
