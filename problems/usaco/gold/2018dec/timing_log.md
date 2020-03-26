@@ -6,6 +6,8 @@
 |----|----|----|
 17:30 | start | reading problems
 18:03 | don't know how to do #1, have plans for 2, 3 | coding #2
+18:17 | TLE #2 (1/11) | coding #3
+18:39 | keep getting inc left and exclude rights messed up on #3 | debugging #2
 
 ## Contest Reflection
 
