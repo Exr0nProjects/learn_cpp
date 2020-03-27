@@ -1,1 +1,1 @@
-usaco/gold/2015dec/cardgame
+usaco/gold/2016open/split
