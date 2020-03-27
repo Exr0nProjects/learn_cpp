@@ -66,8 +66,7 @@ int N, M, maze[MX][MX];
 
 typedef pair<pair<int, bool>, pair<int, int> > State; // <<dist, orange smelling>, <y, x>>
 set<State> ps; // priority set
-set<pair<bool, pair<int, int> > > vis; // state without the dist
-// map<pair<int, int>, int> maze;
+bool vis[MX][MX][2]; // FIX: use array for vis not set
 
 State move(State state, int dir)
 {
@@ -112,21 +111,28 @@ int main()
     {
         State cur = *ps.begin();
         ps.erase(ps.begin());
-        vis.insert(mp(cur.F.S, cur.S));
 
-        if (cur.S.F == N && cur.S.S == N)
+        // printf("%d %d, %d (%d)\n", cur.S.F, cur.S.S, cur.F.S, cur.F.F);
+        if (vis[cur.S.F][cur.S.S][cur.F.S]) // FIX: vis goes here, not during insert!!
+            continue;
+        vis[cur.S.F][cur.S.S][cur.F.S] = 1;
+        // printf("    ...\n");
+
+        if (cur.S.F == N && cur.S.S == M) // FIX: cur.S.S == M not ==N
         {
             printf("%d\n", cur.F.F);
-            break;
+            return 0;
         }
 
         FOR(i, 4)
         {
             State nxt = move(cur, i);
-            if (nxt != cur && !vis.count(mp(nxt.F.S, nxt.S)))
+            if (nxt != cur)
                 ps.insert(nxt);
         }
     }
+
+    printf("-1\n"); // FIX: print -1 if impossible
 
     return 0;
 }

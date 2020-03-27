@@ -1,6 +1,11 @@
 # Action Items
 
+- [ ] **Stay alert during contests! Don't make silly mistakes!**
 - [ ] Redo missed USACO Gold Problems
+    - [ ] 2015dec
+        - [ ] 1. cardgame (not started)
+        - [x] 2. feast
+        - [x] 3. dream
     - [ ] 2018dec
         - [x] 1. dining (not started)
         - [ ] 2. cowpatibility (TLE 1/11)

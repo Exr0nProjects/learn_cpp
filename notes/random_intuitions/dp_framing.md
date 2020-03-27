@@ -78,6 +78,7 @@ DP14 (UVa 1220) max unconnected nodes | See "Tree Max Points Without Direct Conn
 DP37 (tm 1039) weighted max unconnected nodes | " | < | < | < | < | `dp[i][0]` = same as above; `dp[i][1] = sum{dp[k][0] : k ∈ i} + value[i]` (add value instead of `1`)
 g19o1 snakes | 1d Linear | Linear | Linear | 2 | `dp(n,k)` = min sum of net sizes to catch first n groups w/ k changes | `dp(n,k)=min(dp(i,k−1)+(n−i)*max{ai+1,…,am} for i < n)` (`dp(possible previous change location) + (num groups between loc and here)*max{from prev change loc to here}`)
 g18d3 teamwork | Linear | < | < | < | `dp[i]` = Best score up to cow `i` | `dp[i] = max{dp[i-k] + k*(max skill[i-k, k]) for 0 < k <= i}` (previous split at `i-k`)
+g14d2 feast | Linear | Constant | Linear | 1 | `dp[i]` = Maximum fullness less than `i` without drinking water | `dp[i] = max{dp[i-1], dp[i-A]+A, dp[i-B]+B}`, then the answer is a sweep over that incorporating water drinking: `value of drinking at k = dp[k]/2`(just after drinking)`+ dp[T-dp[k]/2]`(grand total after eating more fruit)
 
 Note on DP22: We store the basket state using a global that is updated through backtracking, which normally wouldn't work (because the basket state wouldn't necessarily be the same for each occurance of the subproblem) except that the basket state is already encoded in the frame the problem: the candies that have been through the basket can be determined by which candies have been taken, which is can be determined by how many candies have been taken from each pile.
 
