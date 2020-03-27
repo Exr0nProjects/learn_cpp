@@ -1,1 +1,1 @@
-usaco/gold/2016open/split
+usaco/gold/2016open/closing
