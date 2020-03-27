@@ -67,17 +67,18 @@ int main()
     setIO();
     scanf("%d", &N);
     FOR(i, N)
-        scanf("%d", &tab[i][i+1]);
+        scanf("%d", &tab[i][i]);
 
-    int ret=0; // FIX: allow ranges of all sizes not just the entire thing
+    int ret=0;
 
-    FOR_(len, 1, N+1) // FIX: len is up through N
-        FOR(i, N-len+1) // FIX: range end should go through N as well
+    // include l, include r
+    FOR(len, N)
+        FOR(l, N-len)
         {
-            FOR_(k, 1, len)
-                if (tab[i][i+k] == tab[i+k][i+len] && tab[i][i+k] > 0)
-                    tab[i][i+len] = max(tab[i][i+len], tab[i][i+k]+1);
-            ret = max(ret, tab[i][i+len]);
+            FOR_(r, l, l+len+1)
+                if (tab[l][r] == tab[r+1][l+len] && tab[l][r] > 0)
+                    tab[l][l+len] = max(tab[l][l+len], tab[l][r]+1);
+            ret = max(ret, tab[l][l+len]);
         }
 
     // FOR(i, N+1) { FOR(j, N+1) printf("%3d", tab[i][j]); printf("\n"); }
