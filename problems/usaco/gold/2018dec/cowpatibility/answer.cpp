@@ -13,9 +13,11 @@ void ins() {
 }
 long long solve(int len, int sgn) {
 	long long ans = 0;
-	for (auto it = m[len].begin(); it != m[len].end(); it++) {
-    	long long num = it->s;
+    for (auto it = m[len].begin(); it != m[len].end(); it++) {
+        long long num = it->s;
     	ans += num * (num - 1) / 2;
+    // for (auto p : m[len]) {
+        // ans += p.s * (p.s - 1) / 2;
 	}
 	return ans * sgn;
 }

@@ -61,34 +61,19 @@ void setIO(const std::string &name = "cowpatibility");
 using namespace std;
 const int MX = 50111;
 ll N;
-map<vector<int>, int> common[6];
+map<vector<int>, ll> common[6]; // FIX: this doesn't need to be ll, but then i would have to cast it later
 
 void incSubsets(int fav[])
 {
-    // FOR(i, 6) printf("%3d", fav[i]); printf("\n");
     vector<int> sub;
-    // for (int ii=0; ii<5; ++ii)
-    // {
-    //     printf("%3d", ii);
-    // }
-    // printf("\n");
+    sub.reserve(6);
     FOR_(s, 1, 32) // every subset
     {
         sub.clear();
-        // FOR(i, 5)
         for (int ii=0; ii<5; ++ii)
-        {
             if ((1<<ii) & s)
-            {
-                // printf("%3d", fav[ii]);
                 sub.pb(fav[ii]);
-            }
-        }
-        // TRAV(a, sub) if (a==0) printf("%3d", a); printf("\n");
-        // bool wtf=0;
-        // TRAV(a, sub) if (!a) wtf=1;
-        // if (wtf) { FOR(i, 5) printf("%3d", fav[i]); printf("\n"); }
-        ++common[sub.size()][sub];
+        ++common[__builtin_popcount(s)][sub]; // FIX: use popcount instead of size() to fix TLE
     }
 }
 
@@ -96,40 +81,22 @@ int main()
 {
     setIO();
     scanf("%lld", &N);
-    // printf("\n");
     ll tot=0;
     FOR(i, N)
     {
-        int fav[6] = {};
+        int fav[5] = {};
         FOR(f, 5) // FIX: there are five flavors not four
-        {
-            // scanf("%d", &fav[f]);
-            cin >> fav[f];
-            // if (i == 49999) printf("%d ", fav[f]);
-        }
-        // if (!fav[4]) printf("wtf i: %d\n", i);
+            scanf("%d", &fav[f]); // FIX: can't just cin into an array
         sort(fav, fav+5);
         incSubsets(fav);
     }
 
-    // FOR_(i, 1, 6)
-    // {
-    //     printf("============\nsize %d\n", i);
-    //     TRAV(p, common[i])
-    //     {
-    //         printf("(");
-    //         TRAV(a, p.F) printf("%3d", a);
-    //         printf(") %d\n", p.S);
-    //     }
-    // }
-
     ll ret=0, include=1;
-    FOR_(i, 0, 6)
+    FOR_(i, 1, 6)
     {
         TRAV(p, common[i])
             ret += include * (p.S*(p.S-1)/2); // add/subtract number of pairs
         include *= -1;
-        // printf("%lld (%d)\n", ret, inc);
     }
 
     printf("%lld\n", N*(N-1)/2 - ret);
