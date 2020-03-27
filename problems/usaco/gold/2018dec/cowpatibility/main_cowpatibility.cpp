@@ -84,7 +84,10 @@ void incSubsets(int fav[])
                 sub.pb(fav[ii]);
             }
         }
-        // TRAV(a, sub) printf("%3d", a); printf("\n");
+        // TRAV(a, sub) if (a==0) printf("%3d", a); printf("\n");
+        // bool wtf=0;
+        // TRAV(a, sub) if (!a) wtf=1;
+        // if (wtf) { FOR(i, 5) printf("%3d", fav[i]); printf("\n"); }
         ++common[sub.size()][sub];
     }
 }
@@ -100,29 +103,32 @@ int main()
         int fav[6] = {};
         FOR(f, 5) // FIX: there are five flavors not four
         {
-            scanf("%d", &fav[f]);
+            // scanf("%d", &fav[f]);
+            cin >> fav[f];
+            // if (i == 49999) printf("%d ", fav[f]);
         }
+        // if (!fav[4]) printf("wtf i: %d\n", i);
         sort(fav, fav+5);
         incSubsets(fav);
     }
 
-    FOR_(i, 1, 6)
-    {
-        printf("============\nsize %d\n", i);
-        TRAV(p, common[i])
-        {
-            printf("(");
-            TRAV(a, p.F) printf("%3d", a);
-            printf(") %d\n", p.S);
-        }
-    }
+    // FOR_(i, 1, 6)
+    // {
+    //     printf("============\nsize %d\n", i);
+    //     TRAV(p, common[i])
+    //     {
+    //         printf("(");
+    //         TRAV(a, p.F) printf("%3d", a);
+    //         printf(") %d\n", p.S);
+    //     }
+    // }
 
-    ll ret=0, inc=1;
+    ll ret=0, include=1;
     FOR_(i, 0, 6)
     {
         TRAV(p, common[i])
-            ret += inc * (p.S*(p.S-1)/2); // add/subtract number of pairs
-        inc *= -1;
+            ret += include * (p.S*(p.S-1)/2); // add/subtract number of pairs
+        include *= -1;
         // printf("%lld (%d)\n", ret, inc);
     }
 
