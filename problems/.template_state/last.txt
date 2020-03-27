@@ -1,1 +1,1 @@
-usaco/gold/2016open/closing
+usaco/gold/2016open/248
