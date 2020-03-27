@@ -98,28 +98,29 @@ int main()
     iota(djf, djf+MX, 0);
     FOR(i, MX) djs[i] = 1;
 
-    bool res[MX] = {};
+    bool res[MX] = {}, vis[MX] = {};
     int components = 0;
 
     FOR(i, N)
     {
         ++components;
+        vis[closings[i]] = 1; // FIX: vis, only merge two barns if both are open
         TRAV(v, head[closings[i]])
         {
-            if (find(closings[i]) != find(v))
+            if (vis[v] && find(closings[i]) != find(v))
             {
-                printf("merging %d %d\n", closings[i], v);
+                // printf("merging %d %d\n", closings[i], v);
                 --components;
                 merge(closings[i], v);
             }
         }
 
-        printf("size: %d    >= %d;      comps %d\n", djs[find(closings[i])], i+1, components);
-        res[i] = djs[find(closings[i])] >= i+1;
-        // res[i] = components <= 1;
+        // printf("size: %d    >= %d;      comps %d\n", djs[find(closings[i])], i+1, components);
+        // res[i] = djs[find(closings[i])] >= i+1;
+        res[i] = components <= 1;
     }
 
-    FOR(i, N) if (res[i]) printf("YES\n"); else printf("NO\n");
+    FORR(i, N) if (res[i]) printf("YES\n"); else printf("NO\n");
 
     return 0;
 }
