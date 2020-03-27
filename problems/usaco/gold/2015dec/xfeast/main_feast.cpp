@@ -67,7 +67,7 @@ int main()
     setIO();
     scanf("%d%d%d", &T, &A, &B);
 
-    FOR_(i, 1, T)
+    FOR_(i, 1, T+1) // FIX: go through T for when T == A && A == B
     {
         dp[i] = dp[i-1];
         if (i-A >= 0) dp[i] = max(dp[i], dp[i-A] + A);
@@ -78,6 +78,7 @@ int main()
     int ret=0;
     FOR(k, T)
     {
+        ret = max(ret, dp[k]); // FIX: allow not drinking at all
         ret = max(ret, dp[k]/2 + dp[T-dp[k]/2]);
     }
 
