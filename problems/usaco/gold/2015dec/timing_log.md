@@ -24,6 +24,8 @@ What knowledge did you use in this test, and which part you didn't do well knowl
 I didn't know how to do this problem, I kept thinking of it as some kind of DP.  
 I did think that you needed to sort the cards, but I didn't get to making more observations past that.
 
+After looking at the solution, the problem is relatively simple. I didn't get either of the two key insights however, and perhaps didn't try hard enough. For future and real contests: **Try harder--look for properties if nothing comes to mind**.
+
 #### Problem 2:
 
 I originally thought that I could do a two stage simple knapsack, but my frame was `dp[i][1]` = the most value you can get up to `i`, which I thought would break because the `/2` on drinking water would get over written by other values.  
