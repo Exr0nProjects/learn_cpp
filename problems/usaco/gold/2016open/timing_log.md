@@ -15,15 +15,15 @@
 ### Knowledge
 What knowledge did you use in this test, and which part you didn't do well knowledge-wise?
 
-#### Problem 1:
+#### Problem 1: split
 
 Simple enough, vertical or horizontal line seperates, prefix/postfix min/max to compute sizes
 
-#### Problem 2:
+#### Problem 2: closing
 
 felt like DJS, didn't realize I could do it in reverse.
 
-#### Problem 3:
+#### Problem 3: 248
 
 Was looking for a greedy approach after last time, forgot that DP could work. Having such low bounds threw me off.
 

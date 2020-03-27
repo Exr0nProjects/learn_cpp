@@ -1,19 +1,23 @@
 # Action Items
 
 - [ ] **Stay alert during contests! Don't make silly mistakes!**
+- [ ] **Don't over think problems! Think transformations, not more advanced stuff!**
 - [ ] Redo missed USACO Gold Problems
-    - [ ] 2015dec
-        - [x] 1. cardgame (not started)
-        - [x] 2. feast
-        - [x] 3. dream
-    - [ ] 2018dec
-        - [x] 1. dining (not started)
-        - [x] 2. cowpatibility (TLE 1/11)
-        - [x] 3. teamwork (TLE 8/10)
     - [ ] 2019open
         - [x] 1. snakes (TLE 4/12)
         - [x] 2. walk (TLE 9/15)
         - [ ] 3. balance (not started)
+    - [x] 2018dec
+        - [x] 1. dining (not started)
+        - [x] 2. cowpatibility (TLE 1/11)
+        - [x] 3. teamwork (TLE 8/10)
+    - [x] 2016open
+        - [x] 2. closing
+        - [x] 3. 248
+    - [x] 2015dec
+        - [x] 1. cardgame (not started)
+        - [x] 2. feast
+        - [x] 3. dream
 - [ ] Redo problems as bottom up
     - [ ] #1 dp13 oj12186
     - [ ] #2 dp14 oj1220
