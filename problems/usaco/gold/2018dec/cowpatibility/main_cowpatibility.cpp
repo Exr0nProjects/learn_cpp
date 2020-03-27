@@ -61,7 +61,7 @@ void setIO(const std::string &name = "cowpatibility");
 using namespace std;
 const int MX = 50111;
 ll N;
-map<vector<int>, ll> common[6]; // FIX: this doesn't need to be ll, but then i would have to cast it later
+map<vector<int>, int> common[6]; // FIX: this doesn't need to be ll, but then i would have to cast it later
 
 void incSubsets(int fav[])
 {
@@ -95,7 +95,7 @@ int main()
     FOR_(i, 1, 6)
     {
         TRAV(p, common[i])
-            ret += include * (p.S*(p.S-1)/2); // add/subtract number of pairs
+            ret += include * ((ll)p.S*((ll)p.S-1LL)/2LL); // add/subtract number of pairs
         include *= -1;
     }
 

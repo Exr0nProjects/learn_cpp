@@ -8,7 +8,7 @@
         - [x] 3. dream
     - [ ] 2018dec
         - [x] 1. dining (not started)
-        - [ ] 2. cowpatibility (TLE 1/11)
+        - [x] 2. cowpatibility (TLE 1/11)
         - [x] 3. teamwork (TLE 8/10)
     - [ ] 2019open
         - [x] 1. snakes (TLE 4/12)
