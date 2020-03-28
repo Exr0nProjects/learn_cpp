@@ -1,1 +1,1 @@
-usaco/gold/2016open/248
+usaco/gold/2018open/sort

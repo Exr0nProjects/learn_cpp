@@ -1,5 +1,24 @@
 # DP Framing 
 
+## Quick Tips
+
+- To slow?
+    - Reframe the problem
+        - Can some dimensions be combined?
+        - Can some dimensions be removed?
+            - Maybe store part of the state as backtracking data
+                - Make sure the backtracking storage is fully represented by the problem frame!
+        - Can some dimensions be outsourced?
+            - AKA: Can the deliverable be simplified and then modified later? (recombinind algebraic terms)
+    - Make less decisions
+        - Can you "collapse" the decisions to one end?
+            - In range decisions, does order of ranges matter?
+- Doesn't work?
+    - Add dimensions
+        - What would make the decision easier?
+    - Add stages
+        - Can you run a seperate dp which populates a table to help the larger one?
+
 ## Subproblem Structures
 **Common ways to frame the problem, organized by topological structure**
 
