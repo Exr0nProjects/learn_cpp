@@ -62,27 +62,24 @@ using namespace std;
 const int MX = 100111;
 const int MMX = 50111;
 int N, M, indeg[MX], order[MX];
-vector<pair<int, int> > observations[MMX];
+list<pair<int, int> > observations[MMX];
 list<int> head[MX];
 
-bool check(int X)
+bool check(int xx)
 {
+    if (xx > M) return 0;
     memset(indeg, 0, sizeof(indeg));
     memset(order, 0, sizeof(order));
     FOR(i, MX) head[i].clear();
 
-    printf("after clears\n");
-
-    FOR(iii, X)
-        TRAV(p, observations[iii])
+    for (int iii=0; iii<xx; ++iii)
+    {
+        for (auto p : observations[iii])
         {
-            printf("sz %d\n", observations[iii].size());
-            // printf("%d -> %d\n", p.F, p.S);
             head[p.F].pb(p.S);
             ++indeg[p.S];
         }
-
-    printf("seg?\n");
+    }
 
     // FOR_(i, 1, N+1)
     // {
@@ -128,15 +125,12 @@ int main()
     int l=0, r=MMX+10;
     FOR(i, 20)
     {
-        printf("i %d\n", i);
         if (l+1==r) break; // TODO: shouldn't be nessecary
         // int m = l/2+r/2+(l%2&r%2);
         int m = (l+r)/2;
         if (check(m)) l=m;
         else r=m;
     }
-
-    printf("uh");
 
     FOR(i, N)
     {
