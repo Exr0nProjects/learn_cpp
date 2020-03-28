@@ -63,20 +63,34 @@ const int MX = 10111;
 int N;
 list<int> adj[MX];
 
-int op(int src, int pre=0)
+int op(int src, int pre=0, int layer=0)
 {
-    int cost=0, ggcost=0;
+    FOR(i, layer) printf("|   "); printf("%d -< %d\n", src, pre);
+    int count=0, gcount=0, ggcount=0, cost=0, ggcost=0;
 
     TRAV(child, adj[src]) if (child != pre)
     {
-        cost += op(child, src);
+        ++count;
+        cost += op(child, src, layer+1);
 
         TRAV(gchild, adj[child]) if (gchild != src)
+        {
+            ++gcount;
             TRAV(ggchild, adj[gchild]) if (ggchild != child)
-                ggcost += op(ggchild, gchild);
+            {
+                ++ggcount;
+                ggcost += op(ggchild, gchild, layer+1);
+            }
+        }
     }
 
-    int ret = 1 + min(cost, ggcost);
+    if (gcount && !ggcount)
+        return 1<<30; // return inf if there's no way to fill the subtree
+    int ret = 0;
+    if (count) ret = min(ret, cost);
+    if (ggcount) ret = min(ret, ggcost);
+    ++ret;
+    FOR(i, layer) printf("|   "); printf("=> %d\n", ret);
     return ret;
 }
 
@@ -112,6 +126,12 @@ int main()
 
     return 0;
 }
+
+/*
+4
+1 2 2 3 3 4
+=> 2
+*/
 
 void setIO(const string &name)
 {
