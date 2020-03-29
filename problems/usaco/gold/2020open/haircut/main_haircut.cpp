@@ -57,9 +57,20 @@ LANG: C++14
 #define TRAV(a, x) for (auto &a : x)
 
 using namespace std;
-const int MX = 1111;
+const int MX = 5111;
 ll N, A[MX];
 ll presum[MX][MX], invs[MX];
+
+ll inversions(ll height)
+{
+    ll ret=0;
+    FOR(i, N)
+        if (A[i] < height)
+        {
+            ret += presum[A[i]+1][i];
+        }
+    return ret;
+}
 
 int main()
 {
@@ -84,22 +95,20 @@ int main()
         }
     }
 
-    // FOR(i, N) { FOR(j, N) printf("%3d", presum[i][j]); printf("\n"); }
+    FOR(i, N) { FOR(j, N) printf("%3d", presum[i][j]); printf("\n"); }
 
     FOR(i, N)
     {
         // printf("(%d) %d += %d\n", i, A[i], presum[A[i]+1][i]);
         invs[A[i]] += presum[A[i]+1][i];
     }
-    // FOR(i, N)
-    //     printf("%3d", invs[i]);
-    // printf("\n");
 
     printf("0\n");
     FOR(i, N-1)
     {
         invs[i+1] += invs[i];
-        printf("%lld\n", invs[i]);
+        // printf("%lld\n", invs[i]);
+        printf("%lld\n", inversions(i+1));
     }
 
     return 0;

@@ -25,6 +25,9 @@
 12:30 | step 2 optimization works on sample | coding brute force #1
 12:48 | WA and RE #1... why? | taking a walk
 12:51 | I don't kno why everything is broken | debugging #2
+13:19 | still broken | analysing #3
+13:25 | have jank plan for #3 | psudocoding
+13:27 | nvm, I still have to consider the other possibilities for sub-parts | debugging #1
 
 ## Contest Reflection
 
