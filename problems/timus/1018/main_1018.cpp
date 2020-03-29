@@ -86,6 +86,20 @@ ll op(ll root, ll prev, ll idx, const ll rem, int layer=0) // best value with ro
     return ret + value[prev][root];
 }
 
+ll op2(ll root, ll prev, ll keep)
+{
+    if (head[root].size() == 1) return 0; // leaf node
+    // jankily get children
+    vector<int> child;
+    TRAV(n, head[root]) if (n != prev) child.pb(n);
+
+    int ret=0;
+    FOR(k, keep+1)
+    {
+        ret = max(ret, op2(child[0], k) + op2(child[1], k) + value[prev][root]);
+    }
+}
+
 int main()
 {
     // setIO();
