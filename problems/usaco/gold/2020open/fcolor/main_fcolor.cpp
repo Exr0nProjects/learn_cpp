@@ -59,7 +59,7 @@ LANG: C++14
 void setIO(const std::string &name = "fcolor");
 
 using namespace std;
-const int MX = 200111;
+const int MX = 2111;
 int N, M, admired[MX], color[MX];
 list<int> in[MX];
 list<int> out[MX];
@@ -90,8 +90,15 @@ int main()
     {
         int a, b;
         scanf("%d%d", &a, &b);
-        out[a].pb(b);
-        in[b].pb(a);
+        if (a == b)
+        {
+
+        }
+        else
+        {
+            out[a].pb(b);
+            in[b].pb(a);
+        }
     }
 
     FOR_(i, 1, N+1)
@@ -100,6 +107,7 @@ int main()
         for (auto it=next(out[i].begin()); it != out[i].end(); ++it)
         {
             int a = admirer, b=*it;
+            // if (a == b || a == i || b == i) continue;
             // printf("out merge %d %d thru %d\n", a, b, i);
             if (a < b) swap(a, b); // merge into the larger index
             merge(a, b);
@@ -147,6 +155,17 @@ int main()
 3 4
 4 5
 => 1 2 3 2 1
+
+9 8
+2 1
+3 2
+4 3
+5 4
+8 9
+7 8
+6 7
+5 6
+=> 123454321
 */
 
 void setIO(const string &name)
