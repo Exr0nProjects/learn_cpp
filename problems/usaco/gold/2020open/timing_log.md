@@ -28,6 +28,7 @@
 13:19 | still broken | analysing #3
 13:25 | have jank plan for #3 | psudocoding
 13:27 | nvm, I still have to consider the other possibilities for sub-parts | debugging #1
+13:51 | got 5 cases | attempting rolling array
 
 ## Contest Reflection
 

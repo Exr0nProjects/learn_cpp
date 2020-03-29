@@ -67,7 +67,7 @@ ll inversions(ll height)
     FOR(i, N)
         if (A[i] < height)
         {
-            ret += presum[A[i]+1][i];
+            ret += presum[A[i]][i];
         }
     return ret;
 }
@@ -95,20 +95,20 @@ int main()
         }
     }
 
-    FOR(i, N) { FOR(j, N) printf("%3d", presum[i][j]); printf("\n"); }
+    // FOR(i, N) { FOR(j, N) printf("%3d", presum[i][j]); printf("\n"); }
 
     FOR(i, N)
     {
         // printf("(%d) %d += %d\n", i, A[i], presum[A[i]+1][i]);
-        invs[A[i]] += presum[A[i]+1][i];
+        invs[A[i]] += presum[A[i]][i];
     }
 
     printf("0\n");
     FOR(i, N-1)
     {
         invs[i+1] += invs[i];
-        // printf("%lld\n", invs[i]);
-        printf("%lld\n", inversions(i+1));
+        printf("%lld\n", invs[i]);
+        // printf("%lld\n", inversions(i+1));
     }
 
     return 0;
