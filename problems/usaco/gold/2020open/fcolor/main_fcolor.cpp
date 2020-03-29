@@ -74,17 +74,23 @@ int main()
         shared[a].insert(b);
         admired[b] = a;
     }
+    FOR_(i, 1, N+1) printf("%d: %d\n", i, admired[i]);
 
     int nextcolor = 1;
     FOR_(i, 1, N+1)
     {
+        // printf("i: %d, colo[i]: %d\n", i, color[i]);
         if (color[i]) continue;
+        color[i] = nextcolor; // FIX: incase this cow doesn't admire anybody
         TRAV(c, shared[admired[i]])
-            color[i] = nextcolor;
+        {
+            // printf("assigning %d colo %d\n", c, nextcolor);
+            color[c] = nextcolor; // FIX: assign color[c], not color[i]
+        }
         ++nextcolor;
     }
 
-    FOR(i, N)
+    FOR_(i, 1, N+1)
         printf("%d\n", color[i]);
 
     return 0;
