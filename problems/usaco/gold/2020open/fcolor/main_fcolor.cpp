@@ -83,6 +83,8 @@ void merge(int a, int b)
 int main()
 {
     setIO();
+    FOR(i, MX) djs[i] = 1; // FIX: init djs!
+    iota(djf, djf+MX, 0);
     scanf("%d%d", &N, &M);
     FOR(i, M)
     {
@@ -97,26 +99,32 @@ int main()
         int admirer = *(out[i].begin());
         for (auto it=next(out[i].begin()); it != out[i].end(); ++it)
         {
-            merge(admirer, *it);
-            out[admirer].splice(out[admirer].end(), out[*it]);
+            int a = admirer, b=*it;
+            // printf("out merge %d %d thru %d\n", a, b, i);
+            if (a < b) swap(a, b); // merge into the larger index
+            merge(a, b);
+            out[a].splice(out[a].end(), out[b]);
         }
 
         admirer = *(in[i].begin());
         for (auto it=next(in[i].begin()); it != in[i].end(); ++it)
         {
-            merge(admirer, *it);
-            in[admirer].splice(in[admirer].end(), in[*it]);
+            int a = admirer, b=*it;
+            // printf("in merge %d %d thru %d\n", a, b, i);
+            if (a < b) swap(a, b);
+            merge(a, b);
+            in[a].splice(in[a].end(), in[b]);
         }
     }
 
-    FOR_(i, 1, N+1)
-    {
-        printf("%d:", i);
-        TRAV(n, out[i]) printf("%3d", n);
-        printf(" : ");
-        TRAV(n, in[i]) printf("%3d", n);
-        printf("\n");
-    }
+    // FOR_(i, 1, N+1)
+    // {
+    //     printf("(%2d) %d:", find(i), i);
+    //     TRAV(n, out[i]) printf("%3d", n);
+    //     printf(" : ");
+    //     TRAV(n, in[i]) printf("%3d", n);
+    //     printf("\n");
+    // }
 
     int nextcolor=1;
     FOR_(i, 1, N+1)
@@ -138,7 +146,7 @@ int main()
 3 2
 3 4
 4 5
-=> 1 2 1 2 1
+=> 1 2 3 2 1
 */
 
 void setIO(const string &name)
