@@ -7,6 +7,10 @@
         - [x] 1. snakes (TLE 4/12)
         - [x] 2. walk (TLE 9/15)
         - [ ] 3. balance (not started)
+    - [ ] 2018open
+        - [ ] 1. sort
+        - [ ] 2. milkorder
+        - [ ] 3. talent
     - [x] 2018dec
         - [x] 1. dining (not started)
         - [x] 2. cowpatibility (TLE 1/11)

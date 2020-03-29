@@ -59,10 +59,12 @@ LANG: C++14
 void setIO(const std::string &name = "fcolor");
 
 using namespace std;
-const int MX = 2111;
+const int MX = 200111;
 int N, M, admired[MX], color[MX];
 list<int> in[MX];
 list<int> out[MX];
+
+set<int> narcissist;
 
 int djs[MX], djf[MX];
 int find(int n)
@@ -92,7 +94,7 @@ int main()
         scanf("%d%d", &a, &b);
         if (a == b)
         {
-
+            narcissist.insert(a);
         }
         else
         {
@@ -133,6 +135,12 @@ int main()
     //     TRAV(n, in[i]) printf("%3d", n);
     //     printf("\n");
     // }
+
+    TRAV(n, narcissist)
+    {
+        merge(n, *(out[n].begin()));
+        merge(n, *(in[n].begin()));
+    }
 
     int nextcolor=1;
     FOR_(i, 1, N+1)
