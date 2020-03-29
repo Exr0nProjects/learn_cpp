@@ -61,7 +61,24 @@ void setIO(const std::string &name = "fcolor");
 using namespace std;
 const int MX = 200111;
 int N, M, admired[MX], color[MX];
-set<int> shared[MX];
+list<int> in[MX];
+list<int> out[MX];
+
+int djs[MX], djf[MX];
+int find(int n)
+{
+    if (djf[n] != n) djf[n] = find(djf[n]);
+    return djf[n];
+}
+void merge(int a, int b)
+{
+    a = find(a);
+    b = find(b);
+    if (a == b) return;
+    if (djs[a] < djs[b]) swap(a, b);
+    djs[a] += djs[b];
+    djf[b] = a;
+}
 
 int main()
 {
@@ -71,30 +88,58 @@ int main()
     {
         int a, b;
         scanf("%d%d", &a, &b);
-        shared[a].insert(b);
-        admired[b] = a;
+        out[a].pb(b);
+        in[b].pb(a);
     }
-    FOR_(i, 1, N+1) printf("%d: %d\n", i, admired[i]);
 
-    int nextcolor = 1;
     FOR_(i, 1, N+1)
     {
-        // printf("i: %d, colo[i]: %d\n", i, color[i]);
-        if (color[i]) continue;
-        color[i] = nextcolor; // FIX: incase this cow doesn't admire anybody
-        TRAV(c, shared[admired[i]])
+        int admirer = *(out[i].begin());
+        for (auto it=next(out[i].begin()); it != out[i].end(); ++it)
         {
-            // printf("assigning %d colo %d\n", c, nextcolor);
-            color[c] = nextcolor; // FIX: assign color[c], not color[i]
+            merge(admirer, *it);
+            out[admirer].splice(out[admirer].end(), out[*it]);
         }
+
+        admirer = *(in[i].begin());
+        for (auto it=next(in[i].begin()); it != in[i].end(); ++it)
+        {
+            merge(admirer, *it);
+            in[admirer].splice(in[admirer].end(), in[*it]);
+        }
+    }
+
+    FOR_(i, 1, N+1)
+    {
+        printf("%d:", i);
+        TRAV(n, out[i]) printf("%3d", n);
+        printf(" : ");
+        TRAV(n, in[i]) printf("%3d", n);
+        printf("\n");
+    }
+
+    int nextcolor=1;
+    FOR_(i, 1, N+1)
+    {
+        if (color[find(i)]) continue;
+        color[find(i)] = nextcolor;
         ++nextcolor;
     }
 
     FOR_(i, 1, N+1)
-        printf("%d\n", color[i]);
+        printf("%d\n", color[find(i)]);
 
     return 0;
 }
+
+/*
+5 4
+2 1
+3 2
+3 4
+4 5
+=> 1 2 1 2 1
+*/
 
 void setIO(const string &name)
 {
