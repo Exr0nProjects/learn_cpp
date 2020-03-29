@@ -57,9 +57,20 @@ LANG: C++14
 #define TRAV(a, x) for (auto &a : x)
 
 using namespace std;
-const int MX = 200111;
+const int MX = 5111;
 ll N, A[MX];
-ll presum[MX], presumrolling[MX], invs[MX];
+ll presum[MX][MX], invs[MX];
+
+ll inversions(ll height)
+{
+    ll ret=0;
+    FOR(i, N)
+        if (A[i] < height)
+        {
+            ret += presum[A[i]][i];
+        }
+    return ret;
+}
 
 int main()
 {
@@ -74,23 +85,22 @@ int main()
         {
             // printf("%d %d: ", i, j);
             if (i < A[j])
-                ++presumrolling[i];
-            // if (j)
-            // {
-            //     presum[i][j] += presum[i][j-1];
-            // }
+                ++presum[i][j];
+            if (j)
+            {
+                // printf("+= %d", presum[i][j-1]);
+                presum[i][j] += presum[i][j-1];
+            }
+            // printf("\n");
         }
-        // FOR(k, N) printf("%3d", presumrolling[k]); printf("\n");
-        presum[A[j]] = presumrolling[A[j]];
     }
 
-    // FOR(i, N) printf("(%d) presum[%d]: %d\n", i, A[i], presum[A[i]]);
+    // FOR(i, N) { FOR(j, N) printf("%3d", presum[i][j]); printf("\n"); }
 
     FOR(i, N)
     {
         // printf("(%d) %d += %d\n", i, A[i], presum[A[i]+1][i]);
-        // invs[A[i]] += presum[A[i]][i];
-        invs[A[i]] += presum[A[i]];
+        invs[A[i]] += presum[A[i]][i];
     }
 
     printf("0\n");

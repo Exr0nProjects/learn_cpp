@@ -3,6 +3,10 @@
 - [ ] **Stay alert during contests! Don't make silly mistakes!**
 - [ ] **Don't over think problems! Think transformations, not more advanced stuff!**
 - [ ] Redo missed USACO Gold Problems
+    - [ ] 2020open
+        - [ ] 1. haircut
+        - [ ] 2. fcolor
+        - [ ] 3. exercise
     - [ ] 2019open
         - [x] 1. snakes (TLE 4/12)
         - [x] 2. walk (TLE 9/15)
