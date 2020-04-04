@@ -60,44 +60,39 @@ void setIO(const std::string &name = "1018");
 
 using namespace std;
 const int MX = 111;
-ll N, Q, knapsack[MX][MX][MX]; // knapsack[root][child_id][remaining_capacity]
+ll N, Q; // knapsack[root][child_id][remaining_capacity]
 vector<ll> head[MX]; // edge = pair<w, v>
 ll value[MX][MX]; // value of branch that holds `i`
+ll tab[MX][MX];
 
-ll op(ll root, ll prev, ll idx, const ll rem, int layer=0) // best value with root = `root`, need to leave `rem` and pruning from `idx` and onwards
+ll op2(ll root, ll prev, ll keep, ll layer=0) // most from subtree rooted at `root` including branch holding `root` keeping `keep` branches total
 {
-    FOR(i, layer) printf("|   "); printf("root %d, prev %d, idx %d, rem %d\n", root, prev, idx, rem);
-    if (rem <= 0) return 0;
-    if (idx >= head[root].size())
-    {
-        FOR(i, layer) printf("|   "); printf("=> %d\n", value[prev][root]);
-        return value[prev][root];
-    }
-    if (root[head][idx] == prev) return op(root, prev, idx+1, rem, layer); // skip the previous
-    ll ret=0;
+    // FOR(i, layer) printf("|   "); printf("op %d -> %d, keep %d\n", root, prev, keep);
+    if (tab[root][keep]) return tab[root][keep];
 
-     // if this is the absolute root (root == prev), then the parent branch doesn't exist so we don't subtract its cost
-    FOR(k, rem-(1*(prev!=root))) // rem-1 because one of the rem is used to keep the branch between prev and root
-    {
-        ret = max(ret, op(root, prev, idx+1, rem-k, layer+1) + op(head[root][idx], root, 0, k, layer+1));
-        FOR(i, layer) printf("|   "); printf("======== %d\n", ret);
-    }
-    FOR(i, layer) printf("|   "); printf("=> %d\n", ret + value[prev][root]);
-    return ret + value[prev][root];
-}
-
-ll op2(ll root, ll prev, ll keep)
-{
-    if (head[root].size() == 1) return 0; // leaf node
+    if (keep <= 0) return 0;
+    if (root != 1 && head[root].size() == 1) return value[prev][root]; // leaf node; FIX: account for the apples on a leaf branch
     // jankily get children
     vector<int> child;
     TRAV(n, head[root]) if (n != prev) child.pb(n);
 
-    int ret=0;
-    FOR(k, keep+1)
+    ll ret=0;
+    if (child.size() == 2)
     {
-        ret = max(ret, op2(child[0], k) + op2(child[1], k) + value[prev][root]);
+	FOR(k, keep)
+	{
+	    // if (k) printf("\n");
+	    ret = max(ret, op2(child[0], root, k, layer+1) + op2(child[1], root, keep-k-1, layer+1));
+	}
     }
+    else
+    {
+	ret = op2(child[0], root, keep-1, layer+1);
+    }
+    ret += value[prev][root];
+    // FOR(i, layer) printf("|   "); printf("=> %d\n", ret);
+    tab[root][keep] = ret;
+    return ret;
 }
 
 int main()
@@ -112,9 +107,9 @@ int main()
         head[v].emplace_back(u);
         value[u][v] = value[v][u] = w;
     }
-    FOR(i, N+1) { FOR(j, N+1) printf("%3d", value[i][j]); printf("\n"); };
+    // FOR(i, N+1) { FOR(j, N+1) printf("%3d", value[i][j]); printf("\n"); };
 
-    printf("%lld\n", op(1, 1, 0, Q+1));
+    printf("%lld\n", op2(1, 1, Q+1));
 
     return 0;
 }
