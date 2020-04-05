@@ -6,7 +6,7 @@ LANG: C++14
 /*
  * Problem 10029down (oj/pid/10029down)
  * Create time: Sat 04 Apr 2020 @ 18:39 (PDT)
- * Accept time: [!meta:end!]
+ * Accept time: Sun 05 Apr 2020 @ 09:55 (PDT)
  *
  */
 
@@ -72,7 +72,8 @@ int op(const string &src)
     {
 	string nxt = src;
 	// delete
-	nxt.erase(i);
+	nxt.erase(i, 1); // FIX: erase just one character, not to the end
+	// cout << "delete " << src << "->" << nxt << endl;
 	if (nxt < src && dist.count(nxt))
 	    ret = max(ret, op(nxt));
 	for (char l='a'; l<='z'; ++l)
@@ -80,22 +81,27 @@ int op(const string &src)
 	    // modify
 	    nxt = src;
 	    nxt[i] = l;
+	    // cout << "modify " << src << "->" << nxt << endl;
 	    if (nxt < src && dist.count(nxt))
 		ret = max(ret, op(nxt));
 	    // add; TODO: needed?
 	    nxt = src;
 	    nxt.insert(i, 1, l);
+	    // cout << "insert " << src << "->" << nxt << endl;
 	    if (nxt < src && dist.count(nxt))
 		ret = max(ret, op(nxt));
 	    // add at the end... only run once, for the first iter of `i` for loop
 	    if (!i)
 	    {
+		nxt = src;
 		nxt = src + l;
+		// cout << "ins e " << src << "->" << nxt << endl;
 		if (nxt < src && dist.count(nxt))
 		    ret = max(ret, op(nxt));
 	    }
 	}
     }
+    // printf("=============================\nret: %d\n", ret);
 
     ++ret; // FIX: count this
     dist[src] = ret;
