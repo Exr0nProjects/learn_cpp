@@ -60,25 +60,28 @@ void setIO(const std::string &name = "my1025down");
 
 using namespace std;
 const int MX = 61;
-int N, T, M1, M2, dist[MX], memo[MX][MX];
+int N, T, memo[MX][MX];
+int dist[MX], pref[MX]; // pref[i] (prefix dist)= time to get from first station to [i]
+set<int> first, last; // train departures
 
-inline int getDist(int a, int b)
-{ return dist[max(a, b)] - dist[min(a, b)]; }
-
-int op(int i, int t, int lay=0)
+int op(int i, int t, int lay=0) // N^2 log N
 {
-    FOR(i, lay) printf("|   "); printf("op %d %d\n", i, t);
+    // FOR(i, lay) printf("|   "); printf("op %d %d\n", i, t);
     if (memo[i][t] < 1<<30) return memo[i][t];
+    if (!i && !t) return 0; // FIX: start
     if (t <= 0) return 1<<30;
 
     int ret=1<<30;
     // from trains
-    if (i) ret = min(ret, op(i-1, t-dist[i-1], lay+1));
-    if (i < N-1) ret = min(ret, op(i+1, t-dist[i], lay+1));
+    if (i && first.count(t-pref[i])) // not at first station && exists a train from first station : arrives here now
+	ret = min(ret, op(i-1, t-dist[i], lay+1));
+    if (i < N-1 && last.count(t-pref[N-1]+pref[i])) // not at last station && exists train from last : arrives here now
+	// FIX: need the `t-` ^^
+	ret = min(ret, op(i+1, t-dist[i+1], lay+1));
     // waited at this station
-    ret = min(ret, op(i, t-1, lay+1));
+    ret = min(ret, op(i, t-1, lay+1)+1); // FIX: +1 to cost because we waited
 
-    FOR(i, lay) printf("|   "); printf("=> %d\n", ret);
+    // FOR(i, lay) printf("|   "); printf("=> %d\n", ret);
     memo[i][t] = ret;
     return ret;
 }
@@ -93,32 +96,32 @@ int main()
 	if (!N) break;
 	memset(dist, 0, sizeof(dist));
 	memset(memo, 0x40, sizeof(memo));
+	first.clear();
+	last.clear();
 	
 	// input
-	FOR(i, N-1)
+	FOR_(i, 1, N)
 	{
 	    scanf("%d", &dist[i]);
-	    if (i) dist[i] += dist[i-1];
+	    pref[i] = dist[i] + pref[i-1];
 	}
-	scanf("%d", &M1);
-	FOR(i, M1)
+	// FOR(i, N) printf("%3d", pref[i]); printf("\n");
+	int m, dep;
+	scanf("%d", &m);
+	FOR(i, m)
 	{
-	    int dep;
 	    scanf("%d", &dep);
-	    memo[0][dep] = dep;
+	    first.insert(dep);
 	}
-	scanf("%d", &M2);
-	FOR(i, M2)
+	scanf("%d", &m);
+	FOR(i, m)
 	{
-	    int dep;
 	    scanf("%d", &dep);
-	    memo[N-1][dep] = dep;
+	    last.insert(dep);
 	}
 
 	// top down
-	int ret = 1<<30;
-	FOR(t, T+1) // FIX: T+1 because we can get there at time T also
-	    ret = min(ret, op(N-1, t));
+	int ret = op(N-1, T);
 
 	// output
 	printf("Case Number %d: ", ++kase);
