@@ -62,37 +62,41 @@ using namespace std;
 const int MX = 25001;
 map<string, int> dist;
 
-// graph construction
-bool isEditStep(string a, string b)
-{
-    if ((int)labs(a.size() - b.size()) > 1) return false;
-    if (a.size() < b.size()) swap(a, b);
-
-    int l = 0; // number of same letters on the left
-    for (; l < b.size() && a[l] == b[l]; ++l);
-
-    if (l == b.size()) return true; // same all the way through
-
-    int r = 1; // number of same letters on the right
-    for (; r < b.size() && a[a.size()-r] == b[b.size()-r]; ++r);
-    --r; // fencepost
-
-    if (l + r + 1 == a.size()) return true; // just one letter different
-    return false;
-}
-
 // graph longest path
-int op(string src) // TODO: too slow, because I am checking instead of generating
+int op(const string &src)
 {
     if (dist[src]) return dist[src];		// N
     int ret=0;
-    TRAV(p, dist)				// N
+
+    FOR(i, src.size())
     {
-	if (isEditStep(src, p.F) && p.F > src)	// K
+	string nxt = src;
+	// delete
+	nxt.erase(i);
+	if (nxt < src && dist.count(nxt))
+	    ret = max(ret, op(nxt));
+	for (char l='a'; l<='z'; ++l)
 	{
-	    ret = max(ret, op(p.F));
+	    // modify
+	    nxt = src;
+	    nxt[i] = l;
+	    if (nxt < src && dist.count(nxt))
+		ret = max(ret, op(nxt));
+	    // add; TODO: needed?
+	    nxt = src;
+	    nxt.insert(i, 1, l);
+	    if (nxt < src && dist.count(nxt))
+		ret = max(ret, op(nxt));
+	    // add at the end... only run once, for the first iter of `i` for loop
+	    if (!i)
+	    {
+		nxt = src + l;
+		if (nxt < src && dist.count(nxt))
+		    ret = max(ret, op(nxt));
+	    }
 	}
     }
+
     ++ret; // FIX: count this
     dist[src] = ret;
     return ret;
