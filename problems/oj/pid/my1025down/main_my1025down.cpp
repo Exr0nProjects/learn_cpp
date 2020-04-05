@@ -65,17 +65,20 @@ int N, T, M1, M2, dist[MX], memo[MX][MX];
 inline int getDist(int a, int b)
 { return dist[max(a, b)] - dist[min(a, b)]; }
 
-int op(int i, int t)
+int op(int i, int t, int lay=0)
 {
-    printf("op %d %d\n", i, t);
+    FOR(i, lay) printf("|   "); printf("op %d %d\n", i, t);
     if (memo[i][t] < 1<<30) return memo[i][t];
     if (t <= 0) return 1<<30;
+
     int ret=1<<30;
-    FOR(k, N) if (k != i) // TODO: should only need to check nearest two stations?
-    {
-	ret = min(ret, op(k, t-getDist(i, k))); // arrive
-    }
-    ret = min(ret, op(i, t-1)); // wait
+    // from trains
+    if (i) ret = min(ret, op(i-1, t-dist[i-1], lay+1));
+    if (i < N-1) ret = min(ret, op(i+1, t-dist[i], lay+1));
+    // waited at this station
+    ret = min(ret, op(i, t-1, lay+1));
+
+    FOR(i, lay) printf("|   "); printf("=> %d\n", ret);
     memo[i][t] = ret;
     return ret;
 }
@@ -114,7 +117,7 @@ int main()
 
 	// top down
 	int ret = 1<<30;
-	FOR(t, T)
+	FOR(t, T+1) // FIX: T+1 because we can get there at time T also
 	    ret = min(ret, op(N-1, t));
 
 	// output
