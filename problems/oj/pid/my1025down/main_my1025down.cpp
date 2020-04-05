@@ -90,7 +90,7 @@ int main()
 {
     // setIO();
     freopen("test.in", "r", stdin);
-    freopen("test.out", "w+", stdout);
+    // freopen("test.out", "w+", stdout);
     int kase=0;
     while (scanf("%d%d", &N, &T) == 2)
     {
@@ -99,41 +99,71 @@ int main()
 	memset(memo, 0x40, sizeof(memo));
 	first.clear();
 	last.clear();
+
+	if (kase == 57) printf("%3d\n%3d\n", N, T);
 	
 	// input
 	FOR_(i, 1, N)
 	{
 	    scanf("%d", &dist[i]);
+	    if (kase == 57) printf("%5d", dist[i]);
 	    pref[i] = dist[i] + pref[i-1];
 	}
 	// FOR(i, N) printf("%3d", pref[i]); printf("\n");
 	int m, dep;
 	scanf("%d", &m);
+	if (kase == 57) printf("\n%5d\n", m);
 	FOR(i, m)
 	{
 	    scanf("%d", &dep);
+	    if (kase == 57) printf("%5d", dep);
 	    first.insert(dep);
 	}
 	scanf("%d", &m);
+	if (kase == 57) printf("\n%5d\n", m);
 	FOR(i, m)
 	{
 	    scanf("%d", &dep);
+	    if (kase == 57) printf("%5d", dep);
 	    last.insert(dep);
 	}
 
 	// top down
 	int ret = op(N-1, T);
 
+	++kase;
 	// output
-	printf("Case Number %d: ", ++kase);
-	if (ret < 1<<30)
-	    printf("%d\n", ret);
-	else
-	    printf("impossible\n");
+	// printf("Case Number %d: ", ++kase);
+	// if (ret < 1<<30)
+	    // printf("%d", ret);
+	// else
+	    // printf("impossible");
+	if (kase == 57) printf("\n");
     }
 
     return 0;
 }
+
+/*
+6
+26
+1 2 3 4 5
+2
+0 10
+2
+0 15
+
+3
+40
+6 4
+3
+0 20 28
+2
+10 30
+
+0
+
+*/
 
 void setIO(const string &name)
 {
