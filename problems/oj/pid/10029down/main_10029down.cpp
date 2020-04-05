@@ -60,21 +60,7 @@ void setIO(const std::string &name = "10029down");
 
 using namespace std;
 const int MX = 25001;
-map<string, int> id_by_str;
-vector<string> str_by_id;
-
-// string id system
-int N=0;
-inline int getId(string s)
-{
-    if (!id_by_str.count(s))
-    {
-	id_by_str[s] = id_by_str.size();
-	str_by_id.pb(s);
-	N = id_by_str.size();
-    }
-    return id_by_str[s];
-}
+map<string, int> dist;
 
 // graph construction
 bool isEditStep(string a, string b)
@@ -96,15 +82,18 @@ bool isEditStep(string a, string b)
 }
 
 // graph longest path
-list<int> head[MX];
-int dist[MX];
-int op(int src)
+int op(string src) // TODO: too slow, because I am checking instead of generating
 {
-    if (dist[src]) return dist[src];
+    if (dist[src]) return dist[src];		// N
     int ret=0;
-    TRAV(nxt, head[src])
-	ret = max(ret, op(nxt));
-    ++ret; // FIX: this
+    TRAV(p, dist)				// N
+    {
+	if (isEditStep(src, p.F) && p.F > src)	// K
+	{
+	    ret = max(ret, op(p.F));
+	}
+    }
+    ++ret; // FIX: count this
     dist[src] = ret;
     return ret;
 }
@@ -112,27 +101,15 @@ int op(int src)
 int main()
 {
     setIO();
-    str_by_id.reserve(MX);
     string word;
     while (cin >> word)
     {
-	// check edge between every pair target that came before it
-	FOR(i, getId(word))
-	{
-	    if (isEditStep(str_by_id[i], word))
-	    {
-		// "lexographically ordered"
-		if (str_by_id[i] < word)
-		    head[i].pb(getId(word));
-		else
-		    head[getId(word)].pb(i);
-	    }
-	}
+	dist[word] = 0;
     }
 
     int longest = 0;
-    FOR(i, N)
-	longest = max(longest, op(i));
+    TRAV(p, dist)
+	longest = max(longest, op(p.F));
     
     printf("%d\n", longest);
 
