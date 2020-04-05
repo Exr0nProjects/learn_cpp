@@ -90,6 +90,7 @@ int main()
 {
     // setIO();
     freopen("test.in", "r", stdin);
+    freopen("test.out", "w+", stdout);
     int kase=0;
     while (scanf("%d%d", &N, &T) == 2)
     {
