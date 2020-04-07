@@ -1,6 +1,7 @@
 # Action Items
 
 - [ ] **Stay alert during contests! Don't make silly mistakes!**
+    - Check understanding with the test case!
 - [ ] **Don't over think problems! Think transformations, not more advanced stuff!**
 - [ ] Redo missed USACO Gold Problems
     - [ ] 2020open
@@ -32,6 +33,8 @@
     - [ ] #3 dp15 (redo as both top down and bottom up)
     - [ ] #4 dp37 tm1039
     - [ ] dp36 (do as both)
+- [ ] Algorithm Specific
+    - Init djs!
 - [ ] Practice algebra with inequalities and the `floor` function.
 - [ ] "If there is some way to remember to step back and avoid my mistake in gold2019open problem 2, that would be helpful as well but I don't know how to systematically avoid that."
 

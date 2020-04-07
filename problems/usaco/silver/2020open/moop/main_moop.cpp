@@ -63,31 +63,54 @@ const int MX = 100111;
 int N;
 vector<pair<ll, ll> > locs;
 
+// djs
+int djs[MX], djf[MX], groups=N;
+int find(int n)
+{
+    if (djf[n] != n) djf[n] = find(djf[n]);
+    return djf[n];
+}
+void merge(int a, int b)
+{
+    a = find(a);
+    b = find(b);
+    if (a == b) return;
+    --groups;
+    if (djs[a] < djs[b]) swap(a, b);
+    djs[a] += djs[b];
+    djf[b] = a;
+}
+
+// util
+bool canInteract(int id, ll x, ll y)
+{
+    // printf("%d . %d; %d . %d\n", locs[id].F, x, locs[id].S, y);
+    // printf("(%d %d) (%d %d)\n", locs[id].F, locs[id].S, x, y);
+    return (locs[id].F <= x && locs[id].S <= y) || (locs[id].F >= x && locs[id].S >= y);
+}
+
 int main()
 {
     setIO();
+
+    // FIX: init djs!!!!
+    FOR(i, MX) djs[i] = 1;
+    iota(djf, djf+MX, 0);
+
     scanf("%d", &N);
+    groups = N; // FIX: set groups to N *after* N is set
     locs.reserve(N);
     FOR(i, N)
     {
 	ll a, b;
 	scanf("%lld%lld", &a, &b);
+	FOR(j, i)
+	    if (canInteract(j, a, b))
+		merge(i, j);
 	locs.eb(a, b);
     }
 
-    sort(locs.begin(), locs.end());
-    TRAV(p, locs) printf("(%d %d) ", p.F, p.S); printf("\n");
-    ll active = -1 * (ll) 1<<50;
-    ll count = 0;
-    FORR(i, N)
-    {
-	if (locs[i].S <= active) continue; // ignore particles that would be interacted
-	printf("new immune particle %d: (%d %d)\n", i, locs[i].F, locs[i].S);
-	active = locs[i].S;
-	++count;
-    }
-
-    printf("%lld\n", count);
+    printf("%lld\n", groups);
 
 
     return 0;
