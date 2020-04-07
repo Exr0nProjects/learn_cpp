@@ -60,8 +60,9 @@ void setIO(const std::string &name = "cereal");
 
 using namespace std;
 const int MX = 100111;
-int N, M, take[MX], second[MX], output[MX];
+int N, M;
 int fc[MX], sc[MX]; // first choice, second choice
+int take[MX], outp[MX];
 
 int main()
 {
@@ -72,27 +73,20 @@ int main()
     {
 	scanf("%d%d", &fc[i], &sc[i]);
     }
+
     FORR(i, N)
     {
-	int a = fc[i];
-	int b = sc[i];
-	if (!take[a]++)
+	memset(take, 0, sizeof(take));
+	int ret=0;
+	FOR_(j, i, N)
 	{
-	    ++taken;
-	    second[a] = b;
+	    if (!take[fc[i]]++) ++ret;
+	    else if (!take[sc[i]]++) ++ret;
 	}
-	else
-	{
-	    if (!take[second[a]]++)
-	    {
-		++taken;
-	    }
-	}
-	// printf("%d\n", taken);
-	output[i] = taken;
+	outp[i] = ret;
     }
 
-    FOR(i, N) printf("%d\n", output[i]);
+    FOR(i, N) printf("%d\n", outp[i]);
 
     return 0;
 }
