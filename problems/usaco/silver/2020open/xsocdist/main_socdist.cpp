@@ -65,7 +65,7 @@ vector<pair<ll, ll> > grass;
 
 bool check(ll sep)
 {
-    ll pre=0, idx=0, tot=1;
+    ll pre=grass[0].F, idx=0, tot=1; // FIX: don't assume that there is grass at 0
     for (; tot<N; ++tot)
     {
 	for (; pre+sep > grass[idx].S; ++idx) 	// increment grass_idx until we can place a cow
@@ -91,9 +91,9 @@ int main()
 
     // bin search on D
     ll l=0, r=(ll)1<<60; // inc l exc r
-    FOR(i, 61)
+    FOR(i, 70)
     {
-	ll m = l/2 + r/2 + (l%2 & r%2);
+	ll m = l/2 + r/2 + (l%2 && r%2);
 	if (check(m))
 	    l = m;
 	else
