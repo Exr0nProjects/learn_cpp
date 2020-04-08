@@ -1,1 +1,1 @@
-usaco/silver/2020open/cereal
+contests/dated/2020_04_07/1
