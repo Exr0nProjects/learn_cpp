@@ -27,6 +27,9 @@
         - [x] 1. cardgame (not started)
         - [x] 2. feast
         - [x] 3. dream
+- [ ] Redo other problems
+    - [ ] s20o
+    - [ ] contests/dated/2020_04_07 2..4, 5 someday
 - [ ] Redo problems as bottom up
     - [ ] #1 dp13 oj12186
     - [ ] #2 dp14 oj1220
@@ -35,6 +38,13 @@
     - [ ] dp36 (do as both)
 - [ ] Algorithm Specific
     - Init djs!
+- [ ] Transformations
+    - What if it was backwards?
+    - What if it was rotated? (2+ dimensional arrays)
+	- What if it was rotated conditionally? (even/odd?)
+- [ ] Advanced time complexity analysis
+    - `contests/dated/2020_04_07/` 2 and 3 and 4
+    - `s20o2`
 - [ ] Practice algebra with inequalities and the `floor` function.
 - [ ] "If there is some way to remember to step back and avoid my mistake in gold2019open problem 2, that would be helpful as well but I don't know how to systematically avoid that."
 
