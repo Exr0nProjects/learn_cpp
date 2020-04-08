@@ -34,7 +34,13 @@ It was pretty clear that there was a pattern, I just didn't find it. I didn't se
 
 #### Problem 2:
 
-I knew that this was cost times longest dist, but I didn't realize that you only needed to try the cost of one, like it says in the solution. Need to come back and think about this more.
+I knew that this was cost times longest dist, but I didn't realize that you only needed to try the cost of one, like it says in the solution.
+
+UPDATE:
+
+`max` can distribute, as it says in the solution `max(a, b) * dist[a][b]` = `max(a*dist[a][b], b*dist[a][b])`. I need to get better at working with functions like `max`, `min`, and `floor` in algebra so that I can analyse problems like this in the future.
+
+Given that we are optimizing `size(a) * dist[a][b]`, we can just check any node `a` with the two ends of the tree diameter, because one of those will be the furthest node from `a`. (proof by contradiction: suppose there was a further node, that would be the diameter instead).
 
 #### Problem 3:
 
@@ -58,3 +64,4 @@ I spent a lot of time jumping around between problems, but didn't look at #4 clo
 How would you change your homework, your mastery of knowledge, or class time etc in order to do better next time?
 
 go back an analyse problems 2, 3, 4, 5 eventually. Think about weird transformations, like rotations for problem one. Do more transformey problems that need more analysis, I feel like I give up too easily.
+algebra with functions: `max`
