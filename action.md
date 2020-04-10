@@ -2,6 +2,17 @@
 
 - [ ] **Stay alert during contests! Don't make silly mistakes!**
     - Check understanding with the test case!
+    - Memoization broken?
+	- Make sure memoization array is large enough, or it could wrap
+	- Make sure the arguments to the function aren't being modified
+    - DJS broken?
+	- Init djs!
+    - Tree input broken?
+	- Worst case, use an adjacency list, traverse with DFS and `pre`
+    - DFS infinite loop?
+	- Base cases for all arguments, both high and low end
+	- Make sure you have a `pre` if the graph is bidirectional
+	- Check for `if (nxt != pre)` not `if (cur != pre)`
 - [ ] **Don't over think problems! Think transformations, not more advanced stuff!**
 - [ ] Redo missed USACO Gold Problems
     - [ ] 2020open
@@ -36,8 +47,6 @@
     - [ ] #3 dp15 (redo as both top down and bottom up)
     - [ ] #4 dp37 tm1039
     - [ ] dp36 (do as both)
-- [ ] Algorithm Specific
-    - Init djs!
 - [ ] Transformations
     - What if it was backwards?
     - What if it was rotated? (2+ dimensional arrays)
