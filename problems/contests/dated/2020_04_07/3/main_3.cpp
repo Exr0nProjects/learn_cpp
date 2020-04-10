@@ -1,11 +1,11 @@
 /*
-TASK: 4
+TASK: 3
 LANG: C++14
 */
 
 /*
- * Problem 4 (contests/dated/2020_04_07/4)
- * Create time: Tue 07 Apr 2020 @ 18:35 (PDT)
+ * Problem 3 (contests/dated/2020_04_07/3)
+ * Create time: Fri 10 Apr 2020 @ 09:11 (PDT)
  * Accept time: [!meta:end!]
  *
  */
@@ -56,44 +56,14 @@ LANG: C++14
 #define FORR(i, e) FORR_(i, 0, e)
 #define TRAV(a, x) for (auto &a : x)
 
-void setIO(const std::string &name = "4");
+void setIO(const std::string &name = "3");
 
 using namespace std;
-const int MX = 50111000;
-
-ll N;
-const ll MOD = 998244353;
-int h_tab[MX];
-
-// ll h_m(long long m)
-// { // return highest power of two that is a factor of m
-//     // printf("    getting value of %d\n", m);
-//     if (m+10 < MX && h_tab[m]) return h_tab[m];
-//     ll og = m;
-//     ll ret = 0;
-//     while (m % 2 == 0)
-//     {
-// 	++ret;
-// 	m /= 2;
-//     }
-//     if (m+10 < MX) h_tab[og] = ret;
-//     return ret;
-// }
-
-ll h_m(long long m)
-{
-    return m & -m;
-}
+const int MX = -1;
 
 int main()
 {
-    scanf("%lld", &N);
-
-    ll ret = 0;
-    FOR_(i, 1, N+1)
-	ret = (ret + h_m(i)*(N/i)) % MOD;
-
-    printf("%lld\n", ret);
+    setIO();
 
     return 0;
 }
