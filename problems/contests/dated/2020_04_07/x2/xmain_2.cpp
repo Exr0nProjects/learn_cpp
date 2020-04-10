@@ -6,7 +6,7 @@ LANG: C++14
 /*
  * Problem 2 (contests/dated/2020_04_07/2)
  * Create time: Wed 08 Apr 2020 @ 07:53 (PDT)
- * Accept time: [!meta:end!]
+ * Accept time: Thu 09 Apr 2020 @ 17:54 (PDT)
  *
  */
 
@@ -60,14 +60,14 @@ void setIO(const std::string &name = "2");
 
 using namespace std;
 const int MX = 50111;
-int N, pepl[MX];
+int N, pepl[MX], ans=0;
 list<int> head[MX];
 
-int dist[MX];
 pair<int, int> calcDist(int cur, int pre=-1, int stp=0)
 {
     // FOR(i, stp) printf("|   "); printf("calc %d: %d (%d)\n", stp, cur, pre);
-    dist[cur] = stp;
+    ans = max(ans, stp * pepl[cur]);
+
     pair<int, int> ret = {stp, cur}; // <dist, idx> of furthest
     TRAV(nxt, head[cur])
     {
@@ -91,19 +91,14 @@ int main()
 	head[v].pb(u);
     }
 
-    int ret=0;
     int p, q; // diameter of tree
-    p = calcDist(1).S;
-    FOR_(i, 1, N+1) // first half of try all `pepl[x] * max(dist[x, y]) for all x`
-	ret = max(ret, dist[i] * pepl[i]);
-    q = calcDist(p).S;
-    FOR_(i, 1, N+1) 
-	ret = max(ret, dist[i] * pepl[i]);
 
-    // FOR(i, N+1) printf("%3d", dist[i]); printf("\n");
-    printf("diameter: %d - %d (dist %d)\n", p, q, dist[q]);
+    // FIX: need to run calcDist three times, because we can't use the `dist` array after the first one
+    p = calcDist(1).S; // find one corner
+    q = calcDist(p).S; // find the other, use dist from first corner
+    calcDist(q).S; // use dist from second corner
 
-    printf("%d\n", ret);
+    printf("%d\n", ans);
 
     return 0;
 }
