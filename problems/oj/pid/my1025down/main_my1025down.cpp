@@ -64,10 +64,10 @@ int N, T, memo[MX][MX];
 int dist[MX], pref[MX]; // pref[i] (prefix dist)= time to get from first station to [i]
 set<int> first, last; // train departures
 
-int op(int i, int t, int lay=0) // N^2 log N
+int op(const int i, const int t, int lay=0) // N^2 log N
 {
     // FOR(i, lay) printf("|   "); printf("op %d %d\n", i, t);
-    if (memo[i][t] < 1<<30) return memo[i][t];
+    // if (memo[i][t] < 1<<30) return memo[i][t];
     if (!i && !t) return 0; // FIX: start
     if (t <= 0) return 1<<30;
 
@@ -88,8 +88,7 @@ int op(int i, int t, int lay=0) // N^2 log N
 
 int main()
 {
-    // setIO();
-    freopen("test.in", "r", stdin);
+    // freopen("test.in", "r", stdin);
     // freopen("test.out", "w+", stdout);
     int kase=0;
     while (scanf("%d%d", &N, &T) == 2)
@@ -99,32 +98,24 @@ int main()
 	memset(memo, 0x40, sizeof(memo));
 	first.clear();
 	last.clear();
-
-	if (kase == 57) printf("%3d\n%3d\n", N, T);
 	
 	// input
 	FOR_(i, 1, N)
 	{
 	    scanf("%d", &dist[i]);
-	    if (kase == 57) printf("%5d", dist[i]);
 	    pref[i] = dist[i] + pref[i-1];
 	}
-	// FOR(i, N) printf("%3d", pref[i]); printf("\n");
 	int m, dep;
 	scanf("%d", &m);
-	if (kase == 57) printf("\n%5d\n", m);
 	FOR(i, m)
 	{
 	    scanf("%d", &dep);
-	    if (kase == 57) printf("%5d", dep);
 	    first.insert(dep);
 	}
 	scanf("%d", &m);
-	if (kase == 57) printf("\n%5d\n", m);
 	FOR(i, m)
 	{
 	    scanf("%d", &dep);
-	    if (kase == 57) printf("%5d", dep);
 	    last.insert(dep);
 	}
 
@@ -133,12 +124,11 @@ int main()
 
 	++kase;
 	// output
-	// printf("Case Number %d: ", ++kase);
-	// if (ret < 1<<30)
-	    // printf("%d", ret);
-	// else
-	    // printf("impossible");
-	if (kase == 57) printf("\n");
+	printf("Case Number %d: ", kase);
+	if (ret < 1<<30)
+	    printf("%d\n", ret);
+	else
+	    printf("impossible\n");
     }
 
     return 0;
@@ -163,6 +153,37 @@ int main()
 
 0
 
+12 200
+1 5 5 6 7 8 9 10 11 13 19
+12
+1 26 36 71 88 90 91 97 99 143 147 171
+15
+1 38 62 68 83 88 129 130 133 134 139 141 168 178 190
+0
+=> 16
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// total dist: sum to 94
+12 200
+1 5 5 6 7 8 9 10 11 13 19
+11
+1 26 36 71 88 90 97 99 143 147 171
+15
+1 38 62 68 83 88 129 130 133 134 139 141 168 178 190
+0
 */
 
 void setIO(const string &name)
