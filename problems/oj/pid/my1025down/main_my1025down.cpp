@@ -60,29 +60,32 @@ void setIO(const std::string &name = "my1025down");
 
 using namespace std;
 const int MX = 61;
-int N, T, memo[MX][MX];
-int dist[MX], pref[MX]; // pref[i] (prefix dist)= time to get from first station to [i]
-set<int> first, last; // train departures
+ll N, T, mem[MX][MX];
+ll _dist[MX], _pref[MX]; // pref[i] (prefix dist)= time to get from first station to [i]
+set<ll> first, last; // train departures
 
-int op(const int i, const int t, int lay=0) // N^2 log N
+ll op(const ll i, const ll t, const ll const *dist, const ll const *pref) // N^2 log N
 {
-    // FOR(i, lay) printf("|   "); printf("op %d %d\n", i, t);
-    // if (memo[i][t] < 1<<30) return memo[i][t];
-    if (!i && !t) return 0; // FIX: start
+    if (!i && !t) return 0;
     if (t <= 0) return 1<<30;
 
-    int ret=1<<30;
+    if (mem[i][t] < 1<<30) return mem[i][t]; // this makes the answer 17
+    // ll ret = mem[i][t]; 			// this makes the answer 10
+    ll ret = 1<<30;
+
     // from trains
     if (i && first.count(t-pref[i])) // not at first station && exists a train from first station : arrives here now
-	ret = min(ret, op(i-1, t-dist[i], lay+1));
+    {
+	ret = min(ret, op(i-1, t-dist[i], dist, pref));
+    }
     if (i < N-1 && last.count(t-pref[N-1]+pref[i])) // not at last station && exists train from last : arrives here now
-	// FIX: need the `t-` ^^
-	ret = min(ret, op(i+1, t-dist[i+1], lay+1));
+    {
+	ret = min(ret, op(i+1, t-dist[i+1], dist, pref));
+    }
     // waited at this station
-    ret = min(ret, op(i, t-1, lay+1)+1); // FIX: +1 to cost because we waited
+    ret = min(ret, op(i, t-1, dist, pref)+1);
 
-    // FOR(i, lay) printf("|   "); printf("=> %d\n", ret);
-    memo[i][t] = ret;
+    mem[i][t] = ret;
     return ret;
 }
 
@@ -94,33 +97,34 @@ int main()
     while (scanf("%d%d", &N, &T) == 2)
     {
 	if (!N) break;
-	memset(dist, 0, sizeof(dist));
-	memset(memo, 0x40, sizeof(memo));
+	memset(mem, 0x60, sizeof(mem));
+	memset(_dist, 0, sizeof(_dist));
+	memset(_pref, 0, sizeof(_pref));
 	first.clear();
 	last.clear();
 	
 	// input
-	FOR_(i, 1, N)
+	for (ll i=1; i<N; ++i)
 	{
-	    scanf("%d", &dist[i]);
-	    pref[i] = dist[i] + pref[i-1];
+	    scanf("%d", &_dist[i]);
+	    _pref[i] = _dist[i] + _pref[i-1];
 	}
 	int m, dep;
 	scanf("%d", &m);
-	FOR(i, m)
+	for (ll i=0; i<m; ++i)
 	{
 	    scanf("%d", &dep);
 	    first.insert(dep);
 	}
 	scanf("%d", &m);
-	FOR(i, m)
+	for (ll i=0; i<m; ++i)
 	{
 	    scanf("%d", &dep);
 	    last.insert(dep);
 	}
 
 	// top down
-	int ret = op(N-1, T);
+	ll ret = op(N-1, T, _dist, _pref);
 
 	++kase;
 	// output
