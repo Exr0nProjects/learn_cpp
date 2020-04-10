@@ -19,7 +19,8 @@ LANG: C++14
 
 using namespace std;
 const int MX = 61;
-ll N, T, memo[MX][MX];
+const int MT = 210;
+ll N, T, memo[MX][MT]; // FIX: make sure memo is large enough! different dimension sizes!
 ll _dist[MX], _pref[MX]; // pref[i] (prefix dist)= time to get from first station to [i]
 set<ll> first, last; // train departures
 
@@ -50,6 +51,7 @@ ll op(const ll i, const ll t, const ll const *dist, const ll const *pref) // N^2
     // waited at this station
     ret = min(ret, op(i, t-1, dist, pref)+1);
 
+    // if (memo[i][t] > -1 && memo[i][t] != ret) printf("at (%3d %3d) was %3d now %3d\n", i, t, memo[i][t], ret);
     memo[i][t] = ret;
     return ret;
 }
@@ -62,7 +64,7 @@ int main()
 	if (!N) break;
 	// clear memo
 	for (int i=0; i<MX; ++i)
-	    for (int j=0; j<MX; ++j)
+	    for (int j=0; j<MT; ++j)
 		memo[i][j] = -1;
 	// clear others
 	memset(_dist, 0, sizeof(_dist));
