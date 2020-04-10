@@ -34,6 +34,7 @@ ll op(const ll i, const ll t, const ll const *dist, const ll const *pref) // N^2
     if (t <= 0) return 1<<30;
 
     // if (memo[i][t] < 1<<30) return memo[i][t];	// this makes the answer 17
+    if (memo[i][t] > 0) return memo[i][t];		// this makes the answer 17 too
     // ll ret = memo[i][t];				// this makes the answer 10
     ll ret = 1<<30;
 
@@ -62,7 +63,7 @@ int main()
 	// clear memo
 	for (int i=0; i<MX; ++i)
 	    for (int j=0; j<MX; ++j)
-		memo[i][j] = 1<<30;
+		memo[i][j] = -1;
 	// clear others
 	memset(_dist, 0, sizeof(_dist));
 	memset(_pref, 0, sizeof(_pref));
