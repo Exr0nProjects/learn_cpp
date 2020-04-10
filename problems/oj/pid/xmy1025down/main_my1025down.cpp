@@ -12,7 +12,7 @@ LANG: C++14
 
 #include <cstdio>
 #include <cstring>
-#include <set>
+#include <unordered_set>
 #include <algorithm>
 
 #define ll long long
@@ -21,37 +21,24 @@ using namespace std;
 const int MX = 61;
 const int MT = 210;
 ll N, T, memo[MX][MT]; // FIX: make sure memo is large enough! different dimension sizes!
-ll _dist[MX], _pref[MX]; // pref[i] (prefix dist)= time to get from first station to [i]
-set<ll> first, last; // train departures
+ll dist[MX], pref[MX]; // pref[i] (prefix dist)= time to get from first station to [i]
+unordered_set<ll> first, last; // train departures
 
-ll op(const ll i, const ll t, const ll const *dist, const ll const *pref) // N^2 log N
-{   //         ^           ^                  ^                     ^
-    //         ^           ^                  ^                     ^ prefix sum on station distances from the start
-    //         ^           ^                  ^ distances between stations
-    //         ^           ^ current time aka time to be here at
-    //         ^ station idx
-
+ll op(const ll i, const ll t) // N^2 log N
+{
+    if (memo[i][t] > 0) return memo[i][t];
     if (!i && !t) return 0;
     if (t <= 0) return 1<<30;
 
-    // if (memo[i][t] < 1<<30) return memo[i][t];	// this makes the answer 17
-    if (memo[i][t] > 0) return memo[i][t];		// this makes the answer 17 too
-    // ll ret = memo[i][t];				// this makes the answer 10
     ll ret = 1<<30;
-
     // from trains
     if (i && first.count(t-pref[i])) // not at first station && exists a train from first station : arrives here now
-    {
-	ret = min(ret, op(i-1, t-dist[i], dist, pref));
-    }
+	ret = min(ret, op(i-1, t-dist[i]));
     if (i < N-1 && last.count(t-pref[N-1]+pref[i])) // not at last station && exists train from last : arrives here now
-    {
-	ret = min(ret, op(i+1, t-dist[i+1], dist, pref));
-    }
+	ret = min(ret, op(i+1, t-dist[i+1]));
     // waited at this station
-    ret = min(ret, op(i, t-1, dist, pref)+1);
+    ret = min(ret, op(i, t-1)+1);
 
-    // if (memo[i][t] > -1 && memo[i][t] != ret) printf("at (%3d %3d) was %3d now %3d\n", i, t, memo[i][t], ret);
     memo[i][t] = ret;
     return ret;
 }
@@ -62,21 +49,18 @@ int main()
     while (scanf("%d%d", &N, &T) == 2)
     {
 	if (!N) break;
-	// clear memo
-	for (int i=0; i<MX; ++i)
-	    for (int j=0; j<MT; ++j)
-		memo[i][j] = -1;
-	// clear others
-	memset(_dist, 0, sizeof(_dist));
-	memset(_pref, 0, sizeof(_pref));
+	// clears
+	for (int i=0; i<MX; ++i) for (int j=0; j<MT; ++j) memo[i][j] = -1;
+	memset(dist, 0, sizeof dist);
+	memset(pref, 0, sizeof pref);
 	first.clear();
 	last.clear();
 	
 	// input
 	for (ll i=1; i<N; ++i)
 	{
-	    scanf("%d", &_dist[i]);
-	    _pref[i] = _dist[i] + _pref[i-1];
+	    scanf("%d", &dist[i]);
+	    pref[i] = dist[i] + pref[i-1];
 	}
 	int m, dep;
 	scanf("%d", &m);
@@ -93,7 +77,7 @@ int main()
 	}
 
 	// top down
-	ll ret = op(N-1, T, _dist, _pref);
+	ll ret = op(N-1, T);
 
 	// output
 	++kase;
@@ -115,6 +99,5 @@ int main()
 15
 1 38 62 68 83 88 129 130 133 134 139 141 168 178 190
 0
-
-// should be 16
+=> 16
 */
