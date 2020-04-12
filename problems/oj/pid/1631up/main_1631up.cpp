@@ -65,13 +65,17 @@ const int MAXROT = 3; // maximum numbers can rotate at a time
 int N, tab[MX][1000];
 char src[MX], dst[MX];
 
+// min equals
+inline int mineq(int &t, const int o)
+{ return t = min(t, o); }
+
 inline int rotate(int src, int width, int dir) // rotate the first `width` tumblers in `src` by `dir`
 {
-    dir %= 10; // TODO: screws up negative numbers?
+    dir = (dir+100)%10;
+
     int ret = src;
     FOR_(i, MAXROT-1-width, MAXROT-1)
     {
-	printf("i: %d\n", i);
 	if (src % (int)pow(10, i+1) / (int)pow(10, i) + dir >= 10)
 	    ret -= (10-dir) * pow(10, i);
 	else
@@ -82,6 +86,7 @@ inline int rotate(int src, int width, int dir) // rotate the first `width` tumbl
 
 int main()
 {
+    /*
     int _src, wid, dir;
     while (scanf("%d%d%d", &_src, &wid, &dir) == 3)
     {
@@ -89,7 +94,7 @@ int main()
     }
 
     return 0;
-
+    */
 
     while (scanf("%s%n%s\n", src, &N, dst))
     {
@@ -99,16 +104,34 @@ int main()
 	    dst[i] -= '0';
 	}
 
-	FOR(i, N)
+	// TODO: basecase i=0
+	int front = src[0]*10+src[1];
+	FOR(dep2, 10)
 	{
-	    FOR(nxt, (int)(pow(10, MAXROT-1)))
+	    mineq(tab[0][rotate(front, 2,  dep2)], dep2);
+	    mineq(tab[0][rotate(front, 2, -dep2)], dep2);
+	    FOR(dep1, 10)
 	    {
-		// int tar = (int)(pow(10, MAXROT))*tar[i];
+		mineq(tab[0][rotate(rotate(front, 2,  dep2), 1,  dep1)], dep2+dep1);
+		mineq(tab[0][rotate(rotate(front, 2, -dep2), 1, -dep1)], dep2+dep1);
+		mineq(tab[0][rotate(rotate(front, 2, -dep2), 1,  dep1)], dep2+dep1);
+		mineq(tab[0][rotate(rotate(front, 2,  dep2), 1, -dep1)], dep2+dep1);
+	    }
+	}
+
+	FOR_(i, 1, N)
+	{
+	    FOR(cur, (int)pow(10, MAXROT-1))
+	    {
+		// int delta = (cur / (int)pow(10, MAXROT-1) - dst[i] +10)%10; // amount to rotate by to align tumbler `i`
+		int nxt = dst[i]*(int)pow(10, MAXROT-1) + cur/10; // where we are, from perspective of prev (i-1)
 		FOR(width, MAXROT)
 		{
-		    int pre = nxt;
-		    tab[i][nxt] = min(tab[i][nxt], 0);
-			}}}
+		    tab[i][cur] = min(tab[i][cur], tab[i-1][rotate(nxt, width, -1)/10] +1); // TODO: last digit of cur isn't accounted for... this is straight up wrong
+		    tab[i][cur] = min(tab[i][cur], tab[i-1][rotate(nxt, width,  1)/10] +1);
+		}
+	    }
+	}
     }
 
     return 0;
