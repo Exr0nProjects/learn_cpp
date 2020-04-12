@@ -1,11 +1,11 @@
 /*
-TASK: 1631up
+TASK: 1631down
 LANG: C++14
 */
 
 /*
- * Problem 1631up (oj/pid/1631up)
- * Create time: Sun 12 Apr 2020 @ 09:29 (PDT)
+ * Problem 1631down (oj/pid/1631down)
+ * Create time: Sun 12 Apr 2020 @ 11:21 (PDT)
  * Accept time: [!meta:end!]
  *
  */
@@ -56,17 +56,17 @@ LANG: C++14
 #define FORR(i, e) FORR_(i, 0, e)
 #define TRAV(a, x) for (auto &a : x)
 
-void setIO(const std::string &name = "1631up");
+void setIO(const std::string &name = "1631down");
 
 using namespace std;
 const int MX = 1111;
-const int MAXROT = 3; // maximum numbers can rotate at a time
+const int MAXROT = 3;
 
 int N, tab[MX][1000];
 char src[MX], dst[MX];
 
-// min equals
-inline int mineq(int &t, const int o)
+
+inline int mineq(int &t, const int o) // min equals
 { return t = min(t, o); }
 
 inline int rotate(int src, int width, int dir) // rotate the first `width` tumblers in `src` by `dir`
@@ -84,18 +84,18 @@ inline int rotate(int src, int width, int dir) // rotate the first `width` tumbl
     return ret;
 }
 
+int op(int idx, int nxt)
+{
+    if (tab[idx][nxt]) return tab[idx][nxt];
+    int ret = 1<<30;
+    FOR_(wid, 1, MAXROT+1)
+    {
+	// TODO: what to put here that's not hella scuffed??
+    }
+}
+
 int main()
 {
-    /*
-    int _src, wid, dir;
-    while (scanf("%d%d%d", &_src, &wid, &dir) == 3)
-    {
-	printf("=> %d\n", rotate(_src, wid, dir));
-    }
-
-    return 0;
-    */
-
     while (scanf("%s%n%s\n", src, &N, dst))
     {
 	FOR(i, N)
@@ -104,47 +104,16 @@ int main()
 	    dst[i] -= '0';
 	}
 
-	// TODO: basecase i=0
-	int front = src[0]*10+src[1];
-	FOR(dep2, 10)
+	int ret=1<<30;
+	FOR(i, (int)pow(10, MAXROT-1))
 	{
-	    mineq(tab[0][rotate(front, 2,  dep2)], dep2);
-	    mineq(tab[0][rotate(front, 2, -dep2)], dep2);
-	    FOR(dep1, 10)
-	    {
-		mineq(tab[0][rotate(rotate(front, 2,  dep2), 1,  dep1)], dep2+dep1);
-		mineq(tab[0][rotate(rotate(front, 2, -dep2), 1, -dep1)], dep2+dep1);
-		mineq(tab[0][rotate(rotate(front, 2, -dep2), 1,  dep1)], dep2+dep1);
-		mineq(tab[0][rotate(rotate(front, 2,  dep2), 1, -dep1)], dep2+dep1);
-	    }
+	    mineq(ret, op(N, i));
 	}
-
-	FOR_(i, 1, N)
-	{
-	    FOR(cur, (int)pow(10, MAXROT-1))
-	    {
-		int nxt = dst[i]*(int)pow(10, MAXROT-1) + cur/10; // where we are, from perspective of prev (i-1)
-		FOR(width, MAXROT)
-		{
-		    tab[i][cur] = min(tab[i][cur], tab[i-1][rotate(nxt, width, -1)/10] +1); // TODO: last digit of cur isn't accounted for... this is straight up wrong
-		    tab[i][cur] = min(tab[i][cur], tab[i-1][rotate(nxt, width,  1)/10] +1);
-		}
-	    }
-	}
+	printf("%d\n", ret);
     }
 
     return 0;
 }
-/*
-111111 222222
-896521 183995
-111111 222222
-896521 183995
-111111 222222
-896521 183995
-111111 222222
-896521 183995
-*/
 
 void setIO(const string &name)
 {
