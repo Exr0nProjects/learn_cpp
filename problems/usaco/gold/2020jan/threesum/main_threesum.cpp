@@ -13,6 +13,7 @@ LANG: C++14
 #include <iostream>
 #include <sstream>
 #include <cstdio>
+#include <cassert>
 #include <tuple>
 #include <vector>
 #include <string>
@@ -93,6 +94,8 @@ int main()
 	scanf("%d%d", &l, &r);
 	--l; --r;
 
+	if (r - l +1 < 3) continue;
+
 	twosum[mp(l, l)]; // create empty base set in case nothing is suitable
 	pair<pair<int, int>, unordered_multiset<int> > twosum_set = *(prev(twosum.upper_bound(mp(l, r))));
 
@@ -102,15 +105,18 @@ int main()
 	    for (int i=twosum_set.F.F; i<=twosum_set.F.S; ++i)		// for each item in the set
 		twosum_set.S.insert(arr[twosum_set.F.S+1] + arr[i]);	// 	insert it paired with new
 	    twosum_set.F.S += 1;					// increment the right side two match new set
-	    twosum[twosum_set.F] = twosum_set.S;			// save for future branching
+	    if ((twosum_set.F.S - twosum_set.F.F)%100 == 0) 
+		twosum[twosum_set.F] = twosum_set.S;			// save for future branching
 	}
+
 	/*
 10 100
 1 2 3 4 5 6 7 8 9 10
 ... test data
-	*/
+	* /
 	printf("best set: %d %d (", twosum_set.F.F, twosum_set.F.S);
 	TRAV(n, twosum_set.S) printf("%3d", n); printf("  )\n");
+	*/
 
 	// check
 /*
@@ -120,8 +126,6 @@ int main()
 2 4
 2 5
 */
-	if (r - l +1 < 3) continue;
-
 	ll sum=0;
 	FOR_(c, l, r+1)
 	{
@@ -130,8 +134,8 @@ int main()
 	    else
 	    {
 		sum += twosum_set.S.count(-1*arr[c]);
-		sum -= twosum_set.S.count(-2*arr[c]);
-		printf("    c %d, sum %d\n", c, sum);
+		// sum -= twosum_set.S.count(-2*arr[c]);
+		// printf("    c %d, sum %d\n", c, sum);
 	    }
 	}
 	printf("%lld\n", sum/3);
