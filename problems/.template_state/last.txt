@@ -1,1 +1,1 @@
-oj/pid/1631down
+usaco/gold/2020jan/boards

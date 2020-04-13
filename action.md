@@ -13,6 +13,10 @@
 	- Base cases for all arguments, both high and low end
 	- Make sure you have a `pre` if the graph is bidirectional
 	- Check for `if (nxt != pre)` not `if (cur != pre)`
+- [ ] Paaper work
+    - Do more of it...?
+    - PSUDOCODE!!
+    - Consider MLE too (not just TLE)!
 - [ ] **Don't over think problems! Think transformations, not more advanced stuff!**
 - [ ] Redo missed USACO Gold Problems
     - [ ] 2020open
@@ -54,6 +58,6 @@
 - [ ] Advanced time complexity analysis
     - `contests/dated/2020_04_07/` 2 and 3 and 4
     - `s20o2`
-- [ ] Practice algebra with inequalities and the `floor` function.
+- [ ] Practice algebra with inequalities, `max` and `min`, and the `floor` function.
 - [ ] "If there is some way to remember to step back and avoid my mistake in gold2019open problem 2, that would be helpful as well but I don't know how to systematically avoid that."
 
