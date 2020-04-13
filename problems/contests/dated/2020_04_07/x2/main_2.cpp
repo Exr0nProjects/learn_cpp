@@ -60,30 +60,29 @@ void setIO(const std::string &name = "2");
 
 using namespace std;
 const int MX = 50111;
-int N, pepl[MX], ans=0;
+int N, pepl[MX], ans=0, dst=-1, far=0;
 list<int> head[MX];
 
-pair<int, int> calcDist(int cur, int pre=-1, int stp=0)
+void calcDist(int cur, int pre=-1, int stp=0)
 {
-    // FOR(i, stp) printf("|   "); printf("calc %d: %d (%d)\n", stp, cur, pre);
     ans = max(ans, stp * pepl[cur]);
-
-    pair<int, int> ret = {stp, cur}; // <dist, idx> of furthest
-    TRAV(nxt, head[cur])
+    if (dst < stp)
     {
-	if (nxt == pre) continue;
-	ret = max(ret, calcDist(nxt, cur, stp+1));
+	dst = stp;
+	far = cur;
     }
-    // FOR(i, stp) printf("|   "); printf("=> %d\n", ret.F);
-    return ret;
-}
 
+    for (int nxt : head[cur])
+	if (nxt != pre)
+	    calcDist(nxt, cur, stp+1);
+}
 
 int main()
 {
     scanf("%d", &N);
-    FOR(i, N) scanf("%d", &pepl[i+1]); // FIX: i+1 because it's one indexed
-    FOR(i, N-1)
+    for (int i=0; i<N; ++i)
+	scanf("%d", &pepl[i+1]);
+    for (int i=0; i<N-1; ++i)
     {
 	int u, v;
 	scanf("%d%d", &u, &v);
@@ -91,12 +90,9 @@ int main()
 	head[v].pb(u);
     }
 
-    int p, q; // diameter of tree
-
-    // FIX: need to run calcDist three times, because we can't use the `dist` array after the first one
-    p = calcDist(1).S; // find one corner
-    q = calcDist(p).S; // find the other, use dist from first corner
-    calcDist(q).S; // use dist from second corner
+    calcDist(1); // find one corner
+    calcDist(far); // find the other, use dist from first corner
+    calcDist(far); // use dist from second corner
 
     printf("%d\n", ans);
 
