@@ -91,22 +91,50 @@ int main()
     {
 	int l, r;
 	scanf("%d%d", &l, &r);
+	--l; --r;
 
-	twosum[mp(l, l)] = {}; // create empty base set incase nothing is suitable
+	twosum[mp(l, l)]; // create empty base set in case nothing is suitable
 	pair<pair<int, int>, unordered_multiset<int> > twosum_set = *(prev(twosum.upper_bound(mp(l, r))));
 
 	// construct
 	while (twosum_set.F.S < r)				// while we haven't gotten the right range yet
 	{
-	    pair<pair<int, int>, unordered_multiset<int> > newset = twosum_set;
-	    for (int i=newset.F.F; i<=newset.F.S; ++i)		// for each item in the set
-		newset.S.insert(arr[newset.F.S+1] + arr[i]);	// 	insert it paired with new
-	    newset.F.S += 1;
-	    swap(newset, twosum_set);
-	    twosum[twosum_set.F] = twosum_set.S;
+	    for (int i=twosum_set.F.F; i<=twosum_set.F.S; ++i)		// for each item in the set
+		twosum_set.S.insert(arr[twosum_set.F.S+1] + arr[i]);	// 	insert it paired with new
+	    twosum_set.F.S += 1;					// increment the right side two match new set
+	    twosum[twosum_set.F] = twosum_set.S;			// save for future branching
 	}
+	/*
+10 100
+1 2 3 4 5 6 7 8 9 10
+... test data
+	*/
 	printf("best set: %d %d (", twosum_set.F.F, twosum_set.F.S);
 	TRAV(n, twosum_set.S) printf("%3d", n); printf("  )\n");
+
+	// check
+/*
+5 100
+0 -2 -1 2 3
+1 4
+2 4
+2 5
+*/
+	if (r - l +1 < 3) continue;
+
+	ll sum=0;
+	FOR_(c, l, r+1)
+	{
+	    if (arr[c] == 0)
+		sum += twosum_set.S.count(0);
+	    else
+	    {
+		sum += twosum_set.S.count(-1*arr[c]);
+		sum -= twosum_set.S.count(-2*arr[c]);
+		printf("    c %d, sum %d\n", c, sum);
+	    }
+	}
+	printf("%lld\n", sum/3);
     }
 
     return 0;
