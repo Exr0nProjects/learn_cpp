@@ -14,10 +14,10 @@ using namespace std;
 
 int trie[MX*ML][MA];
 int parent[MX*ML];
-int failptr[MX*ML];
-int failwords[MX*ML];
+int failptr[MX*ML];	// failpointee of i
+int failwords[MX*ML];	// number of words in fail pointer chain
 bool isword[MX*ML];
-string prefix[MX*ML];
+string prefix[MX*ML];	// technically not needed
 int alloc=1;
 bool failPointersConstructed = false;
 
@@ -37,7 +37,7 @@ void add(const string &w)
 	}
 	cur = trie[cur][c-CV];
     }
-    isword[cur] = 1;
+    isword[cur] = 1;	// FIX: use isword to reset failword count each time, don't just add
 }
 
 bool query(const string &w)
@@ -46,6 +46,8 @@ bool query(const string &w)
     for (char c : w)
 	if (!trie[cur][c-CV])
 	    return false;
+	else
+	    cur = trie[cur][c-CV];
     return isword[cur];
 }
 
@@ -53,18 +55,21 @@ void constructFailPointers(int cur=0)
 {
     memset(failptr, 0, sizeof failptr);
     queue<int> bfs;
-    for (int c=0; c<MA; ++c) if (trie[0][c]) bfs.push(trie[0][c]);
+    bfs.push(0);
     while (!bfs.empty())
     {
 	int cur = bfs.front(); bfs.pop();
-	failwords[cur] = isword[cur] + failwords[failptr[cur]];
+	failwords[cur] = isword[cur] + failwords[failptr[cur]]; // precompute # words in failptr chain
 
 	for (int c=0; c<MA; ++c) if (trie[cur][c])
 	{
 	    bfs.push(trie[cur][c]);
+	    if (!cur) continue; // FIX: don't construct failpointers for first letters
 	    // find failpointer root to construct failpointer
+
+	    // traverse fail pointer chain until letter matches
 	    int failcur = failptr[cur];
-	    while (!trie[failcur][c] && failcur)
+	    while (!trie[failcur][c] && failcur)	
 		failcur = failptr[failcur];
 	    failptr[trie[cur][c]] = trie[failcur][c];
 	}
@@ -74,26 +79,36 @@ void constructFailPointers(int cur=0)
 
 int countMatches(const string &k)
 {
-    printf("count matches %s\n", k.c_str());
     if (!failPointersConstructed)
 	constructFailPointers();
 
     int cur=0, ret=0;
     for (int idx=0; idx<k.length(); ++idx)
     {
-	printf("letter %d: %c\n", idx, k[idx]);
 	while (cur && !trie[cur][k[idx]-CV])	// while at wrong location
-	{
-	    printf("    %x -> %x\n", cur, failptr[cur]);
 	    cur = failptr[cur];			// 	follow fail pointer
-	}
-	printf("    => %x ---> t: %d (l %c)\n", cur, trie[cur][k[idx]-CV], k[idx]);
 	cur = trie[cur][k[idx]-CV];	// go to a node representing the this letter (or root)
 
-	printf("at %s (%x)\n", prefix[cur].c_str(), cur);
 	ret += failwords[cur];
     }
     return ret;
+}
+
+void printMatches(const string &k)
+{
+    if (!failPointersConstructed)
+	constructFailPointers();
+
+    int cur=0;
+    for (int idx=0; idx<k.length(); ++idx)
+    {
+	while (cur && !trie[cur][k[idx]-CV])
+	    cur = failptr[cur];
+	cur = trie[cur][k[idx]-CV];
+	for (int fail=cur; fail; fail=failptr[fail])
+	    if (isword[fail])
+		printf("%d %s\n", idx-prefix[fail].length()+1, prefix[fail].c_str());
+    }
 }
 
 void dump(int cur=0, int lay=0)
@@ -116,6 +131,7 @@ void dump(int cur=0, int lay=0)
 	    dump(trie[cur][c], lay+1);
     }
 }
+
 int main()
 {
     while (true)
@@ -135,11 +151,14 @@ int main()
 	    case 'c':
 		printf("%d\n", countMatches(s));
 		break;
+	    case 'p':
+		printMatches(s);
+		break;
 	    case 'd':
 		dump();
 		break;
 	    default:
-		printf("i: insert, q: query, c: count, d: dump\n");
+		printf("i: insert, q: query, c: count matches, p: print matches, d: dump\n");
 	}
     }
 }
