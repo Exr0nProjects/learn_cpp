@@ -6,6 +6,7 @@
 #include <set>
 
 #define dl double
+#define mp make_pair
 
 using namespace std;
 
@@ -14,9 +15,9 @@ typedef pair<dl, dl> Point; // <x, y>
 typedef pair<Point, Point> Seg; // <p1, p2>; assert(p1 <= p2)
 int N;
 
-typedef pair<pair<dl, int>, pair<int, int> > Event // <<pos x, type {1 = start line, 0 = intersect/swap, -1 = end line}>, <line_id, other_id/unused>>
+typedef pair<pair<dl, int>, pair<int, int> > Event; // <<pos x, type {1 = start line, 0 = intersect/swap, -1 = end line}>, <line_id, other_id/unused>>
 
-deque<Line> lines;
+deque<Seg> lines;
 priority_queue<Event, deque<Event>, greater<Event> > events;
 dl sweepx;
 
@@ -26,13 +27,13 @@ set<int, function<bool(int, int)> > active(setcmp);
 pair<bool, Point> verticalIntersect(Seg s, dl x)
 {
     if (x < s.first.first || x > s.second.first)
-	return mp(false, mp(*](dl)0, (dl)0));
+	return mp(false, mp((dl)0, (dl)0));
     dl m = (s.first.second-s.second.second) / (s.first.first - s.second.first);
-    return pair<bool, Point>{true, m*(x-s.first.first)+s.first.second}
+    return pair<bool, Point>{true, mp(x, m*(x-s.first.first)+s.first.second)};
 }
 bool setcmp(int lhs, int rhs)
 {
-    return verticalIntersect(lines[lhs], sweepx) < verticalIntersect(lines[rhs]);
+    return verticalIntersect(lines[lhs], sweepx) < verticalIntersect(lines[rhs], sweepx);
 }
 
 pair<bool, Point> intersect(Seg s1, Seg s2)
@@ -56,20 +57,20 @@ pair<bool, Point> intersect(Seg s1, Seg s2)
 
     if (s1.first.first <= intersect_x && intersect_x <= s1.second.first
      && s2.first.first <= intersect_x && intersect_x <= s2.second.first)
-	return make_pair(1, make_pair(intersect_x, intersect_y);
+	return make_pair(1, make_pair(intersect_x, intersect_y));
     else // intersect out of range
 	return make_pair(0, make_pair(0, 0));
 }
 
-void checkNeighboors(const active::iterator &it)
+void checkNeighboors(const set<int, function<bool(int, int)> >::iterator &it)
 {
     auto intersectPrev = intersect(lines[*it], lines[*prev(it)]);
-    if (intersectPrev.first && intersectPrev.second > sweepx)
-	events.emplace(mp(intersectPrev.second, 0), mp(*it, *prev(it)));
+    // if (intersectPrev.first && intersectPrev.second.first > sweepx)
+	// events.push(mp(mp(intersectPrev.second, 0), mp((int)*it, (int)*prev(it))));
 
     auto intersectNext = intersect(lines[*it], lines[*next(it)]);
-    if (intersectNext.first && intersectNext.second > sweepx)
-	events.emplace(mp(intersectNext.second, 0), mp(*it, *next(it)));
+    if (intersectNext.first && intersectNext.second.first > sweepx)
+	events.push(pair<pair<dl, int>, pair<int, int> >(pair<dl, int>(intersectNext.second.first, 0), pair<int, int>((int)*it, (int)*next(it))));
 }
 
 
@@ -80,14 +81,18 @@ int main()
     for (int i=0; i<N; ++i)
     {
 	int x1, y1, x2, y2;
-	scanf("%d%d%d%d", x1, y1, x2, y2);
-	events.emplace_back(make_pair(x1, 1), i);
-	events.emplace_back(make_pair(x2, -1), i);
+	scanf("%d%d%d%d", &x1, &y1, &x2, &y2);
+	if (x1 > x2)
+	{
+	    swap(x1, x2);
+	    swap(y1, y2);
+	}
+	events.emplace(make_pair(x1, 1), mp(i, 0));
+	events.emplace(make_pair(x2, -1), mp(i, 0));
 	lines.emplace_back(Point(x1, y1), Point(x2, y2));
     }
     
     // # of events = 2*N + # of intersections
-    for (int i=0; i<N; ++i) events.push(mp(mp(lines[i].first.first, 1), mp(i, 1337)));
     while (!events.empty())
     {
 	Event ev = events.top();
@@ -102,9 +107,13 @@ int main()
 	}
 	else if (ev.first.second == 0)	// intersection
 	{
-	    auto left = active.find(ev.second.first);
-	    auto right = active.find(ev.second.second);
-	    swap(*left, *right);
+	    set<int, function<bool(int, int)> >::iterator left = active.find(ev.second.first);
+	    set<int, function<bool(int, int)> >::iterator right = active.find(ev.second.second);
+	    // manual swap
+	    auto temp = left;
+	    left = right;
+	    right = temp;
+
 	    checkNeighboors(left);
 	    checkNeighboors(right);
 	}
