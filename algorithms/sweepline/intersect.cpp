@@ -1,3 +1,4 @@
+#include <functional>
 #include <utility>
 #include <deque>
 #include <queue>
@@ -13,11 +14,26 @@ typedef pair<dl, dl> Point; // <x, y>
 typedef pair<Point, Point> Seg; // <p1, p2>; assert(p1 <= p2)
 int N;
 
-typedef pair<pair<int, int>, int> Event // <<pos x, type {1 = start line, 0 = intersect/swap, -1 = end line}>, line_id>
+typedef pair<pair<dl, int>, pair<int, int> > Event // <<pos x, type {1 = start line, 0 = intersect/swap, -1 = end line}>, <line_id, other_id/unused>>
 
 deque<Line> lines;
 priority_queue<Event, deque<Event>, greater<Event> > events;
 dl sweepx;
+
+bool setcmp(int lhs, int rhs);
+set<int, function<bool(int, int)> > active(setcmp);
+
+pair<bool, Point> verticalIntersect(Seg s, dl x)
+{
+    if (x < s.first.first || x > s.second.first)
+	return mp(false, mp(*](dl)0, (dl)0));
+    dl m = (s.first.second-s.second.second) / (s.first.first - s.second.first);
+    return pair<bool, Point>{true, m*(x-s.first.first)+s.first.second}
+}
+bool setcmp(int lhs, int rhs)
+{
+    return verticalIntersect(lines[lhs], sweepx) < verticalIntersect(lines[rhs]);
+}
 
 pair<bool, Point> intersect(Seg s1, Seg s2)
 {
@@ -45,6 +61,18 @@ pair<bool, Point> intersect(Seg s1, Seg s2)
 	return make_pair(0, make_pair(0, 0));
 }
 
+void checkNeighboors(const active::iterator &it)
+{
+    auto intersectPrev = intersect(lines[*it], lines[*prev(it)]);
+    if (intersectPrev.first && intersectPrev.second > sweepx)
+	events.emplace(mp(intersectPrev.second, 0), mp(*it, *prev(it)));
+
+    auto intersectNext = intersect(lines[*it], lines[*next(it)]);
+    if (intersectNext.first && intersectNext.second > sweepx)
+	events.emplace(mp(intersectNext.second, 0), mp(*it, *next(it)));
+}
+
+
 int main()
 {
     printf("Please, no parallel or concurrent lines!\n");
@@ -59,20 +87,30 @@ int main()
     }
     
     // # of events = 2*N + # of intersections
+    for (int i=0; i<N; ++i) events.push(mp(mp(lines[i].first.first, 1), mp(i, 1337)));
     while (!events.empty())
     {
 	Event ev = events.top();
 	events.pop();
 
 	sweepx = ev.first.first;
-	auto l = active.begin(), r = active.end();
-	for (int d=0; d<(int)log2(active.size()) +1; ++d)
-	{
-	    auto mid = (l+r)/2;
-	    if (intersect(*mid, // TODO: what here?
-	}
 	
-	if (ev.first.second == 1)
-	{ /* TODO */ }
+	if (ev.first.second == 1)	// start of a line
+	{
+	    auto it = active.insert(ev.second.first).first;
+	    checkNeighboors(it);
+	}
+	else if (ev.first.second == 0)	// intersection
+	{
+	    auto left = active.find(ev.second.first);
+	    auto right = active.find(ev.second.second);
+	    swap(*left, *right);
+	    checkNeighboors(left);
+	    checkNeighboors(right);
+	}
+	else if (ev.first.second == 1) // end of line
+	{
+	    active.erase(ev.second.first);
+	}
     }
 }
