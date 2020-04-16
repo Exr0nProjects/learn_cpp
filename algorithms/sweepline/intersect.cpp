@@ -22,7 +22,7 @@ priority_queue<Event, deque<Event>, greater<Event> > events;
 dl sweepx;
 
 bool setcmp(int lhs, int rhs);
-set<int, function<bool(int, int)> > active(setcmp);
+multiset<int, function<bool(int, int)> > active(setcmp);
 
 pair<bool, Point> verticalIntersect(Seg s, dl x)
 {
@@ -37,7 +37,6 @@ bool setcmp(int lhs, int rhs)
     return verticalIntersect(lines[lhs], sweepx).second.second < verticalIntersect(lines[rhs], sweepx).second.second;
 }
 
-/*
 pair<bool, Point> intersect(Seg s1, Seg s2)
 {
     // printf("intersect ((%lf %lf) (%lf %lf)) and ((%lf %lf) (%lf %lf))\n", s1.first.first, s1.first.second, s1.second.first, s1.second.second, s2.first.first, s2.first.second, s2.second.first, s2.second.second);
@@ -99,10 +98,10 @@ int main()
 9 19 0 25
 30 1 0 20
 => no (150, -75)
-*//*
+*/
 }
 
-void checkNeighboors(const set<int, function<bool(int, int)> > &container, const set<int, function<bool(int, int)> >::iterator &it)
+void checkNeighboors(const multiset<int, function<bool(int, int)> > &container, const multiset<int, function<bool(int, int)> >::iterator &it)
 {
     printf("        Checking neighbors of %d\n", *it);
     if (it != container.begin())	// FIX: checks to prevent accessing invalid iter and segfault
@@ -127,7 +126,6 @@ void checkNeighboors(const set<int, function<bool(int, int)> > &container, const
 	}
     }
 }
-*/
 
 void printEvent(const Event &ev)
 {
@@ -140,9 +138,9 @@ int main()
      * testing plan:
      * 1. [x] test intersection
      * 2. [ ] test swapping of stuff in the set
-		2
-		0 0 5 0
-		2 2 2 -2
+2
+0 0 5 0
+2 2 2 -2
      * 3. [ ] test events---do events show up in the right place?
      */
 
@@ -168,7 +166,7 @@ int main()
     while (!events.empty())
     {
         printf("=================================================================\n");
-        // printEvent(events.top());
+        printEvent(events.top());   // TODO: why does the destruction event of 1 come before the crossing?
 
         Event ev = events.top();
         events.pop();
@@ -178,12 +176,11 @@ int main()
         if (ev.first.second == 0)	// start of a line
         {
             printf("        pushing %d\n", ev.second.first);
-            auto it = active.insert(ev.second.first).first;
+            auto it = active.insert(ev.second.first);
             printf("        *it %d\n", *it);
             printf("\nset contains {"); for (auto n : active) printf("%3d", n); printf(" }\n");
-            // checkNeighboors(active, it);
+            checkNeighboors(active, it);
         }
-        /*
         else if (ev.first.second == 1)	// intersection
         {
             set<int, function<bool(int, int)> >::iterator left = active.find(ev.second.first);
@@ -196,8 +193,7 @@ int main()
         }
         else if (ev.first.second == 2) // end of line
         {
-            active.erase(ev.second.first);
+            // active.erase(ev.second.first);   // TODO: causes segfault
         }
-        */
     }
 }
