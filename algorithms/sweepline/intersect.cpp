@@ -100,15 +100,30 @@ int main()
 */
 }
 
-void checkNeighboors(const set<int, function<bool(int, int)> >::iterator &it)
+void checkNeighboors(const set<int, function<bool(int, int)> > &container, const set<int, function<bool(int, int)> >::iterator &it)
 {
-    auto intersectPrev = intersect(lines[*it], lines[*prev(it)]);
-    if (intersectPrev.first && intersectPrev.second.first > sweepx)
-	events.push(mp(mp(intersectPrev.second.first, 1), mp(*it, *prev(it))));
+    printf("        Checking neighbors of %d\n", *it);
+    if (it != container.begin())	// FIX: checks to prevent accessing invalid iter and segfault
+    {
+	printf("            checking prev...\n");
+	auto intersectPrev = intersect(lines[*it], lines[*prev(it)]);
+	if (intersectPrev.first && intersectPrev.second.first > sweepx)
+	{
+	    printf("            intersection!!\n");
+	    events.push(mp(mp(intersectPrev.second.first, 1), mp(*it, *prev(it))));
+	}
+    }
 
-    auto intersectNext = intersect(lines[*it], lines[*next(it)]);
-    if (intersectNext.first && intersectNext.second.first > sweepx)
-	events.push(mp(mp(intersectNext.second.first, 1), mp(*it, *next(it))));
+    if (next(it) != container.end())
+    {
+	printf("            checking next...\n");
+	auto intersectNext = intersect(lines[*it], lines[*next(it)]);
+	if (intersectNext.first && intersectNext.second.first > sweepx)
+	{
+	    printf("            intersection!!\n");
+	    events.push(mp(mp(intersectNext.second.first, 1), mp(*it, *next(it))));
+	}
+    }
 }
 
 void printEvent(const Event &ev)
@@ -142,11 +157,14 @@ int main()
 	events.emplace(make_pair(x1, 0), mp(i, 0));
 	events.emplace(make_pair(x2, 2), mp(i, 0));
 	lines.emplace_back(Point(x1, y1), Point(x2, y2));
+	printf("\nsegment %d: %d %d %d %d", i, x1, y1, x2, y2);
     }
+    printf("\n");
     
     // # of events = 2*N + # of intersections
     while (!events.empty())
     {
+	printf("=================================================================\n");
 	printEvent(events.top());
 
 	Event ev = events.top();
@@ -156,8 +174,11 @@ int main()
 	
 	if (ev.first.second == 0)	// start of a line
 	{
+	    printf("\n&&&&&&&"); for (auto n : active) printf("%3d", n); printf(" &&&&&&&\n");
+	    printf("%d\n", ev.second.first);
 	    auto it = active.insert(ev.second.first).first;
-	    checkNeighboors(it);
+	    printf("*it %d\n", *it);	// TODO: why is this different from ev.second.first
+	    checkNeighboors(active, it);
 	}
 	else if (ev.first.second == 1)	// intersection
 	{
@@ -166,8 +187,8 @@ int main()
 
 	    swap(left, right);
 
-	    checkNeighboors(left);
-	    checkNeighboors(right);
+	    checkNeighboors(active, left);
+	    checkNeighboors(active, right);
 	}
 	else if (ev.first.second == 2) // end of line
 	{
