@@ -32,10 +32,12 @@ pair<bool, Point> verticalIntersect(Seg s, dl x)
     return pair<bool, Point>{true, mp(x, m*(x-s.first.first)+s.first.second)};
 }
 bool setcmp(int lhs, int rhs)
-{
-    return verticalIntersect(lines[lhs], sweepx) < verticalIntersect(lines[rhs], sweepx);
+{   // TODO: fix this function so it actually works..
+    // works when sweepx is zero, not when it gets assigned though
+    return verticalIntersect(lines[lhs], sweepx).second.second < verticalIntersect(lines[rhs], sweepx).second.second;
 }
 
+/*
 pair<bool, Point> intersect(Seg s1, Seg s2)
 {
     // printf("intersect ((%lf %lf) (%lf %lf)) and ((%lf %lf) (%lf %lf))\n", s1.first.first, s1.first.second, s1.second.first, s1.second.second, s2.first.first, s2.first.second, s2.second.first, s2.second.second);
@@ -97,7 +99,7 @@ int main()
 9 19 0 25
 30 1 0 20
 => no (150, -75)
-*/
+*//*
 }
 
 void checkNeighboors(const set<int, function<bool(int, int)> > &container, const set<int, function<bool(int, int)> >::iterator &it)
@@ -125,6 +127,7 @@ void checkNeighboors(const set<int, function<bool(int, int)> > &container, const
 	}
     }
 }
+*/
 
 void printEvent(const Event &ev)
 {
@@ -160,39 +163,41 @@ int main()
 	printf("\nsegment %d: %d %d %d %d", i, x1, y1, x2, y2);
     }
     printf("\n");
-    
+
     // # of events = 2*N + # of intersections
     while (!events.empty())
     {
-	printf("=================================================================\n");
-	printEvent(events.top());
+        printf("=================================================================\n");
+        // printEvent(events.top());
 
-	Event ev = events.top();
-	events.pop();
+        Event ev = events.top();
+        events.pop();
 
-	sweepx = ev.first.first;
-	
-	if (ev.first.second == 0)	// start of a line
-	{
-	    printf("\n&&&&&&&"); for (auto n : active) printf("%3d", n); printf(" &&&&&&&\n");
-	    printf("%d\n", ev.second.first);
-	    auto it = active.insert(ev.second.first).first;
-	    printf("*it %d\n", *it);	// TODO: why is this different from ev.second.first
-	    checkNeighboors(active, it);
-	}
-	else if (ev.first.second == 1)	// intersection
-	{
-	    set<int, function<bool(int, int)> >::iterator left = active.find(ev.second.first);
-	    set<int, function<bool(int, int)> >::iterator right = active.find(ev.second.second);
+        sweepx = ev.first.first;
 
-	    swap(left, right);
+        if (ev.first.second == 0)	// start of a line
+        {
+            printf("        pushing %d\n", ev.second.first);
+            auto it = active.insert(ev.second.first).first;
+            printf("        *it %d\n", *it);
+            printf("\nset contains {"); for (auto n : active) printf("%3d", n); printf(" }\n");
+            // checkNeighboors(active, it);
+        }
+        /*
+        else if (ev.first.second == 1)	// intersection
+        {
+            set<int, function<bool(int, int)> >::iterator left = active.find(ev.second.first);
+            set<int, function<bool(int, int)> >::iterator right = active.find(ev.second.second);
 
-	    checkNeighboors(active, left);
-	    checkNeighboors(active, right);
-	}
-	else if (ev.first.second == 2) // end of line
-	{
-	    active.erase(ev.second.first);
-	}
+            swap(left, right);
+
+            checkNeighboors(active, left);
+            checkNeighboors(active, right);
+        }
+        else if (ev.first.second == 2) // end of line
+        {
+            active.erase(ev.second.first);
+        }
+        */
     }
 }
