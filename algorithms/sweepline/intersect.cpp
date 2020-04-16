@@ -38,6 +38,7 @@ bool setcmp(int lhs, int rhs)
 
 pair<bool, Point> intersect(Seg s1, Seg s2)
 {
+    printf("intersect ((%lf %lf) (%lf %lf)) and ((%lf %lf) (%lf %lf))\n", s1.first.first, s1.first.second, s1.second.first, s1.second.second, s2.first.first, s2.first.second, s2.second.first, s2.second.second);
     // https://www.desmos.com/calculator/txz1ndtoot
     // segments have left point first
     if (s1.first > s1.second) swap(s1.first, s1.second);
@@ -50,16 +51,53 @@ pair<bool, Point> intersect(Seg s1, Seg s2)
     dl m1 = (s1.first.second - s1.second.second) / (s1.first.first - s1.second.first);
     dl m2 = (s2.first.second - s2.second.second) / (s2.first.first - s2.second.first);
 
+    printf("m1 %lf, m2 %lf\n", m1, m2);
+
     assert(abs(m2-m1) > 0.0000000001); // disallow parallel lines: slope difference > one billionth
 
-    dl intersect_x = (s2.first.second - s1.first.second + m1 * s1.first.first + m2 * s2.first.first) / (m1 - m2);
+    dl intersect_x = (s2.first.second - s1.first.second + m1 * s1.first.first - m2 * s2.first.first) / (m1 - m2);
     dl intersect_y = m1*(intersect_x - s1.first.first) + s1.first.second;
+
+    printf("intersect x %lf y %lf\n", intersect_x, intersect_y);
 
     if (s1.first.first <= intersect_x && intersect_x <= s1.second.first
      && s2.first.first <= intersect_x && intersect_x <= s2.second.first)
 	return make_pair(1, make_pair(intersect_x, intersect_y));
     else // intersect out of range
-	return make_pair(0, make_pair(0, 0));
+	return make_pair(0, make_pair(intersect_x, intersect_y));
+
+/*
+int main()
+{
+    while (true)
+    {
+	int a, b, c, d, e, f, g, h;
+	scanf("%d%d%d%d%d%d%d%d", &a, &b, &c, &d, &e, &f, &g, &h);
+	auto loc = intersect(mp(mp(a, b), mp(c, d)), mp(mp(e, f), mp(g, h)));
+	printf("%d: (%lf %lf)\n", loc.first, loc.second.first, loc.second.second);
+    }
+}
+
+0 0 5 0
+2 2 2 -2
+=> yes (2, 0)
+
+12 3 5 9
+2 -4 12 10
+=> yes (8.989, 5.658)
+
+-20 -13 33 26
+21 -5 -25 20
+=> yes (3.671, 4.418)
+
+9 18 25 25
+10 10 -10 20
+=> no (1, 14.5)
+
+9 19 0 25
+30 1 0 20
+=> no (150, -75)
+*/
 }
 
 void checkNeighboors(const set<int, function<bool(int, int)> >::iterator &it)
@@ -78,10 +116,18 @@ int main()
 {
     /*
      * testing plan:
-     * 1. test intersection
-     * 2. test swapping of stuff in the set
-     * 3. test events---do events show up in the right place?
+     * 1. [x] test intersection
+     * 2. [ ] test swapping of stuff in the set
+     * 3. [ ] test events---do events show up in the right place?
      */
+
+    while (true)
+    {
+	int a, b, c, d, e, f, g, h;
+	scanf("%d%d%d%d%d%d%d%d", &a, &b, &c, &d, &e, &f, &g, &h);
+	auto loc = intersect(mp(mp(a, b), mp(c, d)), mp(mp(e, f), mp(g, h)));
+	printf("%d: (%lf %lf)\n", loc.first, loc.second.first, loc.second.second);
+    }
 
     printf("Please, no parallel or concurrent lines!\n");
     scanf("%d", &N);
@@ -116,10 +162,8 @@ int main()
 	{
 	    set<int, function<bool(int, int)> >::iterator left = active.find(ev.second.first);
 	    set<int, function<bool(int, int)> >::iterator right = active.find(ev.second.second);
-	    // manual swap
-	    auto temp = left;
-	    left = right;
-	    right = temp;
+
+	    swap(left, right);
 
 	    checkNeighboors(left);
 	    checkNeighboors(right);
