@@ -44,7 +44,7 @@ pair<bool, Point> intersect(Seg s1, Seg s2)
     if (s2.first > s2.second) swap(s2.first, s2.second);
 
     // tilt vertical lines left slightly; TODO: just find the y on the other line at this x instead of modifying
-    if (s1.first.first == s1.second.first) s1.second.first += 0.0000000001;
+    if (s1.first.first == s1.second.first) s1.second.first += 0.0000000001;	// TODO: use verticalIntersect
     if (s2.first.first == s2.second.first) s2.second.first += 0.0000000001;
 
     dl m1 = (s1.first.second - s1.second.second) / (s1.first.first - s1.second.first);
@@ -65,17 +65,24 @@ pair<bool, Point> intersect(Seg s1, Seg s2)
 void checkNeighboors(const set<int, function<bool(int, int)> >::iterator &it)
 {
     auto intersectPrev = intersect(lines[*it], lines[*prev(it)]);
-    // if (intersectPrev.first && intersectPrev.second.first > sweepx)
-	// events.push(mp(mp(intersectPrev.second, 0), mp((int)*it, (int)*prev(it))));
+    if (intersectPrev.first && intersectPrev.second.first > sweepx)
+	events.push(mp(mp(intersectPrev.second.first, 0), mp(*it, *prev(it))));
 
     auto intersectNext = intersect(lines[*it], lines[*next(it)]);
     if (intersectNext.first && intersectNext.second.first > sweepx)
-	events.push(pair<pair<dl, int>, pair<int, int> >(pair<dl, int>(intersectNext.second.first, 0), pair<int, int>((int)*it, (int)*next(it))));
+	events.push(mp(mp(intersectNext.second.first, 0), mp(*it, *next(it))));
 }
 
 
 int main()
 {
+    /*
+     * testing plan:
+     * 1. test intersection
+     * 2. test swapping of stuff in the set
+     * 3. test events---do events show up in the right place?
+     */
+
     printf("Please, no parallel or concurrent lines!\n");
     scanf("%d", &N);
     for (int i=0; i<N; ++i)
