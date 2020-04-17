@@ -11,6 +11,7 @@
 using namespace std;
 
 const int MX = 1000111;
+const double TOLERANCE = 0.0000000001; // one billionth
 typedef pair<dl, dl> Point; // <x, y>
 typedef pair<Point, Point> Seg; // <p1, p2>; assert(p1 <= p2)
 int N;
@@ -20,16 +21,28 @@ typedef pair<pair<dl, int>, pair<int, int> > Event; // <<pos x, type {0 = start 
 deque<Seg> lines;
 priority_queue<Event, deque<Event>, greater<Event> > events;
 dl sweepx;
+int intersections = 0;
 
 bool setcmp(int lhs, int rhs);
 multiset<int, function<bool(int, int)> > active(setcmp);
 
-pair<bool, Point> verticalIntersect(Seg s, dl x)
+pair<bool, Point> verticalIntersect(Seg s, dl x, dl bot=pow(-2, 99), dl top=pow(2, 99))
 {
-    if (x < s.first.first || x > s.second.first)
-	return mp(false, mp((dl)0, (dl)0));
+    // TODO: what if both lines are vertical
+    if (s.first.first == s.second.first) // both lines vertical
+    {
+	auto inter = mp(s.first.first, max(min(s.first.second, s.second.second), bot));
+	return mp(abs(s.first.first - x) <= TOLERANCE, inter);
+    }
+
     dl m = (s.first.second-s.second.second) / (s.first.first - s.second.first);
-    return pair<bool, Point>{true, mp(x, m*(x-s.first.first)+s.first.second)};
+    dl int_y = m*(x-s.first.first) + s.first.second;
+
+    if (x < s.first.first || x > s.second.first	// segment surrounds vertical line
+	 || int_y < bot || int_y > top)		// intersection isn't on vertical line
+	return mp(false, mp(x, int_y));
+
+    return mp(true, mp(x, int_y));
 }
 bool setcmp(int lhs, int rhs)
 {   // TODO: fix this function so it actually works..
@@ -39,22 +52,23 @@ bool setcmp(int lhs, int rhs)
 
 pair<bool, Point> intersect(Seg s1, Seg s2)
 {
-    // printf("intersect ((%lf %lf) (%lf %lf)) and ((%lf %lf) (%lf %lf))\n", s1.first.first, s1.first.second, s1.second.first, s1.second.second, s2.first.first, s2.first.second, s2.second.first, s2.second.second);
+    printf("intersect ((%lf %lf) (%lf %lf)) and ((%lf %lf) (%lf %lf))\n", s1.first.first, s1.first.second, s1.second.first, s1.second.second, s2.first.first, s2.first.second, s2.second.first, s2.second.second);
     // https://www.desmos.com/calculator/txz1ndtoot
     // segments have left point first
     if (s1.first > s1.second) swap(s1.first, s1.second);
     if (s2.first > s2.second) swap(s2.first, s2.second);
 
-    // tilt vertical lines left slightly; TODO: just find the y on the other line at this x instead of modifying
-    if (s1.first.first == s1.second.first) s1.second.first += 0.0000000001;	// TODO: use verticalIntersect
-    if (s2.first.first == s2.second.first) s2.second.first += 0.0000000001;
+    if (s1.first.first == s1.second.first) 		// first line vertical
+	return verticalIntersect(s2, s1.first.first);
+    else if (s2.first.first == s2.second.first)		// second line vertical
+	return verticalIntersect(s1, s2.first.first);
 
     dl m1 = (s1.first.second - s1.second.second) / (s1.first.first - s1.second.first);
     dl m2 = (s2.first.second - s2.second.second) / (s2.first.first - s2.second.first);
 
     // printf("m1 %lf, m2 %lf\n", m1, m2);
 
-    assert(abs(m2-m1) > 0.0000000001); // disallow parallel lines: slope difference > one billionth
+    assert(abs(m1-m2) > TOLERANCE); // disallow parallel lines: slope difference > one billionth
 
     dl intersect_x = (s2.first.second - s1.first.second + m1 * s1.first.first - m2 * s2.first.first) / (m1 - m2);
     dl intersect_y = m1*(intersect_x - s1.first.first) + s1.first.second;
@@ -63,9 +77,9 @@ pair<bool, Point> intersect(Seg s1, Seg s2)
 
     if (s1.first.first <= intersect_x && intersect_x <= s1.second.first
      && s2.first.first <= intersect_x && intersect_x <= s2.second.first)
-	return make_pair(1, make_pair(intersect_x, intersect_y));
+	return mp(1, mp(intersect_x, intersect_y));
     else // intersect out of range
-	return make_pair(0, make_pair(intersect_x, intersect_y));
+	return mp(0, mp(intersect_x, intersect_y));
 
 /*
 int main()
@@ -78,10 +92,6 @@ int main()
 	printf("%d: (%lf %lf)\n", loc.first, loc.second.first, loc.second.second);
     }
 }
-
-0 0 5 0
-2 2 2 -2
-=> yes (2, 0)
 
 12 3 5 9
 2 -4 12 10
@@ -98,6 +108,23 @@ int main()
 9 19 0 25
 30 1 0 20
 => no (150, -75)
+
+// vertical lines
+0 0 5 0
+2 2 2 -2
+=> yes (2, 0)
+
+0 0.5 2 0.5
+1 0 1 1
+=> yes (1, 0.5)
+
+0 0 0 2
+1 0 1 2
+=> no
+
+0 0 0 2
+0 1 0 3
+=> yes (0, 1)
 */
 }
 
@@ -112,6 +139,7 @@ void checkNeighboors(const multiset<int, function<bool(int, int)> > &container, 
 	{
 	    printf("            intersection!!\n");
 	    events.push(mp(mp(intersectPrev.second.first, 1), mp(*it, *prev(it))));
+	    ++intersections;
 	}
     }
 
@@ -123,6 +151,7 @@ void checkNeighboors(const multiset<int, function<bool(int, int)> > &container, 
 	{
 	    printf("            intersection!!\n");
 	    events.push(mp(mp(intersectNext.second.first, 1), mp(*it, *next(it))));
+	    ++intersections;
 	}
     }
 }
@@ -155,8 +184,8 @@ int main()
 	    swap(x1, x2);
 	    swap(y1, y2);
 	}
-	events.emplace(make_pair(x1, 0), mp(i, 0));
-	events.emplace(make_pair(x2, 2), mp(i, 0));
+	events.emplace(mp(x1, 0), mp(i, 0));
+	events.emplace(mp(x2, 2), mp(i, 0));
 	lines.emplace_back(Point(x1, y1), Point(x2, y2));
 	printf("\nsegment %d: %d %d %d %d", i, x1, y1, x2, y2);
     }
@@ -166,7 +195,7 @@ int main()
     while (!events.empty())
     {
         printf("=================================================================\n");
-        printEvent(events.top());   // TODO: why does the destruction event of 1 come before the crossing?
+        printEvent(events.top());
 
         Event ev = events.top();
         events.pop();
@@ -183,8 +212,8 @@ int main()
         }
         else if (ev.first.second == 1)	// intersection
         {
-            set<int, function<bool(int, int)> >::iterator left = active.find(ev.second.first);
-            set<int, function<bool(int, int)> >::iterator right = active.find(ev.second.second);
+            multiset<int, function<bool(int, int)> >::iterator left = active.find(ev.second.first);
+            multiset<int, function<bool(int, int)> >::iterator right = active.find(ev.second.second);
 
             swap(left, right);
 
@@ -196,4 +225,6 @@ int main()
             // active.erase(ev.second.first);   // TODO: causes segfault
         }
     }
+
+    printf("%d\n", intersections);
 }
