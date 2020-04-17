@@ -114,11 +114,15 @@ int main() {
                 act.insert(s[curs]);
             }
         }
+	/*
         else {
             auto s1 = act.find(s[curp.s1]);
             auto s2 = act.find(s[curp.s2]);
-            swap(s1, s2);
+	    // printf("pre swap"); for (int i=0; i<n; ++i) printf("%3d", s[i].id); printf("\n");
+            // swap(s1, s2);
+	    // printf("pre swap"); for (int i=0; i<n; ++i) printf("%3d", s[i].id); printf("\n\n");
         }
+	*/
     }
     for (auto p : ans) {
         printf("%f %f\n", p.f, p.s);

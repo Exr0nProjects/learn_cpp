@@ -28,7 +28,6 @@ set<int, function<bool(int, int)> > active(setcmp);
 
 pair<bool, Point> verticalIntersect(Seg s, dl x, dl bot=pow(-2, 99), dl top=pow(2, 99))
 {
-    // TODO: what if both lines are vertical
     if (s.first.first == s.second.first) // both lines vertical
     {
 	auto inter = mp(s.first.first, max(min(s.first.second, s.second.second), bot));
@@ -46,11 +45,14 @@ pair<bool, Point> verticalIntersect(Seg s, dl x, dl bot=pow(-2, 99), dl top=pow(
 }
 bool setcmp(int lhs, int rhs)
 {
-    // TODO: make erasing work
-    bool ret = verticalIntersect(lines[lhs], sweepx).second.second < verticalIntersect(lines[rhs], sweepx).second.second;
-    if (lhs == rhs) ret = 0;
-    printf("        comparing %d and %d => %d\n", lhs, rhs, ret);
-    return ret;
+    // TODO: make erasing work, the sorting property is all messed up because the tree sorted state isn't maintained
+    // debug output below: first line is what we would expect, second line is default comparator that works
+    dl left = verticalIntersect(lines[lhs], sweepx).second.second;
+    dl right = verticalIntersect(lines[rhs], sweepx).second.second;
+    // printf("        comparing @ %f: %d (%f) and %d (%f) => %d\n", sweepx, lhs, left, rhs, right, left < right);
+    // printf("        comparing @ %f: %d (         )     %d (         ) => %d\n", sweepx, lhs, rhs, lhs < rhs);
+    return lhs < rhs;
+    return left < right;
 }
 
 /*
@@ -183,6 +185,14 @@ int main()
 	lines.emplace_back(Point(x1, y1), Point(x2, y2));
 	// printf("\nsegment %d: %f %f %f %f", i, x1, y1, x2, y2);
     }
+
+    events.emplace(mp(4.499, 1), mp(0, 1));
+    /* ^^goes with
+3
+28 30 -10 10
+30 1 -16 31
+33 14 -2 6
+*/
     printf("\n");
 
     // # of events = 2*N + # of intersections
@@ -241,7 +251,7 @@ int main()
 2
 0 0 5 0
 2 2 2 -2
-=> 1 (0 1)
+=> 1 (2 0)
 
 3
 28 30 -10 10
