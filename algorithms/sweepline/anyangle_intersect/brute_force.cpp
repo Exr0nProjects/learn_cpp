@@ -1,13 +1,15 @@
 #include <iostream>
 #include <utility>
 #include <vector>
+#include <cmath>
 
+#define mp make_pair
 #define dl double
 
 using namespace std;
 const dl TOLERANCE = 0.0000000001;
 int N;
-typedef pair<dl, dl> Point
+typedef pair<dl, dl> Point;
 typedef pair<Point, Point> Seg;
 vector<Seg> segs;
 
@@ -31,7 +33,6 @@ pair<bool, Point> verticalIntersect(Seg s, dl x, dl bot=pow(-2, 99), dl top=pow(
 pair<bool, Point> intersect(Seg s1, Seg s2)
 {
     // https://www.desmos.com/calculator/8lfyuyytll
-    // printf("intersect ((%lf %lf) (%lf %lf)) and ((%lf %lf) (%lf %lf))\n", s1.first.first, s1.first.second, s1.second.first, s1.second.second, s2.first.first, s2.first.second, s2.second.first, s2.second.second);
 
     // segments have left point first
     if (s1.first > s1.second) swap(s1.first, s1.second);
@@ -45,14 +46,10 @@ pair<bool, Point> intersect(Seg s1, Seg s2)
     dl m1 = (s1.first.second - s1.second.second) / (s1.first.first - s1.second.first);
     dl m2 = (s2.first.second - s2.second.second) / (s2.first.first - s2.second.first);
 
-    // printf("m1 %lf, m2 %lf\n", m1, m2);
-
     assert(abs(m1-m2) > TOLERANCE); // disallow parallel lines: slope difference > one billionth
 
     dl intersect_x = (s2.first.second - s1.first.second + m1 * s1.first.first - m2 * s2.first.first) / (m1 - m2);
     dl intersect_y = m1*(intersect_x - s1.first.first) + s1.first.second;
-
-    // printf("intersect x %lf y %lf\n", intersect_x, intersect_y);
 
     if (s1.first.first <= intersect_x && intersect_x <= s1.second.first
      && s2.first.first <= intersect_x && intersect_x <= s2.second.first)
@@ -73,7 +70,7 @@ int main()
     }
 
     for (int i=0; i<N; ++i)
-	for (int j=0; j<i; ++j)
+	for (int j=i+1; j<N; ++j)
 	{
 	    auto inter = intersect(segs[i], segs[j]);
 	    if (inter.first)
