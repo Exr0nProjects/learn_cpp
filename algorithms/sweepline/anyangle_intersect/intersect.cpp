@@ -46,10 +46,14 @@ pair<bool, Point> verticalIntersect(Seg s, dl x, dl bot=pow(-2, 99), dl top=pow(
 }
 bool setcmp(int lhs, int rhs)
 {
-    // works when sweepx is zero, not when it gets assigned though
-    return verticalIntersect(lines[lhs], sweepx).second.second < verticalIntersect(lines[rhs], sweepx).second.second;
+    // TODO: make erasing work
+    bool ret = verticalIntersect(lines[lhs], sweepx).second.second < verticalIntersect(lines[rhs], sweepx).second.second;
+    if (lhs == rhs) ret = 0;
+    printf("        comparing %d and %d => %d\n", lhs, rhs, ret);
+    return ret;
 }
 
+/*
 pair<bool, Point> intersect(Seg s1, Seg s2)
 {
     // https://www.desmos.com/calculator/8lfyuyytll
@@ -127,6 +131,7 @@ int main()
 0 1 0 3
 => yes (0, 1)
 */
+	/*
 }
 
 void checkNeighboor(const set<int, function<bool(int, int)> > &container, const set<int, function<bool(int, int)> >::iterator &it, int direction)
@@ -148,6 +153,7 @@ void checkNeighboor(const set<int, function<bool(int, int)> > &container, const 
 	++intersections;
     }
 }
+*/
 
 int main()
 {
@@ -183,19 +189,20 @@ int main()
     while (!events.empty())
     {
         printf("\n=================================================================\n");
-	printf("    set contains {"); for (auto n : active) printf("%3d", n); printf(" }\n");
 
         Event ev = events.top();
         events.pop();
+
 	printf("    %d event at %lf, payload %d %d\n", ev.first.second, ev.first.first, ev.second.first, ev.second.second);
+	printf("    set contains {"); for (auto n : active) printf("%3d", n); printf(" }\n");
 
         sweepx = ev.first.first;
 
         if (ev.first.second == 0)	// start of a line
         {
             set<int, function<bool(int, int)> >::iterator it = active.insert(ev.second.first).first;
-            checkNeighboor(active, it, 1);
-	    checkNeighboor(active, it, -1);
+            // checkNeighboor(active, it, 1);
+	    // checkNeighboor(active, it, -1);
         }
         else if (ev.first.second == 1)	// intersection
         {
@@ -214,17 +221,17 @@ int main()
 
 	    printf("    post swap    {"); for (auto n : active) printf("%3d", n); printf(" }\n");
 
-            checkNeighboor(active, left, -1);
-            checkNeighboor(active, right, 1);
+            // checkNeighboor(active, left, -1);
+            // checkNeighboor(active, right, 1);
         }
         else if (ev.first.second == 2) // end of line
 	{
 	    printf("erasing %d\n", ev.second.first);
             active.erase(ev.second.first);
 	    printf("active size: %d\n", active.size());
-	    // printf("    post erase   {"); for (auto n : active) printf("%3d", n); printf(" }\n");
+	    printf("    post erase   {"); for (auto n : active) printf("%3d", n); printf(" }\n");
 	}
-	scanf("%c");
+	scanf("%*c");
     }
 
     printf("total: %d\n", intersections);
