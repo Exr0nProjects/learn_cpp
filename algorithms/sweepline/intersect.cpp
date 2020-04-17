@@ -45,15 +45,16 @@ pair<bool, Point> verticalIntersect(Seg s, dl x, dl bot=pow(-2, 99), dl top=pow(
     return mp(true, mp(x, int_y));
 }
 bool setcmp(int lhs, int rhs)
-{   // TODO: fix this function so it actually works..
+{
     // works when sweepx is zero, not when it gets assigned though
     return verticalIntersect(lines[lhs], sweepx).second.second < verticalIntersect(lines[rhs], sweepx).second.second;
 }
 
 pair<bool, Point> intersect(Seg s1, Seg s2)
 {
+    // https://www.desmos.com/calculator/8lfyuyytll
     printf("intersect ((%lf %lf) (%lf %lf)) and ((%lf %lf) (%lf %lf))\n", s1.first.first, s1.first.second, s1.second.first, s1.second.second, s2.first.first, s2.first.second, s2.second.first, s2.second.second);
-    // https://www.desmos.com/calculator/txz1ndtoot
+
     // segments have left point first
     if (s1.first > s1.second) swap(s1.first, s1.second);
     if (s2.first > s2.second) swap(s2.first, s2.second);
@@ -130,7 +131,7 @@ int main()
 
 void checkNeighboor(const multiset<int, function<bool(int, int)> > &container, const multiset<int, function<bool(int, int)> >::iterator &it, int direction)
 {
-    printf("+dist: %d, -dist: %d\n", distance(it, container.end()), distance(container.begin(), it));
+    // printf("+dist: %d, -dist: %d\n", distance(it, container.end()), distance(container.begin(), it));
     if (direction > 0 && distance(it, container.end()) <= direction) return; 	// would go past end
     if (direction < 0 && distance(container.begin(), it) < -direction) return; 	// would go past begining
 
@@ -141,7 +142,7 @@ void checkNeighboor(const multiset<int, function<bool(int, int)> > &container, c
     auto crossing = intersect(lines[*it], lines[*other]);
     if (crossing.first && crossing.second.first >= sweepx) // TODO: second condition needed?
     {
-	printf("            intersection!!\n");
+	printf("Lines %d and %d cross at (%lf %lf)\n", *it, *other, crossing.second.first, crossing.second.second);
 	events.push(mp(mp(crossing.second.first, 1), mp(*it, *other)));
 	++intersections;
     }
@@ -168,8 +169,8 @@ int main()
     scanf("%d", &N);
     for (int i=0; i<N; ++i)
     {
-	int x1, y1, x2, y2;
-	scanf("%d%d%d%d", &x1, &y1, &x2, &y2);
+	float x1, y1, x2, y2;
+	scanf("%f%f%f%f", &x1, &y1, &x2, &y2);
 	if (x1 > x2)
 	{
 	    swap(x1, x2);
@@ -178,14 +179,15 @@ int main()
 	events.emplace(mp(x1, 0), mp(i, 0));
 	events.emplace(mp(x2, 2), mp(i, 0));
 	lines.emplace_back(Point(x1, y1), Point(x2, y2));
-	printf("\nsegment %d: %d %d %d %d", i, x1, y1, x2, y2);
+	// printf("\nsegment %d: %f %f %f %f", i, x1, y1, x2, y2);
     }
     printf("\n");
 
     // # of events = 2*N + # of intersections
     while (!events.empty())
     {
-        printf("=================================================================\n");
+        printf("\n=================================================================\n");
+	printf("    set contains {"); for (auto n : active) printf("%3d", n); printf(" }\n");
         printEvent(events.top());
 
         Event ev = events.top();
@@ -195,10 +197,7 @@ int main()
 
         if (ev.first.second == 0)	// start of a line
         {
-            printf("        pushing %d\n", ev.second.first);
             auto it = active.insert(ev.second.first);
-            printf("        *it %d\n", *it);
-            printf("\nset contains {"); for (auto n : active) printf("%3d", n); printf(" }\n");
             checkNeighboor(active, it, 1);
 	    checkNeighboor(active, it, -1);
         }
@@ -212,14 +211,31 @@ int main()
 
             swap(left, right);
 
+	    printf("    post swap    {"); for (auto n : active) printf("%3d", n); printf(" }\n");
+
             checkNeighboor(active, left, -1);
             checkNeighboor(active, right, 1);
         }
         else if (ev.first.second == 2) // end of line
         {
-            // active.erase(ev.second.first);   // TODO: causes segfault
+            active.erase(ev.second.first);   // TODO: causes segfault
         }
+	scanf("%c");
     }
 
-    printf("%d\n", intersections);
+    printf("total: %d\n", intersections);
 }
+
+/*
+2
+0 0 5 0
+2 2 2 -2
+=> 1 (0 1)
+
+3
+28 30 -10 10
+30 1 -16 31
+33 14 -2 6
+=> 2 (0 1) (1 2)
+
+*/
