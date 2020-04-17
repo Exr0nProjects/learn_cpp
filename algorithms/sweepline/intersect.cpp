@@ -128,31 +128,22 @@ int main()
 */
 }
 
-void checkNeighboors(const multiset<int, function<bool(int, int)> > &container, const multiset<int, function<bool(int, int)> >::iterator &it)
+void checkNeighboor(const multiset<int, function<bool(int, int)> > &container, const multiset<int, function<bool(int, int)> >::iterator &it, int direction)
 {
-    printf("        Checking neighbors of %d\n", *it);
-    if (it != container.begin())	// FIX: checks to prevent accessing invalid iter and segfault
-    {
-	printf("            checking prev...\n");
-	auto intersectPrev = intersect(lines[*it], lines[*prev(it)]);
-	if (intersectPrev.first && intersectPrev.second.first > sweepx)
-	{
-	    printf("            intersection!!\n");
-	    events.push(mp(mp(intersectPrev.second.first, 1), mp(*it, *prev(it))));
-	    ++intersections;
-	}
-    }
+    printf("+dist: %d, -dist: %d\n", distance(it, container.end()), distance(container.begin(), it));
+    if (direction > 0 && distance(it, container.end()) <= direction) return; 	// would go past end
+    if (direction < 0 && distance(container.begin(), it) < -direction) return; 	// would go past begining
 
-    if (next(it) != container.end())
+    printf("            checking %+d...\n", direction);
+
+    auto other = it;
+    advance(other, direction);
+    auto crossing = intersect(lines[*it], lines[*other]);
+    if (crossing.first && crossing.second.first >= sweepx) // TODO: second condition needed?
     {
-	printf("            checking next...\n");
-	auto intersectNext = intersect(lines[*it], lines[*next(it)]);
-	if (intersectNext.first && intersectNext.second.first > sweepx)
-	{
-	    printf("            intersection!!\n");
-	    events.push(mp(mp(intersectNext.second.first, 1), mp(*it, *next(it))));
-	    ++intersections;
-	}
+	printf("            intersection!!\n");
+	events.push(mp(mp(crossing.second.first, 1), mp(*it, *other)));
+	++intersections;
     }
 }
 
@@ -208,17 +199,21 @@ int main()
             auto it = active.insert(ev.second.first);
             printf("        *it %d\n", *it);
             printf("\nset contains {"); for (auto n : active) printf("%3d", n); printf(" }\n");
-            checkNeighboors(active, it);
+            checkNeighboor(active, it, 1);
+	    checkNeighboor(active, it, -1);
         }
         else if (ev.first.second == 1)	// intersection
         {
+	    // assert size
+	    if (ev.second.first > ev.second.second) swap(ev.second.first, ev.second.second);
+	    // find in active set
             multiset<int, function<bool(int, int)> >::iterator left = active.find(ev.second.first);
             multiset<int, function<bool(int, int)> >::iterator right = active.find(ev.second.second);
 
             swap(left, right);
 
-            checkNeighboors(active, left);
-            checkNeighboors(active, right);
+            checkNeighboor(active, left, -1);
+            checkNeighboor(active, right, 1);
         }
         else if (ev.first.second == 2) // end of line
         {
