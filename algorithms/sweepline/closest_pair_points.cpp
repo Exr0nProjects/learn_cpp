@@ -15,7 +15,7 @@ typedef pair<dl, dl> Point;
 
 vector<pair<Point, int> > cloud;		// Point, og_pos
 set<pair<dl, int> > active; 			// y coord, cloud idx
-deque<set<pair<dl, int> >::iterator> remq; 	// iterators to the active set
+queue<set<pair<dl, int> >::iterator> remq; 	// iterators to the active set
 dl dist;
 
 inline dl euclidianDistance(const int a, const int b)
@@ -42,8 +42,8 @@ int main()
     closeb = cloud[1].second;
 
     // init remq and active with first two points
-    remq.push_back(active.emplace(cloud[0].first.second, 0).first);	
-    remq.push_back(active.emplace(cloud[1].first.second, 1).first);
+    remq.push(active.emplace(cloud[0].first.second, 0).first);	
+    remq.push(active.emplace(cloud[1].first.second, 1).first);
     for (int i=2; i<cloud.size(); ++i)
     {
 	// check for new closest
@@ -63,10 +63,10 @@ int main()
 		- cloud[remq.front()->second].first.first >= dist)	// 	and the farthest back active point x pos is larger than min dist 
 	{								// 		(aka should remove that point)
 	    active.erase(remq.front());					// remove the farthest point from active
-	    remq.pop_front();						// pop farthest point, check the next one
+	    remq.pop();						// pop farthest point, check the next one
 	}
 	// add new point to active
-	remq.push_back(active.emplace(cloud[i].first.second, i).first);	// add the new point to active so others can check dist against it
+	remq.push(active.emplace(cloud[i].first.second, i).first);	// add the new point to active so others can check dist against it
     }
 
     printf("Closest pair: %d and %d (dist %lf)\n", closea, closeb, dist);
