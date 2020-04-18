@@ -68,9 +68,9 @@ struct Block
 	if (l > r) swap(l, r); // assert l <= r
     }
     bool operator< (const Block &o) const
+    { return l > o.l || (l == o.l && r > o.r); }
+    bool onable(const Block &o) const
     { return l < o.l && r < o.r; }
-    bool operator> (const Block &o) const
-    { return (o < *this); }
 };
 int N, tabl[MX];
 vector<Block> blocks;
@@ -95,16 +95,19 @@ int main()
 	    blocks.eb(b, c, a);
 	}
 
-	sort(blocks.begin(), blocks.end(), greater<Block>{});
+	sort(blocks.begin(), blocks.end());	// TODO: does sorting even work
 
 	printf("blocks: %d\n", blocks.size()-1);
+	TRAV(b, blocks) printf("block (%d %d) h %d\n", b.l, b.r, b.h);
 	
 	// longest increasing sub
 	int ret=0;
 	FOR(i, blocks.size()) // FIX: not N, it should be 3*N (orientations) +1 (base)
 	{
-	    FOR(j, i) if (blocks[j] > blocks[i])
+	    tabl[i] = blocks[i].h;
+	    FOR(j, i) if (blocks[i].onable(blocks[j]))
 	    {
+		printf("can stack %d on %d\n", i, j);
 		tabl[i] = max(tabl[i], tabl[j] + blocks[i].h); 
 	    }
 	    ret = max(ret, tabl[i]);
