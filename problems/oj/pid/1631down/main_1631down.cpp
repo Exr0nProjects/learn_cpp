@@ -65,7 +65,7 @@ const int MAXROT = 3;
 typedef array<int, MAXROT> State;
 
 int N, tab[MX][1000];
-char src[MX], dst[MX];
+string src, dst;
 
 inline int rotate(int src, int width, int dir) // rotate the first `width` tumblers in `src` by `dir`
 {
@@ -96,18 +96,22 @@ int match(const State &s, const State &d, int dir=1)
     return ret;
 }
 
-int op(int idx, int nxt)
+int op(int idx, int nxt, int lay=0)
 {
     if (tab[idx][nxt]) return tab[idx][nxt];
+    // FOR(i, lay) printf("|   "); printf("%d (%d)\n", idx, nxt);
 
     int ret = 1<<30;
 
     State d = { dst[idx], nxt/10, nxt%10 };
     if (idx == 0)
     {
-	// State s{ src[0], src[1], src[2] }; // could be cleaner w/ for loop
-	State s;
-	copy(src, src+MAXROT, s.begin());
+	State s{ src[0], src[1], src[2] }; // could be cleaner w/ for loop
+	if (idx == 0 && nxt == 11)
+	{
+	    printf("s:"); FOR(i, MAXROT) printf("%3d", s[i]); printf("\n");
+	    printf("d:"); FOR(i, MAXROT) printf("%3d", d[i]); printf("\n");
+	}
 
 	ret = min(match(s, d, 0), match(s, d, 1));
     }
@@ -117,18 +121,22 @@ int op(int idx, int nxt)
 	{
 	    State s{ pre/10, pre%10, src[idx] };
 	    const int minrot = min(match(s, d, 0), match(s, d, 1));
-	    ret = min(ret, op(idx-1, pre) + minrot);
+	    ret = min(ret, op(idx-1, pre, lay+1) + minrot);
 	}
     }
 
+    // FOR(i, lay) printf("|   "); printf("=> %d\n", ret);
     tab[idx][nxt] = ret;
     return ret;
 }
 
 int main()
 {
-    while (scanf("%s%n%s\n", src, &N, dst))
+    while (cin >> src >> dst)
     {
+	N = src.length();
+	cout << src << " " << dst << " " << N << endl;
+
 	FOR(i, N)
 	{
 	    src[i] -= '0';
@@ -142,16 +150,15 @@ int main()
 	// FOR(i, MAXROT) printf(" %d", d[i]); printf("\n");
 	// printf("distance %d\n", min(match(s, d, 1), match(s, d, 0)));
 	// continue;
+	
+	printf("=> %d\n", op(N-1, 0));
 
-	int ret=1<<30;
-	FOR(i, (int)pow(10, MAXROT-1))
-	{
-	    ret = min(ret, op(N, i));
-	}
-	printf("%d\n", ret);
-
-	memset(src, 0, sizeof src);
-	memset(dst, 0, sizeof dst);
+	// int ret=1<<30;
+	// FOR(i, (int)pow(10, MAXROT-1))
+	// {
+	//     ret = min(ret, op(N, i));
+	// }
+	// printf("%d\n", ret);
     }
 
     return 0;
