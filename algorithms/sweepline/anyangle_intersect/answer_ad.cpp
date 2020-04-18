@@ -75,6 +75,7 @@ void print() {
 }
 
 int main() {
+    printf("NOTE: THIS PROGRAM DOES NOT PRODUCE THE CORRECT OUTPUT!\n");
     scanf("%d", &n);
     for (int i = 0; i < n; i++) {
         int x1, y1, x2, y2;

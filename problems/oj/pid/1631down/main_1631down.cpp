@@ -8,6 +8,7 @@ LANG: C++14
  * Create time: Sun 12 Apr 2020 @ 11:21 (PDT)
  * Accept time: [!meta:end!]
  *
+ * TODO: I don't have a concrete DP equation for this..
  */
 
 #include <iostream>
@@ -64,7 +65,7 @@ const int MAXROT = 3;
 
 typedef array<int, MAXROT> State;
 
-int N, tab[MX][1000];
+int N, tab[MX][1010];
 string src, dst;
 
 inline int rotate(int src, int width, int dir) // rotate the first `width` tumblers in `src` by `dir`
@@ -101,25 +102,20 @@ int op(int idx, int nxt, int lay=0)
     if (tab[idx][nxt]) return tab[idx][nxt];
     // FOR(i, lay) printf("|   "); printf("%d (%d)\n", idx, nxt);
 
-    int ret = 1<<30;
-
     State d = { dst[idx], nxt/10, nxt%10 };
-    if (idx == 0)
-    {
-	State s{ src[0], src[1], src[2] }; // could be cleaner w/ for loop
-	if (idx == 0 && nxt == 11)
-	{
-	    printf("s:"); FOR(i, MAXROT) printf("%3d", s[i]); printf("\n");
-	    printf("d:"); FOR(i, MAXROT) printf("%3d", d[i]); printf("\n");
-	}
+    State s{ src[idx], src[idx+1], src[idx+2] };
+    int ret = min(match(s, d, 0), match(s, d, 1));
+//     if (idx == 0 && nxt == 11)
+  //   {
+// 	printf("s:"); FOR(i, MAXROT) printf("%3d", s[i]); printf("\n");
+// 	printf("d:"); FOR(i, MAXROT) printf("%3d", d[i]); printf("\n");
+  //   }
 
-	ret = min(match(s, d, 0), match(s, d, 1));
-    }
-    else
+    if (idx > 0)
     {
-	FOR(pre, (int)pow(10, MAXROT-1))
+	FOR(pre, (int)pow(10, MAXROT))
 	{
-	    State s{ pre/10, pre%10, src[idx] };
+	    s = { pre/10, pre%10, src[idx] };
 	    const int minrot = min(match(s, d, 0), match(s, d, 1));
 	    ret = min(ret, op(idx-1, pre, lay+1) + minrot);
 	}
@@ -159,6 +155,8 @@ int main()
 	//     ret = min(ret, op(N, i));
 	// }
 	// printf("%d\n", ret);
+	
+	memset(tab, 0, sizeof tab);
     }
 
     return 0;
