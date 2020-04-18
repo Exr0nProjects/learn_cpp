@@ -1,3 +1,6 @@
 priv*
 *.DS_Store
 .ccls-cache/
+*/auto
+*/answer
+*/*.diff
