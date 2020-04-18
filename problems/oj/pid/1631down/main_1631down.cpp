@@ -50,9 +50,9 @@ LANG: C++14
 #define g(t, i) get<i>(t)
 #define mt make_tuple
 
-#define FOR_(i, b, e) for (long long i = (b); i < (e); ++i)
+#define FOR_(i, b, e) for (int i = (b); i < (e); ++i)
 #define FOR(i, e) FOR_(i, 0, (e))
-#define FORR_(i, b, e) for (long long i = (e)-1; i >= (b); --i)
+#define FORR_(i, b, e) for (int i = (e)-1; i >= (b); --i)
 #define FORR(i, e) FORR_(i, 0, e)
 #define TRAV(a, x) for (auto &a : x)
 
@@ -62,12 +62,10 @@ using namespace std;
 const int MX = 1111;
 const int MAXROT = 3;
 
+typedef array<int, MAXROT> State;
+
 int N, tab[MX][1000];
 char src[MX], dst[MX];
-
-
-inline int mineq(int &t, const int o) // min equals
-{ return t = min(t, o); }
 
 inline int rotate(int src, int width, int dir) // rotate the first `width` tumblers in `src` by `dir`
 {
@@ -84,14 +82,47 @@ inline int rotate(int src, int width, int dir) // rotate the first `width` tumbl
     return ret;
 }
 
+inline int dist(int s, int d)
+{ return (d-s +10) % 10; }
+
+int match(const State &s, const State &d, int dir=1)
+{
+    dir = 2*(bool)dir-1;
+    int ret = -1 * (1<<30);
+    // FOR(i, MAXROT)
+	// printf("    %d\n", (dir * dist(s[i], d[i]) + 10) % 10);
+    FOR(i, MAXROT)
+	ret = max(ret, (dir * dist(s[i], d[i]) + 10) % 10);
+    return ret;
+}
+
 int op(int idx, int nxt)
 {
     if (tab[idx][nxt]) return tab[idx][nxt];
+
     int ret = 1<<30;
-    FOR_(wid, 1, MAXROT+1)
+
+    State d = { dst[idx], nxt/10, nxt%10 };
+    if (idx == 0)
     {
-	// TODO: what to put here that's not hella scuffed??
+	// State s{ src[0], src[1], src[2] }; // could be cleaner w/ for loop
+	State s;
+	copy(src, src+MAXROT, s.begin());
+
+	ret = min(match(s, d, 0), match(s, d, 1));
     }
+    else
+    {
+	FOR(pre, (int)pow(10, MAXROT-1))
+	{
+	    State s{ pre/10, pre%10, src[idx] };
+	    const int minrot = min(match(s, d, 0), match(s, d, 1));
+	    ret = min(ret, op(idx-1, pre) + minrot);
+	}
+    }
+
+    tab[idx][nxt] = ret;
+    return ret;
 }
 
 int main()
@@ -104,12 +135,23 @@ int main()
 	    dst[i] -= '0';
 	}
 
+	// State s, d;
+	// copy(src, src+MAXROT, s.begin());
+	// copy(dst, dst+MAXROT, d.begin());
+	// FOR(i, MAXROT) printf(" %d", s[i]); printf("  ");
+	// FOR(i, MAXROT) printf(" %d", d[i]); printf("\n");
+	// printf("distance %d\n", min(match(s, d, 1), match(s, d, 0)));
+	// continue;
+
 	int ret=1<<30;
 	FOR(i, (int)pow(10, MAXROT-1))
 	{
-	    mineq(ret, op(N, i));
+	    ret = min(ret, op(N, i));
 	}
 	printf("%d\n", ret);
+
+	memset(src, 0, sizeof src);
+	memset(dst, 0, sizeof dst);
     }
 
     return 0;
