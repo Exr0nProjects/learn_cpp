@@ -6,7 +6,7 @@ LANG: C++14
 /*
  * Problem 437up (oj/pid/437up)
  * Create time: Sun 05 Apr 2020 @ 12:48 (PDT)
- * Accept time: [!meta:end!]
+ * Accept time: Sat 18 Apr 2020 @ 13:10 (PDT)
  *
  */
 
@@ -77,7 +77,7 @@ vector<Block> blocks;
 
 int main()
 {
-    setIO();
+    int kase=0;
     while (scanf("%d", &N) == 1)
     {
 	if (!N) break;
@@ -92,29 +92,25 @@ int main()
 	    scanf("%d%d%d", &a, &b, &c);
 	    blocks.eb(a, b, c);
 	    blocks.eb(a, c, b);
+	    blocks.eb(b, a, c);
 	    blocks.eb(b, c, a);
+	    blocks.eb(c, a, b);
+	    blocks.eb(c, b, a);
 	}
 
-	sort(blocks.begin(), blocks.end());	// TODO: does sorting even work
+	sort(blocks.begin(), blocks.end());
 
-	printf("blocks: %d\n", blocks.size()-1);
-	TRAV(b, blocks) printf("block (%d %d) h %d\n", b.l, b.r, b.h);
-	
 	// longest increasing sub
 	int ret=0;
 	FOR(i, blocks.size()) // FIX: not N, it should be 3*N (orientations) +1 (base)
 	{
 	    tabl[i] = blocks[i].h;
 	    FOR(j, i) if (blocks[i].onable(blocks[j]))
-	    {
-		printf("can stack %d on %d\n", i, j);
 		tabl[i] = max(tabl[i], tabl[j] + blocks[i].h); 
-	    }
 	    ret = max(ret, tabl[i]);
-	    printf("i %d, ret %d\n", i, ret);
 	}
 
-	printf("%d\n", ret);
+	printf("Case %d: maximum height = %d\n", ++kase, ret);
     }
 
     return 0;
