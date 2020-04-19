@@ -2,6 +2,7 @@
 
 ## DP Problems
 1, 9, 21..25
+https://docs.google.com/document/d/1yA82YtGMEV6Uogem0oPTggMuxtWZHzTv34cTuZIIcz4/edit#heading=h.a583abrtwzi4
 21. https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=848&page=show_problem&problem=1226
 22. https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=848&page=show_problem&problem=1059
 23. https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=848&page=show_problem&problem=4504
