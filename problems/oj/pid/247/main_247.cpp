@@ -80,7 +80,7 @@ int main()
     int N, M, kase=1;
     while (scanf("%d%d", &N, &M) > 0)
     {
-        if (N == 0 && M == 0) return 0;
+        if (N == 0 || M == 0) return 0;
         name_id.clear();
         id_name.clear();
         FOR(i, MX) FOR(j, MX) dist[i][j] = 1; // FIX: don't int overflow
