@@ -65,11 +65,9 @@ int N, M;
 
 vector<pair<int, patch> > patches; // <dist, patch>
 
-priority_queue<pair<int, bugset> > pq;
 unordered_map<bugset, int> dist;
-unordered_set<bugset> vis;
 
-bool canApply(bugset cur, pre p)
+inline bool canApply(bugset cur, pre p)					// N
 {
     FOR(n, N)
     {
@@ -79,7 +77,7 @@ bool canApply(bugset cur, pre p)
     return true;
 }
 
-bugset applyPatch(bugset cur, post p)
+inline bugset applyPatch(bugset cur, post p)				// N
 {
     FOR(n, N)
     {
@@ -94,16 +92,15 @@ int main()
     // setIO();
     int kase=0;
     // while (scanf("%d%d", &N, &M) == 2)
-    while (cin >> N >> M)
+    while (cin >> N >> M)						// Kase
     {
         if (!N || !M) break;
         patches.clear();
-        pq = {}; // FIX: clear the pq... pq.empty() doesn't do anything! It's used to check whether the pq is empty, and I use it later in the code... should've known that.
+	patches.reserve(M);
         dist.clear();
-        vis.clear();
         //printf("N = %d, M = %d\n", N, M);
         // input
-        FOR(m, M)
+        FOR(m, M)							// MN+
         {
             int t;
             scanf("%d", &t);
@@ -132,26 +129,28 @@ int main()
             patches.EB(t, MP(MP(need, neednt), MP(fix, create)));
         }
         //printf("patches avaliable: %d\n", patches.size());
+	bool finished = 0;
         if (kase++) printf("\n");
         printf("Product %d\n", kase);
+
         bugset src = (1<<N)-1;
+	priority_queue<pair<int, bugset> > pq;
         pq.emplace(0, src);
-        while (!pq.empty())
+        while (!pq.empty())							// 2^N * M * N
         {
             //printf("pq size: %d\n", pq.size());
-            pair<int, bugset> cur = pq.top();
+            pair<int, bugset> cur = pq.top(); pq.pop();
             //printf("cur pq state: %d after %d\n", cur.S, cur.F);
-            if (vis.count(cur.S)) { pq.pop(); continue; };
-            vis.insert(cur.S);
+	    if (dist[cur.S] < cur.F) continue;
 
             if (!cur.S)
             {
                 printf("Fastest sequence takes %d seconds.\n", cur.F);
+		finished = 1;
                 break;
             }
-            pq.pop(); // FIX: pop it before we insert anything else but after we check the break condition
 
-            TRAV(p, patches)
+            TRAV(p, patches)							// M*N
             {
                 bugset applied = applyPatch(cur.S, p.S.S);
                 if (!dist.count(applied)) dist[applied] = 1<<30;
@@ -163,8 +162,9 @@ int main()
                 }
             }
         }
-        if (pq.empty()) printf("Bugs cannot be fixed.\n");
+        if (!finished) printf("Bugs cannot be fixed.\n");
     }
+    printf("\n");
 
     return 0;
 }
