@@ -7,7 +7,7 @@ LANG: C++14
 /*
  * Problem 247 ([!meta:srcpath!])
  * Create time: Sat 22 Feb 2020 @ 09:02 (PST)
- * Accept time: [!meta:end!]
+ * Accept time: Sun 19 Apr 2020 @ 12:06 (PDT)
  *
  * Graph problem #3 https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=853&page=show_problem&problem=183
  */
@@ -58,7 +58,7 @@ LANG: C++14
 #define TRAVE(e, s) for (int e = head[s]; e; e = edges[e].n)
 #define SORTV(v) std::sort((v).begin(), (v).end())
 
-void setIO(const std::string &name = "247");
+void setIO(const std::string &name = "test");
 
 using namespace std;
 const int MX = 30;
@@ -76,11 +76,11 @@ int dist[MX][MX];
 
 int main()
 {
-    setIO();
+    // setIO();
     int N, M, kase=1;
     while (scanf("%d%d", &N, &M) > 0)
     {
-        if (N == 0 || M == 0) return 0;
+        if (N == 0 && M == 0) return 0;
         name_id.clear();
         id_name.clear();
         FOR(i, MX) FOR(j, MX) dist[i][j] = 1; // FIX: don't int overflow
