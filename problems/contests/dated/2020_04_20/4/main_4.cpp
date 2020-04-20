@@ -32,7 +32,10 @@ int main()
 	{
 	    ++ret;
 	    if (memory.size() >= M)
+	    {
 		memory.erase(cache.front());
+		cache.pop();	// FIX: pop the cache
+	    }
 	    cache.push(memory.insert(w).first);
 	}
     }

@@ -16,7 +16,9 @@
 09:50 | don't know #7 | coding #8
 09:55 | submitted #8 | debugging CE #6
 09:57 | cleaned up #6 | analysing #9
-10:04 | got some scores back | debugging #6
+10:04 | got some scores back | debugging #8
+10:15 | #8 still WA, probably output error | debugging #4
+10:19 | AC #4 (forgot to pop the queue) | debugging #8
 
 ## Contest Reflection
 
