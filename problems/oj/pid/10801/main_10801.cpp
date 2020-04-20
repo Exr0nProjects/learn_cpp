@@ -84,22 +84,6 @@ int main()
 	    if (c == '\n') ++i;
 	}
 
-	/*
-	FOR(i, N)
-	{
-	    printf("elev %d:", i);
-	    TRAV(f, stops[i]) printf("%3d", f);
-	    printf("\n");
-	}
-
-	FOR(i, MXF)
-	{
-	    printf("floor %d:", i);
-	    TRAV(e, stopsat[i]) printf("%3d", e);
-	    printf("\n");
-	}
-	*/
-
 	map<State, int> dist;
 	priority_queue<pair<int, State>, deque<pair<int, State> >, greater<pair<int, State> > > pq;
 	pq.emplace(-60, mp(0, MXN-1));	// dummy start node, -60 to counteract minute wait to change elevators
@@ -107,7 +91,6 @@ int main()
 	while (!pq.empty())
 	{
 	    pair<int, State> cur = pq.top(); pq.pop();
-	    // printf("State{%d %d} at %d\n", cur.S.F, cur.S.S, cur.F);
 	    
 	    if (cur.S.F == K)
 	    {
@@ -119,13 +102,10 @@ int main()
 	    if (dist.count(cur.S) && dist[cur.S] < cur.F) continue;	// FIX: dist.count, cuz its a map
 	    dist[cur.S] = cur.F;
 
-	    // printf("stopsat %d: %d elevators\n", cur.S.F, stopsat[cur.S.F].size());
-
 	    // change elevators
 	    TRAV(e, stopsat[cur.S.F])
 		if (e != cur.S.S)
 		{
-		    // printf("    trying change %d -> %d on floor %d\n", e, cur.S.S, cur.S.F);
 		    State then(cur.S.F, e);
 		    if (!dist.count(then) || dist[then] > cur.F+60)
 			pq.emplace(cur.F + 60, then);
