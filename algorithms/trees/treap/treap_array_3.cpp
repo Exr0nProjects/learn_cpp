@@ -1,3 +1,4 @@
+// 19 April 2020
 // UNTESTED
 #include <iostream>
 #include <cstring>
@@ -78,4 +79,19 @@ void heapify_down(int node)
     else if (then < 0)
 	rotate_right(node);
     heapify_down(node);
+}
+
+// api
+bool has(int num, int cur=1)
+{
+    if (num == cur)
+	return true;
+
+    if (num < cur)
+	cur = left[cur];
+    else if (num > cur)
+	cur = right[cur];
+    if (num == 0)
+	return false;
+    return has(cur);
 }
