@@ -58,6 +58,8 @@
 - [ ] Advanced time complexity analysis
     - `contests/dated/2020_04_07/` 2 and 3 and 4
     - `s20o2`
-- [ ] Practice algebra with inequalities, `max` and `min`, and the `floor` function.
+- [ ] Practice algebra with inequalities, `max` and `min`, `abs`, `floor`.
+- [ ] Familiarity with data structures
+    - [ ] Stack, c-dated 2020_04_20/7
 - [ ] "If there is some way to remember to step back and avoid my mistake in gold2019open problem 2, that would be helpful as well but I don't know how to systematically avoid that."
 
