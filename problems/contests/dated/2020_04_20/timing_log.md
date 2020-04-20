@@ -14,7 +14,9 @@
 09:38 | greedy $6 seems to work | coding #6
 09:41 | submitted #6 | analysing #7
 09:50 | don't know #7 | coding #8
-09:55 | submitted #8 | analysing #9
+09:55 | submitted #8 | debugging CE #6
+09:57 | cleaned up #6 | analysing #9
+10:04 | got some scores back | debugging #6
 
 ## Contest Reflection
 
