@@ -12,14 +12,15 @@ LANG: C++14
 
 #include <iostream>
 #define dl double
+#define ll long long
 
 const int MX = 10111;
-int N, K;
-int ropes[MX];
+ll N, K;
+ll ropes[MX];
 
-bool check(int len)
+bool check(ll len)
 {
-    int n=0;
+    ll n=0;
     for (int i=0; i<N; ++i)
 	n += ropes[i] / len;
     return n >= K;
@@ -35,10 +36,10 @@ int main()
 	ropes[i] = len*1000;
     }
 
-    int l=0, r=1<<26;
+    ll l=0, r=1<<30;
     for (int i=0; i<80; ++i)
     {
-	int m = (l+r)/2;
+	ll m = (l+r)/2;
 	if (check(m)) l = m;
 	else r = m;
     }

@@ -19,6 +19,7 @@
 10:04 | got some scores back | debugging #8
 10:15 | #8 still WA, probably output error | debugging #4
 10:19 | AC #4 (forgot to pop the queue) | debugging #8
+10:27 | #8 still WA | analysing #9
 
 ## Contest Reflection
 
