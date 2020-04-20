@@ -20,6 +20,9 @@
 10:15 | #8 still WA, probably output error | debugging #4
 10:19 | AC #4 (forgot to pop the queue) | debugging #8
 10:27 | #8 still WA | analysing #9
+10:41 | dunno how to do #9 | analysing #1
+10:51 | have idea for #1 | coding #1
+10:55 | AC #1 | analysing #6
 
 ## Contest Reflection
 
