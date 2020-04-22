@@ -59,14 +59,26 @@ LANG: C++14
 void setIO(const std::string &name = "cowmbat");
 
 using namespace std;
-const int MX = 100111;
 const int MXM = 30;
 string S;
-int N, M, K, adj[MXM][MXM];
-map<string, int> dist;
-
-bool legit(const string &s)
+map<string, int> stringId;
+deque<string> idString;
+int id(const string &s)
 {
+    if (!stringId.count(s))
+    {
+	stringId[s] = stringId.size();
+	idString.pb(s);
+    }
+    return stringId[s];
+}
+    
+int N, M, K, adj[MXM][MXM];
+map<int, int> dist;
+
+bool legit(int id)
+{
+    const string &s = idString[id];
     int chg=0;
     FOR_(i, 1, s.size())
     {
@@ -83,21 +95,28 @@ bool legit(const string &s)
 int main()
 {
     freopen("cowmbat.in", "r", stdin);
-    freopen("cowmbat.out", "w+", stdout);
+    // freopen("cowmbat.out", "w+", stdout);
     scanf("%d%d%d", &N, &M, &K);
     cin >> S;
+    id(S);	// register
     FOR(i, M) FOR(j, M)
 	scanf("%d", &adj[i][j]);
+    printf("id(S): %d\n", id(S));
 
-    priority_queue<pair<int, string>, deque<pair<int, string> >, greater<pair<int, string> > > pq;
-    pq.emplace(0, S);
+    priority_queue<pair<int, int>, deque<pair<int, int> >, greater<pair<int, int> > > pq;
+    printf("id(S): %d\n", id(S));
+    pq.emplace(0, id(S));
+    printf("id(S): %d\n", id(S));
     while (!pq.empty())
     {
-	pair<int, string> cur = pq.top(); pq.pop();
-	// printf("at %s after %d\n", cur.S.c_str(), cur.F);
+	pair<int, int> cur = pq.top(); pq.pop();
+	printf("cur.S: %d\n", cur.S);
+	printf("at %s after %d\n", idString[cur.S].c_str(), cur.F);
+	if (idString.size() > 10 || stringId.size() > 10 || pq.size() > 10 || dist.size() > 10) return 0;
 	if (dist.count(cur.S) && dist[cur.S] < cur.F)
 	    continue;
 	dist[cur.S] = cur.F;
+	return 0;
 
 	if (legit(cur.S))
 	{
@@ -105,13 +124,14 @@ int main()
 	    break;
 	}
 
-	FOR(i, cur.S.size()) FOR(c, M) if (c + 'a' != cur.S[i])
+	FOR(i, N) FOR(c, M) if (c + 'a' != idString[cur.S][i])
 	{
-	    string then = cur.S;
+	    string then = idString[cur.S];
+	    const int thendist = cur.F + adj[idString[cur.S][i]-'a'][c];
 	    then[i] = c+'a';
 	    // printf("	going %s -> %s\n", cur.S.c_str(), then.c_str());
-	    if (!dist.count(then) || dist[then] > cur.F + adj[cur.S[i]-'a'][c])
-		pq.emplace(cur.F + adj[cur.S[i]-'a'][c], then);
+	    if (!dist.count(id(then)) || dist[id(then)] > thendist)
+		pq.emplace(thendist, id(then));
 	}
     }
 
