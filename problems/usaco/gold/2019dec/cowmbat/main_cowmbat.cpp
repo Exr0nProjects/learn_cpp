@@ -101,22 +101,17 @@ int main()
     id(S);	// register
     FOR(i, M) FOR(j, M)
 	scanf("%d", &adj[i][j]);
-    printf("id(S): %d\n", id(S));
 
     priority_queue<pair<int, int>, deque<pair<int, int> >, greater<pair<int, int> > > pq;
-    printf("id(S): %d\n", id(S));
     pq.emplace(0, id(S));
-    printf("id(S): %d\n", id(S));
     while (!pq.empty())
     {
 	pair<int, int> cur = pq.top(); pq.pop();
-	printf("cur.S: %d\n", cur.S);
 	printf("at %s after %d\n", idString[cur.S].c_str(), cur.F);
 	if (idString.size() > 10 || stringId.size() > 10 || pq.size() > 10 || dist.size() > 10) return 0;
 	if (dist.count(cur.S) && dist[cur.S] < cur.F)
 	    continue;
 	dist[cur.S] = cur.F;
-	return 0;
 
 	if (legit(cur.S))
 	{
@@ -126,13 +121,15 @@ int main()
 
 	FOR(i, N) FOR(c, M) if (c + 'a' != idString[cur.S][i])
 	{
+	    return 0;
 	    string then = idString[cur.S];
 	    const int thendist = cur.F + adj[idString[cur.S][i]-'a'][c];
 	    then[i] = c+'a';
-	    // printf("	going %s -> %s\n", cur.S.c_str(), then.c_str());
+	    printf("	going %s -> %s\n", idString[cur.S].c_str(), then.c_str());
 	    if (!dist.count(id(then)) || dist[id(then)] > thendist)
 		pq.emplace(thendist, id(then));
 	}
+	return 0;
     }
 
     return 0;
