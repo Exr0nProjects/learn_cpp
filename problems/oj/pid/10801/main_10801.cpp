@@ -92,6 +92,7 @@ int main()
 	while (!pq.empty())
 	{
 	    pair<int, State> cur = pq.top(); pq.pop();
+	    if (cur.F > 0) printf("floor %d elev %d after %d\n", cur.S.F, cur.S.S, cur.F);
 	    
 	    if (cur.S.F == K)
 	    {

@@ -70,6 +70,7 @@ int dijkstra(){
 	while(!pq.empty()){
 		node cur = pq.top(); pq.pop();
 		
+		printf("floor %d elev %d after %d\n", cur.fl, cur.t, cur.dist);
 		//printf("tower -> %5d; floor -> %5d; dist -> %5d\n", cur.t, cur.fl, cur.dist);
 		
 		
