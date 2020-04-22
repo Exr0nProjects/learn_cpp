@@ -84,21 +84,23 @@ int main()
 	    head[u].eb(u, v, w, a, b);
 	}
 
+	/*
 	FOR(i, N)
 	{
 	    printf("head %d:\n", i);
 	    TRAV(e, head[i])
 		printf("%d -%d-> %d (%d %d)\n", e.u, e.w, e.v, e.a, e.b);
 	}
+	*/
 
-	printf("\nS %d -> T %d\n\n", S, T);
+	// printf("\nS %d -> T %d\n\n", S, T);
 
 	priority_queue<pair<int, int>, deque<pair<int, int> >, greater<pair<int, int> > > pq;	// <time, node>
 	pq.emplace(0, S);
 	while (!pq.empty())
 	{
 	    pair<int, int> cur = pq.top(); pq.pop();
-	    printf("at %d after %d\n", cur.S, cur.F);
+	    // printf("at %d after %d\n", cur.S, cur.F);
 	    if (cur.S == T)
 	    {
 		printf("Case %d: %d\n", ++kase, cur.F);
@@ -114,25 +116,19 @@ int main()
 		const int exit = (cur.F + e.w) % (e.a + e.b);
 		if (enter <= e.a && exit <= e.a && enter / (e.a + e.b) == exit / (e.a + e.b))
 		{
-		    printf("can go from %d to %d at time %d\n", cur.S, e.v, cur.F);
+		    // printf("can go from %d to %d at time %d\n", cur.S, e.v, cur.F);
 		    if (dist[e.v] > cur.F + e.w)
 			pq.emplace(cur.F + e.w, e.v);
 		}
+		else
+		{
+		    // printf("cat go from %d to %d, waiting till %d\n", cur.S, e.v, (cur.F/(e.a+e.b)+1)*(e.a+e.b));
+		    if (e.a >= e.w)
+			pq.emplace((cur.F/(e.a+e.b)+1)*(e.a+e.b) + e.w, e.v);
+		}
 	    }
-	    pq.//TODO
 	}
     }
 
     return 0;
-}
-
-void setIO(const string &name)
-{
-    ios_base::sync_with_stdio(0);
-    cin.tie(0); // fast cin/cout
-    if (fopen((name + ".in").c_str(), "r") != nullptr)
-    {
-        freopen((name + ".in").c_str(), "r", stdin);
-        freopen((name + ".out").c_str(), "w+", stdout);
-    }
 }
