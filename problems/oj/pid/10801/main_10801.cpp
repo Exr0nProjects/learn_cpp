@@ -65,6 +65,7 @@ typedef pair<int, int> State; // <floor number, elevator id>
 list<int> stops[MXN];
 list<int> stopsat[MXF];
 int N, K, speed[MXN], dist[MXF][MXN];
+bool vis[MXF][MXN];
 
 int main()
 {
@@ -74,6 +75,7 @@ int main()
 	FOR(i, MXF) stopsat[i].clear();
 	memset(speed, 0, sizeof speed);
 	memset(dist, 0x40, sizeof dist);
+	memset(vis, 0, sizeof vis);
 
 	FOR(i, N) scanf("%d", &speed[i]);
 	for (int i=0; i<N;)
@@ -101,30 +103,22 @@ int main()
 		break;
 	    }
 
-	    if (dist[cur.S.F][cur.S.S] < cur.F) continue;	// FIX: dist.count, cuz its a map
-	    dist[cur.S.F][cur.S.S] = cur.F;
+	    if (vis[cur.S.F][cur.S.S]) continue;
+	    vis[cur.S.F][cur.S.S] = true;
 
-	    // change elevators
-	    TRAV(e, stopsat[cur.S.F])
-		if (e != cur.S.S)
+	    /*
+	    if (dist[cur.S.F][cur.S.S] < cur.F) continue;
+	    dist[cur.S.F][cur.S.S] = cur.F;
+	    */
+
+	    TRAV(e, stopsat[cur.S.F])	// change elevators
+		TRAV(f, stops[e])	// change floors
 		{
-		    State then(cur.S.F, e);
-		    if (dist[then.F][then.S] > cur.F+60)
+		    const int eta = cur.F + (e != cur.S.S)*60 + abs(cur.S.F - f) * speed[e];
+		    if (dist[f][e] > eta)
 		    {
-			dist[then.F][then.S] = cur.F+60;
-			pq.emplace(cur.F + 60, then);
-		    }
-		}
-	    // change floors
-	    TRAV(f, stops[cur.S.S])
-		if (f != cur.S.F)
-		{
-		    State then(f, cur.S.S);
-		    const int eta = cur.F + abs(cur.S.F - f)*speed[cur.S.S];
-		    if (dist[then.F][then.S] > eta)
-		    {
-			dist[then.F][then.S] = eta;
-			pq.emplace(eta, then);
+			dist[f][e] = eta;
+			pq.emplace(eta, mp(f, e));
 		    }
 		}
 	}
