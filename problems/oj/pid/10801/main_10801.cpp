@@ -109,7 +109,10 @@ int main()
 		{
 		    State then(cur.S.F, e);
 		    if (dist[then.F][then.S] > cur.F+60)
+		    {
+			dist[then.F][then.S] = cur.F+60;
 			pq.emplace(cur.F + 60, then);
+		    }
 		}
 	    // change floors
 	    TRAV(f, stops[cur.S.S])
@@ -118,7 +121,10 @@ int main()
 		    State then(f, cur.S.S);
 		    const int eta = cur.F + abs(cur.S.F - f)*speed[cur.S.S];
 		    if (dist[then.F][then.S] > eta)
+		    {
+			dist[then.F][then.S] = eta;
 			pq.emplace(eta, then);
+		    }
 		}
 	}
 	if (!legit) cout << "IMPOSSIBLE" << endl;
