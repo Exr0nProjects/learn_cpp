@@ -61,26 +61,52 @@ void setIO(const std::string &name = "116up");
 using namespace std;
 const int MXN = 20;
 const int MXM = 110;
-int M, N, tab[MXN][MXM];
+int M, N, tab[MXN][MXM], pre[MXN][MXM];
+
+void reconstruct(int i, int j)
+{
+    if (j)
+	reconstruct(pre[i][j], j-1);
+    printf("%d ", i+1);
+}
 
 inline int mod(int num)
 { return (num+N) %N; }
 
 int main()
 {
-    scanf("%d%d", &N, &M);
-    FOR(n, N) FOR(m, M)
-	scanf("%d", &tab[n][m]);
+    while (scanf("%d%d", &N, &M) == 2)
+    {
+	memset(tab, 0, sizeof tab);
+	memset(pre, 0, sizeof pre);
 
-    FOR_(j, 1, M)
+	FOR(n, N) FOR(m, M)
+	    scanf("%d", &tab[n][m]);
+
+	FOR_(j, 1, M)
+	    FOR(i, N)
+	    {
+		// get min previous step
+		int mn = max((int)i-1, 0);
+		FOR_(k, i-1, i+2)
+		    if (tab[mn][j-1] > tab[mod(k)][j-1])
+			mn = mod(k);
+
+		// printf("min at (%d %d) is from %d\n", i, j, mn);
+		
+		// use min
+		tab[i][j] += tab[mn][j-1];
+		pre[i][j] = mn;
+	    }
+
+	int ret=0;
 	FOR(i, N)
-	    tab[i][j] += min(tab[i][j-1], min(tab[mod(i-1)][j-1], tab[mod(i+1)][j-1]));
+	    if (tab[ret][M-1] > tab[i][M-1])
+		ret = i;
 
-    int ret=1<<30;
-    FOR(i, N)
-	ret = min(ret, tab[i][M-1]);
-
-    printf("%d\n", ret);
+	reconstruct(ret, M-1); printf("\n");
+	printf("%d\n", tab[ret][M-1]);
+    }
 
     return 0;
 }
