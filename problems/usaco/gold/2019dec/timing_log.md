@@ -12,6 +12,7 @@
 17:38 | also don't know how to do #2 | debugging #3
 17:47 | stringid RE or MLE on sample test case :// | debugging #3
 18:02 | why is it different on my computer vs grading server?? | debugging #3
+18:09 | dunno how to debug | pause
 
 ## Contest Reflection
 
