@@ -99,7 +99,7 @@ int main()
 	    if (cur.S.F == K)
 	    {
 		legit=1;
-		cout << cur.F << endl;
+		cout << max(cur.F, 0) << endl;
 		break;
 	    }
 

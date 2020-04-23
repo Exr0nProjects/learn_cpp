@@ -43,6 +43,8 @@ int main() {
 	for (int i=0; i<MXN; ++i) stops[i].clear();
 	for (int i=0; i<MXF; ++i) stopsat[i].clear();
 	memset(cost, 0, sizeof(cost));
+	memset(dist, byte_max, sizeof(dist));
+	memset(vis, false, sizeof(vis));
 
 	for(int i = 0; i<n; i++){
 	    cin >> cost[i];
@@ -61,17 +63,9 @@ int main() {
 	}
 
 	// djikstra
-	memset(dist, byte_max, sizeof(dist));
-	memset(vis, false, sizeof(vis));
 
 	priority_queue<node, deque<node>, greater<node> > pq;
-
-	for (auto i : stopsat[0])
-	{
-	    dist[i][0] = 0;
-	    pq.emplace(0, mp(0, i));
-	}
-
+	pq.emplace(-60, mp(0, n+1));
 	bool legit=0;
 	while(!pq.empty()){
 	    node cur = pq.top(); pq.pop();
