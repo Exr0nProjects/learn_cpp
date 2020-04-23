@@ -70,7 +70,7 @@ int dijkstra(){
 	while(!pq.empty()){
 		node cur = pq.top(); pq.pop();
 		
-		printf("floor %d elev %d after %d\n", cur.fl, cur.t, cur.dist);
+		// printf("floor %d elev %d after %d\n", cur.fl, cur.t, cur.dist);
 		//printf("tower -> %5d; floor -> %5d; dist -> %5d\n", cur.t, cur.fl, cur.dist);
 		
 		
@@ -94,15 +94,8 @@ int dijkstra(){
 					node a {i, j, w};
 					pq.push(a);
 				}
-				
-				
 			}
-			
-			
 		}
-		
-		
-		
 	}
 	return -1;
 }
@@ -127,8 +120,6 @@ int main() {
 			while(iss >> temp){
 				stop[i][temp] = true;
 			}
-			
-			
 		}
 		
 		int ans = dijkstra();
@@ -137,12 +128,7 @@ int main() {
 			cout << ans << endl;
 		else
 			cout << "IMPOSSIBLE\n";
-		
-		
 	}	
-  	
-  	
-  	
   	return 0;
 }
 

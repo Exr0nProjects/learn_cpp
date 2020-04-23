@@ -59,7 +59,7 @@ int dijkstra(){
 	for(int i = 0; i<n; i++){
 		if(!stop[i][0]) cont;
 		dist[i][0] = 0;
-		pq.emplace(0, mp(0, 0));
+		pq.emplace(0, mp(0, i));
 	}
 	
 	while(!pq.empty()){
@@ -79,7 +79,7 @@ int dijkstra(){
 			if(!stop[i][cur.s.f]) cont;
 			
 			for(int j = 0; j<=100; j++){
-				if(!stop[i][j] || j == cur.s.s) cont;
+				if(!stop[i][j] || j == cur.s.f) cont;
 				
 				int& D = dist[i][j];
 				int w = cur.f + get_dist(i, cur.s.f, j) + ele(cur.s.s, i);
