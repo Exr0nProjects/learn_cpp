@@ -56,8 +56,6 @@ LANG: C++14
 #define FORR(i, e) FORR_(i, 0, e)
 #define TRAV(a, x) for (auto &a : x)
 
-void setIO(const std::string &name = "116up");
-
 using namespace std;
 const int MXN = 20;
 const int MXM = 110;
@@ -75,12 +73,13 @@ inline int mod(int num)
 
 int main()
 {
+    // freopen("test.out", "w+", stdout);
     while (scanf("%d%d", &N, &M) == 2)
     {
 	memset(tab, 0, sizeof tab);
 	memset(pre, 0, sizeof pre);
 
-	FOR(n, N) FOR(m, M)
+	FOR(n, N) FORR(m, M)		// FIX: big brain: input backwards so that everything else works nicely
 	    scanf("%d", &tab[n][m]);
 
 	FOR_(j, 1, M)
@@ -89,10 +88,10 @@ int main()
 		// get min previous step
 		int mn = max((int)i-1, 0);
 		FOR_(k, i-1, i+2)
-		    if (tab[mn][j-1] > tab[mod(k)][j-1])
+		    if (tab[mn][j-1] > tab[mod(k)][j-1] || (tab[mn][j-1] == tab[mod(k)][j-1] && mod(mn) > mod(j-1)))
 			mn = mod(k);
 
-		// printf("min at (%d %d) is from %d\n", i, j, mn);
+		printf("min at (%d %d) is from %d\n", i, j, mn);
 		
 		// use min
 		tab[i][j] += tab[mn][j-1];
@@ -104,20 +103,17 @@ int main()
 	    if (tab[ret][M-1] > tab[i][M-1])
 		ret = i;
 
-	reconstruct(ret, M-1); printf("\n");
-	printf("%d\n", tab[ret][M-1]);
+	int ogret = ret;
+
+	FORR(j, M)
+	{
+	    printf("%d", ret+1);
+	    if (j) printf(" ");
+	    ret = pre[ret][j];
+	}
+
+	printf("\n%d\n", tab[ogret][M-1]);
     }
 
     return 0;
-}
-
-void setIO(const string &name)
-{
-    ios_base::sync_with_stdio(0);
-    cin.tie(0); // fast cin/cout
-    if (fopen((name + ".in").c_str(), "r") != nullptr)
-    {
-        freopen((name + ".in").c_str(), "r", stdin);
-        freopen((name + ".out").c_str(), "w+", stdout);
-    }
 }
