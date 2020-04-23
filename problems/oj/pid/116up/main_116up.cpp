@@ -73,7 +73,7 @@ inline int mod(int num)
 
 int main()
 {
-    // freopen("test.out", "w+", stdout);
+    freopen("test.out", "w+", stdout);
     while (scanf("%d%d", &N, &M) == 2)
     {
 	memset(tab, 0, sizeof tab);
@@ -86,16 +86,15 @@ int main()
 	    FOR(i, N)
 	    {
 		// get min previous step
-		int mn = max((int)i-1, 0);
+		pair<int, int> mn = mp(1<<30, 1<<30);	// pair< cost, i-val >
 		FOR_(k, i-1, i+2)
-		    if (tab[mn][j-1] > tab[mod(k)][j-1] || (tab[mn][j-1] == tab[mod(k)][j-1] && mod(mn) > mod(j-1)))
-			mn = mod(k);
+		    mn = min(mn, mp(tab[mod(k)][j-1], mod(k)));
 
-		printf("min at (%d %d) is from %d\n", i, j, mn);
+		// printf("min at (%d %d) is from %d\n", i, j, mn.S);
 		
 		// use min
-		tab[i][j] += tab[mn][j-1];
-		pre[i][j] = mn;
+		tab[i][j] += tab[mn.S][j-1];
+		pre[i][j] = mn.S;
 	    }
 
 	int ret=0;
