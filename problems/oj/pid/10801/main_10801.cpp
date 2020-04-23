@@ -45,18 +45,8 @@ LANG: C++14
 #define pb push_back
 #define eb emplace_back
 #define mp make_pair
-#define F first
-#define S second
-#define g(t, i) get<i>(t)
-#define mt make_tuple
-
-#define FOR_(i, b, e) for (long long i = (b); i < (e); ++i)
-#define FOR(i, e) FOR_(i, 0, (e))
-#define FORR_(i, b, e) for (long long i = (e)-1; i >= (b); --i)
-#define FORR(i, e) FORR_(i, 0, e)
-#define TRAV(a, x) for (auto &a : x)
-
-void setIO(const std::string &name = "10801");
+#define f first
+#define s second
 
 using namespace std;
 const int MXN = 10;
@@ -71,13 +61,13 @@ int main()
 {
     while (scanf("%d%d", &N, &K) == 2)
     {
-	FOR(i, MXN) stops[i].clear();
-	FOR(i, MXF) stopsat[i].clear();
+	for (int i=0; i<MXN; ++i) stops[i].clear();
+	for (int i=0; i<MXF; ++i) stopsat[i].clear();
 	memset(speed, 0, sizeof speed);
 	memset(dist, 0x40, sizeof dist);
 	memset(vis, 0, sizeof vis);
 
-	FOR(i, N) scanf("%d", &speed[i]);
+	for (int i=0; i<N; ++i) scanf("%d", &speed[i]);
 	for (int i=0; i<N;)
 	{
 	    int f, c;
@@ -94,27 +84,23 @@ int main()
 	while (!pq.empty())
 	{
 	    pair<int, State> cur = pq.top(); pq.pop();
-	    if (cur.F > 0) printf("floor %d elev %d after %d\n", cur.S.F, cur.S.S, cur.F);
-	    
-	    if (cur.S.F == K)
+	    // printf("floor %d elev %d after %d\n", cur.s.f, cur.s.s, cur.f);
+
+	    if (cur.s.f == K)
 	    {
+		printf("%d\n", max(cur.f, 0));
 		legit=1;
-		cout << max(cur.F, 0) << endl;
 		break;
 	    }
 
-	    if (vis[cur.S.F][cur.S.S]) continue;
-	    vis[cur.S.F][cur.S.S] = true;
+	    if (vis[cur.s.f][cur.s.s]) continue;
+	    vis[cur.s.f][cur.s.s] = true;
 
-	    /*
-	    if (dist[cur.S.F][cur.S.S] < cur.F) continue;
-	    dist[cur.S.F][cur.S.S] = cur.F;
-	    */
-
-	    TRAV(e, stopsat[cur.S.F])	// change elevators
-		TRAV(f, stops[e])	// change floors
+	    for (auto e : stopsat[cur.s.f])
+		for (auto f : stops[e])
 		{
-		    const int eta = cur.F + (e != cur.S.S)*60 + abs(cur.S.F - f) * speed[e];
+		    if (f == cur.s.f) continue;
+		    const int eta = cur.f + (e != cur.s.s)*60 + abs(cur.s.f - f) * speed[e];
 		    if (dist[f][e] > eta)
 		    {
 			dist[f][e] = eta;
@@ -127,3 +113,4 @@ int main()
 
     return 0;
 }
+
