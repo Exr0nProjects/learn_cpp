@@ -42,12 +42,10 @@ int main()
 	for (int i=0; i<MXN; ++i) stops[i].clear();
 	for (int i=0; i<MXF; ++i) stopsat[i].clear();
 	memset(speed, 0, sizeof speed);
-	memset(dist, byte_max, sizeof dist);
+	memset(dist, 0x40, sizeof dist);
 	memset(vis, 0, sizeof vis);
 
-	for(int i = 0; i<N; i++){
-	    cin >> speed[i];
-	}
+	for (int i=0; i<N; ++i) scanf("%d", &speed[i]);
 
 	cin.ignore();
 	for(int i = 0; i<N; i++){
