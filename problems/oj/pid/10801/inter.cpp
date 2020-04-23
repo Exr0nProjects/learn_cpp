@@ -17,7 +17,6 @@
 #include <list>
 #include <fstream>
 
-#define cont continue
 #define int_max 0x3f3f3f3f
 #define byte_max 0x3f
 #define pow_2(n) (1 << n)
@@ -30,28 +29,28 @@
 using namespace std;
 const int MXN = 10;
 const int MXF = 110;
-typedef pair<int, pair<int, int> > node; // < dist, < floor, tower > >
+typedef pair<int, int> State; // <floor number, elevator id>
 
-bool stop[MXN][MXF], vis[MXN][MXF];
-int cost[MXN], dist[MXN][MXF], n, k;
+bool vis[MXF][MXN];
+int cost[MXN], dist[MXN][MXF], N, K;
 list<int> stops[MXN];
 list<int> stopsat[MXF];
 
 int main() {
 
-    while(cin >> n >> k){
+    while(cin >> N >> K){
 	for (int i=0; i<MXN; ++i) stops[i].clear();
 	for (int i=0; i<MXF; ++i) stopsat[i].clear();
 	memset(cost, 0, sizeof(cost));
 	memset(dist, byte_max, sizeof(dist));
 	memset(vis, false, sizeof(vis));
 
-	for(int i = 0; i<n; i++){
+	for(int i = 0; i<N; i++){
 	    cin >> cost[i];
 	}
 
 	cin.ignore();
-	for(int i = 0; i<n; i++){
+	for(int i = 0; i<N; i++){
 	    string a;
 	    getline(cin, a);
 	    istringstream iss (a);
@@ -63,41 +62,37 @@ int main() {
 	}
 
 	// djikstra
-
-	priority_queue<node, deque<node>, greater<node> > pq;
-	pq.emplace(-60, mp(0, n+1));
+	priority_queue<pair<int, State>, deque<pair<int, State> >, greater<pair<int, State> > > pq;
+	pq.emplace(-60, mp(0, N+1));
 	bool legit=0;
-	while(!pq.empty()){
-	    node cur = pq.top(); pq.pop();
+	while (!pq.empty())
+	{
+	    pair<int, State> cur = pq.top(); pq.pop();
 	    // printf("floor %d elev %d after %d\n", cur.s.f, cur.s.s, cur.f);
-	    //printf("tower -> %5d; floor -> %5d; dist -> %5d\n", cur.t, cur.fl, cur.dist);
 
-	    if(cur.s.f == k)
+	    if(cur.s.f == K)
 	    {
 		printf("%d\n", cur.f);
 		legit=1;
 		break;
 	    }
 
-	    if(vis[cur.s.s][cur.s.f]) cont;
+	    if(vis[cur.s.f][cur.s.s]) continue;
+	    vis[cur.s.f][cur.s.s] = true;
 
-	    vis[cur.s.s][cur.s.f] = true;
-
-	    for (auto i : stopsat[cur.s.f])
-	    {
-		for (auto j : stops[i])
+	    for (auto e : stopsat[cur.s.f])
+		for (auto f : stops[e])
 		{
-		    if (j == cur.s.f) cont;
+		    if (f == cur.s.f) continue;
 
-		    int& D = dist[i][j];
-		    const int w = cur.f + (cur.s.s != i)*60 + abs(cur.s.f - j) * cost[i];
+		    int& D = dist[e][f];
+		    const int eta = cur.f + (cur.s.s != e)*60 + abs(cur.s.f - f) * cost[e];
 
-		    if(D > w){
-			D = w;
-			pq.emplace(w, mp(j, i));
+		    if(D > eta){
+			D = eta;
+			pq.emplace(eta, mp(f, e));
 		    }
 		}
-	    }
 	}
 
 	if (!legit)
