@@ -73,7 +73,7 @@ inline int mod(int num)
 
 int main()
 {
-    freopen("test.out", "w+", stdout);
+    // freopen("test.out", "w+", stdout);
     while (scanf("%d%d", &N, &M) == 2)
     {
 	memset(tab, 0, sizeof tab);
