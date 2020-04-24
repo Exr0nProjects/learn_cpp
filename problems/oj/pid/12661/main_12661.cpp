@@ -69,7 +69,6 @@ int dist[MX];
 
 int main()
 {
-    freopen("test.out", "w+", stdout);
     int kase=0;
     while (scanf("%d%d%d%d", &N, &M, &S, &T) == 4)
     {
@@ -99,7 +98,7 @@ int main()
 	while (!pq.empty())
 	{
 	    pair<int, int> cur = pq.top(); pq.pop();
-	    // printf("at %d after %d\n", cur.S, cur.F);
+	    printf("at %d after %d\n", cur.S, cur.F);
 	    if (cur.S == T)
 	    {
 		printf("Case %d: %d\n", ++kase, cur.F);

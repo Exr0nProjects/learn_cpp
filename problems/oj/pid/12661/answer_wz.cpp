@@ -56,12 +56,14 @@ int dijkstra(){
 
     while(!pq.empty()){
 	node cur = pq.top(); pq.pop();
+	printf("at %d after %d\n", cur.key, cur.dist);
 
 	if(cur.key == des) return cur.dist;
 
 	if(vis[cur.key]) cont;
 
 	vis[cur.key] = true;
+
 
 	int ind = lower_bound(U, U + E, cur.key) - U;
 
