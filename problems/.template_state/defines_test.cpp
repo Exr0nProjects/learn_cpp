@@ -45,8 +45,8 @@ LANG: C++14
 #define pb push_back
 #define eb emplace_back
 #define mp make_pair
-#define F first
-#define S second
+#define f first
+#define s second
 #define g(t, i) get<i>(t)
 #define mt make_tuple
 
