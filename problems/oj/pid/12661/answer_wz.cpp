@@ -26,17 +26,17 @@
 using namespace std;
 
 struct node{
-	int dist, key;
-	bool operator < (const node& b) const{
-		return dist > b.dist;
-	}
+    int dist, key;
+    bool operator < (const node& b) const{
+	return dist > b.dist;
+    }
 } ;
 
 struct edge{
-	int u, v, a, b, w; //from 'u' to 'v'; open for 'a', closed for 'b'; has a weight of w
-	bool operator < (const edge& b) const{
-		return u < b.u;
-	}
+    int u, v, a, b, w; //from 'u' to 'v'; open for 'a', closed for 'b'; has a weight of w
+    bool operator < (const edge& b) const{
+	return u < b.u;
+    }
 } edges[max_e];
 
 int U[max_e], dist[max_v]; //U helps with binary search
@@ -45,82 +45,82 @@ bool vis[max_v];
 
 
 int dijkstra(){
-	
-	memset(dist, byte_max, sizeof(dist));
-	memset(vis, false, sizeof(vis));
-	
-	priority_queue<node> pq;
-	node s {0, src};
-	dist[src] = 0;
-	pq.push(s);
-	
-	while(!pq.empty()){
-		node cur = pq.top(); pq.pop();
-		
-		if(cur.key == des) return cur.dist;
-		
-		if(vis[cur.key]) cont;
-		
-		vis[cur.key] = true;
-		
-		int ind = lower_bound(U, U + E, cur.key) - U;
-		
-		if(U[ind] != cur.key) cont;
-		
-		for(int i = ind; edges[i].u == cur.key && i < E; i++){
-			edge e = edges[i];
-			
-			node b {0, e.v};
-			
-			if(e.w > e.a) cont;
-			
-			if((cur.dist % (e.a + e.b) < e.a) && ((cur.dist % (e.a + e.b)) + e.w <= e.a)){
-				b.dist = cur.dist + e.w;
-			}else{
-				b.dist = cur.dist + e.a + e.b - (cur.dist % (e.a + e.b)) + e.w;
-			}
-			
-			
-			if(dist[b.key] > b.dist){
-				dist[b.key] = b.dist;
-				pq.push(b);
-			}
-			
-			
-			
-		}	
-		
-	}
-	
-	return -1;
-	
+
+    memset(dist, byte_max, sizeof(dist));
+    memset(vis, false, sizeof(vis));
+
+    priority_queue<node> pq;
+    node s {0, src};
+    dist[src] = 0;
+    pq.push(s);
+
+    while(!pq.empty()){
+	node cur = pq.top(); pq.pop();
+
+	if(cur.key == des) return cur.dist;
+
+	if(vis[cur.key]) cont;
+
+	vis[cur.key] = true;
+
+	int ind = lower_bound(U, U + E, cur.key) - U;
+
+	if(U[ind] != cur.key) cont;
+
+	for(int i = ind; edges[i].u == cur.key && i < E; i++){
+	    edge e = edges[i];
+
+	    node b {0, e.v};
+
+	    if(e.w > e.a) cont;
+
+	    if((cur.dist % (e.a + e.b) < e.a) && ((cur.dist % (e.a + e.b)) + e.w <= e.a)){
+		b.dist = cur.dist + e.w;
+	    }else{
+		b.dist = cur.dist + e.a + e.b - (cur.dist % (e.a + e.b)) + e.w;
+	    }
+
+
+	    if(dist[b.key] > b.dist){
+		dist[b.key] = b.dist;
+		pq.push(b);
+	    }
+
+
+
+	}	
+
+    }
+
+    return -1;
+
 }
 
 
 
 int main() {
-	
-	int kase = 0;
-  	while(scanf("%d%d%d%d", &V, &E, &src, &des) == 4){
 
-  		memset(U, 0, sizeof(U));
-  		
-		for(int i = 0; i<E; i++){
-			scanf("%d%d%d%d%d", &edges[i].u, &edges[i].v, &edges[i].a, &edges[i].b, &edges[i].w);
-		} 
-		
-		sort(edges, edges + E);
-		
-		for(int i = 0; i<E; i++){
-			U[i] = edges[i].u;
-		}
-		
-		printf("Case %d: %d\n", ++kase, dijkstra());
-	  
+    int kase = 0;
+    while(scanf("%d%d%d%d", &V, &E, &src, &des) == 4){
+
+	memset(U, 0, sizeof(U));
+
+	for(int i = 0; i<E; i++){
+	    scanf("%d%d%d%d%d", &edges[i].u, &edges[i].v, &edges[i].a, &edges[i].b, &edges[i].w);
+	} 
+
+	sort(edges, edges + E);
+
+	for(int i = 0; i<E; i++){
+	    U[i] = edges[i].u;
 	}
-	
-	
-	  	
-  	return 0;
+
+	printf("Case %d: %d\n", ++kase, dijkstra());
+
+    }
+
+
+
+    return 0;
 }
 

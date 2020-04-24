@@ -33,8 +33,8 @@
 #define pb push_back
 #define eb emplace_back
 #define mp make_pair
-#define F first
-#define S second
+#define f first
+#define s second
 #define g(t, i) get<i>(t)
 #define mt make_tuple
 
@@ -44,20 +44,9 @@
 #define FORR(i, e) FORR_(i, 0, e)
 #define TRAV(a, x) for (auto &a : x)
 
-#define cont continue
-#define int_max 0x3f3f3f3f
-#define byte_max 0x3f
-#define max_v 330
-#define max_e 50050
-
 using namespace std;
-
-struct node{
-    int dist, key;
-    bool operator < (const node& b) const{
-	return dist > b.dist;
-    }
-} ;
+const int MX = 311;
+const int max_e = 50050;
 
 struct edge{
     int u, v, a, b, w; //from 'u' to 'v'; open for 'a', closed for 'b'; has a weight of w
@@ -66,64 +55,9 @@ struct edge{
     }
 } edges[max_e];
 
-int U[max_e], dist[max_v]; //U helps with binary search
+int U[max_e], dist[MX]; //U helps with binary search
 int V, E, src, des;
-bool vis[max_v];
-
-
-int dijkstra(){
-
-    memset(dist, byte_max, sizeof(dist));
-    memset(vis, false, sizeof(vis));
-
-    priority_queue<node> pq;
-    node s {0, src};
-    dist[src] = 0;
-    pq.push(s);
-
-    while(!pq.empty()){
-	node cur = pq.top(); pq.pop();
-
-	if(cur.key == des) return cur.dist;
-
-	if(vis[cur.key]) cont;
-
-	vis[cur.key] = true;
-
-	int ind = lower_bound(U, U + E, cur.key) - U;
-
-	if(U[ind] != cur.key) cont;
-
-	for(int i = ind; edges[i].u == cur.key && i < E; i++){
-	    edge e = edges[i];
-
-	    node b {0, e.v};
-
-	    if(e.w > e.a) cont;
-
-	    if((cur.dist % (e.a + e.b) < e.a) && ((cur.dist % (e.a + e.b)) + e.w <= e.a)){
-		b.dist = cur.dist + e.w;
-	    }else{
-		b.dist = cur.dist + e.a + e.b - (cur.dist % (e.a + e.b)) + e.w;
-	    }
-
-
-	    if(dist[b.key] > b.dist){
-		dist[b.key] = b.dist;
-		pq.push(b);
-	    }
-
-
-
-	}	
-
-    }
-
-    return -1;
-
-}
-
-
+bool vis[MX];
 
 int main() {
 
@@ -142,11 +76,50 @@ int main() {
 	    U[i] = edges[i].u;
 	}
 
-	printf("Case %d: %d\n", ++kase, dijkstra());
+	// djikstra
+	memset(dist, 0x3f, sizeof(dist));
+	memset(vis, false, sizeof(vis));
 
+	priority_queue<pair<int, int>, deque<pair<int, int> >, greater<pair<int, int> > > pq;
+	pair<int, int> s{0, src};
+	dist[src] = 0;
+	pq.push(s);
+
+	while(!pq.empty()){
+	    pair<int, int> cur = pq.top(); pq.pop();
+	    // printf("at %d after %d\n", cur.s, cur.f);
+
+	    if(cur.s == des)
+		printf("Case %d: %d\n", ++kase, cur.f);
+
+	    if(vis[cur.s]) continue;
+
+	    vis[cur.s] = true;
+
+	    int ind = lower_bound(U, U + E, cur.s) - U;
+
+	    if(U[ind] != cur.s) continue;
+
+	    for(int i = ind; edges[i].u == cur.s && i < E; i++){
+		edge e = edges[i];
+
+		pair<int, int> b {0, e.v};
+
+		if(e.w > e.a) continue;
+
+		if((cur.f % (e.a + e.b) < e.a) && ((cur.f % (e.a + e.b)) + e.w <= e.a)){
+		    b.f = cur.f + e.w;
+		}else{
+		    b.f = cur.f + e.a + e.b - (cur.f % (e.a + e.b)) + e.w;
+		}
+
+		if (dist[b.s] > b.f){
+		    dist[b.s] = b.f;
+		    pq.push(b);
+		}
+	    }	
+	}
     }
-
-
 
     return 0;
 }
