@@ -13,6 +13,9 @@
 	- Base cases for all arguments, both high and low end
 	- Make sure you have a `pre` if the graph is bidirectional
 	- Check for `if (nxt != pre)` not `if (cur != pre)`
+    - Djikstra Pointers
+	- No vis array, just check if `dist` is already less after popping from pq
+	- Remember to set dist when pushing into pq so you don't need to do it when popping
 - [ ] Paaper work
     - Do more of it...?
     - PSUDOCODE!!
