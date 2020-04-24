@@ -56,8 +56,6 @@ LANG: C++14
 #define FORR(i, e) FORR_(i, 0, e)
 #define TRAV(a, x) for (auto &a : x)
 
-void setIO(const std::string &name = "12661");
-
 using namespace std;
 const int MX = 311;
 int N, M, S, T;
@@ -108,7 +106,6 @@ int main()
 	    }
 
 	    if (dist[cur.S] < cur.F) continue;
-	    dist[cur.S] = cur.F;
 
 	    TRAV(e, head[cur.S])
 	    {
@@ -118,13 +115,19 @@ int main()
 		{
 		    // printf("can go from %d to %d at time %d\n", cur.S, e.v, cur.F);
 		    if (dist[e.v] > cur.F + e.w)
+		    {
+			dist[e.v] = cur.F + e.w;
 			pq.emplace(cur.F + e.w, e.v);
+		    }
 		}
 		else
 		{
 		    // printf("cat go from %d to %d, waiting till %d\n", cur.S, e.v, (cur.F/(e.a+e.b)+1)*(e.a+e.b));
 		    if (e.a >= e.w)
-			pq.emplace((cur.F/(e.a+e.b)+1)*(e.a+e.b) + e.w, e.v);
+		    {
+			dist[e.v] = (cur.F/(e.a+e.b)+1)*(e.a+e.b) + e.w;
+			pq.emplace( (cur.F/(e.a+e.b)+1)*(e.a+e.b) + e.w, e.v );
+		    }
 		}
 	    }
 	}
