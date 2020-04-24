@@ -68,13 +68,18 @@ int main()
 	memset(vis, 0, sizeof vis);
 
 	for (int i=0; i<N; ++i) scanf("%d", &speed[i]);
-	for (int i=0; i<N;)
+
+	cin.ignore(); // FIX: waymo's string stream code
+	for (int i=0; i<N; ++i)
 	{
-	    int f, c;
-	    scanf("%d%c", &f, &c);
-	    stops[i].pb(f);
-	    stopsat[f].pb(i);
-	    if (c == '\n') ++i;
+	    string a;
+	    getline(cin, a);
+	    istringstream iss (a);
+	    int temp;
+	    while(iss >> temp){
+		stops[i].pb(temp);
+		stopsat[temp].pb(i);
+	    }
 	}
 
 	// djikstra
@@ -88,7 +93,7 @@ int main()
 
 	    if (cur.s.f == K)
 	    {
-		printf("%d\n", max(cur.f, 0));
+		printf("%d\n", max(cur.f, 0));	// FIX: don't output -60 if target floor is zero
 		legit=1;
 		break;
 	    }
@@ -99,7 +104,6 @@ int main()
 	    for (auto e : stopsat[cur.s.f])
 		for (auto f : stops[e])
 		{
-		    if (f == cur.s.f) continue;
 		    const int eta = cur.f + (e != cur.s.s)*60 + abs(cur.s.f - f) * speed[e];
 		    if (dist[f][e] > eta)
 		    {
@@ -108,7 +112,7 @@ int main()
 		    }
 		}
 	}
-	if (!legit) cout << "IMPOSSIBLE" << endl;
+	if (!legit) printf("IMPOSSIBLE\n");
     }
 
     return 0;

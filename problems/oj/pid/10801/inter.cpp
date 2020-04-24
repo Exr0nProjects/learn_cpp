@@ -1,27 +1,37 @@
 #include <iostream>
-#include <cmath>
-#include <algorithm>
-#include <cstring>
-#include <cstdio>
-#include <cstdlib>
-#include <vector>
-#include <map>
-#include <stack>
-#include <bitset>
-#include <queue>
-#include <unordered_map>
-#include <set>
-#include <string>
 #include <sstream>
-#include <functional>
+#include <cstdio>
+#include <tuple>
+#include <vector>
+#include <string>
+#include <cstring>
 #include <list>
-#include <fstream>
+#include <array>
+#include <queue>
+#include <stack>
+#include <set>
+#include <map>
+#include <unordered_set>
+#include <unordered_map>
+#include <cmath>
+#include <random>
+#include <chrono>
+#include <utility>
+#include <iterator>
+#include <exception>
+#include <algorithm>
+#include <functional>
 
-#define int_max 0x3f3f3f3f
-#define byte_max 0x3f
-#define pow_2(n) (1 << n)
+#define ll long long
+#define dl double
+#define ca const auto &
+
+#define vi vector<int>
+#define pii pair<int, int>
+#define vii vector<pii>
 
 #define pb push_back
+#define eb emplace_back
 #define mp make_pair
 #define f first
 #define s second
@@ -37,8 +47,8 @@ bool vis[MXF][MXN];
 
 int main()
 {
-
-    while(cin >> N >> K){
+    while (scanf("%d%d", &N, &K) == 2)
+    {
 	for (int i=0; i<MXN; ++i) stops[i].clear();
 	for (int i=0; i<MXF; ++i) stopsat[i].clear();
 	memset(speed, 0, sizeof speed);
