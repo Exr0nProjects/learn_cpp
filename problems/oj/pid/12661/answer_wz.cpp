@@ -80,16 +80,11 @@ int dijkstra(){
 		b.dist = cur.dist + e.a + e.b - (cur.dist % (e.a + e.b)) + e.w;
 	    }
 
-
 	    if(dist[b.key] > b.dist){
 		dist[b.key] = b.dist;
 		pq.push(b);
 	    }
-
-
-
 	}	
-
     }
 
     return -1;

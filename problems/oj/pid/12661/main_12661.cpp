@@ -69,6 +69,7 @@ int dist[MX];
 
 int main()
 {
+    freopen("test.out", "w+", stdout);
     int kase=0;
     while (scanf("%d%d%d%d", &N, &M, &S, &T) == 4)
     {

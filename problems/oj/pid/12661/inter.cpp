@@ -60,6 +60,7 @@ int V, E, src, des;
 bool vis[MX];
 
 int main() {
+    freopen("test.out", "w+", stdout);
 
     int kase = 0;
     while(scanf("%d%d%d%d", &V, &E, &src, &des) == 4){
