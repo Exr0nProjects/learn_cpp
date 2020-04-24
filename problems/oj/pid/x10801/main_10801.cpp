@@ -7,7 +7,6 @@ LANG: C++14
  * Problem 10801 (oj/pid/10801)
  * Create time: Mon 20 Apr 2020 @ 11:57 (PDT)
  * Accept time: [!meta:end!]
- * TODO: TLE
  */
 
 #include <iostream>
@@ -55,7 +54,6 @@ typedef pair<int, int> State; // <floor number, elevator id>
 list<int> stops[MXN];
 list<int> stopsat[MXF];
 int N, K, speed[MXN], dist[MXF][MXN];
-bool vis[MXF][MXN];
 
 int main()
 {
@@ -65,7 +63,6 @@ int main()
 	for (int i=0; i<MXF; ++i) stopsat[i].clear();
 	memset(speed, 0, sizeof speed);
 	memset(dist, 0x40, sizeof dist);
-	memset(vis, 0, sizeof vis);
 
 	for (int i=0; i<N; ++i) scanf("%d", &speed[i]);
 
@@ -98,8 +95,7 @@ int main()
 		break;
 	    }
 
-	    if (vis[cur.s.f][cur.s.s]) continue;
-	    vis[cur.s.f][cur.s.s] = true;
+	    if (dist[cur.s.f][cur.s.s] < cur.f) continue;
 
 	    for (auto e : stopsat[cur.s.f])
 		for (auto f : stops[e])
