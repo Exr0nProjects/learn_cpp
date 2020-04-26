@@ -91,3 +91,8 @@ Tree DP: 13 thru 15, 36 thru 37
 7. https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=854&page=show_problem&problem=3442
 8. https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=854&page=show_problem&problem=1742
 9. https://onlinejudge.org/index.php?option=onlinejudge&Itemid=8&page=show_problem&problem=4399
+
+## Treap problems in XJOI:
+7619
+2164
+1086

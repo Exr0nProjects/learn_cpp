@@ -6,7 +6,7 @@
 using namespace std;
 
 const int MX = 10111;
-int root=1, parent[MX], left[MX], right[MX], weight[MX], value[MX];
+int root=1, alloc=1, parent[MX], left[MX], right[MX], weight[MX], value[MX];
 
 int rotate_right(int node)
 {
@@ -93,7 +93,7 @@ void dump(int cur, int lay=0)
     dump(right[cur], lay+1);
 }
 
-// api
+// recursive api
 int find(int num, int cur=1)
 {
     if (num == value[cur])
@@ -105,9 +105,33 @@ int find(int num, int cur=1)
 	cur = right[cur];
     if (num == 0)
 	return false;
-    return has(num, cur);
+    return find(num, cur);
 }
-// TODO: insert, delete, next, prev, dist
+
+void insert(int num, int cur=1)
+{
+    if (num == value[cur])
+	return;
+    int nxt;
+    if (num < value[cur])
+	nxt = left[cur];
+    if (num > value[cur])
+	nxt = right[cur];
+
+    if (!nxt)
+    {
+	nxt = alloc++;
+	parent[nxt] = cur;
+	left[nxt] = 0;
+	right[nxt] = 0;
+	weight[nxt] = rand() % (1<<30);
+	value[nxt] = num;
+    }
+    else
+	insert(num, nxt);
+}
+
+// TODO: delete, next, prev, dist
 
 int main()
 {
