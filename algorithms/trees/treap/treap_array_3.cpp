@@ -126,6 +126,7 @@ void insert(int num, int cur=1)
 	right[nxt] = 0;
 	weight[nxt] = rand() % (1<<30);
 	value[nxt] = num;
+	heapify_up(nxt);
     }
     else
 	insert(num, nxt);

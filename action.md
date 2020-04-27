@@ -1,5 +1,6 @@
 # Action Items
 
+- [ ] Rewrite treap with arrays, no `parent`, < 50 lines
 - [ ] **Stay alert during contests! Don't make silly mistakes!**
     - Check understanding with the test case!
     - Memoization broken?

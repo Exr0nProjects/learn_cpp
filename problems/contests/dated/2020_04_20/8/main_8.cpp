@@ -43,7 +43,7 @@ int main()
 	if (check(m)) l = m;
 	else r = m;
     }
-    printf("%.2lf\n", (dl)l/1000);
+    printf("%.2lf\n", (dl)(l/10)/100);
 
     return 0;
 }
