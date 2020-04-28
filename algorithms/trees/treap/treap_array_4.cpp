@@ -40,6 +40,8 @@ int insert(int val, int cur=root)
 	if (child[cur][dir])							// if that direction isn't a leaf
 	{
 		int it = insert(val, child[cur][dir]);		// recursively insert
+		if (weight[child[cur][0]] > weight[child[cur][1]])
+			swap(child[cur][0], child[cur][1]);
 		if (weight[cur] < weight[child[cur][dir]])	// if heap property broken
 			rot(cur, 1-dir);						// fix it by rotating branch with new node to top
 		return it;									// return insertion position
