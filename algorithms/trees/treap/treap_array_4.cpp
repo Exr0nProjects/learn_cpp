@@ -13,23 +13,31 @@ inline bool cmp(int l, int r)
 inline int step(int cur, int val)
 { return child[cur][cmp(value[cur], val)]; }
 
-//        R	         R	
-//        |	         |	
-//       cur	        thn	
-//      /   \   --->   /   \
+//        R	             R	
+//        |	             |	
+//       cur	left    thn	
+//      /   \   <---   /   \
 //    thn    C	      A	   cur	
-//   /   \	          /   \
-//  A     B	   	 B     C
+//   /   \	    --->      /   \
+//  A     B	   	right    B     C
 
-int rot(int &cur, bool dir)
+int rot(int cur, bool dir)
 {
 	assert(child[cur][dir]);						// don't rotate an empty node into the tree
 	// TODO: how to update pointer from parent?   
 	int thn = child[cur][dir];						// then, aka new 'cur'
 	child[cur][dir] = child[thn][1-dir];			// update pointer to center child
 	child[thn][dir] = cur;							// update pointer to cur
-	cur = thn;										// update references to cur, since other code expects to be in same position on the tree
+	//cur = thn;									// update references to cur, since other code expects to be in same position on the tree
 	return thn;										// return new 'cur'
+}
+
+int parent(int val, int cur=root)
+{
+	int step = child[cur][cmp(value[cur, val])];	// get next step
+	if (step && value[step] != val)					// if next step exists and isn't the target
+		return parent(val, step);					// go there
+	return cur;										// else, this is the "would be parent"
 }
 
 int insert(int val, int cur=root)
@@ -38,10 +46,8 @@ int insert(int val, int cur=root)
 		return cur;									// return
 	const int dir = cmp(value[cur], val);			// direction to branch at this node
 	if (child[cur][dir])							// if that direction isn't a leaf
-	{
+	{	// TODO: write with parent, maybe?
 		int it = insert(val, child[cur][dir]);		// recursively insert
-		if (weight[child[cur][0]] > weight[child[cur][1]])
-			swap(child[cur][0], child[cur][1]);
 		if (weight[cur] < weight[child[cur][dir]])	// if heap property broken
 			rot(cur, 1-dir);						// fix it by rotating branch with new node to top
 		return it;									// return insertion position
@@ -55,17 +61,23 @@ int insert(int val, int cur=root)
 
 int has(int val)
 {
-	int cur = root;									// start at the root
-	while (cur)										// while at a valid node
-	{
-		if (value[cur] == val) return cur;			// if we found it, return position
-		cur = child[cur][cmp(value[cur], val)];		// else, traverse the tree in the direction based on value
-	}
-	return false;									// no longer at valid node, val must not exist
+	int cur = parent(val);							// find would be parent of val node
+	return child[cur][cmp(value[cur], val)];		// return whether correct child exists
 }
 
 int erase(int val)
 {
-	int cur = has(val);								// find the node
+	int pre, cur = has(val);						// find the node
 	if (!cur) return;								// if it doesn't exist, then we're done!
-	if (child[cur][0] && child[cur][1])				// both children exist
+	while (child[cur][0] && child[cur][1])			// both children exist
+	{
+		int l = weight[child[cur][0]];				// get weight of left
+		int r = weight[child[cur][1]];				// get weight of right
+		rot(cur, l > r);							// rotate away from bigger (so bigger ends on top)
+	}
+	child[
+	// delete the node
+	child[cur][0] = child[cur
+	value[cur] = 0;
+	weight[cur] = 0;
+
