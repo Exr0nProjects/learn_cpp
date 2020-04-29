@@ -47,20 +47,24 @@ int insert(int val, int &cur=root)
 	if (value[cur] == val)							// if already exists
 		return cur;									// return
 	printf("inserting %d from %d\n", val, cur);
+	int it;
 	if (step(cur, val))								// if that direction isn't a leaf
 	{	// TODO: write with parent, maybe?
-		int it = insert(val, step(cur, val));		// recursively insert
-		if (weight[cur] < weight[step(cur, val)])	// if heap property broken
-			rot(cur, cmp(value[cur], val));			// fix it by rotating branch with new node to top
-		return it;									// return insertion position
+		it = insert(val, step(cur, val));			// recursively insert
 	}
+	else
+	{
+		it = alloc++;
+		value[it] = val;							// set value
+		weight[it] = rand() % (MX*1000); 			// 0.1% chance of weight collision
+		printf("weight: %d\n", weight[it]);
+		step(cur, val) = it;						// set pointer from parent to child
+		if (!root) root = it;						// set root if this is the first node
+	}
+	if (weight[cur] < weight[it])					// if heap property broken
+		rot(cur, cmp(value[cur], val));				// fix it by rotating branch with new node to top
+	return it;										// return insertion position
 	// insert here
-	value[alloc] = val;								// set value
-	weight[alloc] = rand() % (MX*1000); 			// 0.1% chance of weight collision
-	printf("weight: %d\n", weight[alloc]);
-	step(cur, val) = alloc;							// set pointer from parent to child
-	if (!root) root = alloc;						// set root if this is the first node
-	return alloc++;									// return insertion position, increase size counter
 }
 
 int has(int val)
@@ -94,7 +98,8 @@ void dump(int cur=root, int lay=1)
 {
 	if (!cur) return;
 	dump(child[cur][1], lay+1);
-	for (int i=1; i<lay; ++i) printf("    "); printf("|--- %d - %d at %d\n", value[cur], weight[cur], cur);
+	for (int i=1; i<lay; ++i) printf("    ");
+	printf("|--- %d - %d at %d\n", value[cur], weight[cur], cur);
 	dump(child[cur][0], lay+1);
 }
 
