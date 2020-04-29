@@ -15,7 +15,15 @@
 11:39 | should be ok | coding #3
 11:49 | #2 still in judge queue, can't submit c++ for #3 | psudo #5
 11:59 | should be ok | coding #5
-12:15 | WA #5 | debugging
+12:15 | WA #5 | debugging #3
+12:32 | still dunno how to submit #3 | psudo #6
+12:42 | should be ok | coding #6
+13:00 | psudocoding wasn't detailed enough, this doesn't work so well | coding #6
+13:04 | meh | submitting #2
+13:05 | AC #2 | debugging presentation error #1
+13:12 | AC #1 | debugging WA #5
+13:37 | #5 still WA, I don't know how to manipulate floor | analysing #4
+13:42 | have binary search plan for #4 | psudocoding #4
 
 ## Contest Reflection
 
