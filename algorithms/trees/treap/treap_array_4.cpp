@@ -48,13 +48,12 @@ int insert(int val, int &cur=root)
 		return cur;									// return
 	printf("inserting %d from %d\n", val, cur);
 	int it;
+	// TODO: write with parent, maybe? but where would the rotation code go
 	if (step(cur, val))								// if that direction isn't a leaf
-	{	// TODO: write with parent, maybe?
 		it = insert(val, step(cur, val));			// recursively insert
-	}
-	else
+	else 											// else, insert here
 	{
-		it = alloc++;
+		it = alloc++;								// get next insertion position
 		value[it] = val;							// set value
 		weight[it] = rand() % (MX*1000); 			// 0.1% chance of weight collision
 		printf("weight: %d\n", weight[it]);
@@ -64,7 +63,6 @@ int insert(int val, int &cur=root)
 	if (weight[cur] < weight[it])					// if heap property broken
 		rot(cur, cmp(value[cur], val));				// fix it by rotating branch with new node to top
 	return it;										// return insertion position
-	// insert here
 }
 
 int has(int val)
@@ -77,6 +75,7 @@ int has(int val)
 
 void erase(int val)
 {
+	printf("erasing %d\n", val);
 	int big, pre = parent(val);						// get would be parent
 	int &cur = step(pre, val);						// and child if it exists
 	if (!cur) return;								// if child doesn't exist, we're done!
