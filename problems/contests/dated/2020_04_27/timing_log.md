@@ -10,6 +10,8 @@
 10:54 | #6 should work | psudo #1
 10:59 | should be ok, might have to sstream | coding #1
 11:09 | in judge queue | psudo #2
+11:17 | should be ok | coding #2
+11:25 | presentation error #1, PLM #2 | psudo #3
 
 ## Contest Reflection
 
