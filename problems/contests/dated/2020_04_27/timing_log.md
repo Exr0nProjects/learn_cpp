@@ -24,6 +24,9 @@
 13:12 | AC #1 | debugging WA #5
 13:37 | #5 still WA, I don't know how to manipulate floor | analysing #4
 13:42 | have binary search plan for #4 | psudocoding #4
+13:48 | should be fine, gonna risk it and not psudocode | coding #4
+14:10 | WA #4, uh oh... | debugging #4
+14:22 | idunno, anyways apparently auto is c++11 only | end
 
 ## Contest Reflection
 

@@ -29,7 +29,7 @@ int find(int cur)
 	if (cur == a || cur == b)
 		return cur;
 	vector<int> child;
-	for (auto it=head[cur].begin(); it!=head[cur].end(); ++it)
+	for (list<int>::iterator it=head[cur].begin(); it!=head[cur].end(); ++it)
 		if (find(*it))
 			child.push_back(*it);
 	if (child.size() == 0)
