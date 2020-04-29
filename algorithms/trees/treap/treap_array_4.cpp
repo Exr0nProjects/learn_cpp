@@ -1,5 +1,9 @@
-// treap array rewrite, hopefully clean (27 Apr 2020)
-// does not reuse memory after deletion... use an alloc pq for that
+/* treap array rewrite, hopefully clean (27 Apr 2020)
+ * does not reuse memory after deletion... use an alloc pq for that
+ * TODO: breaks if a node with negative value is rotated into the root position, due to parent
+ * TODO: erase doesn't work
+ * TODO: prev, next, dist
+ */
 
 #include <algorithm>	// swap
 #include <iostream>		// io
@@ -65,7 +69,7 @@ int insert(int val, int &cur=root)
 	return it;										// return insertion position
 }
 
-int has(int val)
+int find(int val)
 { 
 	return step(parent(val), val) || !(				// either wouldbe parent has correct child
 		cmp(value[root], val) ||					// or value is root (reflexive compare)
@@ -125,7 +129,7 @@ int main()
 		else if (c == 'q')
 		{
 			scanf("%d", &d);
-			printf("%d\n", (bool)has(d));
+			printf("%d\n", (bool)find(d));
 		}
 		else if (c == 'x')
 		{
