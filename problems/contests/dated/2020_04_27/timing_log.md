@@ -12,6 +12,8 @@
 11:09 | in judge queue | psudo #2
 11:17 | should be ok | coding #2
 11:25 | presentation error #1, PLM #2 | psudo #3
+11:39 | should be ok | coding #3
+11:49 | #2 still in judge queue, can't submit c++ for #3 | analysing #4
 
 ## Contest Reflection
 
