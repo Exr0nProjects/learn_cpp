@@ -56,8 +56,6 @@ LANG: C++14
 #define FORR(i, e) FORR_(i, 0, e)
 #define TRAV(a, x) for (auto &a : x)
 
-void setIO(const std::string &name = "uva1027");
-
 using namespace std;
 const int MX = 130;
 list<char> head[MX];
