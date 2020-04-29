@@ -4,7 +4,7 @@ LANG: C++14
 */
 
 /*
- * Problem uva2299 (contests/dated/2020_04_27/uva2299)
+ * Problem uva2294 (contests/dated/2020_04_27/uva2294)
  * Create time: Wed 29 Apr 2020 @ 11:18 (PDT)
  * Accept time: [!meta:end!]
  *
@@ -56,7 +56,7 @@ LANG: C++14
 #define FORR(i, e) FORR_(i, 0, e)
 #define TRAV(a, x) for (auto &a : x)
 
-void setIO(const std::string &name = "uva2299");
+void setIO(const std::string &name = "uva2294");
 
 using namespace std;
 const int MX = -1;
