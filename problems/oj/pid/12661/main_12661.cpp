@@ -61,77 +61,69 @@ const int MX = 311;
 int N, M, S, T;
 struct Edge
 {
-    int u, v, w, a, b;
-    Edge(int u, int v, int w, int a, int b): u(u), v(v), w(w), a(a), b(b) {}
+	int u, v, w, a, b;
+	Edge(int u, int v, int w, int a, int b): u(u), v(v), w(w), a(a), b(b) {}
 };
 list<Edge> head[MX];
 int dist[MX];
 
 int main()
 {
-    int kase=0;
-    while (scanf("%d%d%d%d", &N, &M, &S, &T) == 4)
-    {
-	FOR(i, MX) head[i].clear();
-	memset(dist, 0x40, sizeof dist);
-
-	FOR(i, M)
+	int kase=0;
+	while (scanf("%d%d%d%d", &N, &M, &S, &T) == 4)
 	{
-	    int u, v, w, a, b;
-	    scanf("%d%d%d%d%d", &u, &v, &a, &b, &w);
-	    head[u].eb(u, v, w, a, b);
-	}
+		FOR(i, MX) head[i].clear();
+		memset(dist, 0x40, sizeof dist);
 
-	/*
-	FOR(i, N)
-	{
-	    printf("head %d:\n", i);
-	    TRAV(e, head[i])
-		printf("%d -%d-> %d (%d %d)\n", e.u, e.w, e.v, e.a, e.b);
-	}
-	*/
-
-	// printf("\nS %d -> T %d\n\n", S, T);
-
-	priority_queue<pair<int, int>, deque<pair<int, int> >, greater<pair<int, int> > > pq;	// <time, node>
-	pq.emplace(0, S);
-	while (!pq.empty())
-	{
-	    pair<int, int> cur = pq.top(); pq.pop();
-	    printf("at %d after %d\n", cur.S, cur.F);
-	    if (cur.S == T)
-	    {
-		printf("Case %d: %d\n", ++kase, cur.F);
-		break;
-	    }
-
-	    if (dist[cur.S] < cur.F) continue;
-
-	    TRAV(e, head[cur.S])
-	    {
-		const int enter = cur.F % (e.a + e.b);
-		const int exit = (cur.F + e.w) % (e.a + e.b);
-		if (enter <= e.a && exit <= e.a && enter / (e.a + e.b) == exit / (e.a + e.b))
+		FOR(i, M)
 		{
-		    // printf("can go from %d to %d at time %d\n", cur.S, e.v, cur.F);
-		    if (dist[e.v] > cur.F + e.w)
-		    {
-			dist[e.v] = cur.F + e.w;
-			pq.emplace(cur.F + e.w, e.v);
-		    }
+			int u, v, w, a, b;
+			scanf("%d%d%d%d%d", &u, &v, &a, &b, &w);
+			head[u].eb(u, v, w, a, b);
 		}
-		else
-		{
-		    // printf("cat go from %d to %d, waiting till %d\n", cur.S, e.v, (cur.F/(e.a+e.b)+1)*(e.a+e.b));
-		    if (e.a >= e.w)
-		    {
-			dist[e.v] = (cur.F/(e.a+e.b)+1)*(e.a+e.b) + e.w;
-			pq.emplace( (cur.F/(e.a+e.b)+1)*(e.a+e.b) + e.w, e.v );
-		    }
-		}
-	    }
-	}
-    }
 
-    return 0;
+		/*
+		   FOR(i, N)
+		   {
+		   printf("head %d:\n", i);
+		   TRAV(e, head[i])
+		   printf("%d -%d-> %d (%d %d)\n", e.u, e.w, e.v, e.a, e.b);
+		   }
+		   */
+
+		// printf("\nS %d -> T %d\n\n", S, T);
+
+		priority_queue<pair<int, int>, deque<pair<int, int> >, greater<pair<int, int> > > pq;	// <time, node>
+		pq.emplace(0, S);
+		while (!pq.empty())
+		{
+			pair<int, int> cur = pq.top(); pq.pop();
+			printf("at %d after %d\n", cur.S, cur.F);
+			if (cur.S == T)
+			{
+				printf("Case %d: %d\n", ++kase, cur.F);
+				break;
+			}
+
+			if (dist[cur.S] < cur.F) continue;
+
+			TRAV(e, head[cur.S])
+			{
+				const int enter = cur.F % (e.a + e.b);
+				const int exit = (cur.F + e.w) % (e.a + e.b);
+				int eta;
+				if (enter <= e.a && exit <= e.a && enter / (e.a + e.b) == exit / (e.a + e.b))
+					eta = cur.F + e.w;
+				else
+					eta = (cur.F/(e.a+e.b)+1)*(e.a+e.b) + e.w;
+				if (dist[e.v] > eta)
+				{
+					dist[e.v] = eta;
+					pq.emplace(eta, e.v);
+				}
+			}
+		}
+	}
+
+	return 0;
 }

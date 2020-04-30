@@ -96,3 +96,12 @@ Tree DP: 13 thru 15, 36 thru 37
 7619
 2164
 1086
+
+## Problems for you to test out your classic graph algorithms' codes
+| Algorithm | XJOI ID |
+|-----------|---------|
+Dijkstra | 1061
+Bellman-Ford | 7506
+Floyd | 7506
+Kruskal | 7265
+Prim | 7266
