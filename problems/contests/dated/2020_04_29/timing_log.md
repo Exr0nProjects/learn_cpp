@@ -16,7 +16,8 @@
 18:02 | should be fine | coding #6
 18:20 | trie is bug | coding #6
 18:43 | WA #6 | debugging
-18:49 | dunno what's wrong | analysing #5
+18:49 | dunno what's wrong | debugging #5
+17:03 | casegen bad | analysing #5
 
 ## Contest Reflection
 
