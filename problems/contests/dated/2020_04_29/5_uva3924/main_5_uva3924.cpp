@@ -16,7 +16,7 @@ LANG: C++14
 
 using namespace std;
 const int MX = 400111;
-int alloc=1, trie[MX][30];
+int alloc=1, trie[MX][30]; // suffix trie
 bool isend[MX];
 int tab[MX];
 
