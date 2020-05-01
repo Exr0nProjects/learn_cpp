@@ -11,52 +11,8 @@ LANG: C++14
  */
 
 #include <iostream>
-#include <sstream>
-#include <cstdio>
-#include <tuple>
-#include <vector>
-#include <string>
 #include <cstring>
-#include <list>
-#include <array>
-#include <queue>
-#include <stack>
-#include <set>
-#include <map>
-#include <unordered_set>
-#include <unordered_map>
-#include <cmath>
-#include <random>
-#include <chrono>
-#include <utility>
-#include <iterator>
-#include <exception>
-#include <algorithm>
-#include <functional>
-
-#define ll long long
-#define dl double
-#define ca const auto &
-
-#define vi vector<int>
-#define pii pair<int, int>
-#define vii vector<pii>
-
-#define pb push_back
-#define eb emplace_back
-#define mp make_pair
-#define f first
-#define s second
-#define g(t, i) get<i>(t)
-#define mt make_tuple
-
-#define FOR_(i, b, e) for (long long i = (b); i < (e); ++i)
-#define FOR(i, e) FOR_(i, 0, (e))
-#define FORR_(i, b, e) for (long long i = (e)-1; i >= (b); --i)
-#define FORR(i, e) FORR_(i, 0, e)
-#define TRAV(a, x) for (auto &a : x)
-
-void setIO(const std::string &name = "5_uva3924");
+#include <string>
 
 using namespace std;
 const int MX = 400111;
@@ -72,6 +28,7 @@ void clear()
 	memset(tab, 0, sizeof tab);
 	memset(trie, 0, sizeof trie);
 	memset(isend, 0, sizeof isend);
+	tab[0] = 1;
 }
 void insert(string &s)
 {
@@ -89,11 +46,15 @@ int countback(int idx)
 	int cur=0, tot=0;
 	do {
 		cur = trie[cur][buf[idx]-'a'];
-		printf("moving to %d (via %c)\n", cur, buf[idx]);
-		//if (isend[cur]) tot += tab[idx];
-		if (isend[cur]) tot += 1;
-		tot %= 20071027;
+		//printf("moving to %d (via %c)\n", cur, buf[idx]);
 		-- idx;
+		if (isend[cur])
+		{
+			//printf("idx %d works\n", idx);
+			if (idx < 0) tot += 1;
+			else tot += tab[idx];
+		}
+		tot %= 20071027;
 		if (idx < 0) break;
 	} while (cur);
 	return tot;
@@ -101,9 +62,11 @@ int countback(int idx)
 
 int main()
 {
+	int kase=0;
 	while (scanf("%s", buf))
 	{
 		if (!buf[0]) break;
+		clear();
 		int S;
 		scanf("%d", &S);
 		string word;
@@ -113,32 +76,13 @@ int main()
 			insert(word);
 		}
 
-		while (true)
-		{
-			memset(buf, 0, sizeof buf);
-			scanf("%s", buf);
-			printf("got %d chars: %s\n", strlen(buf), buf);
-			printf("=> %d\n", countback(strlen(buf)-1));
-		}
-
 		int i;
 		for (i=0; buf[i]; ++i)
 		{
 			tab[i] = countback(i);
 		}
-		printf("%d\n", tab[i-1]);
+		printf("Case %d: %d\n", ++kase, tab[i-1]);
 	}
 
     return 0;
-}
-
-void setIO(const string &name)
-{
-    ios_base::sync_with_stdio(0);
-    cin.tie(0); // fast cin/cout
-    if (fopen((name + ".in").c_str(), "r") != nullptr)
-    {
-        freopen((name + ".in").c_str(), "r", stdin);
-        freopen((name + ".out").c_str(), "w+", stdout);
-    }
 }

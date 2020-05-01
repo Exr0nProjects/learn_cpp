@@ -15,6 +15,7 @@
 17:53 | linear DP with suffix trie is O(W*L), should be ok | psudocoding #6
 18:02 | should be fine | coding #6
 18:20 | trie is bug | coding #6
+18:43 | WA #6 | debugging
 
 ## Contest Reflection
 
