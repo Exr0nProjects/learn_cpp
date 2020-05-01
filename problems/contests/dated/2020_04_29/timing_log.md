@@ -8,6 +8,7 @@
 16:09 | have plans for 1-4, 5 and 6 need analysis | walk
 16:15 | walk | coding #2
 16:27 | TLE #2 | coding #3
+17:07 | how to write #3 ? iterators are whack | coding #4
 
 ## Contest Reflection
 

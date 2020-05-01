@@ -50,7 +50,7 @@ void erase(int cur)
 	{
 		const vector<int> &t = tree[tree[cur].parent].children;
 		vector<int>::iterator it;
-		it = lower_bound(t.begin(), t.end(), cur);
+		it = t.find(cur);
 		printf("replacing %d with %d\n", *it, tree[cur].children[0]);
 		*it = cur = tree[cur].children[0];
 	}
