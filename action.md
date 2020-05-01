@@ -4,20 +4,20 @@
 - [ ] **Stay alert during contests! Don't make silly mistakes!**
     - Check understanding with the test case!
     - Memoization broken?
-	- Make sure memoization array is large enough, or it could wrap
-	- Make sure the arguments to the function aren't being modified
+		- Make sure memoization array is large enough, or it could wrap
+		- Make sure the arguments to the function aren't being modified
     - DJS broken?
-	- Init djs!
+		- Init djs!
     - Tree input broken?
-	- Worst case, use an adjacency list, traverse with DFS and `pre`
+		- Worst case, use an adjacency list, traverse with DFS and `pre`
     - DFS infinite loop?
-	- Base cases for all arguments, both high and low end
-	- Make sure you have a `pre` if the graph is bidirectional
-	- Check for `if (nxt != pre)` not `if (cur != pre)`
+		- Base cases for all arguments, both high and low end
+		- Make sure you have a `pre` if the graph is bidirectional
+		- Check for `if (nxt != pre)` not `if (cur != pre)`
     - Djikstra Pointers
-	- No vis array, just check if `dist` is already less after popping from pq
-	- Remember to set dist when pushing into pq so you don't need to do it when popping
-- [ ] Paaper work
+		- No vis array, just check if `dist` is already less after popping from pq
+		- Remember to set dist when pushing into pq so you don't need to do it when popping
+- [ ] Paper work
     - Do more of it...?
     - PSUDOCODE!!
     - Consider MLE too (not just TLE)!
@@ -49,6 +49,8 @@
 - [ ] Redo other problems
     - [ ] s20o
     - [ ] contests/dated/2020_04_07 2..4, 5 someday
+	- [ ] contests/dated/2020_04_27
+	- [ ] contests/dated/2020_04_29
 - [ ] Redo problems as bottom up
     - [ ] #1 dp13 oj12186
     - [ ] #2 dp14 oj1220
@@ -65,5 +67,16 @@
 - [ ] Practice algebra with inequalities, `max` and `min`, `abs`, `floor`.
 - [ ] Familiarity with data structures
     - [ ] Stack, c-dated 2020_04_20/7
+- [ ] Familiarity with classic algorithms (code them a bunch)
+	- KMP
+	- Trees (struct, see contests/dated/2020_04_29 #3)
+	- Trie
+	- Graph shortest paths
+		- Djikstra
+		- Bellman Ford
+		- Floyd
+	- MST
+		- Kruskal
+		- Prim
 - [ ] "If there is some way to remember to step back and avoid my mistake in gold2019open problem 2, that would be helpful as well but I don't know how to systematically avoid that."
 
