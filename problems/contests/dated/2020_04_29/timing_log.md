@@ -9,6 +9,12 @@
 16:15 | walk | coding #2
 16:27 | TLE #2 | coding #3
 17:07 | how to write #3 ? iterators are whack | coding #4
+17:23 | AC #4 | analysing #5
+17:32 | I think it works, we can code it quickly to check | coding #5
+17:41 | WA #5, I guess you have to dp it | analysing #6
+17:53 | linear DP with suffix trie is O(W*L), should be ok | psudocoding #6
+18:02 | should be fine | coding #6
+18:20 | trie is bug | coding #6
 
 ## Contest Reflection
 
