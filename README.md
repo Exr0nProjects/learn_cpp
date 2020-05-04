@@ -1,5 +1,7 @@
 # learn_cpp
 
+[![Actively Developed](https://img.shields.io/badge/Maintenance%20Level-Actively%20Developed-brightgreen.svg)](https://gist.github.com/cheerfulstoic/d107229326a01ff0f333a1d3476e068d)
+
 A compilation of solutions to competative programming problems, especially from low level USACO and 115.236.49.52:83.
 
 ## Exr0n's Handbook
