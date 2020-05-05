@@ -177,7 +177,7 @@ Don't make names too similar, it's easy to make typos (`djs` vs `djf`)
 | Algorithm | Number of times |
 |-----------|-----------------|
 disjoint set 					| x
-kruskal 						| x
+kruskal 						| 
 prim 							| 
 floyd 							| 
 floyd(with path constructed) 	| 
