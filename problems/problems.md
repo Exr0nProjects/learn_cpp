@@ -92,6 +92,9 @@ Tree DP: 13 thru 15, 36 thru 37
 8. https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=854&page=show_problem&problem=1742
 9. https://onlinejudge.org/index.php?option=onlinejudge&Itemid=8&page=show_problem&problem=4399
 
+## Silver Binary Search Test
+https://dev.xjoi.net/contest/1363
+
 ## Treap problems in XJOI:
 7619
 2164
@@ -103,5 +106,7 @@ Tree DP: 13 thru 15, 36 thru 37
 Dijkstra | 1061
 Bellman-Ford | 7506
 Floyd | 7506
-Kruskal | 7265
+Kruskal | 7265, 1060
 Prim | 7266
+Disjoint Set | 8214
+

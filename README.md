@@ -25,6 +25,10 @@ My complexities graph can be found here: <https://www.desmos.com/calculator/bhq7
 
 10^8 operations is usually safe.
 
+## Naming
+
+Don't make names too similar, it's easy to make typos (`djs` vs `djf`)
+
 ## Test Cases
 
 1. Sample test cases
@@ -168,3 +172,20 @@ My complexities graph can be found here: <https://www.desmos.com/calculator/bhq7
     - No internal ordering
     - Constant time access
     - Need custom hash function for pairs
+
+### Algorithms to "memorize"
+| Algorithm | Number of times |
+|-----------|-----------------|
+disjoint set 					| x
+kruskal 						| x
+prim 							| 
+floyd 							| 
+floyd(with path constructed) 	| 
+dijkstra(no pq) 				| 
+dijkstra(pq) 					| 
+bellman ford(no path) 			| 
+bellman ford(with path) 		| 
+tree preorder 					| 
+tree inorder 					| 
+tree postorder 					| 
+
