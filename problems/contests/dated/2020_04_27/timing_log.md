@@ -35,14 +35,12 @@ What knowledge did you use in this test, and which part you didn't do well knowl
 
 #### Problem 1:
 https://onlinejudge.org/index.php?option=onlinejudge&page=show_problem&problem=1167
-
--
+uva10226
 
 #### Problem 2:
 https://icpcarchive.ecs.baylor.edu/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=295
 http://poj.org/problem?id=1003
-
--
+uva2294
 
 #### Problem 3:
 http://poj.org/problem?id=1330
