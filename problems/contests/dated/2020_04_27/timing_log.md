@@ -45,8 +45,6 @@ uva2294
 #### Problem 3:
 http://poj.org/problem?id=1330
 
--
-
 #### Problem 4:
 http://poj.org/problem?id=1861
 
