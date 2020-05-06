@@ -179,7 +179,7 @@ Don't make names too similar, it's easy to make typos (`djs` vs `djf`)
 disjoint set 					| y
 kruskal 						| -
 prim 							| -
-floyd 							| 
+floyd 							| -
 floyd(with path constructed) 	| 
 dijkstra(no pq) 				| 
 dijkstra(pq) 					| 
