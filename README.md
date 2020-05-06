@@ -176,9 +176,9 @@ Don't make names too similar, it's easy to make typos (`djs` vs `djf`)
 ### Algorithms to "memorize"
 | Algorithm | Number of times |
 |-----------|-----------------|
-disjoint set 					| x
-kruskal 						| 
-prim 							| 
+disjoint set 					| y
+kruskal 						| -
+prim 							| -
 floyd 							| 
 floyd(with path constructed) 	| 
 dijkstra(no pq) 				| 
