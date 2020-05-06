@@ -5,16 +5,15 @@ using namespace std;
 const int MX = 10111;
 int N, M, dist[MX][MX], thru[MX][MX];
 
-void printPath(int i, int j)
-{ // TODO: hecka scuffed
-	printf("%3d", i);
+void printPath(int i, int j) // inc i, exc j
+{
 	if (thru[i][j]) // don't print thru if its zero
 	{
 		printPath(i, thru[i][j]);
-		printf("%3d", thru[i][j]);
 		printPath(thru[i][j], j);
 	}
-	printf("%3d", j);
+	else
+		printf("%3d", i);
 }
 
 int main()
@@ -43,7 +42,7 @@ int main()
 		int u, v;
 		scanf("%d%d", &u, &v);
 		printPath(u, v);
-		printf("\n");
+		printf("%3d (cost: %d)\n", v, dist[u][v]);
 	}
 }
 
