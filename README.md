@@ -180,8 +180,8 @@ disjoint set 					| y
 kruskal 						| -
 prim 							| -
 floyd 							| -
-floyd(with path constructed) 	| 
-dijkstra(no pq) 				| 
+floyd(with path constructed) 	| -
+dijkstra(no pq) 				| -
 dijkstra(pq) 					| 
 bellman ford(no path) 			| 
 bellman ford(with path) 		| 
