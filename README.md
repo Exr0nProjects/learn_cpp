@@ -182,7 +182,7 @@ prim 							| -
 floyd 							| -
 floyd(with path constructed) 	| -
 dijkstra(no pq) 				| -
-dijkstra(pq) 					| 
+dijkstra(pq) 					| -
 bellman ford(no path) 			| 
 bellman ford(with path) 		| 
 tree preorder 					| 
