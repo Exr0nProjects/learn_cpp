@@ -1,16 +1,19 @@
+// 7 May 2020, FIX: use long long
+
 #include <vector>
 #include <iostream>
 #include <algorithm>
 
+#define ll long long
 #define pb push_back
 #define mp make_pair
 
 using namespace std;
 const int MX = 100111;
-int N, M;
+ll N, M;
 
 // djs
-int djs[MX], djf[MX];
+ll djs[MX], djf[MX];
 void init()
 {
 	for (int i=0; i<MX; ++i)
@@ -19,12 +22,12 @@ void init()
 		djf[i] = i;
 	}
 }
-int find(int n)
+ll find(ll n)
 {
 	if (djf[n] != n) djf[n] = find(djf[n]);
 	return djf[n];
 }
-void merge(int a, int b)
+void merge(ll a, ll b)
 {
 	a = find(a); b = find(b);
 	if (a == b) return;
@@ -36,16 +39,16 @@ void merge(int a, int b)
 int main()
 {
 	init();
-	vector<pair<int, pair<int, int> > > edges;
-	scanf("%d%d", &N, &M);
+	vector<pair<ll, pair<ll, ll> > > edges;
+	scanf("%lld%lld", &N, &M);
 	for (int i=0; i<M; ++i)
 	{
-		int u, v, w;
-		scanf("%d%d%d", &u, &v, &w);
+		ll u, v, w;
+		scanf("%lld%lld%lld", &u, &v, &w);
 		edges.pb(mp(w, mp(u, v)));
 	}
 	sort(edges.begin(), edges.end());
-	int count=0, cost=0;
+	ll count=0, cost=0;
 	for (auto e : edges)
 	{
 		if (find(e.second.first) != find(e.second.second))
@@ -56,6 +59,6 @@ int main()
 		}
 		if (count + 1 == N) break;
 	}
-	printf("%d\n", cost);
+	printf("%lld\n", cost);
 }
 
