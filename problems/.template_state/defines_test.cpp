@@ -36,19 +36,12 @@ LANG: C++14
 
 #define ll long long
 #define dl double
-#define ca const auto &
-
-#define vi vector<int>
-#define pii pair<int, int>
-#define vii vector<pii>
 
 #define pb push_back
 #define eb emplace_back
 #define mp make_pair
 #define f first
 #define s second
-#define g(t, i) get<i>(t)
-#define mt make_tuple
 
 #define FOR_(i, b, e) for (long long i = (b); i < (e); ++i)
 #define FOR(i, e) FOR_(i, 0, (e))
