@@ -177,10 +177,10 @@ Don't make names too similar, it's easy to make typos (`djs` vs `djf`)
 | Algorithm | Number of times |
 |-----------|-----------------|
 disjoint set 					| y
-kruskal 						| -
-prim 							| -
+kruskal 						| y
+prim 							| y
 floyd 							| -
-floyd(with path constructed) 	| -
+floyd(with path constructed) 	| y
 dijkstra(no pq) 				| -
 dijkstra(pq) 					| -
 bellman ford(no path) 			| 

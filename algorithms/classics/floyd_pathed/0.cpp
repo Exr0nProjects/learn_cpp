@@ -1,8 +1,9 @@
 // 6 may 2020
 #include <iostream>
+#include <cstring> // FIX: include for memset
 
 using namespace std;
-const int MX = 10111;
+const int MX = 1111; // FIX: 1000 not 100
 int N, M, dist[MX][MX], thru[MX][MX];
 
 void printPath(int i, int j) // inc i, exc j
@@ -13,19 +14,22 @@ void printPath(int i, int j) // inc i, exc j
 		printPath(thru[i][j], j);
 	}
 	else
-		printf("%3d", i);
+		printf("%d ", i);
 }
 
 int main()
 {
 	memset(dist, 0x3f, sizeof dist); // FIX: init dist w/ inf!
+	int u, v;
+	scanf("%d%d", &u, &v);
 	scanf("%d%d", &N, &M);
 	for (int i=0; i<MX; ++i) dist[i][i] = 0;
 	for (int i=0; i<M; ++i)
 	{
 		int u, v, w;
 		scanf("%d%d%d", &u, &v, &w);
-		dist[u][v] = w; // construct graph backwards for path reconstruction
+		dist[u][v] = w;
+		dist[v][u] = w;
 	}
 	for (int k=1; k<=N; ++k)
 		for (int i=1; i<=N; ++i)
@@ -35,15 +39,9 @@ int main()
 					dist[i][j] = dist[i][k] + dist[k][j];
 					thru[i][j] = k;
 				}
-	int Q; // num queries
-	scanf("%d", &Q);
-	for (int i=0; i<Q; ++i)
-	{
-		int u, v;
-		scanf("%d%d", &u, &v);
-		printPath(u, v);
-		printf("%3d (cost: %d)\n", v, dist[u][v]);
-	}
+	printf("%d\n", dist[u][v]); // FIX: print out distance first
+	printPath(u, v);
+	if (u != v) printf("%d\n", v);
 }
 
 /*
