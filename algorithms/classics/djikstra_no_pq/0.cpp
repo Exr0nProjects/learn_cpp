@@ -7,12 +7,14 @@
 using namespace std;
 const int MX = 1000111;
 
-int N, M, dist[MX], vis[MX];
+int N, M, dist[MX], vis[MX], pre[MX];
 list<pair<int, int> > head[MX];
 
 int main()
 {
 	memset(dist, 0x3f, sizeof dist);
+	int S, T;
+	scanf("%d%d", &S, &T);
 	scanf("%d%d", &N, &M);
 	for (int i=0; i<M; ++i)
 	{
@@ -21,8 +23,6 @@ int main()
 		head[u].push_back(make_pair(w, v));
 	}
 
-	int S;
-	scanf("%d", &S);
 	dist[S] = 0;
 	int viscount=1;
 	while (viscount < N)
