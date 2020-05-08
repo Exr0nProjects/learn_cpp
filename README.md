@@ -184,7 +184,7 @@ floyd(with path constructed) 	| y
 dijkstra(no pq) 				| y
 dijkstra(pq) 					| y
 bellman ford(no path) 			| -
-bellman ford(with path) 		| 
+bellman ford(with path) 		| y
 tree preorder 					| 
 tree inorder 					| 
 tree postorder 					| 
