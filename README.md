@@ -185,7 +185,7 @@ dijkstra(no pq) 				| y
 dijkstra(pq) 					| y
 bellman ford(no path) 			| -
 bellman ford(with path) 		| y
-tree preorder 					| 
-tree inorder 					| 
-tree postorder 					| 
+tree preorder 					| -
+tree inorder 					| -
+tree postorder 					| -
 
