@@ -43,7 +43,7 @@ void remove(Node *&cur)
 	{
 		const bool dir = cur->c[0]->w < cur->c[1]->w;
 		rotate(cur, dir);
-		remove(cur->c[dir]);
+		remove(cur->c[1-dir]); // FIX: remove the other side, since we rotated not swapped
 	}
 	else
 	{
