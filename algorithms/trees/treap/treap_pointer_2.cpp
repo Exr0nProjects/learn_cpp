@@ -11,7 +11,7 @@ struct Node
 {
 	int data;
 	int w;
-	Node* c[2];
+	Node* c[2] = {};
 	Node(int d): w(rand()%10000), data(d) {}
 } *root = nullptr;
 
@@ -47,11 +47,12 @@ Node*& insert(Node *&cur, int data)
 
 Node *& locate(Node *&cur, int data)
 {
-	if (!cur) return cur;
-	if (cur->data == data) return cur;
+	if (!cur || cur->data == data)
+		return cur;
 	const bool dir = cur->data < data;
-	return locate(cur->c[dir], data); // TODO: segfaults if nullptr
+	return locate(cur->c[dir], data);
 }
+
 
 void remove(Node *&cur)
 {
