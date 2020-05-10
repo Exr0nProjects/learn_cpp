@@ -10,12 +10,23 @@ struct Node
 	Node(int d): d(d), w(rand() % 10000), size(1) {}
 } *root;
 
+inline int size(Node *cur)
+{
+	return cur->c[0] ? cur->c[0]->size : 0
+		+  cur->c[1] ? cur->c[1]->size : 0
+}
+
 void rotate(Node *&cur, bool dir)
 {
 	if (!cur || !cur->c[dir]) return;
 	Node *thn = cur->c[dir];
+
 	cur->c[dir] = thn->c[1-dir];
+	cur->size = size(cur);
+
 	thn->c[1-dir] = cur;
+	thn->size = size(thn);
+
 	cur = thn;
 }
 
