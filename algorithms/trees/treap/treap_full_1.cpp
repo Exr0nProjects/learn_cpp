@@ -19,6 +19,7 @@ inline int size(Node *cur)
 		+  (cur->c[1] ? cur->c[1]->size : 0);
 }
 
+// TODO: logn traversal to get next/prev
 pair<Node*, Node*> flatten(Node* cur) // pointers to left and right extremes of subtree
 {
 	if (!cur) return make_pair(nullptr, nullptr);
@@ -47,6 +48,16 @@ void rotate(Node *&cur, bool dir)
 	thn->size = size(thn);
 
 	cur = thn;
+}
+
+int getRank(Node *cur, int data)
+{ // TODO: doesn't work
+	if (!cur) return 0;
+	if (cur->d == data)
+		return cur->c[0] ? cur->c[0]->size : 0;
+	if (cur->d < data)
+		return getRank(cur->c[0], data);
+	return getRank(cur->c[1], data) + cur->c[0]->size;
 }
 
 Node *& insert(Node *&cur, int data)
@@ -116,7 +127,7 @@ int main()
 		}
 		else if (c == 'q')
 		{
-			printf("%d\n", (bool)locate(root, d));
+			printf("%d (rank %d)\n", (bool)locate(root, d), getRank(root, d));
 		}
 	}
 }
