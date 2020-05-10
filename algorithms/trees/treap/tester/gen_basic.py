@@ -1,4 +1,4 @@
-MX = 10000
+MX = 100000
 
 from random import choice, randint
 

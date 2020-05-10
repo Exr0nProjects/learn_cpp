@@ -6,7 +6,7 @@ struct Node
 {
 	int d, w, size;
 	Node* c[2] = {};
-	Node* next=nullptr, prev=nullptr;
+	Node *next=nullptr, *prev=nullptr;
 	Node(int d): d(d), w(rand() % 10000), size(1) {}
 } *root;
 
@@ -33,18 +33,18 @@ Node *& insert(Node *&cur, int data)
 
 Node *& locate(Node *&cur, int data)
 {
-	if (!cur || cur == data) return cur;
+	if (!cur || cur->d == data) return cur;
 	return locate(cur->c[cur->d < data], data);
 }
 
-void erase(Node *&cur)
+void remove(Node *&cur)
 {
 	if (!cur) return;
 	if (cur->c[0] && cur->c[1])
 	{
 		const bool dir = cur->c[0]->w < cur->c[1]->w;
 		rotate(cur, dir);
-		erase(cur->c[1-dir]);
+		remove(cur->c[1-dir]);
 	}
 	else
 	{
@@ -53,4 +53,32 @@ void erase(Node *&cur)
 		delete thn;
 	}
 }
+
+int main()
+{
+	while (true)
+	{
+		char c=0;
+		while (c < 'a' || c > 'z') scanf("%c", &c);
+		if (c == 'x') break;
+
+		int d;
+		scanf("%d", &d);
+		if (c == 'i')
+		{
+			if (!root) root = new Node(d);
+			else insert(root, d);
+		}
+		else if (c == 'r')
+		{
+			if (!root) continue;
+			else remove(locate(root, d));
+		}
+		else if (c == 'q')
+		{
+			printf("%d\n", (bool)locate(root, d));
+		}
+	}
+}
+
 
