@@ -191,4 +191,9 @@ tree postorder 					| -
 basic treap 					| -
 KMP								| 
 AC Automaton					| 
+sparse table 					| 
+segment tree					|
+segment tree range update 		|
+
+
 

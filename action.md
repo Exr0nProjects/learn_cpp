@@ -79,4 +79,7 @@
 		- Kruskal
 		- Prim
 - [ ] "If there is some way to remember to step back and avoid my mistake in gold2019open problem 2, that would be helpful as well but I don't know how to systematically avoid that."
+- Questions
+	- Sparse Table
+		- What's the complexity to update the table if we update an entry in the base array?
 
