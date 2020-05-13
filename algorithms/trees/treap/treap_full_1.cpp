@@ -60,6 +60,16 @@ int getRank(Node *cur, int data)
 	return getRank(cur->c[1], data) + cur->c[0]->size;
 }
 
+int getRank(Node* cur, int data)
+{
+	if (cur->d < data)
+		return getRank(cur->c[0], data);
+	int left = cur->c[0] ? cur->c[0]->size : 0;
+	if (cur->d == data)
+		return left;
+	return getRank(cur->c[1], data) + left + 1;
+}
+
 Node *& insert(Node *&cur, int data)
 {
 	if (!cur) return cur = new Node(data);
@@ -129,7 +139,78 @@ int main()
 		{
 			printf("%d (rank %d)\n", (bool)locate(root, d), getRank(root, d));
 		}
+		else if (c == 'd')
+		{
+			int o; scanf("%d", &o);
+			if (root && locate(root, d) && locate(root, o))
+				printf("%d\n", getRank(node, o) - getRank(node, d));
+		}
 	}
 }
 
+/*
+// answer_ad
+int get_pre(int x) {
+    int ans = 2;
+    int p = root;
+    while (p) {
+        if (v[p] == x) {
+            if (c[p][0]) {
+                p = c[p][0];
+                while (c[p][1]) {
+                    p = c[p][1];
+                }
+                ans = p;
+            }
+            break;
+        }
+        if (v[p] > v[ans] && v[p] < x) {
+            ans = p;
+        }
+        if (v[p] < x) p = c[p][1];
+        else p = c[p][0];
+    }
+    return v[ans];
+}
+
+int get_pre(int data) {
+	int ans = 2; // ????
+	int cur = root;
+	while (cur)
+	{
+		if (cur->d == data)
+		{
+			if (cur->c[0])
+			{
+				for (cur = cur->c[0]; cur->c[1]; cur=cur->c[1]);
+				ans = cur;
+			}
+			break;
+		}
+		if (cur->d > ans->d && cur->d < data)
+			ans = cur;
+		cur = cur->c[cur->d < data];
+	}
+}
+*/
+
+Node* get_pre_iter(int data)
+{
+	if (!root) return;
+	Node *cur = root, ret = nullptr;
+	while (cur) // invariant: ret is most recent locked-in pre
+	{
+		if (cur->d == data)
+		{
+			if (cur->c[0])
+				for (cur=cur->c[0]; cur->c[1]; cur=cur->c[1])
+					ret = cur;
+			break;
+		}
+		if (cur->d < data)
+			ret = cur;
+		cur = cur-c[cur->d < data];
+	}
+	return ret;
+}
 
