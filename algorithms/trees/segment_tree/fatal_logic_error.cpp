@@ -72,3 +72,34 @@ void query(int qL, int qR) {
 	return query_helper(qL, qR, 0/*=k*/, 0/*=L*/, n/*=R*/, 0/*=add*/);
 }
 
+//*****************************************************************************
+// Range update, range query fixed?
+void update(int qL, int qR, int v, int k=0, int L=0, int R=n) {
+	if (qR < L || qL > R) return;
+	if (R < L) return;
+	int lc = k * 2 + 1, rc = k * 2 + 2;
+	if (qL <= L && qR >= R) {
+		addv[k] += v;
+		minv[k] += v;
+	} else {
+		int mid = L + (R - L) / 2;
+		update(qL, qR, v, lc, qL, mid);
+		update(qL, qR, v, rc, mid, qR);
+		minv[k] = min(minv[lc], minv[rc]);
+	}
+}
+
+// add means the sum of add label from the root
+void query(int qL, int qR, int k=0, int L=0, int R=n, int add=0) {
+	if (L > R) return INT_MAX;
+	int lc = k * 2 + 1, rc = k * 2 + 2;
+	add += addv[k];
+	if (qL <= L && qR >= R) {
+		min_ = min(min_, minv[k] + add);
+	} else {
+		int mid = L + (R - L) / 2;
+		query(qL, qR, lc, L, mid, add);
+		query(qL, qR, rc, mid + 1, R, add);
+	}
+}
+
