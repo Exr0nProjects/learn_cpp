@@ -109,4 +109,5 @@ Floyd | 7506
 Kruskal | 7265, 1060
 Prim | 7266
 Disjoint Set | 8214
+Tree traversal | 1041
 

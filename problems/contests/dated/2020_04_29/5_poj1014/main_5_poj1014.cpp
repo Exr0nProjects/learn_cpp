@@ -8,6 +8,11 @@ LANG: C++14
  * Create time: Thu 30 Apr 2020 @ 17:32 (PDT)
  * Accept time: [!meta:end!]
  *
+ * DP Equation:
+ * dp[i][j] = -1 if it is impossible to get to this state where person 1 recieved i marbles after j rounds (from AC)
+ *       ^ number of rounds
+ *    ^ value of marbles
+ * dp[i][j] = max(-1, dp[i-j][i]-1)
  */
 
 #include <iostream>

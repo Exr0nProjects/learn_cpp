@@ -188,4 +188,7 @@ bellman ford(with path) 		| y
 tree preorder 					| -
 tree inorder 					| -
 tree postorder 					| -
+basic treap 					| -
+KMP								| 
+AC Automaton					| 
 
