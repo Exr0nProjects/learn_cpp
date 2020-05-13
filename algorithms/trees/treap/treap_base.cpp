@@ -7,7 +7,6 @@ struct Node
 {
 	int d, w;
 	Node *c[2] = {};
-	Node *next = nullptr, *prev = nullptr;
 	Node(int d): d(d), w(rand() % 10000) {}
 } *root = nullptr;
 
