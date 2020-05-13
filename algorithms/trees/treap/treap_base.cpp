@@ -19,19 +19,18 @@ void rotate(Node *&cur, bool dir) // dir = which side should be new top?
 	cur = thn;
 }
 
-Node *& insert(Node *&cur, int d)
+Node *&insert(Node *&cur, int d)
 {
 	if (!cur) return cur = new Node(d);
 	if (cur->d == d) return cur;
-
-	Node *& stp = cur->c[cur->d < d];
-	Node *& ins = insert(stp, d);
-	if (stp->w > cur->w)
+	Node *&stp = cur->c[cur->d < d];
+	Node *&ins = insert(stp, d);
+	if (cur->w < stp->w)
 		rotate(cur, cur->d < d);
 	return ins;
 }
 
-Node *& locate(Node *&cur, int d)
+Node *&locate(Node *&cur, int d)
 {
 	if (!cur || cur->d == d) return cur;
 	return locate(cur->c[cur->d < d], d);
@@ -48,9 +47,9 @@ void remove(Node *&cur)
 	}
 	else
 	{
-		Node *tmp = cur;
+		Node *thn = cur;
 		cur = cur->c[0] ? cur->c[0] : cur->c[1];
-		delete tmp;
+		delete thn;
 	}
 }
 
