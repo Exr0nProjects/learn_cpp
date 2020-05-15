@@ -21,6 +21,7 @@ struct Node
 #define BLACK "\x1b[38;5;239m"
 void dump(Node *cur, int lay=1, long long lbar=0, long long rbar=0)
 {
+	return;
 	if (lay == 1) printf("dump:\n");
 	if (!cur) return;
 	dump(cur->c[1], lay+1);
