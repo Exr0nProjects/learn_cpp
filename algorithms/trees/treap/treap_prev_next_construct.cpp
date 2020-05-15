@@ -79,16 +79,12 @@ void remove(Node *&cur)
 	else
 	{
 		Node *thn = cur;
-		cur = cur->c[0] ? cur->c[0] : cur->c[1];
 		// FIX: update next/prev on delete
-		printf("segggggg\n");
 		// FIX: have to check another layer to avoid assigning nullptr segfault
-		//if (cur->n[0] && cur->n[0]->n[1]) cur->n[0]->n[1] = cur->n[1];
-		//if (cur->n[1] && cur->n[1]->n[0]) cur->n[1]->n[0] = cur->n[0];
-
-		// TODO: even this segfaults
-		if (cur->n[0]) ;
-		if (cur->n[1]) ;
+		if (cur->n[0] && cur->n[0]->n[1]) cur->n[0]->n[1] = cur->n[1];
+		if (cur->n[1] && cur->n[1]->n[0]) cur->n[1]->n[0] = cur->n[0];
+		// FIX: don't assign cur until we're done w/ it!
+		cur = cur->c[0] ? cur->c[0] : cur->c[1];
 		delete thn;
 	}
 }
