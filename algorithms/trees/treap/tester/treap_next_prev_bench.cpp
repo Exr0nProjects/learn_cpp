@@ -13,6 +13,7 @@ int main()
 	while (true)
 	{
 		char c = '\n'; while (c < 'a' || c > 'z') scanf("%c", &c);
+		if (c == 'x') break;
 		int d; scanf("%d", &d);
 		if (c == 'i')
 		{

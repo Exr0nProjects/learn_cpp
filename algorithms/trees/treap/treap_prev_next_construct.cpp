@@ -29,7 +29,6 @@ Node *&insert(Node *&cur, int d)
 	Node *&ins = insert(stp, d);
 	if (ins == stp)
 	{
-		printf("inserted at %x\n", ins);
 		const bool dir = cur->d < d;
 		ins->n[dir] = cur->n[dir];
 		cur->n[dir] = ins;
@@ -70,6 +69,7 @@ int main()
 	while (true)
 	{
 		char c = '\n'; while (c < 'a' || c > 'z') scanf("%c", &c);
+		if (c == 'x') break;
 		int d; scanf("%d", &d);
 		if (c == 'i')
 		{
@@ -87,13 +87,15 @@ int main()
 		}
 		if (c == 'n')
 		{
-			Node *it = locate(root, d)->n[1];
+			Node *it = locate(root, d);
+			if (it) it = it->n[1];
 			if (it) printf("%d\n", it->d);
 			else printf("0\n");
 		}
 		if (c == 'p')
 		{
-			Node *it = locate(root, d)->n[0];
+			Node *it = locate(root, d);
+			if (it) it = it->n[0];
 			if (it) printf("%d\n", it->d);
 			else printf("0\n");
 		}
