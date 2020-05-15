@@ -1,5 +1,9 @@
 // 15 May 2020
 // og code written in 6 min
+/* problems inputs:
+i 6 r 6 i 2 i 2 i 5 n 5 => segfault
+i 6 i 2 r 6 i 2 i 5 n 5 => wrong answer, should be 0 got 5
+*/
 
 #include <iostream>
 using namespace std;
@@ -11,6 +15,20 @@ struct Node
 	Node *n[2] = {};	// neighbors: 0 = prev, 1 = next
 	Node(int d): d(d), w(rand()%10000) {}
 } *root = nullptr;
+
+// note: this was cheat-copied in
+#define RESET "\033[0m"
+#define BLACK "\x1b[38;5;239m"
+void dump(Node *cur, int lay=1, long long lbar=0, long long rbar=0)
+{
+	if (lay == 1) printf("dump:\n");
+	if (!cur) return;
+	dump(cur->c[1], lay+1);
+	for (int i=0; i<lay; ++i)
+		printf("%c   ", (lbar|rbar)&(1<<i) ? '|' : ' ');
+	printf("%d %s(%4d @ %x)%s\n", cur->d, BLACK, cur->w, cur, RESET);
+	dump(cur->c[0], lay+1);
+}
 
 void rotate(Node *&cur, bool dir)
 {
@@ -27,15 +45,17 @@ Node *&insert(Node *&cur, int d)
 	if (cur->d == d) return cur;
 	Node *&stp = cur->c[cur->d < d];
 	Node *&ins = insert(stp, d);
-	if (ins == stp)
+	
+	const bool dir = cur->d < d;
+	if (ins == stp && !ins->n[1-dir])	// FIX: ensure inserted node's prev didn't already point, aka don't double insert into linked list if node already existed
 	{
-		const bool dir = cur->d < d;
 		ins->n[dir] = cur->n[dir];
 		cur->n[dir] = ins;
 		if (ins->n[dir])	// FIX: don't assign next/prev of nullptr!
 			ins->n[dir]->n[1-dir] = ins;
 		ins->n[1-dir] = cur;
 	}
+
 	if (cur->w < stp->w)
 		rotate(cur, cur->d < d);
 	return ins;
@@ -61,11 +81,18 @@ void remove(Node *&cur)
 		Node *thn = cur;
 		cur = cur->c[0] ? cur->c[0] : cur->c[1];
 		// FIX: update next/prev on delete
-		if (cur->n[0]) cur->n[0]->n[1] = cur->n[1];
-		if (cur->n[1]) cur->n[1]->n[0] = cur->n[0];
+		printf("segggggg\n");
+		// FIX: have to check another layer to avoid assigning nullptr segfault
+		//if (cur->n[0] && cur->n[0]->n[1]) cur->n[0]->n[1] = cur->n[1];
+		//if (cur->n[1] && cur->n[1]->n[0]) cur->n[1]->n[0] = cur->n[0];
+
+		// TODO: even this segfaults
+		if (cur->n[0]) ;
+		if (cur->n[1]) ;
 		delete thn;
 	}
 }
+
 
 int main()
 {
@@ -102,6 +129,7 @@ int main()
 			if (it) printf("%d\n", it->d);
 			else printf("0\n");
 		}
+		dump(root);
 	}
 }
 
