@@ -8,12 +8,13 @@ struct Node
 {
 	int d, w;
 	Node *c[2] = {};
+	Node *n[2] = {};	// neighbors: 0 = prev, 1 = next
 	Node(int d): d(d), w(rand()%10000) {}
-} *root = nullptr; // FIX: init to null
+} *root = nullptr;
 
 void rotate(Node *&cur, bool dir)
 {
-	if (!cur || !cur->c[dir]) return;	// FIX: nullptr check comes before data access
+	if (!cur || !cur->c[dir]) return;
 	Node *thn = cur->c[dir];
 	cur->c[dir] = thn->c[1-dir];
 	thn->c[1-dir] = cur;
@@ -26,6 +27,16 @@ Node *&insert(Node *&cur, int d)
 	if (cur->d == d) return cur;
 	Node *&stp = cur->c[cur->d < d];
 	Node *&ins = insert(stp, d);
+	if (ins == stp)
+	{
+		printf("inserted at %x\n", ins);
+		const bool dir = cur->d < d;
+		ins->n[dir] = cur->n[dir];
+		cur->n[dir] = ins;
+		if (ins->n[dir])	// FIX: don't assign next/prev of nullptr!
+			ins->n[dir]->n[1-dir] = ins;
+		ins->n[1-dir] = cur;
+	}
 	if (cur->w < stp->w)
 		rotate(cur, cur->d < d);
 	return ins;
@@ -39,7 +50,7 @@ Node *&locate(Node *&cur, int d)
 	
 void remove(Node *&cur)
 {
-	if (!cur) return;		// FIX: check null ptr
+	if (!cur) return;	
 	if (cur->c[0] && cur->c[1])
 	{
 		const bool dir = cur->c[0]->w < cur->c[1]->w;
@@ -51,6 +62,37 @@ void remove(Node *&cur)
 		Node *thn = cur;
 		cur = cur->c[0] ? cur->c[0] : cur->c[1];
 		delete thn;
+	}
+}
+
+int main()
+{
+	while (true)
+	{
+		char c = '\n'; while (c < 'a' || c > 'z') scanf("%c", &c);
+		int d; scanf("%d", &d);
+		if (c == 'i')
+		{
+			if (!root) root = new Node(d);
+			else insert(root, d);
+		}
+		if (c == 'r')
+		{
+			if (!root) continue;
+			else remove(locate(root, d));
+		}
+		if (c == 'q')
+		{
+			printf("%x\n", locate(root, d));
+		}
+		if (c == 'n')
+		{
+			printf("%x\n", locate(root, d)->n[1]);
+		}
+		if (c == 'p')
+		{
+			printf("%x\n", locate(root, d)->n[0]);
+		}
 	}
 }
 
