@@ -60,6 +60,9 @@ void remove(Node *&cur)
 	{
 		Node *thn = cur;
 		cur = cur->c[0] ? cur->c[0] : cur->c[1];
+		// FIX: update next/prev on delete
+		if (cur->n[0]) cur->n[0]->n[1] = cur->n[1];
+		if (cur->n[1]) cur->n[1]->n[0] = cur->n[0];
 		delete thn;
 	}
 }
