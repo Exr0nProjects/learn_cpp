@@ -53,7 +53,7 @@ void remove(Node *&cur)
 	{
 		const bool dir = cur->c[0]->w < cur->c[1]->w;
 		rotate(cur, dir);
-		remove(cur, 1-dir);
+		remove(cur->c[1-dir]); 	// FIX: remove takes a pointer, not a dir
 	}
 	else
 	{
@@ -62,6 +62,44 @@ void remove(Node *&cur)
 		if (cur->n[1]) cur->n[1]->n[0] = cur->n[0];
 		cur = cur->c[0] ? cur->c[0] : cur->c[1];
 		delete thn;
+	}
+}
+
+int main()
+{
+	while (true)
+	{
+		char c = '\n'; while (c < 'a' || c > 'z') scanf("%c", &c);
+		if (c == 'x') break;
+		int d; scanf("%d", &d);
+		if (c == 'i')
+		{
+			if (!root) root = new Node(d);
+			else insert(root, d);
+		}
+		if (c == 'r')
+		{
+			if (!root) continue;
+			else remove(locate(root, d));
+		}
+		if (c == 'q')
+		{
+			printf("%d\n", (bool)locate(root, d));
+		}
+		if (c == 'n')
+		{
+			Node *it = locate(root, d);
+			if (it) it = it->n[1];
+			if (it) printf("%d\n", it->d);
+			else printf("0\n");
+		}
+		if (c == 'p')
+		{
+			Node *it = locate(root, d);
+			if (it) it = it->n[0];
+			if (it) printf("%d\n", it->d);
+			else printf("0\n");
+		}
 	}
 }
 
