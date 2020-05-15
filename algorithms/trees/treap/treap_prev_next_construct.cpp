@@ -83,15 +83,19 @@ int main()
 		}
 		if (c == 'q')
 		{
-			printf("%x\n", locate(root, d));
+			printf("%d\n", (bool)locate(root, d));
 		}
 		if (c == 'n')
 		{
-			printf("%x\n", locate(root, d)->n[1]);
+			Node *it = locate(root, d)->n[1];
+			if (it) printf("%d\n", it->d);
+			else printf("0\n");
 		}
 		if (c == 'p')
 		{
-			printf("%x\n", locate(root, d)->n[0]);
+			Node *it = locate(root, d)->n[0];
+			if (it) printf("%d\n", it->d);
+			else printf("0\n");
 		}
 	}
 }
