@@ -1,5 +1,6 @@
 // 14 May 2020
-// query and update are inc l inc r, input is 1 indexed for some reason..?
+// query and update are inc l inc r
+// input 1-index vs 0-index depends on default bounds, make sure to get the distance right or it will fail!
 
 #include <iostream>
 #include <numeric>
@@ -27,7 +28,7 @@ void build()
 		segfault[i] = min(segfault[2*i], segfault[2*i+1]);
 }
 
-int query(int lq, int rq, int idx=1, int lb=1, int rb=1<<lays, int acc=0)
+int query(int lq, int rq, int idx=1, int lb=0, int rb=(1<<lays)-1, int acc=0)
 {
 	//for (int i=0; i<log2(idx); ++i) printf("|   "); printf("lq %d rq %d lb %d rb %d\n", lq, rq, lb, rb);
 	if (rq < lb || rb < lq)
@@ -45,7 +46,7 @@ int query(int lq, int rq, int idx=1, int lb=1, int rb=1<<lays, int acc=0)
 			query(lq, rq, rc, mid+1, rb, acc));
 }
 
-int update(int lq, int rq, int val, int idx=1, int lb=1, int rb=1<<lays)
+int update(int lq, int rq, int val, int idx=1, int lb=0, int rb=(1<<lays)-1)
 {
 	if (rq < lb || rb < lq) return segfault[idx];
 	if (lq <= lb && rb <= rq)
