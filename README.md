@@ -188,12 +188,13 @@ bellman ford(with path) 		| y
 tree preorder 					| -
 tree inorder 					| -
 tree postorder 					| -
-basic treap 					| -
+basic treap 					| y
+otf prev/next treap				| y
 KMP								| 
 AC Automaton					| 
-sparse table 					| 
-segment tree					|
-segment tree range update 		|
-
+sparse table 					| -
+segment tree					| -
+segment tree range update 		| -
+convex hull						| 
 
 

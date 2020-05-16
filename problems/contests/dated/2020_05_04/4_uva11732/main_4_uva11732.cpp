@@ -51,6 +51,7 @@ int main()
 		{
 			scanf("%s", buf);
 			insert(0, 0);
+			printf("    %d\n", ret);
 		}
 		printf("%d\n", ret);
 	}
