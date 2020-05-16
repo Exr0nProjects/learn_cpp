@@ -11,23 +11,30 @@ LANG: C++14
  */
 
 #include <iostream>
+#include <cstring>
 
 using namespace std;
 const int MX = 4111*1000;
 char buf[1010];
-int trie[MX][125], size[MX], alloc=1;
+int trie[MX][60], size[MX], alloc=1;
 int N, ret;
+
+inline int id(char c)
+{
+	if (c >= 'a' && c <= 'z') return c-'a';
+	if (c >= 'A' && c <= 'Z') return c-'A' + 26;
+	if (c >= '0' && c <= '9') return c-'0' + 52;
+}
 
 void insert(int idx, int cur)
 {
-	if (!buf[idx]) return;
 	ret += size[cur]++;
 	int &stp = trie[cur][buf[idx]];
 	if (!stp)
-	{
 		stp = alloc++;
-	}
-	insert(idx+1, stp);
+	else
+		ret += size[cur]-1;
+	if (buf[idx]) insert(idx+1, stp);
 }
 
 int main()
@@ -35,8 +42,8 @@ int main()
 	while (scanf("%d", &N) == 1)
 	{
 		if (!N) break;
-		memset(trie, 0, sizeof(int)*alloc*125);
-		memset(size, 0, sizeof(int)*alloc);
+		std::memset(trie, 0, min(sizeof(int)*alloc*60, sizeof trie));
+		std::memset(size, 0, min(sizeof(int)*alloc, sizeof size));
 		ret = 0;
 		alloc = 1;
 

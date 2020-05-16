@@ -19,6 +19,8 @@
 14:10 | feels hella slow, passes sample test case but not text example | submitting #4
 14:12 | TLE #4 | debugging
 14:17 | ig memsetting 10^8 ints is slow | debugging
+14:22 | memset optimization: only reset what we used before | debugging
+14:24 | WA #4, now what | debugging #4
 
 ## Contest Reflection
 
