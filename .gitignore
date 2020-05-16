@@ -1,7 +1,7 @@
-priv*
-*.DS_Store
+priv*/**
+**/.DS_Store
 .ccls-cache/
 problems/.template_state/last.txt
-*/auto
-*/answer
-*/*.diff
+**/auto
+**/answer
+**/*.diff
