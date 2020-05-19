@@ -1,5 +1,5 @@
 MX = 10
-NUM = 500000
+NUM = 50000
 
 from random import randint, choice
 
