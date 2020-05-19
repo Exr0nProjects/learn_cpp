@@ -36,9 +36,7 @@ X | locker | [1631](https://onlinejudge.org/index.php?option=com_onlinejudge&Ite
 X | alibaba | [1632](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=848&page=show_problem&problem=4507)
 . | storage keepers | [10163](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=848&page=show_problem&problem=1104)
 . | barisal stadium | [10641](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=848&page=show_problem&problem=1582)
-31 | https://codeforces.com/problemset/problem/234/F
-32 | https://codeforces.com/problemset/problem/73/C
-33 | https://codeforces.com/problemset/problem/148/E
+31 | https://codeforces.com/problemset/problem/234/F 32 | https://codeforces.com/problemset/problem/73/C 33 | https://codeforces.com/problemset/problem/148/E
 34 | https://codeforces.com/problemset/problem/213/C
 35 | https://codeforces.com/problemset/problem/999/F
 36 | https://acm.timus.ru/problem.aspx?space=1&num=1018
@@ -99,6 +97,7 @@ https://dev.xjoi.net/contest/1363
 7619
 2164
 1086
+http://115.236.49.52:83/contest/1370
 
 ## Problems for you to test out your classic graph algorithms' codes
 | Algorithm | XJOI ID |
