@@ -136,6 +136,7 @@ Node *&locate(Node *&cur, int d)
 
 Node *getKth(Node *cur, int k)
 {
+	printf("getKth %d @ %x\n", k, cur);
 	if (!cur || k < 0 || k > cur->s) return nullptr;
 	const int leftSize = cur->c[0] ? cur->c[0]->s : 0;
 	if (k < leftSize) return getKth(cur->c[0], k);
@@ -145,16 +146,16 @@ Node *getKth(Node *cur, int k)
 
 int getRank(Node *cur, int d)
 {
-	printf("getRank %d @ %x\n", d, cur);
 	if (!cur) return 0;
 	const int leftS = cur->c[0] ? cur->c[0]->s : 0;
 	if (cur->d == d) return leftS;
-	if (cur->d < d) return getRank(cur->c[0], d);
+	if (cur->d > d) return getRank(cur->c[0], d);
 	return getRank(cur->c[1], d) + cur->num + leftS;
 }
 
 void dump(Node *cur, int lay=1)
 {
+	return;
 	if (!cur) return;
 	dump(cur->c[1], lay+1);
 	for (int i=0;i <lay; ++i) printf("    ");
@@ -168,10 +169,10 @@ int main()
 	{
 		char c = ' '; while ((c < 'a' || c > 'z') && (c < '0' || c > '9')) scanf("%c", &c);
 		int d; scanf("%d", &d);
-		if (c == 'i') insert(root, d);
-		if (c == 'r') remove(root, d);
+		if (c == '1') insert(root, d);
+		if (c == '2') remove(root, d);
 		if (c == '3') printf("%d\n", getRank(root, d)+1);
-		if (c == '4') printf("%d\n", getKth(root, d-1)+1);
+		if (c == '4') printf("%d\n", getKth(root, d-1)->d);
 		if (c == '5') printf("%d\n", locate(root, d)->n[0]->d);
 		if (c == '6') printf("%d\n", locate(root, d)->n[1]->d);
 		dump(root);
