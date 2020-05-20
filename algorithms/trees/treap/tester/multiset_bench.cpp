@@ -18,7 +18,8 @@ int main()
 			for (int i=1; i<count; ++i)
 				multi.insert(d);
 		}
-		if (c == 'q') printf("%d\n", multi.count(d));
+		if (c == 'q') printf("%d", multi.count(d));
+		printf("\n");
 	}
 }
 

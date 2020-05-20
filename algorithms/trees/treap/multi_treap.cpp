@@ -4,7 +4,7 @@
 
 struct Node
 {
-	int d, w, c=1;
+	int d, w, n=1;
 	Node *c[2] = {};
 	Node(int d): d(d), w(rand()) {}
 } *root = nullptr;
@@ -21,7 +21,7 @@ void rotate(Node *&cur, bool dir)
 Node *insert(Node *&cur, int d)
 {
 	if (!cur) return cur = new Node(d);
-	if (cur->d == d) { ++cur->c; return cur; }
+	if (cur->d == d) { ++cur->n; return cur; }
 	Node *&stp = cur->c[cur->d < d];
 	Node *ins = insert(stp, d);
 	if (cur->w < stp->w)
@@ -36,7 +36,7 @@ Node *&locate(Node *&cur, int d)
 }
 void remove(Node *&cur)
 {
-	if (!cur || --cur->c) return; // TODO: need --cur->c > 0 ? shouldn't be negative ever
+	if (!cur || --cur->n) return; // TODO: need --cur->c > 0 ? shouldn't be negative ever
 	if (cur->c[0] && cur->c[1])
 	{
 		const bool dir = cur->c[0]->w < cur->c[1]->w;
@@ -69,8 +69,9 @@ int main()
 		if (c == 'q')
 		{
 			Node *loc = locate(root, d);
-			printf("%d\n", loc ? loc->c : 0);
+			printf("%d", loc ? loc->n : 0);
 		}
+		printf("\n");
 	}
 }
 
