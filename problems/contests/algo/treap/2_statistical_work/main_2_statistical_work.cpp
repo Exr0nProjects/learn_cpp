@@ -72,7 +72,6 @@ void rotate(Node *&cur, bool dir)
 }
 Node *tinsert(Node *&cur, int d)
 {
-	printf("inserting %d at %x\n", d, cur);
 	if (!cur) return cur = new Node(d);
 	if (cur->d == d)
 	{
@@ -89,6 +88,13 @@ Node *tinsert(Node *&cur, int d)
 		cur->n[dir] = ins;
 		if (ins->n[dir])
 			ins->n[dir]->n[1-dir] = cur;
+		else
+		{
+			printf("didn't set nullptr neighbor when inserting %x (%d)!\n", ins, ins->d);
+			printf("parent->n[dir] = %x (%d)\n", cur->n[dir], cur->n[dir]->d);
+			printf("pre sgap: %x (%d)\n", pre_sort_gap->n[1], pre_sort_gap->n[1] ? pre_sort_gap->n[1]->d : 0);
+			tdump(cur); printf("\n");
+		}
 	}
 	if (cur->w < stp->w)
 		rotate(cur, dir);
@@ -125,10 +131,9 @@ void tdump(Node *&cur, int lay)
 	if (!cur) return;
 	tdump(cur->c[1], lay+1);
 	for (int i=0; i<lay; ++i) printf("    ");
-	printf("%3d x%d\n", cur->d, cur->count);
+	printf("%3d x%d %03x\n", cur->d, cur->count, cur);
 	tdump(cur->c[0], lay+1);
 }
-
 void dump_treaps()
 {
 	printf("nums:\n"); tdump(num_root); printf("\n");
@@ -156,8 +161,8 @@ void insert(int p, int d, bool init=0)
 	if (ins->n[1]) tinsert(sgap_root, abs(ins->n[1]->d -d));
 
 	dump_treaps();
-	if (pre_sort_gap->n[1] && pre_min_gap->n[1])
-		printf("after insert: min_sort_gap = %3d, min_gap = %3d\n", pre_sort_gap->n[1]->d, pre_min_gap->n[1]->d);
+	if (pre_sort_gap->n[1]) printf("min_sort_gap = %3d\n", pre_sort_gap->n[1]->d);
+	if (pre_min_gap->n[1]) printf("min_gap = %3d\n", pre_min_gap->n[1]->d);
 }
 
 int main()
