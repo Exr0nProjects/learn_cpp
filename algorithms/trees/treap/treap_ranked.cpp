@@ -80,8 +80,7 @@ void remove(Node *&cur, int d)
 		remove(cur->c[cur->d < d], d);
 		setSize(cur);
 	}
-}
-
+} 
 // note: this was cheat-copied in
 #define RESET "\033[0m"
 #define BLACK "\x1b[38;5;239m"
@@ -129,4 +128,3 @@ int main()
 	}
 }
 
-// i 1 i 1 i 2 r 1

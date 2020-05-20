@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iterator>
 #include <set>
 
 std::multiset<int> multi;
@@ -19,6 +20,16 @@ int main()
 				multi.insert(d);
 		}
 		if (c == 'q') printf("%d\n", multi.count(d));
+		if (c == 'k')
+		{
+			if (d > multi.size())
+			{
+				printf("-1\n");
+				continue;
+			}
+			auto it = std::next(multi.begin(), d-1);
+			printf("%d\n", it == multi.end() ? -1 : *it);
+		}
 	}
 }
 
