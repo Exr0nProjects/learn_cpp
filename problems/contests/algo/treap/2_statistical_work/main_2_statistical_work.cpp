@@ -69,11 +69,12 @@ void rotate(Node *&cur, bool dir)
 }
 Node *&tinsert(Node *&cur, int d)
 {
+	printf("inserting %d\n", d);
 	if (!cur) return cur = new Node(d);
 	if (cur->d == d) return cur;
 	const bool dir = cur->d < d;
 	Node *&stp = cur->c[dir];
-	Node *&ins = tinsert(stp, dir);
+	Node *&ins = tinsert(stp, d);
 	if (stp == ins && !ins->n[1-dir])
 	{
 		ins->n[dir] = cur->n[dir];
@@ -112,6 +113,15 @@ void tremove(Node *cur)
 void tremove(Node *&root, int d)
 { tremove(tlocate(root, d)); }
 
+void tdump(Node *&cur, int lay=1)
+{
+	if (!cur) return;
+	tdump(cur->c[1], lay+1);
+	for (int i=0; i<lay; ++i) printf("    ");
+	printf("%3d\n", cur->d);
+	tdump(cur->c[0], lay+1);
+}
+
 void insert(int p, int d)
 {
 	if (p+1 < N) tremove(gap_root, abs(tail[p] - head[p+1]));
@@ -126,14 +136,22 @@ void insert(int p, int d)
 
 int main()
 {
+	srand(100);
 	scanf("%d%d", &N, &M);
 	pre_min_gap = tinsert(gap_root, -1);
 	for (int i=0; i<N; ++i)
 	{
 		scanf("%d", &head[i]);
 		tail[i] = head[i];
-		if (i) tinsert(gap_root, abs(head[i]-head[i-1]));
-		tinsert(num_root, head[i]);
+		if (i)
+		{
+			printf("inserting gap %d\n", abs(head[i]-head[i-1]));
+			tinsert(gap_root, abs(head[i]-head[i-1]));
+		}
+		//tinsert(num_root, head[i]);
+
+		printf("nums:\n"); tdump(num_root); printf("\n");
+		printf("gaps:\n"); tdump(gap_root); printf("\n");
 	}
 	printf("okay\n");
 	for (int m=0; m<M; ++m)
