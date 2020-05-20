@@ -88,13 +88,6 @@ Node *tinsert(Node *&cur, int d)
 		cur->n[dir] = ins;
 		if (ins->n[dir])
 			ins->n[dir]->n[1-dir] = cur;
-		else
-		{
-			printf("didn't set nullptr neighbor when inserting %x (%d)!\n", ins, ins->d);
-			printf("parent->n[dir] = %x (%d)\n", cur->n[dir], cur->n[dir]->d);
-			printf("pre sgap: %x (%d)\n", pre_sort_gap->n[1], pre_sort_gap->n[1] ? pre_sort_gap->n[1]->d : 0);
-			tdump(cur); printf("\n");
-		}
 	}
 	if (cur->w < stp->w)
 		rotate(cur, dir);
@@ -118,8 +111,16 @@ void tremove(Node *&cur) // FIX: cur here needs to be a reference to update its 
 	else
 	{
 		Node *thn = cur;
-		if (thn->n[0]) thn->n[0]->n[1] = thn->n[1];
-		if (thn->n[1]) thn->n[1]->n[0] = thn->n[0];
+		if (thn->n[0])
+		{
+			printf("thn->n[0] = %x (%d)\n", thn->n[0], thn->n[0]->d);
+			thn->n[0]->n[1] = thn->n[1];
+		}
+		if (thn->n[1])
+		{
+			printf("thn->n[0] = %x (%d)\n", thn->n[1], thn->n[1]->d);
+			thn->n[1]->n[0] = thn->n[0];
+		}
 		cur = cur->c[0] ? cur->c[0] : cur->c[1];
 		delete thn;
 	}
@@ -139,6 +140,11 @@ void dump_treaps()
 	printf("nums:\n"); tdump(num_root); printf("\n");
 	printf("gaps:\n"); tdump(gap_root); printf("\n");
 	printf("sgaps:\n"); tdump(sgap_root); printf("\n");
+
+	if (pre_sort_gap->n[1]) printf("min_sort_gap = %3d\n", pre_sort_gap->n[1]->d);
+	else printf("NO MIN SORT GAP!!!\n");
+	if (pre_min_gap->n[1]) printf("min_gap = %3d\n", pre_min_gap->n[1]->d);
+	else printf("NO MIN GAP!!!!\n");
 }
 
 void insert(int p, int d, bool init=0)
@@ -151,18 +157,13 @@ void insert(int p, int d, bool init=0)
 	tinsert(gap_root, abs(tail[p] - d));
 	tail[p] = d;
 
-	printf("inserting num %d\n", d);
 	Node *ins = tinsert(num_root, d);
-
-	printf("done: ins %x       ins->n[0] %x, ins->n[1] %x\n", ins, ins->n[0], ins->n[1]);
 
 	if (ins->n[0] && ins->n[1]) tremove(sgap_root, abs(ins->n[0]->d-ins->n[1]->d));
 	if (ins->n[0]) tinsert(sgap_root, abs(ins->n[0]->d -d));
 	if (ins->n[1]) tinsert(sgap_root, abs(ins->n[1]->d -d));
 
 	dump_treaps();
-	if (pre_sort_gap->n[1]) printf("min_sort_gap = %3d\n", pre_sort_gap->n[1]->d);
-	if (pre_min_gap->n[1]) printf("min_gap = %3d\n", pre_min_gap->n[1]->d);
 }
 
 int main()
@@ -177,18 +178,6 @@ int main()
 		scanf("%d", &head[i]);
 		tail[i+1] = head[i]; // FIX: overlap list thingy to make insert gap calculation work
 		insert(i, head[i], true);
-		/*
-		tail[i] = head[i];
-		if (i)
-		{
-			printf("inserting gap %d\n", abs(head[i]-head[i-1]));
-			tinsert(gap_root, abs(head[i]-head[i-1]));
-		}
-		tinsert(num_root, head[i]);
-
-		printf("nums:\n"); tdump(num_root); printf("\n");
-		printf("gaps:\n"); tdump(gap_root); printf("\n");
-		*/
 	}
 	tremove(gap_root, head[0]); // FIX: fencepost--inserts a ghost gap because it's the first
 	dump_treaps();
