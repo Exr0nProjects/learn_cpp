@@ -64,15 +64,13 @@ struct Node
 void tdump(Node *&cur, int lay=1);
 void rotate(Node *&cur, bool dir)
 {
-	printf("rotate %x %d\n", cur, dir);
 	if (!cur || !cur->c[dir]) return;
 	Node *thn = cur->c[dir];
 	cur->c[dir] = thn->c[1-dir];
 	thn->c[1-dir] = cur;
 	cur = thn;
-	printf("rotated\n");
 }
-Node *&tinsert(Node *&cur, int d)
+Node *tinsert(Node *&cur, int d)
 {
 	printf("inserting %d at %x\n", d, cur);
 	if (!cur) return cur = new Node(d);
@@ -83,7 +81,7 @@ Node *&tinsert(Node *&cur, int d)
 	}
 	const bool dir = cur->d < d;
 	Node *&stp = cur->c[dir];
-	Node *&ins = tinsert(stp, d);
+	Node *ins = tinsert(stp, d);
 	if (stp == ins && !ins->n[1-dir])
 	{
 		ins->n[dir] = cur->n[dir];
@@ -94,10 +92,11 @@ Node *&tinsert(Node *&cur, int d)
 		printf("inserted\n");
 	}
 	tdump(cur);
+	printf("uh ins %x\n", ins);
 	if (cur->w < stp->w)
 		rotate(cur, dir);
+	printf("uh NOWWWWW ins %x\n", ins);
 	tdump(cur);
-	printf("uh");
 	return ins;
 }
 Node *&tlocate(Node *&cur, int d)
@@ -147,8 +146,8 @@ void insert(int p, int d, bool init=0)
 	printf("inserting num %d\n", d);
 	Node *ins = tinsert(num_root, d);
 
-
 	printf("done: ins %x       ins->n[0] %x, ins->n[1] %x\n", ins, ins->n[0], ins->n[1]);
+
 	if (ins->n[0] && ins->n[1]) tremove(sgap_root, abs(ins->n[0]->d-ins->n[1]->d));
 	if (ins->n[0]) tinsert(sgap_root, abs(ins->n[0]->d -d));
 	if (ins->n[1]) tinsert(sgap_root, abs(ins->n[1]->d -d));
