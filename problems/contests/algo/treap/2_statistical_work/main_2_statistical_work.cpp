@@ -55,23 +55,32 @@ int N, M, head[MX], tail[MX], min_sort_gap=1<<30;
 
 struct Node
 {
-	int d, w;
+	int d, w, count=1;
 	Node *c[2]={}, *n[2]={};
 	Node(int d): d(d), w(rand()) {}
-} *num_root = nullptr, *gap_root = nullptr, *pre_min_gap = nullptr;
+} *num_root = nullptr,
+	*gap_root = nullptr, *pre_min_gap = nullptr,
+	*sgap_root = nullptr, *pre_sort_gap = nullptr;
+void tdump(Node *&cur, int lay=1);
 void rotate(Node *&cur, bool dir)
 {
+	printf("rotate %x %d\n", cur, dir);
 	if (!cur || !cur->c[dir]) return;
 	Node *thn = cur->c[dir];
 	cur->c[dir] = thn->c[1-dir];
 	thn->c[1-dir] = cur;
 	cur = thn;
+	printf("rotated\n");
 }
 Node *&tinsert(Node *&cur, int d)
 {
-	printf("inserting %d\n", d);
+	printf("inserting %d at %x\n", d, cur);
 	if (!cur) return cur = new Node(d);
-	if (cur->d == d) return cur;
+	if (cur->d == d)
+	{
+		++cur->count;
+		return cur;
+	}
 	const bool dir = cur->d < d;
 	Node *&stp = cur->c[dir];
 	Node *&ins = tinsert(stp, d);
@@ -82,9 +91,13 @@ Node *&tinsert(Node *&cur, int d)
 		cur->n[dir] = ins;
 		if (ins->n[dir])
 			ins->n[dir]->n[1-dir] = cur;
+		printf("inserted\n");
 	}
+	tdump(cur);
 	if (cur->w < stp->w)
 		rotate(cur, dir);
+	tdump(cur);
+	printf("uh");
 	return ins;
 }
 Node *&tlocate(Node *&cur, int d)
@@ -94,7 +107,7 @@ Node *&tlocate(Node *&cur, int d)
 }
 void tremove(Node *cur)
 {
-	if (!cur) return;
+	if (!cur || --cur->count) return;
 	if (cur->c[0] && cur->c[1])
 	{
 		const bool dir = cur->c[0]->w < cur->c[1]->w;
@@ -112,26 +125,40 @@ void tremove(Node *cur)
 }
 void tremove(Node *&root, int d)
 { tremove(tlocate(root, d)); }
-
-void tdump(Node *&cur, int lay=1)
+void tdump(Node *&cur, int lay)
 {
 	if (!cur) return;
 	tdump(cur->c[1], lay+1);
 	for (int i=0; i<lay; ++i) printf("    ");
-	printf("%3d\n", cur->d);
+	printf("%3d x%d\n", cur->d, cur->count);
 	tdump(cur->c[0], lay+1);
 }
 
-void insert(int p, int d)
+void insert(int p, int d, bool init=0)
 {
-	if (p+1 < N) tremove(gap_root, abs(tail[p] - head[p+1]));
+	if (!init && p+1 < N)
+	{
+		tremove(gap_root, abs(tail[p] - head[p+1]));
+		tinsert(gap_root, abs(head[p+1] - d));
+	}
 	tinsert(gap_root, abs(tail[p] - d));
 	tail[p] = d;
-	if (p+1 < N) tinsert(gap_root, abs(head[p+1] - d));
 
+	printf("inserting num %d\n", d);
 	Node *ins = tinsert(num_root, d);
-	min_sort_gap = min(min_sort_gap, min(d - ins->n[0]->d, ins->n[1]->d - d));
-	printf("after insert: min_sort_gap = %3d, min_gap = %3d\n", min_sort_gap, pre_min_gap->n[1]->d);
+
+
+	printf("done: ins %x       ins->n[0] %x, ins->n[1] %x\n", ins, ins->n[0], ins->n[1]);
+	if (ins->n[0] && ins->n[1]) tremove(sgap_root, abs(ins->n[0]->d-ins->n[1]->d));
+	if (ins->n[0]) tinsert(sgap_root, abs(ins->n[0]->d -d));
+	if (ins->n[1]) tinsert(sgap_root, abs(ins->n[1]->d -d));
+
+		printf("nums:\n"); tdump(num_root); printf("\n");
+		printf("gaps:\n"); tdump(gap_root); printf("\n");
+		printf("sgaps:\n"); tdump(sgap_root); printf("\n");
+
+	if (pre_sort_gap->n[1] && pre_min_gap->n[1])
+		printf("after insert: min_sort_gap = %3d, min_gap = %3d\n", pre_sort_gap->n[1]->d, pre_min_gap->n[1]->d);
 }
 
 int main()
@@ -139,20 +166,29 @@ int main()
 	srand(100);
 	scanf("%d%d", &N, &M);
 	pre_min_gap = tinsert(gap_root, -1);
+	pre_sort_gap = tinsert(sgap_root, -1);
+		printf("nums:\n"); tdump(num_root); printf("\n");
+		printf("gaps:\n"); tdump(gap_root); printf("\n");
+		printf("sgaps:\n"); tdump(sgap_root); printf("\n");
 	for (int i=0; i<N; ++i)
 	{
 		scanf("%d", &head[i]);
+		tail[i+1] = head[i]; // FIX: overlap list thingy to make insert gap calculation work
+		insert(i, head[i], true);
+		/*
 		tail[i] = head[i];
 		if (i)
 		{
 			printf("inserting gap %d\n", abs(head[i]-head[i-1]));
 			tinsert(gap_root, abs(head[i]-head[i-1]));
 		}
-		//tinsert(num_root, head[i]);
+		tinsert(num_root, head[i]);
 
 		printf("nums:\n"); tdump(num_root); printf("\n");
 		printf("gaps:\n"); tdump(gap_root); printf("\n");
+		*/
 	}
+	tremove(gap_root, head[0]); // FIX: fencepost--inserts a ghost gap because it's the first
 	printf("okay\n");
 	for (int m=0; m<M; ++m)
 	{
@@ -167,7 +203,7 @@ int main()
 		else
 		{
 			if (buf[3] == 'S')
-				printf("%d\n", min_sort_gap);
+				printf("%d\n", pre_sort_gap->n[1]->d);
 			else
 				printf("%d\n", pre_min_gap->n[1]->d);
 		}
