@@ -11,45 +11,6 @@ LANG: C++14
  */
 
 #include <iostream>
-#include <sstream>
-#include <cstdio>
-#include <tuple>
-#include <vector>
-#include <string>
-#include <cstring>
-#include <list>
-#include <array>
-#include <queue>
-#include <stack>
-#include <set>
-#include <map>
-#include <unordered_set>
-#include <unordered_map>
-#include <cmath>
-#include <random>
-#include <chrono>
-#include <utility>
-#include <iterator>
-#include <exception>
-#include <algorithm>
-#include <functional>
-
-#define ll long long
-#define dl double
-
-#define pb push_back
-#define eb emplace_back
-#define mp make_pair
-#define f first
-#define s second
-
-#define FOR_(i, b, e) for (long long i = (b); i < (e); ++i)
-#define FOR(i, e) FOR_(i, 0, (e))
-#define FORR_(i, b, e) for (long long i = (e)-1; i >= (b); --i)
-#define FORR(i, e) FORR_(i, 0, e)
-#define TRAV(a, x) for (auto &a : x)
-
-void setIO(const std::string &name = "1_balanced_tree");
 
 using namespace std;
 const int MX = -1;
@@ -165,16 +126,31 @@ void dump(Node *cur, int lay=1)
 
 int main()
 {
-	while (true)
+	int Q;
+	scanf("%d", &Q);
+	for (int i=0; i<Q; ++i)
 	{
 		char c = ' '; while ((c < 'a' || c > 'z') && (c < '0' || c > '9')) scanf("%c", &c);
 		int d; scanf("%d", &d);
 		if (c == '1') insert(root, d);
 		if (c == '2') remove(root, d);
 		if (c == '3') printf("%d\n", getRank(root, d)+1);
-		if (c == '4') printf("%d\n", getKth(root, d-1)->d);
-		if (c == '5') printf("%d\n", locate(root, d)->n[0]->d);
-		if (c == '6') printf("%d\n", locate(root, d)->n[1]->d);
+		if (c == '4')
+		{
+			auto it = getKth(root, d-1);
+			printf("%d\n", it ? it->d : -1);
+			freopen("segfault", "r", stdin);
+		}
+		if (c == '5')
+		{
+			auto it = locate(root, d);
+			printf("%d\n", it && it->n[0] ? it->n[0]->d : -1);
+		}
+		if (c == '6')
+		{
+			auto it = locate(root, d);
+			printf("%d\n", it && it->n[1] ? it->n[1]->d : -1);
+		}
 		dump(root);
 	}
     return 0;
