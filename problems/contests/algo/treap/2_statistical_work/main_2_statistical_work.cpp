@@ -87,7 +87,11 @@ Node *tinsert(Node *&cur, int d)
 		ins->n[1-dir] = cur;
 		cur->n[dir] = ins;
 		if (ins->n[dir])
-			ins->n[dir]->n[1-dir] = cur;
+			ins->n[dir]->n[1-dir] = ins; // FIX: = ins not = cur
+		printf("%x <- %x (%d) -> %x (dir was %d)\n", ins->n[0], ins, ins->d, ins->n[1], dir);
+		if (ins->n[0]) printf("my 0: %x -> %x\n", ins->n[0], ins->n[0]->n[1]);
+		if (ins->n[1]) printf("my 1: %x <- %x\n", ins->n[1]->n[0], ins->n[1]);
+		printf("\n");
 	}
 	if (cur->w < stp->w)
 		rotate(cur, dir);
@@ -194,9 +198,9 @@ int main()
 		}
 		else
 		{
-			if (buf[3] == 'S' && pre_sort_gap->n[1])
+			if (buf[4] == 'S')
 				printf("%d\n", pre_sort_gap->n[1]->d);
-			else if (buf[3] == 'G' && pre_min_gap->n[1])
+			else if (buf[4] == 'G')
 				printf("%d\n", pre_min_gap->n[1]->d);
 		}
 	}
