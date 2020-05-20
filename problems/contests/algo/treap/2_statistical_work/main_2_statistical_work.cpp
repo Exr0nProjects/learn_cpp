@@ -130,6 +130,7 @@ void tdump(Node *&cur, int lay)
 }
 void dump_treaps()
 {
+	return;
 	printf("nums:\n"); tdump(num_root); printf("\n");
 	printf("gaps:\n"); tdump(gap_root); printf("\n");
 	printf("sgaps:\n"); tdump(sgap_root); printf("\n");
@@ -140,22 +141,27 @@ void dump_treaps()
 	else printf("NO MIN GAP!!!!\n");
 }
 
-void insert(int p, int d, bool init=0)
+void insert(int p, int d, bool init=0, bool init2=0)
 {
 	if (!init && p+1 < N)
 	{
 		tremove(gap_root, abs(tail[p] - head[p+1]));
 		tinsert(gap_root, abs(head[p+1] - d));
 	}
-	tinsert(gap_root, abs(tail[p] - d));
+	if (!init2) tinsert(gap_root, abs(tail[p] - d));
 	tail[p] = d;
 
 	Node *ins = tinsert(num_root, d);
-	printf("%x <- ins -> %x\n", ins->n[0], ins->n[1]);
 
-	if (ins->n[0] && ins->n[1]) tremove(sgap_root, abs(ins->n[0]->d-ins->n[1]->d));
-	if (ins->n[0]) tinsert(sgap_root, abs(ins->n[0]->d -d));
-	if (ins->n[1]) tinsert(sgap_root, abs(ins->n[1]->d -d));
+	if (ins->count > 1)
+	{
+		tinsert(sgap_root, 0); // trump card, no smaller gap possible
+		return;
+	}
+	if (ins->n[0] && ins->n[1])
+		tremove(sgap_root, abs(ins->n[0]->d-ins->n[1]->d));
+	if (ins->n[0] || ins->count > 1) tinsert(sgap_root, abs(ins->n[0]->d -d));
+	if (ins->n[1] || ins->count > 1) tinsert(sgap_root, abs(ins->n[1]->d -d));
 
 	dump_treaps();
 }
@@ -171,7 +177,7 @@ int main()
 	{
 		scanf("%d", &head[i]);
 		tail[i+1] = head[i]; // FIX: overlap list thingy to make insert gap calculation work
-		insert(i, head[i], true);
+		insert(i, head[i], true, i==0);
 	}
 	tremove(gap_root, head[0]); // FIX: fencepost--inserts a ghost gap because it's the first
 	dump_treaps();
