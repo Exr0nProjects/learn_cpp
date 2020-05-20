@@ -119,7 +119,6 @@ void remove(Node *&cur, int d)
 			if (thn->n[1]) thn->n[1]->n[0] = thn->n[0];
 			cur = cur->c[0] ? cur->c[0] : cur->c[1];
 			delete thn;
-			setSize(cur);
 		}
 	}
 	else
@@ -127,6 +126,31 @@ void remove(Node *&cur, int d)
 		remove(cur->c[cur->d < d], d);
 		setSize(cur);
 	}
+}
+
+Node *&locate(Node *&cur, int d)
+{
+	if (!cur || cur->d == d) return cur;
+	return locate(cur->c[cur->d < d], d);
+}
+
+Node *getKth(Node *cur, int k)
+{
+	if (!cur || k < 0 || k > cur->s) return nullptr;
+	const int leftSize = cur->c[0] ? cur->c[0]->s : 0;
+	if (k < leftSize) return getKth(cur->c[0], k);
+	if (k < leftSize + cur->num) return cur;
+	return getKth(cur->c[1], k - leftSize - cur->num);
+}
+
+int getRank(Node *cur, int d)
+{
+	printf("getRank %d @ %x\n", d, cur);
+	if (!cur) return 0;
+	const int leftS = cur->c[0] ? cur->c[0]->s : 0;
+	if (cur->d == d) return leftS;
+	if (cur->d < d) return getRank(cur->c[0], d);
+	return getRank(cur->c[1], d) + cur->num + leftS;
 }
 
 void dump(Node *cur, int lay=1)
@@ -140,13 +164,16 @@ void dump(Node *cur, int lay=1)
 
 int main()
 {
-
 	while (true)
 	{
-		char c = ' '; while (c < 'a' || c > 'z') scanf("%c", &c);
+		char c = ' '; while ((c < 'a' || c > 'z') && (c < '0' || c > '9')) scanf("%c", &c);
 		int d; scanf("%d", &d);
 		if (c == 'i') insert(root, d);
 		if (c == 'r') remove(root, d);
+		if (c == '3') printf("%d\n", getRank(root, d)+1);
+		if (c == '4') printf("%d\n", getKth(root, d-1)+1);
+		if (c == '5') printf("%d\n", locate(root, d)->n[0]->d);
+		if (c == '6') printf("%d\n", locate(root, d)->n[1]->d);
 		dump(root);
 	}
     return 0;
