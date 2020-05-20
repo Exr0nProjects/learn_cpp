@@ -151,6 +151,7 @@ void insert(int p, int d, bool init=0)
 	tail[p] = d;
 
 	Node *ins = tinsert(num_root, d);
+	printf("%x <- ins -> %x\n", ins->n[0], ins->n[1]);
 
 	if (ins->n[0] && ins->n[1]) tremove(sgap_root, abs(ins->n[0]->d-ins->n[1]->d));
 	if (ins->n[0]) tinsert(sgap_root, abs(ins->n[0]->d -d));
@@ -172,7 +173,6 @@ int main()
 		tail[i+1] = head[i]; // FIX: overlap list thingy to make insert gap calculation work
 		insert(i, head[i], true);
 	}
-	printf("fixing fencepost\n");
 	tremove(gap_root, head[0]); // FIX: fencepost--inserts a ghost gap because it's the first
 	dump_treaps();
 	for (int m=0; m<M; ++m)
