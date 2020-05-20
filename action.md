@@ -1,6 +1,5 @@
 # Action Items
 
-- [ ] Rewrite treap with arrays, no `parent`, < 50 lines
 - [ ] **Stay alert during contests! Don't make silly mistakes!**
     - Check understanding with the test case!
     - Memoization broken?
@@ -17,6 +16,13 @@
     - Djikstra Pointers
 		- No vis array, just check if `dist` is already less after popping from pq
 		- Remember to set dist when pushing into pq so you don't need to do it when popping
+	- Treap
+		- Spot check variable names
+			- `stp` vs `cur` vs `dir`
+			- `<` or `>` ?
+			- `dir` or `1-dir`?
+		- [ ] Update treap base to have `ins` in the `insert` fxn not be a reference
+			- Because otherwise it may break due to rotations
 - [ ] Paper work
     - Do more of it...?
     - PSUDOCODE!!

@@ -6,7 +6,7 @@ LANG: C++14
 /*
  * Problem 2_statistical_work (contests/algo/treap/2_statistical_work)
  * Create time: Tue 19 May 2020 @ 17:09 (PDT)
- * Accept time: Tue 19 May 2020 @ 19:49 (PDT)
+ * Accept time: Tue 19 May 2020 @ 19:46 (PDT)
  *
  */
 
