@@ -14,7 +14,6 @@ void setSize(Node *cur)
 	cur->s = cur->n;
 	if (cur->c[0]) cur->s += cur->c[0]->s;
 	if (cur->c[1]) cur->s += cur->c[1]->s;
-	printf("size of %x is %d\n", cur, cur->s);
 }
 void rotate(Node *&cur, bool dir)
 {
@@ -45,9 +44,9 @@ Node *&locate(Node *&cur, int d)
 	return locate(cur->c[cur->d < d], d);
 }
 
-Node *&getRank(Node *&cur, int k)
+Node *getRank(Node *&cur, int k)
 {
-	if (!cur || k < 0 || cur->s < k) return cur;
+	if (!cur || k < 0 || cur->s < k) return nullptr;
 	const int leftSize = cur->c[0] ? cur->c[0]->s : 0;
 	if (k < leftSize)
 		return getRank(cur->c[0], k);
@@ -56,21 +55,30 @@ Node *&getRank(Node *&cur, int k)
 	return getRank(cur->c[1], k-leftSize - cur->n);
 }
 
-void remove(Node *&cur)
+void remove(Node *&cur, int d)
 {
-	if (!cur || --cur->n > 0) { --cur->s; return; }
-	if (cur->c[0] && cur->c[1])
+	if (!cur) return;
+	if (cur->d == d) // TODO: scuffed
 	{
-		const bool dir = cur->c[0]->w < cur->c[1]->w;
-		rotate(cur, dir);
-		remove(cur->c[1-dir]);
-		setSize(cur);
+		if (--cur->n > 0) { --cur->s; return; }
+		if (cur->c[0] && cur->c[1])
+		{
+			const bool dir = cur->c[0]->w < cur->c[1]->w;
+			rotate(cur, dir);
+			remove(cur->c[1-dir], d);
+			setSize(cur);
+		}
+		else
+		{
+			Node *thn = cur;
+			cur = cur->c[0] ? cur->c[0] : cur->c[1];
+			delete thn;
+		}
 	}
 	else
 	{
-		Node *thn = cur;
-		cur = cur->c[0] ? cur->c[0] : cur->c[1];
-		delete thn;
+		remove(cur->c[cur->d < d], d);
+		setSize(cur);
 	}
 }
 
@@ -79,6 +87,7 @@ void remove(Node *&cur)
 #define BLACK "\x1b[38;5;239m"
 void dump(Node *cur, int lay=1, long long lbar=0, long long rbar=0)
 {
+	return;
 	if (lay == 1) printf("dump:\n");
 	if (!cur) return;
 	dump(cur->c[1], lay+1);
@@ -104,7 +113,7 @@ int main()
 		}
 		else if (c == 'r')
 		{
-			remove(locate(root, d));
+			remove(root, d);
 		}
 		else if (c == 'q')
 		{
