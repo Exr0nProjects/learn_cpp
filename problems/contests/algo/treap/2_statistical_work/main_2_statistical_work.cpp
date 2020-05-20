@@ -100,7 +100,7 @@ Node *&tlocate(Node *&cur, int d)
 }
 void tremove(Node *&cur) // FIX: cur here needs to be a reference to update its parent
 {
-	if (!cur || --cur->count <= 0) return; // FIX: how it can be -1 i have no clue, but it works with `2 100 0 10`
+	if (!cur || --cur->count > 0) return; // FIX: how it can be -1 i have no clue, but it works with `2 100 0 10`
 	if (cur->c[0] && cur->c[1])
 	{
 		const bool dir = cur->c[0]->w < cur->c[1]->w;
@@ -172,6 +172,7 @@ int main()
 		tail[i+1] = head[i]; // FIX: overlap list thingy to make insert gap calculation work
 		insert(i, head[i], true);
 	}
+	printf("fixing fencepost\n");
 	tremove(gap_root, head[0]); // FIX: fencepost--inserts a ghost gap because it's the first
 	dump_treaps();
 	for (int m=0; m<M; ++m)
