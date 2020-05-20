@@ -97,7 +97,6 @@ Node *&locate(Node *&cur, int d)
 
 Node *getKth(Node *cur, int k)
 {
-	printf("getKth %d @ %x\n", k, cur);
 	if (!cur || k < 0 || k > cur->s) return nullptr;
 	const int leftSize = cur->c[0] ? cur->c[0]->s : 0;
 	if (k < leftSize) return getKth(cur->c[0], k);
@@ -114,6 +113,7 @@ int getRank(Node *cur, int d)
 	return getRank(cur->c[1], d) + cur->num + leftS;
 }
 
+/*
 void dump(Node *cur, int lay=1)
 {
 	return;
@@ -123,10 +123,13 @@ void dump(Node *cur, int lay=1)
 	printf("%d x%d (%d @ %x s %d, p:%x n:%x)\n", cur->d, cur->num, cur->w, cur, cur->s, cur->n[0], cur->n[1]);
 	dump(cur->c[0], lay+1);
 }
+*/
 
 int main()
 {
 	int Q;
+	insert(root, -INT32_MAX);
+	insert(root, INT32_MAX);
 	scanf("%d", &Q);
 	for (int i=0; i<Q; ++i)
 	{
@@ -139,7 +142,6 @@ int main()
 		{
 			auto it = getKth(root, d-1);
 			printf("%d\n", it ? it->d : -1);
-			freopen("segfault", "r", stdin);
 		}
 		if (c == '5')
 		{
@@ -151,7 +153,6 @@ int main()
 			auto it = locate(root, d);
 			printf("%d\n", it && it->n[1] ? it->n[1]->d : -1);
 		}
-		dump(root);
 	}
     return 0;
 }
