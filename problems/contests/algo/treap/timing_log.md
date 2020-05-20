@@ -10,6 +10,7 @@
 17:09 | dunno | coding #2
 17:42 | hecka scuffed | debugging #2
 19:14 | passed sample case, typos in treap :/
+19:17 | WA #2 | debugging
 
 ## Contest Reflection
 

@@ -88,10 +88,6 @@ Node *tinsert(Node *&cur, int d)
 		cur->n[dir] = ins;
 		if (ins->n[dir])
 			ins->n[dir]->n[1-dir] = ins; // FIX: = ins not = cur
-		printf("%x <- %x (%d) -> %x (dir was %d)\n", ins->n[0], ins, ins->d, ins->n[1], dir);
-		if (ins->n[0]) printf("my 0: %x -> %x\n", ins->n[0], ins->n[0]->n[1]);
-		if (ins->n[1]) printf("my 1: %x <- %x\n", ins->n[1]->n[0], ins->n[1]);
-		printf("\n");
 	}
 	if (cur->w < stp->w)
 		rotate(cur, dir);
@@ -104,8 +100,7 @@ Node *&tlocate(Node *&cur, int d)
 }
 void tremove(Node *&cur) // FIX: cur here needs to be a reference to update its parent
 {
-	if (!cur || --cur->count) return;
-	printf("removing final %x (%d)\n", cur, cur->d);
+	if (!cur || --cur->count <= 0) return; // FIX: how it can be -1 i have no clue, but it works with `2 100 0 10`
 	if (cur->c[0] && cur->c[1])
 	{
 		const bool dir = cur->c[0]->w < cur->c[1]->w;
@@ -116,15 +111,9 @@ void tremove(Node *&cur) // FIX: cur here needs to be a reference to update its 
 	{
 		Node *thn = cur;
 		if (thn->n[0])
-		{
-			printf("thn->n[0] = %x (%d)\n", thn->n[0], thn->n[0]->d);
 			thn->n[0]->n[1] = thn->n[1];
-		}
 		if (thn->n[1])
-		{
-			printf("thn->n[0] = %x (%d)\n", thn->n[1], thn->n[1]->d);
 			thn->n[1]->n[0] = thn->n[0];
-		}
 		cur = cur->c[0] ? cur->c[0] : cur->c[1];
 		delete thn;
 	}
@@ -185,7 +174,6 @@ int main()
 	}
 	tremove(gap_root, head[0]); // FIX: fencepost--inserts a ghost gap because it's the first
 	dump_treaps();
-	printf("okay\n");
 	for (int m=0; m<M; ++m)
 	{
 		char buf[20];
