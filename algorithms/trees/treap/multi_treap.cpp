@@ -36,7 +36,7 @@ Node *&locate(Node *&cur, int d)
 }
 void remove(Node *&cur)
 {
-	if (!cur || --cur->n > 0) return; // TODO: need --cur->c > 0 ? shouldn't be negative ever
+	if (!cur || --cur->n > 0) return; // FIX: check if greater than 0 because double-decrement on recursion
 	if (cur->c[0] && cur->c[1])
 	{
 		const bool dir = cur->c[0]->w < cur->c[1]->w;
@@ -89,16 +89,3 @@ int main()
 	}
 }
 
-/*
-
-
-i 5
-i 6
-r 5
-i 9
-i 10
-r 9
-q 9
-x
-
-*/
