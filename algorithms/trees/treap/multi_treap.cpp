@@ -36,7 +36,7 @@ Node *&locate(Node *&cur, int d)
 }
 void remove(Node *&cur)
 {
-	if (!cur || --cur->n) return; // TODO: need --cur->c > 0 ? shouldn't be negative ever
+	if (!cur || --cur->n > 0) return; // TODO: need --cur->c > 0 ? shouldn't be negative ever
 	if (cur->c[0] && cur->c[1])
 	{
 		const bool dir = cur->c[0]->w < cur->c[1]->w;
@@ -49,6 +49,20 @@ void remove(Node *&cur)
 		cur = cur->c[0] ? cur->c[0] : cur->c[1];
 		delete thn;
 	}
+}
+
+#define RESET "\033[0m"
+#define BLACK "\x1b[38;5;239m"
+void dump(Node *cur, int lay=1, long long lbar=0, long long rbar=0)
+{
+	return;
+	if (lay == 1) printf("dump:\n");
+	if (!cur) return;
+	dump(cur->c[1], lay+1);
+	for (int i=0; i<lay; ++i)
+		printf("%c   ", (lbar|rbar)&(1<<i) ? '|' : ' ');
+	printf("%d x%d %s(%4d @ %x)%s\n", cur->d, cur->n, BLACK, cur->w, cur, RESET);
+	dump(cur->c[0], lay+1);
 }
 
 int main()
@@ -69,9 +83,22 @@ int main()
 		if (c == 'q')
 		{
 			Node *loc = locate(root, d);
-			printf("%d", loc ? loc->n : 0);
+			printf("%d\n", loc ? loc->n : 0);
 		}
-		printf("\n");
+		dump(root);
 	}
 }
 
+/*
+
+
+i 5
+i 6
+r 5
+i 9
+i 10
+r 9
+q 9
+x
+
+*/
