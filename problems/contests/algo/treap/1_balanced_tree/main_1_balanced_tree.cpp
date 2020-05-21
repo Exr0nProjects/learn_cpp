@@ -113,23 +113,18 @@ int getRank(Node *cur, int d)
 	return getRank(cur->c[1], d) + cur->num + leftS;
 }
 
-/*
 void dump(Node *cur, int lay=1)
 {
-	return;
 	if (!cur) return;
 	dump(cur->c[1], lay+1);
 	for (int i=0;i <lay; ++i) printf("    ");
 	printf("%d x%d (%d @ %x s %d, p:%x n:%x)\n", cur->d, cur->num, cur->w, cur, cur->s, cur->n[0], cur->n[1]);
 	dump(cur->c[0], lay+1);
 }
-*/
 
 int main()
 {
 	int Q;
-	insert(root, -INT32_MAX);
-	insert(root, INT32_MAX);
 	scanf("%d", &Q);
 	for (int i=0; i<Q; ++i)
 	{
@@ -137,7 +132,9 @@ int main()
 		int d; scanf("%d", &d);
 		if (c == '1') insert(root, d);
 		if (c == '2') remove(root, d);
-		if (c == '3') printf("%d\n", getRank(root, d)+1);
+		if (c == '3')
+			if (locate(root, d))
+				printf("%d\n", getRank(root, d)+1);
 		if (c == '4')
 		{
 			auto it = getKth(root, d-1);
@@ -153,6 +150,7 @@ int main()
 			auto it = locate(root, d);
 			printf("%d\n", it && it->n[1] ? it->n[1]->d : -1);
 		}
+		dump(root);
 	}
     return 0;
 }
