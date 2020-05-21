@@ -95,6 +95,33 @@ Node *&locate(Node *&cur, int d)
 	return locate(cur->c[cur->d < d], d);
 }
 
+Node *lowerBound(Node *cur, int d)
+{
+	if (!cur || cur->d == d) return cur;
+	const bool dir = cur->d < d;
+	Node *loc = lowerBound(cur->c[dir], d);
+	if (loc) return loc;
+	return dir ? cur : nullptr;
+}
+
+Node *upperBound(Node *cur, int d)
+{
+	if (!cur || cur->d == d) return cur;
+	const bool dir = cur->d < d;
+	Node *loc = upperBound(cur->c[dir], d);
+	if (loc) return loc;
+	return dir ? nullptr : cur;
+}
+
+Node *getNeighbor(Node *cur, int d, bool dir)	// nullptr means no suitable neighbor in that subtree
+{
+	if (!cur || cur->d == d) return cur;
+	const bool stpd = cur->d < d;
+	Node *loc = getNeighbor(cur->c[stpd], d, dir);
+	if (loc) return loc;
+	return stpd == dir ? nullptr : cur;
+}
+
 Node *getKth(Node *cur, int k)
 {
 	if (!cur || k < 0 || k > cur->s) return nullptr;
@@ -142,13 +169,13 @@ int main()
 		}
 		if (c == '5')
 		{
-			auto it = locate(root, d);
-			printf("%d\n", it && it->n[0] ? it->n[0]->d : -1);
+			auto it = getNeighbor(root, d, 0);
+			printf("%d\n", it ? it->d : -1);
 		}
 		if (c == '6')
 		{
-			auto it = locate(root, d);
-			printf("%d\n", it && it->n[1] ? it->n[1]->d : -1);
+			auto it = getNeighbor(root, d, 1);
+			printf("%d\n", it ? it->d : -1);
 		}
 		dump(root);
 	}
