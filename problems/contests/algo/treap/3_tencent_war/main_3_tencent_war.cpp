@@ -52,13 +52,12 @@ LANG: C++14
 void setIO(const std::string &name = "3_tencent_war");
 
 using namespace std;
-const int MX = -1;
 
 struct Node
 {
-	int d, w, num=1, s=1;
+	ll d, w, num=1, s=1;
 	Node *c[2] = {};
-	Node (int d): d(d), w(rand() % 10000) {}
+	Node (ll d): d(d), w(rand()) {}
 } *root = nullptr;
 void setSize(Node *cur)
 {
@@ -77,7 +76,7 @@ void rotate(Node *&cur, bool dir)
 	setSize(thn);
 	cur = thn;
 }
-Node *insert(Node *&cur, int d)
+Node *insert(Node *&cur, ll d)
 {
 	if (!cur) return cur = new Node(d);
 	if (cur->d == d) { ++cur->num; ++cur->s; return cur; }
@@ -89,7 +88,7 @@ Node *insert(Node *&cur, int d)
 	return ins;
 }
 
-void remove(Node *&cur, int d)
+void remove(Node *&cur, ll d)
 {
 	if (!cur) return;
 	if (cur->d == d)
@@ -116,23 +115,13 @@ void remove(Node *&cur, int d)
 	}
 }
 
-Node *getKth(Node *cur, int k)
+Node *getKth(Node *cur, ll k)
 {
 	if (!cur) return cur;
-	int leftS = cur->c[0] ? cur->c[0]->s : 0;
+	ll leftS = cur->c[0] ? cur->c[0]->s : 0;
 	if (k < leftS) return getKth(cur->c[0], k);
 	if (k < leftS + cur->num) return cur;
 	return getKth(cur->c[1], k - leftS - cur->num);
-}
-
-void dump(Node *cur, int lay=1)
-{
-	return;
-	if (!cur) return;
-	dump(cur->c[1], lay+1);
-	for (int i=0; i<lay; ++i) printf("    ");
-	printf("%d   x%d (s %d w %d)\n", cur->d, cur->num, cur->s, cur->w);
-	dump(cur->c[0], lay+1);
 }
 
 int main()
@@ -141,16 +130,15 @@ int main()
 	scanf("%d", &Q);
 	for (int q=0; q<Q; ++q)
 	{
-		int op, x;
-		scanf("%d%d", &op, &x);
+		ll op, x;
+		scanf("%lld%lld", &op, &x);
 		if (op == 1) insert(root, x);
 		if (op == 2)
 		{
 			auto loc = getKth(root, x-1);
-			printf("%d\n", loc ? loc->d : -1);
+			printf("%lld\n", loc ? loc->d : -1);
 		}
 		if (op == 3) remove(root, x);
-		dump(root);
 	}
 
     return 0;
