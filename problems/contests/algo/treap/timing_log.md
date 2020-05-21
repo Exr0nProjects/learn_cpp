@@ -52,9 +52,16 @@ One fundamental issue I found with my treap code was that in insert, `ins` can't
 
 Same as problem 1, needed k-th rank so I didn't really do it.
 
+UPDATE:
+the error was that I was outputting `-1` for invalid queries instead of `0`
+
 #### Problem 4:
 
 Same as problem 1 and 3.
+UPDATE:
+The errors were that I was getting the k-th lowest salary instead of k-th highest,
+and that I was counting people who left immedietely after joining as people who were "leaving the company" when I shouldn't have.
+I'm not sure how I would've found the second error, because the problem statement doesn't make it clear here.
 
 ### Strategy
 I spent all of my time debugging problem 2. I didn't think I would have time to figure out how to do another one. I ended up getting it accepted so I think that was the right move.

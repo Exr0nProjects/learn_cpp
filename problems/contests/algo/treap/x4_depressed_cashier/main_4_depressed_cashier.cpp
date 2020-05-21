@@ -149,12 +149,9 @@ int main()
 		char c; int d;
 		scanf("\n%c%d", &c, &d);
 		if (c == 'I')
-		{
 			if (d >= MIN)
 				insert(root, d-modify); // FIX: take into acount previous modifications
-			else
-				++leaving;
-		}
+			// FIX: doesn't count as leaving if they leave immedietly
 		if (c == 'A') modify += d;
 		if (c == 'S')
 		{
