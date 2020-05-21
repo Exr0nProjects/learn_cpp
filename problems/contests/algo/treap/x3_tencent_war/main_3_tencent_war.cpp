@@ -136,7 +136,7 @@ int main()
 		if (op == 2)
 		{
 			auto loc = getKth(root, x-1);
-			printf("%lld\n", loc ? loc->d : -1);
+			printf("%lld\n", loc ? loc->d : 0);
 		}
 		if (op == 3) remove(root, x);
 	}
