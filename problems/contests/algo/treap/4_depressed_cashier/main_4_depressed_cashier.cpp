@@ -173,7 +173,7 @@ int main()
 		if (c == 'F')
 		{
 			auto loc = getKth(root, d-1);
-			printf("%d", loc ? loc->d + modify : -1);
+			printf("%d\n", loc ? loc->d + modify : -1);
 		}
 		dump(root);
 	}

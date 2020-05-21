@@ -24,6 +24,20 @@ http://115.236.49.52:83/contest/1370
 I thought this would be easy, but I have no good way of finding the entry of a certain rank.
 This is the same problem as pretty much everyo ther problem on the contest.
 
+UPDATE:
+
+I now know how to find k-th in O(log n), which I thought of right after the contest ended.
+I could have figured it out if I had taken time during the contest to sit back, relax, and think.
+But I was too busy working on problem 2.  
+After writing the code, I was getting no credit and I couldn't figure out why.
+I couldn't write a case generator because the sample solutions were so unstable.
+I couldn't come up with my own breaking test case.
+The problem was: my code didn't find prev/next (ops 5 and 6) if the query wasn't in the treap.
+However, a treap containing `1, 2, 4` was supposed to have `op 5 3` return `2` because 2 is the lower_bound of 5.
+This was relatively easy to code up, and I didn't end up needing my next/prev pointers.
+I should have re-read the problem statement carefully, that would have told me what was going wrong.
+However, I don't know if I would've been able to take every detail into account.
+
 #### Problem 2:
 
 This was the only problem that I thought I didn't know how to do, but I realized that the MIN_SORT_GAP was easily treapable and that the other thing didn't even need any fancy data structure, just store the beginning and end of each column.
@@ -48,3 +62,6 @@ I spent all of my time debugging problem 2. I didn't think I would have time to 
 ### Action item
 
 From earlier: "One fundamental issue I found with my treap code was that in insert, `ins` can't be a reference because it might get yeeted during rotation."
+
+Reread the problem statement **carefully**.
+
