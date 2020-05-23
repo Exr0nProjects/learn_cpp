@@ -28,20 +28,20 @@ void build()
 
 int query(int ql, int qr, int k=1, int tl=1, int tr=1<<D, int acc=0)	// inc l inc r
 {
-	printf("query %d..%d\n", tl, tr);
 	if (qr < tl || tr < ql) return 1<<30;
 	acc += segtree[k].add;	// FIX: add current [k].add before returning
 	if (ql <= tl && tr <= qr) return segtree[k].v + acc;
 	int mid = tl + (tr - tl)/2; 
 	return min(
 			query(ql, qr, 2*k, tl, mid, acc),
-			query(ql, qr, 2*k+1, mid, tr, acc)
+			query(ql, qr, 2*k+1, mid+1, tr, acc)	// FIX: inc l inc r means mid+1
 		);
 }
 
 int update(int ql, int qr, int delta, int k=1, int tl=1, int tr=1<<D)
 {
-	if (qr < tl || tr < ql) return 1<<30;
+	if (qr < tl || tr < ql)
+		return segtree[k].v + segtree[k].add;	// FIX: return untouched value
 	if (ql <= tl && tr <= qr)
 	{
 		segtree[k].add += delta;
@@ -50,7 +50,7 @@ int update(int ql, int qr, int delta, int k=1, int tl=1, int tr=1<<D)
 	int mid = tl + (tr - tl)/2;
 	segtree[k].v = min(
 			update(ql, qr, delta, 2*k, tl, mid),
-			update(ql, qr, delta, 2*k+1, mid, tr)
+			update(ql, qr, delta, 2*k+1, mid+1, tr)
 		);
 	return segtree[k].v + segtree[k].add;
 }
