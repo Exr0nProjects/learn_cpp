@@ -92,10 +92,11 @@ ll getRank(Node *cur, int d)
 	const int lsz = cur->c[0] ? cur->c[0]->s : 0;
 	if (d < cur->d) return getRank(cur->c[0], d); 
 	if (cur->d == d) return lsz;
-	return lsz + cur->s + getRank(cur->c[1], d);
+	return lsz + cur->x + getRank(cur->c[1], d); // FIX: cur->x not cur->s
 }
 void dump(Node *cur, int lay=1)
 {
+	if (!cur) return;
 	dump(cur->c[1], lay+1);
 	for (int i=0; i<lay; ++i) printf("    ");
 	printf("%d x%d w%d s%d\n", cur->d, cur->x, cur->w, cur->s);
