@@ -53,7 +53,7 @@ void setIO(const std::string &name = "1_uva1428");
 
 using namespace std;
 const int MX = 20111;
-int N, skill[MX];
+int N, skill[MX], lhsl[MX], lhsg[MX], rhsl[MX], rhsg[MX];	// lhs less, lhs greater, rhs less, rhs greater
 struct Node
 {
 	int d, w, x=1, s=1;
@@ -114,34 +114,34 @@ ll solve()
 	for (int i=0; i<N; ++i)
 		scanf("%d", &skill[i]);
 	
-	ll tot = 0;
+	Node *lsweep = nullptr;
 	for (int i=0; i<N; ++i)
 	{
-		Node *nroot = nullptr;
-		insert(nroot, skill[i]);
-		for (int j=i+1; j<N; ++j)
-		{
-			insert(nroot, skill[j]);
-
-			//printf("\n\n");
-			//dump(nroot);
-			//printf("range %d (%d) .. %d (%d)\n", i, skill[i], j, skill[j]);
-
-			ll lhs, rhs;
-			if (skill[j] > skill[i])
-			{
-				lhs = getRank(nroot, skill[i]);
-				rhs = getRank(nroot, skill[j]) + locate(nroot, skill[j])->x;	// FIX: count not size
-			}
-			else
-			{
-				lhs = getRank(nroot, skill[j]);
-				rhs = getRank(nroot, skill[i]) + locate(nroot, skill[i])->x;
-			}
-			tot += rhs - lhs - 2;
-			//printf("tot += (%d - %d -2) = %lld\n", rhs, lhs, tot);
-		}
+		Node *ins = insert(lsweep, skill[i]);
+		lhsl[i] = getRank(lsweep, skill[i]);// + ins->x -1;
+		lhsg[i] = lsweep->s - lhsl[i]-1;
+		lhsl[i] += ins->x -1;
+		printf("left:  %d (%d): less%3d greater%3d\n", i, skill[i], lhsl[i], lhsg[i]);
 	}
+
+	Node *rsweep = nullptr;
+	for (int i=N-1; i>=0; --i)
+	{
+		Node *ins = insert(rsweep, skill[i]);
+		rhsl[i] = getRank(rsweep, skill[i]) + ins->x -1;
+		rhsg[i] = rsweep->s - rhsl[i]-1;
+		//rhsl[i] += ins->x -1;
+		printf("right: %d (%d): less%3d greater%3d\n", i, skill[i], rhsl[i], rhsg[i]);
+	}
+	
+	ll tot = 0;
+
+	for (int i=0; i<N; ++i)
+	{
+		printf("%d: += %d\n", i, lhsl[i] * rhsg[i] + lhsg[i] * rhsl[i]);
+		tot += lhsl[i] * rhsg[i] + lhsg[i] * rhsl[i];
+	}
+
 	printf("%lld\n", tot);
 }
 
