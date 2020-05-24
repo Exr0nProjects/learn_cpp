@@ -86,6 +86,11 @@ Node *insert(Node *&cur, int d)
 	setSize(cur);
 	return ins;
 }
+Node *locate(Node *&cur, int d)
+{
+	if (!cur || cur->d == d) return cur;
+	return locate(cur->c[cur->d<d], d);
+}
 ll getRank(Node *cur, int d)
 {
 	if (!cur) return 0;
@@ -106,23 +111,45 @@ void dump(Node *cur, int lay=1)
 ll solve()
 {
 	scanf("%d", &N);
-	// TODO
+	for (int i=0; i<N; ++i)
+		scanf("%d", &skill[i]);
+	
+	ll tot = 0;
+	for (int i=0; i<N; ++i)
+	{
+		Node *nroot = nullptr;
+		insert(nroot, skill[i]);
+		for (int j=i+1; j<N; ++j)
+		{
+			insert(nroot, skill[j]);
+
+			printf("\n\n");
+			dump(nroot);
+			printf("range %d (%d) .. %d (%d)\n", i, skill[i], j, skill[j]);
+
+			ll lhs, rhs;
+			if (skill[j] > skill[i])
+			{
+				lhs = getRank(nroot, skill[i]);
+				rhs = getRank(nroot, skill[j]) + locate(nroot, skill[j])->x;	// FIX: count not size
+			}
+			else
+			{
+				lhs = getRank(nroot, skill[j]);
+				rhs = getRank(nroot, skill[i]) + locate(nroot, skill[i])->x;
+			}
+			tot += rhs - lhs - 2;
+			printf("tot += (%d - %d -2) = %lld\n", rhs, lhs, tot);
+		}
+	}
+	printf("%lld\n", tot);
 }
 
 int main()
 {
-	int N;
-	scanf("%d", &N);
-	for (int i=0; i<N; ++i)
-	{
-		int t; scanf("%d", &t); insert(root, t);
-	}
-	while (1)
-	{
-		int d; scanf("%d", &d);
-		printf("%d\n", getRank(root, d));
-		dump(root);
-	}
+	int T;
+	scanf("%d", &T);
+	for (int i=0; i<T; ++i) solve();
 
     return 0;
 }
