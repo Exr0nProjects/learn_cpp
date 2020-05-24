@@ -7,7 +7,7 @@ LANG: C++14
  * Problem 1_uva1428 (contests/dated/2020_05_15/1_uva1428)
  * Create time: Sun 24 May 2020 @ 11:32 (PDT)
  * Accept time: [!meta:end!]
- *
+ * https://onlinejudge.org/index.php?option=onlinejudge&Itemid=99999999&page=show_problem&category=0&problem=4174
  */
 
 #include <iostream>
@@ -154,13 +154,3 @@ int main()
     return 0;
 }
 
-void setIO(const string &name)
-{
-    ios_base::sync_with_stdio(0);
-    cin.tie(0); // fast cin/cout
-    if (fopen((name + ".in").c_str(), "r") != nullptr)
-    {
-        freopen((name + ".in").c_str(), "r", stdin);
-        freopen((name + ".out").c_str(), "w+", stdout);
-    }
-}
