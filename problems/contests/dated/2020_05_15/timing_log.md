@@ -15,6 +15,8 @@
 11:27 | could do the linear sweep from the center outwards, but that makes the time complexity to build the segtree high: each layer needs O(N) so total becomes N+NlogN aka NlogN | analysing #5
 11:31 | actually that might be fine | coding #1
 11:45 | still not good at coding treap, segfaultt | coding #1
+12:02 | submit #1, in judge queue | testing #1
+12:05 | TLE #1 | debugging #1
 
 ## Contest Reflection
 

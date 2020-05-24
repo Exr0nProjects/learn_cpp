@@ -123,9 +123,9 @@ ll solve()
 		{
 			insert(nroot, skill[j]);
 
-			printf("\n\n");
-			dump(nroot);
-			printf("range %d (%d) .. %d (%d)\n", i, skill[i], j, skill[j]);
+			//printf("\n\n");
+			//dump(nroot);
+			//printf("range %d (%d) .. %d (%d)\n", i, skill[i], j, skill[j]);
 
 			ll lhs, rhs;
 			if (skill[j] > skill[i])
@@ -139,7 +139,7 @@ ll solve()
 				rhs = getRank(nroot, skill[i]) + locate(nroot, skill[i])->x;
 			}
 			tot += rhs - lhs - 2;
-			printf("tot += (%d - %d -2) = %lld\n", rhs, lhs, tot);
+			//printf("tot += (%d - %d -2) = %lld\n", rhs, lhs, tot);
 		}
 	}
 	printf("%lld\n", tot);
