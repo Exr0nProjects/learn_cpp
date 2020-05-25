@@ -114,22 +114,6 @@ void build()
 	for (int i=(1<<D)-1; i>0; --i)
 	{
 		st[i] = combine(st[i*2], st[i*2+1]);
-		//tot[i] = add(tot[i*2], tot[i*2+1]);
-		//printf("bunny\n");
-		//lef[i] = max(lef[i*2], add(tot[i*2], lef[i*2+1]));
-		//printf("Bunny\n");
-		//rig[i] = max(rig[i*2+1], add(rig[i*2], tot[i*2+1]));
-		//printf("foo foo\n");
-		//val[i] = max(
-		//            max(
-		//                tot[i],
-		//                max(lef[i], rig[i])
-		//               ),
-		//            max(
-		//                add(rig[i*2], lef[i*2+1]),
-		//                max(val[i*2], val[i*2+1])
-		//               )
-		//        );
 	}
 	//printf("\n");
 	//for (int i=1; i<(1<<D+1); ++i)
@@ -182,13 +166,13 @@ int main()
 		}
 	}
 
-    return 0;
+	return 0;
 }
 
 /*
-10 100
-10 2 -9 5 3 -12 -2 1 10 7
+   10 100
+   10 2 -9 5 3 -12 -2 1 10 7
 
-10 100
-12 -9 3 4 -2 8 7 -6 2 5
-*/
+   10 100
+   12 -9 3 4 -2 8 7 -6 2 5
+   */
