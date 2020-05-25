@@ -48,6 +48,7 @@ void setIO(const std::string &name = "5_uva1400");
 using namespace std;
 const int MX = 500111;
 typedef pair<int, pair<int, int> > Range;
+typedef pair<pair<Range, Range>, pair<Range, Range> > Desc;
 Range val[MX], tot[MX], lef[MX], rig[MX];
 int N, M, D;
 
@@ -58,6 +59,11 @@ Range add(const Range &lhs, const Range &rhs)
 	if (lhs.s.s+1 != rhs.s.f)
 		printf("wait thats illegal: %d (%d..%d) + %d (%d..%d)\n", lhs.f, lhs.s.f, lhs.s.s, rhs.f, rhs.s.f, rhs.s.s);
 	return mp(lhs.f + rhs.f, mp(lhs.s.f, rhs.s.s));
+}
+
+Range best(const Desc &lhs, const Desc &rhs)
+{
+	return ;
 }
 
 void build()
@@ -100,12 +106,16 @@ void build()
 	printf("\n");
 }
 
-ll query(ll ql, ll qr, ll k=1, ll tl=1, ll tr=1<<D)
+Range query(ll ql, ll qr, ll k=1, ll tl=1, ll tr=1<<D)
 {
 	if (qr < tl || tr < ql) return 0;
-	if (ql <= tl && tr <= qr) return val[k].f;
+	if (ql <= tl && tr <= qr) return val[k];
 	const int mid = tl + (tr - tl)/2;
-	return max(query(ql, qr, k*2, tl, mid), query(ql, qr, k*2+1, mid+1, tr));
+	const int lc = 2*i, rc = lc+1;
+	Range lef = query(ql, qr, k*2, tl, mid);
+	Range rig = query(ql, q,r k*2+1, mid+1, tr);
+
+	return max(max(lef, rig), max(
 }
 
 int main()
