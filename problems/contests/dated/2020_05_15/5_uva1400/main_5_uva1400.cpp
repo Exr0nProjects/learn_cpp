@@ -78,21 +78,23 @@ Range add(const Range &lhs, const Range &rhs)
 
 Desc combine(const Desc &lhs, const Desc &rhs)
 {
-	printf("combining:\n      "); print(lhs); printf("\n    + "); print(rhs); printf("...\n    ");
+	//printf("combining:\n      "); print(lhs); printf("\n    + "); print(rhs); printf("...\n    ");
 	Range tot = add(lhs.f.s, rhs.f.s);
-	printf("bunny ");
+	//printf("bunny ");
 	Range lef = max(lhs.s.f, add(lhs.f.s, rhs.s.f));
-	printf("bunny ");
+	//printf("bunny ");
 	Range rig = max(rhs.s.s, add(lhs.s.s, rhs.f.s));
-	printf("foo ");
+	//printf("foo ");
 	Range val = max(max(lhs.f.f, rhs.f.f), add(lhs.s.s, rhs.s.f));
-	printf("foo\n");
-	return mp(mp(val, tot), mp(lef, rig));
+	//printf("foo\n");
+	Desc ret = mp(mp(val, tot), mp(lef, rig));
+	//printf("    = "); print(ret);
+	//printf("\n");
+	return ret;
 }
 
 void build()
 {
-	scanf("%d%d", &N, &M);
 	D = log2(N)+1;
 	for (int i=0; i<N; ++i)
 	{
@@ -122,17 +124,18 @@ void build()
 		//               )
 		//        );
 	}
-	printf("\n");
-	for (int i=1; i<(1<<D+1); ++i)
-	{
-		if (__builtin_popcount(i) == 1) printf("\n");
-		print(st[i]);
-	}
-	printf("\n");
+	//printf("\n");
+	//for (int i=1; i<(1<<D+1); ++i)
+	//{
+	//    if (__builtin_popcount(i) == 1) printf("\n");
+	//    print(st[i]);
+	//}
+	//printf("\n");
 }
 
 Desc query(ll ql, ll qr, ll k=1, ll tl=1, ll tr=1<<D)
 {
+	//printf("query %d..%d @ %d (%d..%d)\n", ql, qr, k, tl, tr);
 	if (qr < tl || tr < ql) return Desc{};
 	if (ql <= tl && tr <= qr) return st[k];
 	const int mid = tl + (tr - tl)/2;
@@ -156,17 +159,27 @@ int main()
 
 	//return 0;
 
-	// TODO: fix `3 1 1 2 3 1 2`
+	int kase=0;
 
-	build();
-	for (int i=0; i<M; ++i)
+	while (scanf("%d%d", &N, &M) == 2)
 	{
-		int l, r;
-		scanf("%d%d", &l, &r);
-		Range opm = query(l, r).f.f;
-		printf("%d %d\n", opm.s.f, opm.s.f);
+		build();
+		printf("Case %d\n", ++kase);
+		for (int i=0; i<M; ++i)
+		{
+			int l, r;
+			scanf("%d%d", &l, &r);
+			Range opm = query(l, r).f.f;
+			//printf("%d %d (%d)\n", opm.s.f, opm.s.s, opm.f);	// FIX: print both, not just opm.s.s smah
+			printf("%d %d\n", opm.s.f, opm.s.s);
+		}
 	}
 
     return 0;
 }
 
+/*
+10 100
+10 2 -9 5 3 -12 -2 1 10 7
+
+*/
