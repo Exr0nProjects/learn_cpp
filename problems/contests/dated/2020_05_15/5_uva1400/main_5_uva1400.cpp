@@ -78,7 +78,7 @@ Range add(const Range &lhs, const Range &rhs)
 
 Desc combine(const Desc &lhs, const Desc &rhs)
 {
-	printf("combining"); print(lhs); print(rhs); printf("...\n");
+	printf("combining:\n      "); print(lhs); printf("\n    + "); print(rhs); printf("...\n    ");
 	Range tot = add(lhs.f.s, rhs.f.s);
 	printf("bunny ");
 	Range lef = max(lhs.s.f, add(lhs.f.s, rhs.s.f));
@@ -86,7 +86,7 @@ Desc combine(const Desc &lhs, const Desc &rhs)
 	Range rig = max(rhs.s.s, add(lhs.s.s, rhs.f.s));
 	printf("foo ");
 	Range val = max(max(lhs.f.f, rhs.f.f), add(lhs.s.s, rhs.s.f));
-	printf("foo ");
+	printf("foo\n");
 	return mp(mp(val, tot), mp(lef, rig));
 }
 
@@ -149,8 +149,8 @@ int main()
 	print(left); printf(" + "); print(right);
 	printf(" = "); print(add(left, right)); printf("\n");
 
-	Desc LEFT = Desc{mp(Range(7, mp(1, 4)), Range(-2, mp(1, 5))), mp(Range(7, mp(1, 4)), Range(0, mp(0, 0)))};
-	Desc RIGHT = Desc{mp(Range{12, mp(6, 8)}, Range{12, mp(6, 8)}), mp(Range{12, mp(6, 8)}, Range{12, mp(6, 8)})};
+	Desc LEFT = Desc{mp(Range{7, mp(2, 5)}, Range(-2, mp(1, 5))), mp(Range(0, mp(0, 0)), Range(7, mp(2, 5)))};
+	Desc RIGHT = Desc{mp(Range{12, mp(6, 7)}, Range{8, mp(6, 8)}), mp(Range{12, mp(6, 7)}, Range{8, mp(6, 8)})};
 	printf("  "); print(LEFT); printf("\n +"); print(RIGHT); printf("\n => "); print(combine(LEFT, RIGHT)); printf("\n");
 
 	return 0;
