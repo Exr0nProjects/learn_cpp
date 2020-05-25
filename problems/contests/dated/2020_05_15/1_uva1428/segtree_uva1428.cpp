@@ -13,8 +13,10 @@ LANG: C++14
 #include <algorithm>
 #include <iostream>
 #include <numeric>
-#include <vector>
 #include <cstring>
+#include <vector>
+#include <math.h>
+#include <cmath>
 #define ll long long
 #define pb push_back
 #define mp make_pair
@@ -101,63 +103,8 @@ void dump()
 	printf("\n");
 }
 
-//ll solve()
-//{
-//    scanf("%d", &N);
-//    for (int i=0; i<N; ++i)
-//        scanf("%d", &skill[i]);
-
-//    Node *lsweep = nullptr;
-//    for (int i=0; i<N; ++i)
-//    {
-//        Node *ins = insert(lsweep, skill[i]);
-//        c[i] = getRank(lsweep, skill[i]);
-//        //printf("left %d (%d): less %d\n", i, skill[i], c[i]);
-//    }
-//    clear(lsweep);
-
-//    Node *rsweep = nullptr;
-//    for (int i=N-1; i>=0; --i)
-//    {
-//        Node *ins = insert(rsweep, skill[i]);
-//        d[i] = getRank(rsweep, skill[i]);
-//        //printf("right %d (%d): less %d\n", i, skill[i], d[i]);
-//    }
-//    clear(rsweep);
-
-//    ll tot = 0;
-
-//    for (int i=0; i<N; ++i)
-//    {
-//        tot += c[i]*(N-d[i]-i-1) + (i-c[i])*d[i];
-//        //printf("%d: %d\n", i, tot);
-//    }
-
-//    printf("%lld\n", tot);
-//}
-
 int main()
 {
-	//scanf("%d", &N);
-	//D = log2(N) +1;
-	//for (int i=0; i<N; ++i)
-	//    scanf("%d", &sval[(1<<D)+i]);
-	//for (int i=(1<<D)-1; i>0; --i)
-	//    sval[i] = sval[2*i] + sval[2*i+1];
-	//while (true)
-	//{
-	//    char c=' '; while(c<'a'||c>'z')scanf("%c",&c);
-	//    int l, r; scanf("%d%d", &l, &r);
-	//    if (c == 'q')
-	//        printf("%d\n", query(l, r));
-	//    if (c == 'u')
-	//    {
-	//        int v; scanf("%d", &v);
-	//        printf("%d\n", update(l, r, v));
-	//    }
-	//    dump();
-	//}
-
 	int T;
 	scanf("%d", &T);
 	for (int i=0; i<T; ++i) solve();
