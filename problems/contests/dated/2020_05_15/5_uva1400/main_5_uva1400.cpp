@@ -67,6 +67,13 @@ void print(const Desc &r)
 	printf(" ) ");
 }
 
+Range best(const Range &lhs, const Range &rhs)
+{
+	if (lhs.f != rhs.f) return lhs.f > rhs.f ? lhs : rhs;
+	if (lhs.s.f != rhs.s.f) return lhs.s.f < rhs.s.f ? lhs : rhs;
+	return lhs.s.s < rhs.s.s ? lhs : rhs;
+}
+
 Range add(const Range &lhs, const Range &rhs)
 {
 	if (!lhs.f) return rhs;
@@ -81,11 +88,11 @@ Desc combine(const Desc &lhs, const Desc &rhs)
 	//printf("combining:\n      "); print(lhs); printf("\n    + "); print(rhs); printf("...\n    ");
 	Range tot = add(lhs.f.s, rhs.f.s);
 	//printf("bunny ");
-	Range lef = max(lhs.s.f, add(lhs.f.s, rhs.s.f));
+	Range lef = best(lhs.s.f, add(lhs.f.s, rhs.s.f));
 	//printf("bunny ");
-	Range rig = max(rhs.s.s, add(lhs.s.s, rhs.f.s));
+	Range rig = best(rhs.s.s, add(lhs.s.s, rhs.f.s));
 	//printf("foo ");
-	Range val = max(max(lhs.f.f, rhs.f.f), add(lhs.s.s, rhs.s.f));
+	Range val = best(best(lhs.f.f, rhs.f.f), add(lhs.s.s, rhs.s.f));
 	//printf("foo\n");
 	Desc ret = mp(mp(val, tot), mp(lef, rig));
 	//printf("    = "); print(ret);
@@ -164,7 +171,7 @@ int main()
 	while (scanf("%d%d", &N, &M) == 2)
 	{
 		build();
-		printf("Case %d\n", ++kase);
+		printf("Case %d:\n", ++kase);
 		for (int i=0; i<M; ++i)
 		{
 			int l, r;
@@ -182,4 +189,6 @@ int main()
 10 100
 10 2 -9 5 3 -12 -2 1 10 7
 
+10 100
+12 -9 3 4 -2 8 7 -6 2 5
 */
