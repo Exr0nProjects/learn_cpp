@@ -49,8 +49,8 @@ using namespace std;
 const int MX = 500111;
 typedef pair<int, pair<int, int> > Range;
 typedef pair<pair<Range, Range>, pair<Range, Range> > Desc;
-Range val[MX], tot[MX], lef[MX], rig[MX];
-//Desc st[MX];	// best, tot, lef, rig
+//Range val[MX], tot[MX], lef[MX], rig[MX];
+Desc st[MX];	// best, tot, lef, rig
 int N, M, D;
 
 void print(const Range &r)
@@ -98,69 +98,73 @@ void build()
 	{
 		int d, j = (1<<D)+i;
 		scanf("%d", &d);
-		tot[(1<<D)+i] = mp(d, mp(i+1, i+1));
+		st[j].f.s = mp(d, mp(i+1, i+1));
 		if (d > 0)
-			val[(1<<D)+i] = lef[(1<<D)+i] = rig[(1<<D)+i] = tot[(1<<D)+i];
+			st[j].f.f = st[j].s.f = st[j].s.s = st[j].f.s;
 	}
 	for (int i=(1<<D)-1; i>0; --i)
 	{
-		tot[i] = add(tot[i*2], tot[i*2+1]);
-		printf("bunny\n");
-		lef[i] = max(lef[i*2], add(tot[i*2], lef[i*2+1]));
-		printf("Bunny\n");
-		rig[i] = max(rig[i*2+1], add(rig[i*2], tot[i*2+1]));
-		printf("foo foo\n");
-		val[i] = max(
-					max(
-						tot[i],
-						max(lef[i], rig[i])
-					   ),
-					max(
-						add(rig[i*2], lef[i*2+1]),
-						max(val[i*2], val[i*2+1])
-					   )
-				);
+		st[i] = combine(st[i*2], st[i*2+1]);
+		//tot[i] = add(tot[i*2], tot[i*2+1]);
+		//printf("bunny\n");
+		//lef[i] = max(lef[i*2], add(tot[i*2], lef[i*2+1]));
+		//printf("Bunny\n");
+		//rig[i] = max(rig[i*2+1], add(rig[i*2], tot[i*2+1]));
+		//printf("foo foo\n");
+		//val[i] = max(
+		//            max(
+		//                tot[i],
+		//                max(lef[i], rig[i])
+		//               ),
+		//            max(
+		//                add(rig[i*2], lef[i*2+1]),
+		//                max(val[i*2], val[i*2+1])
+		//               )
+		//        );
 	}
 	printf("\n");
 	for (int i=1; i<(1<<D+1); ++i)
 	{
 		if (__builtin_popcount(i) == 1) printf("\n");
-		printf("     (%3d %3d %3d %3d)", val[i], tot[i], lef[i], rig[i]);
+		print(st[i]);
 	}
 	printf("\n");
 }
 
-Range query(ll ql, ll qr, ll k=1, ll tl=1, ll tr=1<<D)
+Desc query(ll ql, ll qr, ll k=1, ll tl=1, ll tr=1<<D)
 {
-	if (qr < tl || tr < ql) return mp(0, mp(0, 0));
-	if (ql <= tl && tr <= qr) return val[k];
+	if (qr < tl || tr < ql) return Desc{};
+	if (ql <= tl && tr <= qr) return st[k];
 	const int mid = tl + (tr - tl)/2;
 	const int lc = 2*k, rc = lc+1;
-	Range lef = query(ql, qr, k*2, tl, mid);
-	Range rig = query(ql, qr, k*2+1, mid+1, tr);
+	Desc lef = query(ql, qr, k*2, tl, mid);
+	Desc rig = query(ql, qr, k*2+1, mid+1, tr);
 
-	//return max(max(lef, rig), max(// TODO
+	return combine(lef, rig);
 }
 
 int main()
 {
-	Range left = mp(7, mp(1, 5));
-	Range right = mp(3, mp(3, 3));
-	print(left); printf(" + "); print(right);
-	printf(" = "); print(add(left, right)); printf("\n");
+	//Range left = mp(7, mp(1, 5));
+	//Range right = mp(3, mp(3, 3));
+	//print(left); printf(" + "); print(right);
+	//printf(" = "); print(add(left, right)); printf("\n");
 
-	Desc LEFT = Desc{mp(Range{7, mp(2, 5)}, Range(-2, mp(1, 5))), mp(Range(0, mp(0, 0)), Range(7, mp(2, 5)))};
-	Desc RIGHT = Desc{mp(Range{12, mp(6, 7)}, Range{8, mp(6, 8)}), mp(Range{12, mp(6, 7)}, Range{8, mp(6, 8)})};
-	printf("  "); print(LEFT); printf("\n +"); print(RIGHT); printf("\n => "); print(combine(LEFT, RIGHT)); printf("\n");
+	//Desc LEFT = Desc{mp(Range{7, mp(2, 5)}, Range(-2, mp(1, 5))), mp(Range(0, mp(0, 0)), Range(7, mp(2, 5)))};
+	//Desc RIGHT = Desc{mp(Range{12, mp(6, 7)}, Range{8, mp(6, 8)}), mp(Range{12, mp(6, 7)}, Range{8, mp(6, 8)})};
+	//printf("  "); print(LEFT); printf("\n +"); print(RIGHT); printf("\n => "); print(combine(LEFT, RIGHT)); printf("\n");
 
-	return 0;
+	//return 0;
+
+	// TODO: fix `3 1 1 2 3 1 2`
 
 	build();
 	for (int i=0; i<M; ++i)
 	{
 		int l, r;
 		scanf("%d%d", &l, &r);
-		printf("%d\n", query(l, r));
+		Range opm = query(l, r).f.f;
+		printf("%d %d\n", opm.s.f, opm.s.f);
 	}
 
     return 0;
