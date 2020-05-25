@@ -50,7 +50,22 @@ const int MX = 500111;
 typedef pair<int, pair<int, int> > Range;
 typedef pair<pair<Range, Range>, pair<Range, Range> > Desc;
 Range val[MX], tot[MX], lef[MX], rig[MX];
+//Desc st[MX];	// best, tot, lef, rig
 int N, M, D;
+
+void print(const Range &r)
+{
+	printf(" %d(%d..%d)", r.f, r.s.f, r.s.s);
+}
+void print(const Desc &r)
+{
+	printf("  (");
+	printf(" v"); print(r.f.f);
+	printf(" t"); print(r.f.s);
+	printf(" l"); print(r.s.f);
+	printf(" r"); print(r.s.s);
+	printf(" ) ");
+}
 
 Range add(const Range &lhs, const Range &rhs)
 {
@@ -61,9 +76,18 @@ Range add(const Range &lhs, const Range &rhs)
 	return mp(lhs.f + rhs.f, mp(lhs.s.f, rhs.s.s));
 }
 
-Range best(const Desc &lhs, const Desc &rhs)
+Desc combine(const Desc &lhs, const Desc &rhs)
 {
-	return ;
+	printf("combining"); print(lhs); print(rhs); printf("...\n");
+	Range tot = add(lhs.f.s, rhs.f.s);
+	printf("bunny ");
+	Range lef = max(lhs.s.f, add(lhs.f.s, rhs.s.f));
+	printf("bunny ");
+	Range rig = max(rhs.s.s, add(lhs.s.s, rhs.f.s));
+	printf("foo ");
+	Range val = max(max(lhs.f.f, rhs.f.f), add(lhs.s.s, rhs.s.f));
+	printf("foo ");
+	return mp(mp(val, tot), mp(lef, rig));
 }
 
 void build()
@@ -72,7 +96,7 @@ void build()
 	D = log2(N)+1;
 	for (int i=0; i<N; ++i)
 	{
-		int d;
+		int d, j = (1<<D)+i;
 		scanf("%d", &d);
 		tot[(1<<D)+i] = mp(d, mp(i+1, i+1));
 		if (d > 0)
@@ -108,18 +132,29 @@ void build()
 
 Range query(ll ql, ll qr, ll k=1, ll tl=1, ll tr=1<<D)
 {
-	if (qr < tl || tr < ql) return 0;
+	if (qr < tl || tr < ql) return mp(0, mp(0, 0));
 	if (ql <= tl && tr <= qr) return val[k];
 	const int mid = tl + (tr - tl)/2;
-	const int lc = 2*i, rc = lc+1;
+	const int lc = 2*k, rc = lc+1;
 	Range lef = query(ql, qr, k*2, tl, mid);
-	Range rig = query(ql, q,r k*2+1, mid+1, tr);
+	Range rig = query(ql, qr, k*2+1, mid+1, tr);
 
-	return max(max(lef, rig), max(
+	//return max(max(lef, rig), max(// TODO
 }
 
 int main()
 {
+	Range left = mp(7, mp(1, 5));
+	Range right = mp(3, mp(3, 3));
+	print(left); printf(" + "); print(right);
+	printf(" = "); print(add(left, right)); printf("\n");
+
+	Desc LEFT = Desc{mp(Range(7, mp(1, 4)), Range(-2, mp(1, 5))), mp(Range(7, mp(1, 4)), Range(0, mp(0, 0)))};
+	Desc RIGHT = Desc{mp(Range{12, mp(6, 8)}, Range{12, mp(6, 8)}), mp(Range{12, mp(6, 8)}, Range{12, mp(6, 8)})};
+	printf("  "); print(LEFT); printf("\n +"); print(RIGHT); printf("\n => "); print(combine(LEFT, RIGHT)); printf("\n");
+
+	return 0;
+
 	build();
 	for (int i=0; i<M; ++i)
 	{
