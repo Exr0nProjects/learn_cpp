@@ -1,4 +1,4 @@
-MX = 100000
+MX = 500000
 
 from random import randint
 

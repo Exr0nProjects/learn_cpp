@@ -47,7 +47,7 @@ void setIO(const std::string &name = "5_uva1400");
 
 using namespace std;
 const int MX = 500111;
-typedef pair<int, pair<int, int> > Range;
+typedef pair<ll, pair<ll, ll> > Range;
 typedef pair<pair<Range, Range>, pair<Range, Range> > Desc;
 //Range val[MX], tot[MX], lef[MX], rig[MX];
 Desc st[MX];	// best, tot, lef, rig
@@ -162,8 +162,9 @@ int main()
 			scanf("%d%d", &l, &r);
 			Range opm = query(l, r).f.f;
 			//printf("%d %d (%d)\n", opm.s.f, opm.s.s, opm.f);	// FIX: print both, not just opm.s.s smah
-			printf("%d %d\n", opm.s.f, opm.s.s);
+			printf("%lld %lld\n", opm.s.f, opm.s.s);
 		}
+		printf("\n");
 	}
 
 	return 0;
