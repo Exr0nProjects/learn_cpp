@@ -46,7 +46,7 @@ LANG: C++14
 void setIO(const std::string &name = "5_uva1400");
 
 using namespace std;
-const int MX = 500111;
+const int MX = 5000111;
 typedef pair<ll, pair<ll, ll> > Range;
 typedef pair<pair<Range, Range>, pair<Range, Range> > Desc;
 //Range val[MX], tot[MX], lef[MX], rig[MX];
@@ -164,7 +164,6 @@ int main()
 			//printf("%d %d (%d)\n", opm.s.f, opm.s.s, opm.f);	// FIX: print both, not just opm.s.s smah
 			printf("%lld %lld\n", opm.s.f, opm.s.s);
 		}
-		printf("\n");
 	}
 
 	return 0;
