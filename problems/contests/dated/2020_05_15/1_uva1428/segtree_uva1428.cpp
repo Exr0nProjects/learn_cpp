@@ -24,45 +24,68 @@ LANG: C++14
 #define s second
 
 using namespace std;
-const int MX = 20111;
-const int TREE = 100111;
-int N, D, sadd[2*TREE], sval[2*TREE], skill[MX], lef[MX], rig[MX];
-ll query(ll ql, ll qr, ll k=1, ll tl=1, ll tr=1<<D, ll acc=0, int lay=0)
+const int MX = 200111;
+//const int TREE = 1000111;	// TODO: put back
+const int TREE = 100;
+int N, D, sval[2*TREE], skill[MX], lef[MX], rig[MX];
+
+void dump()
 {
-	//for (int i=0; i<lay; ++i) printf("    "); printf("query %d %d : %d %d..%d +%d\n", ql, qr, k, tl, tr, acc);
+	for (int i=1; i<(1<<D+1); ++i)
+	{
+		if (__builtin_popcount(i) == 1) printf("\n");
+		printf("%3d", sval[i]);
+	}
+	printf("\n");
+}
+
+ll query(ll ql, ll qr, ll k=1, ll tl=1, ll tr=1<<D, int lay=0)
+{
+	//for (int i=0; i<lay; ++i) printf("    "); printf("query %d %d : %d %d..%d\n", ql, qr, k, tl, tr);
 	if (qr < ql) return 0;
 	if (qr < tl || tr < ql) return 0;
-	acc += sadd[k];
 	if (ql <= tl && tr <= qr)
 	{
-		//printf("direct => %d + %d*%d = %d\n", sval[k], acc, (tr-tl+1), sval[k]+acc*(tr-tl+1));
-		return sval[k] + acc*(tr-tl+1);	// FIX: (tr-tl+1) not (tr-tl) cuz its inc inc
+		//for (int i=0; i<lay; ++i) printf("    "); printf("direct => %d\n", sval[k], sval[k]);
+		return sval[k];	// FIX: (tr-tl+1) not (tr-tl) cuz its inc inc
 	}
 	const int mid = tl + (tr - tl)/2;
-	ll ret= query(ql, qr, 2*k, tl, mid, acc, lay+1) + query(ql, qr, 2*k+1, mid+1, tr, acc, lay+1);
+	ll ret= query(ql, qr, 2*k, tl, mid, lay+1) + query(ql, qr, 2*k+1, mid+1, tr, lay+1);
 	//for (int i=0; i<lay; ++i) printf("    "); printf("=> %d\n", ret);
 	return ret;
 }
-ll update(ll ql, ll qr, ll v, ll k=1, ll tl=1, ll tr=1<<D)
+//ll update_range(ll ql, ll qr, ll v, ll k=1, ll tl=1, ll tr=1<<D)
+//{
+//    //printf("update %d %d +%d: %d %d..%d\n", ql, qr, v, k, tl, tr);
+//    if (qr < ql) return 0;
+//    if (qr < tl || tr < ql) return sval[k] + sadd[k]*(tr-tl+1);
+//    if (ql <= tl && tr <= qr)
+//    {
+//        sadd[k] += v;
+//        return sval[k] + sadd[k]*(tr-tl+1);
+//    }
+//    const int mid = tl + (tr-tl)/2;
+//    sval[k] = update_range(ql, qr, v, 2*k, tl, mid) + update_range(ql, qr, v, 2*k+1, mid+1, tr);
+//    return sval[k] + sadd[k]*(tr-tl+1);
+//}
+
+void update(ll q, ll k=1, ll tl=1, ll tr=1<<D)
 {
-	//printf("update %d %d +%d: %d %d..%d\n", ql, qr, v, k, tl, tr);
-	if (qr < ql) return 0;
-	if (qr < tl || tr < ql) return sval[k] + sadd[k]*(tr-tl+1);
-	if (ql <= tl && tr <= qr)
+	if (tl == tr)
 	{
-		sadd[k] += v;
-		return sval[k] + sadd[k]*(tr-tl+1);
+		++sval[k];
+		return;
 	}
 	const int mid = tl + (tr-tl)/2;
-	sval[k] = update(ql, qr, v, 2*k, tl, mid) + update(ql, qr, v, 2*k+1, mid+1, tr);
-	return sval[k] + sadd[k]*(tr-tl+1);
+	if (q <= mid) update(q, k*2, tl, mid);
+	if (q > mid) update(q, k*2+1, mid+1, tr);
+	sval[k] = sval[k*2] + sval[k*2+1];
 }
 
-ll solve()
+void solve()
 {
-	memset(sadd, 0, sizeof sadd);
 	memset(sval, 0, sizeof sval);
-	D = log2(100000) +1;
+	D = log2(TREE/5) +1;
 
 	memset(lef, 0, sizeof lef);
 	memset(rig, 0, sizeof rig);
@@ -73,9 +96,10 @@ ll solve()
 	for (int i=0; i<N; ++i)
 	{
 		scanf("%d", &skill[i]);
+		//dump();
 		lef[i] = query(1, skill[i]-1);
 		//printf("%d (%d): c%3d\n", i, skill[i], lef[i]);
-		update(skill[i], skill[i], 1);	// FIX: don't update range, just update one. segtree takes care of range
+		update(skill[i]);	// FIX: don't update range, just update one. segtree takes care of range
 		sorted.pb(mp(skill[i], i));
 	}
 	sort(sorted.begin(), sorted.end());
@@ -87,20 +111,11 @@ ll solve()
 	ll tot=0;
 	for (int i=0; i<N; ++i)
 	{
-		//printf("%d (%d): c%3d d%3d\n", i, skill[i], lef[i], rig[i]);
-		tot += lef[i]*(N-rig[i]-i-1) + (i-lef[i])*rig[i];
+		const int val = lef[i]*(N-rig[i]-i-1) + (i-lef[i])*rig[i];
+		//printf("%d (%d): c%3d d%3d     += %d\n", i, skill[i], lef[i], rig[i], val);
+		tot += val;
 	}
 	printf("%lld\n", tot);
-}
-
-void dump()
-{
-	for (int i=1; i<(1<<D+1); ++i)
-	{
-		if (__builtin_popcount(i) == 1) printf("\n");
-		printf("%3d +%3d", sval[i], sadd[i]);
-	}
-	printf("\n");
 }
 
 int main()
