@@ -11,39 +11,15 @@ LANG: C++14
  */
 
 #include <iostream>
-#include <sstream>
-#include <cstdio>
-#include <tuple>
-#include <vector>
-#include <string>
-#include <cstring>
-#include <list>
-#include <array>
-#include <queue>
-#include <stack>
-#include <set>
-#include <map>
-#include <unordered_set>
-#include <unordered_map>
-#include <cmath>
-#include <random>
-#include <chrono>
-#include <utility>
-#include <iterator>
-#include <exception>
-#include <algorithm>
-#include <functional>
+#include <numeric>
 
 #define ll long long
 #define dl double
 
 #define pb push_back
-#define eb emplace_back
 #define mp make_pair
 #define f first
 #define s second
-
-void setIO(const std::string &name = "5_uva1400");
 
 using namespace std;
 const int MX = 5000111;
@@ -52,6 +28,8 @@ typedef pair<pair<Range, Range>, pair<Range, Range> > Desc;
 //Range val[MX], tot[MX], lef[MX], rig[MX];
 Desc st[MX];	// best, tot, lef, rig
 int N, M, D;
+Range RMIN = {-100000000000000, {0, 0}};
+Desc DMIN = { {RMIN, RMIN}, {RMIN, RMIN} };
 
 void print(const Range &r)
 {
@@ -76,8 +54,8 @@ Range best(const Range &lhs, const Range &rhs)
 
 Range add(const Range &lhs, const Range &rhs)
 {
-	if (!lhs.f) return rhs;
-	if (!rhs.f) return lhs;
+	if (!lhs.s.f) return rhs;
+	if (!rhs.s.f) return lhs;
 	if (lhs.s.s+1 != rhs.s.f)
 		printf("wait thats illegal: %d (%d..%d) + %d (%d..%d)\n", lhs.f, lhs.s.f, lhs.s.s, rhs.f, rhs.s.f, rhs.s.s);
 	return mp(lhs.f + rhs.f, mp(lhs.s.f, rhs.s.s));
@@ -85,18 +63,17 @@ Range add(const Range &lhs, const Range &rhs)
 
 Desc combine(const Desc &lhs, const Desc &rhs)
 {
-	//printf("combining:\n      "); print(lhs); printf("\n    + "); print(rhs); printf("...\n    ");
+	if (lhs.f.s.s.s +1 != rhs.f.s.s.f)
+	{
+		printf("hold up... ");
+		print(lhs); print(rhs);
+		printf("\n");
+	}
 	Range tot = add(lhs.f.s, rhs.f.s);
-	//printf("bunny ");
 	Range lef = best(lhs.s.f, add(lhs.f.s, rhs.s.f));
-	//printf("bunny ");
 	Range rig = best(rhs.s.s, add(lhs.s.s, rhs.f.s));
-	//printf("foo ");
 	Range val = best(best(lhs.f.f, rhs.f.f), add(lhs.s.s, rhs.s.f));
-	//printf("foo\n");
 	Desc ret = mp(mp(val, tot), mp(lef, rig));
-	//printf("    = "); print(ret);
-	//printf("\n");
 	return ret;
 }
 
@@ -108,26 +85,24 @@ void build()
 		int d, j = (1<<D)+i;
 		scanf("%d", &d);
 		st[j].f.s = mp(d, mp(i+1, i+1));
-		if (d > 0)
-			st[j].f.f = st[j].s.f = st[j].s.s = st[j].f.s;
+		st[j].f.f = st[j].s.f = st[j].s.s = st[j].f.s;
 	}
 	for (int i=(1<<D)-1; i>0; --i)
-	{
 		st[i] = combine(st[i*2], st[i*2+1]);
+
+	printf("\n");
+	for (int i=1; i<(1<<D+1); ++i)
+	{
+	    if (__builtin_popcount(i) == 1) printf("\n");
+	    print(st[i]);
 	}
-	//printf("\n");
-	//for (int i=1; i<(1<<D+1); ++i)
-	//{
-	//    if (__builtin_popcount(i) == 1) printf("\n");
-	//    print(st[i]);
-	//}
-	//printf("\n");
+	printf("\n");
 }
 
 Desc query(ll ql, ll qr, ll k=1, ll tl=1, ll tr=1<<D)
 {
-	//printf("query %d..%d @ %d (%d..%d)\n", ql, qr, k, tl, tr);
-	if (qr < tl || tr < ql) return Desc{};
+	printf("query %d..%d @ %d (%d..%d)\n", ql, qr, k, tl, tr);
+	if (qr < tl || tr < ql) return DMIN;
 	if (ql <= tl && tr <= qr) return st[k];
 	const int mid = tl + (tr - tl)/2;
 	const int lc = 2*k, rc = lc+1;
@@ -139,17 +114,6 @@ Desc query(ll ql, ll qr, ll k=1, ll tl=1, ll tr=1<<D)
 
 int main()
 {
-	//Range left = mp(7, mp(1, 5));
-	//Range right = mp(3, mp(3, 3));
-	//print(left); printf(" + "); print(right);
-	//printf(" = "); print(add(left, right)); printf("\n");
-
-	//Desc LEFT = Desc{mp(Range{7, mp(2, 5)}, Range(-2, mp(1, 5))), mp(Range(0, mp(0, 0)), Range(7, mp(2, 5)))};
-	//Desc RIGHT = Desc{mp(Range{12, mp(6, 7)}, Range{8, mp(6, 8)}), mp(Range{12, mp(6, 7)}, Range{8, mp(6, 8)})};
-	//printf("  "); print(LEFT); printf("\n +"); print(RIGHT); printf("\n => "); print(combine(LEFT, RIGHT)); printf("\n");
-
-	//return 0;
-
 	int kase=0;
 
 	while (scanf("%d%d", &N, &M) == 2)
@@ -161,8 +125,8 @@ int main()
 			int l, r;
 			scanf("%d%d", &l, &r);
 			Range opm = query(l, r).f.f;
-			//printf("%d %d (%d)\n", opm.s.f, opm.s.s, opm.f);	// FIX: print both, not just opm.s.s smah
-			printf("%lld %lld\n", opm.s.f, opm.s.s);
+			printf("%d %d (%d)\n", opm.s.f, opm.s.s, opm.f);	// FIX: print both, not just opm.s.s smah
+			//printf("%lld %lld\n", opm.s.f, opm.s.s);
 		}
 	}
 

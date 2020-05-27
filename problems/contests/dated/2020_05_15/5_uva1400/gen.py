@@ -1,4 +1,4 @@
-MX = 500000
+MX = 50
 
 from random import randint
 
@@ -7,6 +7,6 @@ for i in range(MX):
     print(f'{randint(1, MX)}', end=' ')
 print()
 for i in range(MX):
-    low = randint(1, MX)
+    low = randint(-MX, MX)
     print(f'{low} {randint(low, MX)}')
 
