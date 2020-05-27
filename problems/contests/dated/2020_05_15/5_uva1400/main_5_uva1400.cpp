@@ -63,12 +63,6 @@ Range add(const Range &lhs, const Range &rhs)
 
 Desc combine(const Desc &lhs, const Desc &rhs)
 {
-	if (lhs.f.s.s.s +1 != rhs.f.s.s.f)
-	{
-		printf("hold up... ");
-		print(lhs); print(rhs);
-		printf("\n");
-	}
 	Range tot = add(lhs.f.s, rhs.f.s);
 	Range lef = best(lhs.s.f, add(lhs.f.s, rhs.s.f));
 	Range rig = best(rhs.s.s, add(lhs.s.s, rhs.f.s));
@@ -90,18 +84,18 @@ void build()
 	for (int i=(1<<D)-1; i>0; --i)
 		st[i] = combine(st[i*2], st[i*2+1]);
 
-	printf("\n");
-	for (int i=1; i<(1<<D+1); ++i)
-	{
-	    if (__builtin_popcount(i) == 1) printf("\n");
-	    print(st[i]);
-	}
-	printf("\n");
+//	printf("\n");
+//	for (int i=1; i<(1<<D+1); ++i)
+//	{
+//	    if (__builtin_popcount(i) == 1) printf("\n");
+//	    print(st[i]);
+//	}
+//	printf("\n");
 }
 
 Desc query(ll ql, ll qr, ll k=1, ll tl=1, ll tr=1<<D)
 {
-	printf("query %d..%d @ %d (%d..%d)\n", ql, qr, k, tl, tr);
+	//printf("query %d..%d @ %d (%d..%d)\n", ql, qr, k, tl, tr);
 	if (qr < tl || tr < ql) return DMIN;
 	if (ql <= tl && tr <= qr) return st[k];
 	const int mid = tl + (tr - tl)/2;
@@ -125,8 +119,8 @@ int main()
 			int l, r;
 			scanf("%d%d", &l, &r);
 			Range opm = query(l, r).f.f;
-			printf("%d %d (%d)\n", opm.s.f, opm.s.s, opm.f);	// FIX: print both, not just opm.s.s smah
-			//printf("%lld %lld\n", opm.s.f, opm.s.s);
+			//printf("%d %d (%d)\n", opm.s.f, opm.s.s, opm.f);	// FIX: print both, not just opm.s.s smah
+			printf("%lld %lld\n", opm.s.f, opm.s.s);
 		}
 	}
 
