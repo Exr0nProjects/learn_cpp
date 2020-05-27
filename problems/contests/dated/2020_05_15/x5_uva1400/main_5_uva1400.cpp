@@ -12,6 +12,8 @@ LANG: C++14
 
 #include <iostream>
 #include <numeric>
+#include <utility>
+#include <cmath>
 
 #define ll long long
 #define dl double
