@@ -25,8 +25,8 @@ LANG: C++14
 
 using namespace std;
 const int MX = 200111;
-//const int TREE = 1000111;	// TODO: put back
-const int TREE = 100;
+const int TREE = 1000111;	// TODO: put back
+//const int TREE = 100;
 int N, D, sval[2*TREE], skill[MX], lef[MX], rig[MX];
 
 void dump()
@@ -85,6 +85,7 @@ void update(ll q, ll k=1, ll tl=1, ll tr=1<<D)
 void solve()
 {
 	memset(sval, 0, sizeof sval);
+	memset(skill, 0, sizeof skill);
 	D = log2(TREE/5) +1;
 
 	memset(lef, 0, sizeof lef);
