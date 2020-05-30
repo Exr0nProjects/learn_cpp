@@ -52,16 +52,16 @@ void dump()
 
 int main()
 {
-	build();
-	while (1)
+	int Q; scanf("%d%d", &N, &Q);
+	for (int i=0; i<Q; ++i)
 	{
 		char c = ' '; while (c < 'a' || c > 'z') scanf("%c", &c);
-		int a, b; scanf("%d%d", &a, &b);
+		ll a, b; scanf("%lld%lld", &a, &b);
 		if (c == 'q')
 			printf("%lld\n", query(a, b));
 		if (c == 'u')
 			update(a, b);
-		dump();
+		//dump();
 	}
 }
 
