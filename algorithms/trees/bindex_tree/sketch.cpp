@@ -12,7 +12,7 @@ void build()
 	{
 		scanf("%d", &temp[i]);
 		if (i) temp[i] += temp[i-1];
-		bidx[i] = temp[i] - temp[i&-1];
+		bidx[i] = temp[i] - temp[i&-i];
 	}
 }
 int query_bad(ll l, ll r)
