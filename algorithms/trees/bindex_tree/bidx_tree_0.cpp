@@ -31,9 +31,9 @@ ll query(ll l, ll r) // inc inc
 {
 	--l;							// ensure include left
 	ll tot = 0;
-	for (; r; r-=r&-r)	// TODO: don't go all the way down to zero
+	for (; r>l; r-=r&-r)	// TODO: don't go all the way down to zero
 		tot += bidx[r];
-	for (; l; l-=l&-l)
+	for (; l!=r; l-=l&-l)
 		tot -= bidx[l];
 	return tot;
 }
