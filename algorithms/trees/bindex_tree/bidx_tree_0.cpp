@@ -2,7 +2,7 @@
 
 #include <iostream>
 #define ll long long
-const int MX = 10000;
+const ll MX = 1000000;
 
 ll N, bidx[MX];
 void update(ll i, ll v);
@@ -10,13 +10,10 @@ void build()
 {
 	scanf("%lld", &N);
 	memset(bidx, 0, sizeof bidx);
-	//for (int i=1; i<=N; ++i)		// FIX: one indexed
-	//    scanf("%lld", &bidx[i]);
-	//// TODO: ^^^^^^^^^^^^^^^^^^^ that without another array
-	for (int i=1; i<=N; ++i)
+	for (ll i=1; i<=N; ++i)
 	{
-		int t;
-		scanf("%d", &t);
+		ll t;
+		scanf("%lld", &t);
 		update(i, t);
 	}
 }
@@ -44,7 +41,7 @@ void update(ll i, ll v)
 }
 void dump()
 {
-	for (int i=1; i<=N; ++i)
+	for (ll i=1; i<=N; ++i)
 		printf("%3lld", bidx[i]);
 	printf("\n");
 	// TODO: print the tree structure
@@ -52,8 +49,8 @@ void dump()
 
 int main()
 {
-	int Q; scanf("%d%d", &N, &Q);
-	for (int i=0; i<Q; ++i)
+	ll Q; scanf("%lld%lld", &N, &Q);
+	for (ll i=0; i<Q; ++i)
 	{
 		char c = ' '; while (c < 'a' || c > 'z') scanf("%c", &c);
 		ll a, b; scanf("%lld%lld", &a, &b);

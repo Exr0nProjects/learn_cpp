@@ -1,11 +1,12 @@
 #include <iostream>
 #define ll long long
 
+ll arr[1000000];
+
 int main()
 {
-	int N, Q; scanf("%d%d", &N, &Q);
-	ll *arr = new ll[N];
-	for (int q=0; q<Q; ++q)
+	ll N, Q; scanf("%d%d", &N, &Q);
+	for (ll q=0; q<Q; ++q)
 	{
 		char c = ' '; while (c <'a'||c>'z') scanf("%c", &c);
 		ll a, b; scanf("%lld%lld", &a, &b);
