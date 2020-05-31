@@ -42,7 +42,7 @@ using namespace std;
 const int MX = 100111;
 
 int N, M, capa[MX];
-vector<pair<int, int> > reqs[MX];
+vector<pair<int, int> > reqs;
 int D, segt[MX], addv[MX];
 
 void dump()
@@ -87,11 +87,15 @@ int query(int ql, int qr, int k=1, int tl=1, int tr=1<<D, int acc=0)
 	return max(query(ql, qr, k*2, tl, mid, acc), query(ql, qr, k*2+1, mid+1, tr, acc));
 }
 
-bool cmp(const pair<int, int> &lhs, const pair<int, int> &rhs);
+bool cmp(const pair<int, int> &lhs, const pair<int, int> &rhs)
+{	// compare by range then start index
+	if (lhs.s - lhs.f == rhs.s - rhs.f) return lhs < rhs;
+	return lhs.s - lhs.f < rhs.s - rhs.f;
+}
 
 int main()
 {
-	scanf("%d", &N);
+	scanf("%d%d", &N, &M);
 	for (int i=0; i<N; ++i)
 		scanf("%d", &capa[i]);
 	build();
@@ -106,6 +110,30 @@ int main()
 	//    printf("finished processing command %c\n", c);
 	//    dump();
 	//}
+
+	for (int i=0; i<M; ++i)
+	{
+		int l, r;
+		scanf("%d%d", &l, &r);
+		reqs.eb(l, r);
+	}
+	sort(reqs.begin(), reqs.end(), cmp);
+
+	ll tot=0;
+	for (int i=0; i<M; ++i)
+	{
+		int l = reqs[i].f;
+		int r = reqs[i].s;
+
+		update(l, r);
+		int q = query(1, N);
+		//printf("%d (%d %d): %d\n", i, l, r, q);
+		if (q > 0)
+			update(l, r, -1); // undo that
+		else
+			++tot;
+	}
+	printf("%lld\n", tot);
 
 	return 0;
 }
