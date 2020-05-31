@@ -7,6 +7,7 @@
 14:15 | start | reading problems
 14:22 | have plans for 1, 3, need to analyse 2 | coding #1
 14:37 | AC #1 | coding #3
+14:58 | WA #3 | debugging
 
 ## Contest Reflection
 
