@@ -57,21 +57,20 @@ void build()
 	memset(segt, 0, sizeof segt);
 	memset(addv, 0, sizeof addv);
 }
-int update(int ql, int qr, int v, int k=1, int tl=1, int tr=1<<D)
+void update(int ql, int qr, int v, int k=1, int tl=1, int tr=1<<D)
 {
-	printf("update %d..%d +%d   @%d (%d %d)\n", ql, qr, v, k, tl, tr);
-	if (qr < tl || tr < ql) return segt[k];
+	//printf("update %d..%d +%d   @%d (%d %d)\n", ql, qr, v, k, tl, tr);
+	if (qr < tl || tr < ql) return;
 	if (ql <= tl && tr <= qr)
 	{
 		addv[k] += v;
 		segt[k] += v;
-		return segt[k];
+		return;
 	}
 	int mid = tl + (tr-tl)/2;
-	int lhs = update(ql, qr, v, k*2, tl, mid);
-	int rhs = update(ql, qr, v, k*2+1, mid+1, tr);
-	segt[k] = max(lhs, rhs);
-	return segt[k];
+	update(ql, qr, v, k*2, tl, mid);
+	update(ql, qr, v, k*2+1, mid+1, tr);
+	segt[k] = max(segt[k*2], segt[k*2+1]);
 }
 int query(int ql, int qr, int k=1, int tl=1, int tr=1<<D, int acc=0)
 {
@@ -84,19 +83,32 @@ int query(int ql, int qr, int k=1, int tl=1, int tr=1<<D, int acc=0)
 
 int main()
 {
-	scanf("%d", &N);
+	scanf("%d%d%d", &N, &S, &R);
 	build();
-	while (true)
+	//while (true)
+	//{
+	//    char c=' '; while (c<'a'||c>'z') scanf("%c", &c);
+	//    int a, b; scanf("%d%d", &a, &b);
+	//    if (c == 'q') printf("%d\n", query(a, b));
+	//    if (c == 'u')
+	//    {
+	//        int v; scanf("%d", &v);
+	//        update(a, b, v);
+	//    }
+	//    dump();
+	//}
+	for (int i=0; i<R; ++i)
 	{
-		char c=' '; while (c<'a'||c>'z') scanf("%c", &c);
-		int a, b; scanf("%d%d", &a, &b);
-		if (c == 'q') printf("%d\n", query(a, b));
-		if (c == 'u')
+		int u, v, w;
+		scanf("%d%d%d", &u, &v, &w);
+		//printf("\n%d..%d: max %d\n", u, v, query(u, v));
+		if (query(u, v) + w <= S)
 		{
-			int v; scanf("%d", &v);
-			update(a, b, v);
+			printf("T\n");
+			update(u, v, w);
 		}
-		dump();
+		else
+			printf("N\n");
 	}
 
 	return 0;
