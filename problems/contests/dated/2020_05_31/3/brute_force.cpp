@@ -1,4 +1,5 @@
 // 15:01 (PDT)
+// AC 15:07 (PDT)
 
 #include <iostream>
 
@@ -16,12 +17,12 @@ int main()
 		ll u, v, w;
 		scanf("%lld%lld%lld", &u, &v, &w);
 		ll mx=0;
-		for (ll j=u; j<=v; ++j)
+		for (ll j=u; j<v; ++j)
 			mx = max(mx, train[j]);
 		if (mx + w <= S)
 		{
 			printf("T\n");
-			for (ll j=u; j<=v; ++j)
+			for (ll j=u; j<v; ++j)
 				train[j] += w;
 		}
 		else
