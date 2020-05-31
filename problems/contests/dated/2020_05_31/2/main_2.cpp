@@ -39,11 +39,11 @@
 #define s second
 
 using namespace std;
-const int MX = 100111;
+const int MX = 1000111;
 
 int N, M, capa[MX];
 vector<pair<int, int> > reqs;
-int D, segt[MX], addv[MX];
+int D, segt[2*MX], addv[2*MX];
 
 void dump()
 {
