@@ -1,7 +1,7 @@
 /*
  * Problem 1 (contests/dated/2020_05_31/1)
  * Create time: Sun 31 May 2020 @ 14:22 (PDT)
- * Accept time: [!meta:end!]
+ * Accept time: Sun 31 May 2020 @ 14:37 (PDT)
  *
  */
 
@@ -39,7 +39,7 @@
 #define s second
 
 using namespace std;
-const int MX = 50111;
+const int MX = 500111;
 
 int N, Q, D, segmin[2*MX], segmax[2*MX];
 
