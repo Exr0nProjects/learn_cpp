@@ -62,9 +62,9 @@ void update(ll i, ll v)
 	for (; i<=N; i += i&-i)
 		bidx[i] += v;
 }
-ll query(ll l, ll r)
+ll query(int l, int r)
 {
-	printf("query %lld %lld, r<l: %lld\n", l, r, r < l);
+	//printf("query %lld %lld, r<l: %lld\n", l, r, r < l);
 	if (r < l) return 0;	// FIX: invalid range detection
 
 	ll tot; --l;			// FIX: --l for inclusive inclusive
@@ -94,16 +94,21 @@ void solve()
 	{
 		ll t; scanf("%lld", &t);
 		//printf("t: %lld, t-1: %lld\n", t, t-1);
+
 		lef[i-1] = query(1, t-1);	// FIX: i-1
-		sorted.eb(t, i);
+		sorted.eb(t, i-1);			// FIX: here too
+
 		//printf("uh"); fflush(stdout);
 		update(t, 1);
+		dump();
 	}
-	printf("sauce"); fflush(stdout);
 	sort(sorted.begin(), sorted.end());
 	for (ll i=0; i<sorted.size(); ++i)
 		rig[sorted[i].s] = i - lef[sorted[i].s];
-	printf("time"); fflush(stdout);
+
+	for (int i=0; i<N; ++i)
+		printf("%d: left %4lld right %4lld\n", i, lef[i], rig[i]);
+
 	ll tot = 0;
 	for (ll i=0; i<N; ++i)
 		tot += lef[i]*(N-rig[i]-i-1) + (i-lef[i])*rig[i];
