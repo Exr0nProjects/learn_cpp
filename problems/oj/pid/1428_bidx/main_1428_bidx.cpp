@@ -52,14 +52,14 @@ LANG: C++14
 void setIO(const std::string &name = "1428_bidx");
 
 using namespace std;
-const int MX = 100111;
+const ll MX = 100111;
 
 ll T, N, bidx[MX], lef[MX], rig[MX];
 
 void update(ll i, ll v)
 {
 	if (!i) return;	// FIX: can't update zero
-	for (; i<=N; i += i&-i)
+	for (; i<=MX; i += i&-i)	// FIX: MX not N, since we are doing the counting sort thing
 		bidx[i] += v;
 }
 ll query(int l, int r)
@@ -70,14 +70,14 @@ ll query(int l, int r)
 	ll tot; --l;			// FIX: --l for inclusive inclusive
 	for (; r>l; r-=r&-r)
 		tot += bidx[r];
-	printf("tot: %lld\n", tot);
 	for (; l>r; l-=l&-l)
 		tot -= bidx[l];
 	return tot;
 }
 void dump()
 {
-	for (int i=1; i<=N; ++i)
+	return;
+	for (int i=1; i<=MX; ++i)
 		printf("%3lld ", bidx[i]);
 	printf("\n");
 }
@@ -90,13 +90,14 @@ void solve()
 	memset(rig, 0, sizeof rig);
 	vector<pair<ll, ll> > sorted;
 	//printf("epic"); fflush(stdout);
-	for (ll i=1; i<=N; ++i)
+	for (ll i=0; i<N; ++i)
 	{
 		ll t; scanf("%lld", &t);
 		//printf("t: %lld, t-1: %lld\n", t, t-1);
 
-		lef[i-1] = query(1, t-1);	// FIX: i-1
-		sorted.eb(t, i-1);			// FIX: here too
+		lef[i] = query(1, t-1);
+		//printf("lef[%d] = %d\n", i, lef[i]);
+		sorted.eb(t, i);
 
 		//printf("uh"); fflush(stdout);
 		update(t, 1);
@@ -106,8 +107,8 @@ void solve()
 	for (ll i=0; i<sorted.size(); ++i)
 		rig[sorted[i].s] = i - lef[sorted[i].s];
 
-	for (int i=0; i<N; ++i)
-		printf("%d: left %4lld right %4lld\n", i, lef[i], rig[i]);
+	//for (int i=0; i<N; ++i)
+	//    printf("%d: left %4lld right %4lld\n", i, lef[i], rig[i], lef[i]*(N-rig[i]-i-1) + (i-lef[i])*rig[i]);
 
 	ll tot = 0;
 	for (ll i=0; i<N; ++i)
