@@ -9,6 +9,10 @@
 14:37 | AC #1 | coding #3
 14:58 | WA #3 | debugging
 15:07 | uhm, brute force AC'd #3?? | analysing #2
+15:10 | wait, the cows already want the entire range? huh. | walk
+15:16 | walk, binary search on answer, check in O(N)? | analysing #2
+15:29 | can actually check each by initing segtree with negative capacity, now just need to check if sorting greedy works | analysing #2
+15:32 | dunno if it works, lets just try it | coding #2
 
 ## Contest Reflection
 
