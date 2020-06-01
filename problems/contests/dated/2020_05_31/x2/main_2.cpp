@@ -69,20 +69,19 @@ void update(int ql, int qr, int v=-1, int k=1, int tl=1, int tr=1<<D)
 	if (qr < tl || tr < ql) return;
 	if (ql <= tl && tr <= qr)
 	{
-		segt[k] += v;
 		addv[k] += v;
 		return;
 	}
 	int mid = tl + (tr-tl)/2;
 	update(ql, qr, v, k*2, tl, mid);
 	update(ql, qr, v, k*2+1, mid+1, tr);
-	segt[k] = min(segt[k*2], segt[k*2+1]);
+	segt[k] = min(segt[k*2]+addv[k*2], segt[k*2+1]+addv[k*2+1]);
 }
 int query(int ql, int qr, int k=1, int tl=1, int tr=1<<D, int acc=0)
 {
 	if (qr < tl || tr < ql) return 0;
-	if (ql <= tl && tr <= qr) return segt[k] + acc;
 	acc += addv[k];
+	if (ql <= tl && tr <= qr) return segt[k] + acc;
 	int mid = tl + (tr-tl)/2;
 	return min(query(ql, qr, k*2, tl, mid, acc), query(ql, qr, k*2+1, mid+1, tr, acc));
 }
@@ -137,6 +136,7 @@ int main()
 			update(l, r, 1); // undo that
 		else
 			++tot;
+		//dump();
 	}
 	printf("%lld\n", tot);
 
