@@ -54,49 +54,65 @@ void setIO(const std::string &name = "1428_bidx");
 using namespace std;
 const ll MX = 100111;
 
-ll T, N, bidx[MX], c[MX], d[MX];
+ll T, N, bit[MX], c[MX], d[MX];
 
-void update(ll i, ll v)
-{
-	if (!i) return;	// FIX: can't update zero
-	for (; i<=MX; i += i&(-i))	// FIX: MX not N, since we are doing the counting sort thing
-		bidx[i] += v;
-}
-//ll query(int l, int r)
+//void update(ll i, ll v)
 //{
-//    //printf("query %lld %lld, r<l: %lld\n", l, r, r < l);
-//    if (r < l) return 0;	// FIX: invalid range detection
+//    if (!i) return;	// FIX: can't update zero
+//    for (; i<=MX; i += i&(-i))	// FIX: MX not N, since we are doing the counting sort thing
+//        bit[i] += v;
+//}
+////ll query(int l, int r)
+////{
+////    //printf("query %lld %lld, r<l: %lld\n", l, r, r < l);
+////    if (r < l) return 0;	// FIX: invalid range detection
 
-//    ll tot; --l;			// FIX: --l for inclusive inclusive
-//    for (; r>l; r-=r&-r)
-//        tot += bidx[r];
-//    for (; l>r; l-=l&-l)
-//        tot -= bidx[l];
+////    ll tot=0; --l;			// FIX: init tot; --l for inclusive inclusive
+////    for (; r>l; r-=r&-r)
+////        tot += bit[r];
+////    for (; l>r; l-=l&-l)
+////        tot -= bit[l];
+////    return tot;
+////}
+//ll query(int i)
+//{
+//    ll tot = 0;
+//    for (; i; i-=i&(-i))
+//        tot += i;
 //    return tot;
 //}
-ll query(int i)
-{
-	ll tot = 0;
-	for (; i; i-=i&(-i))
-		tot += i;
-	return tot;
+
+int low_bit(int x) {
+    return x & (-x);
+}
+
+void update(int idx) {
+    if (idx == N) return;
+    bit[idx]++;
+    update(idx + low_bit(idx));
+}
+
+int query(int idx) {
+    if (idx == 0) return 0;
+    return bit[idx] + query(idx - low_bit(idx));
 }
 
 void dump()
 {
 	return;
 	for (int i=1; i<=MX; ++i)
-		printf("%3lld ", bidx[i]);
+		printf("%3lld ", bit[i]);
 	printf("\n");
 }
 
 void solve()
 {
 	scanf("%lld", &N);
-	memset(bidx, 0, sizeof bidx);
+	memset(bit, 0, sizeof bit);
 	memset(c, 0, sizeof c);
 	memset(d, 0, sizeof d);
 	vector<pair<ll, ll> > sorted;
+	sorted.reserve(N);
 	//printf("epic"); fflush(stdout);
 	for (ll i=0; i<N; ++i)
 	{
@@ -108,7 +124,7 @@ void solve()
 		sorted.eb(t, i);
 
 		//printf("uh"); fflush(stdout);
-		update(t, 1);
+		update(t);
 		dump();
 	}
 	sort(sorted.begin(), sorted.end());
@@ -127,7 +143,7 @@ void solve()
 int main()
 {
 	//N = 20;
-	//memset(bidx, 0, sizeof bidx);
+	//memset(bit, 0, sizeof bit);
 	//while (true)
 	//{
 	//    char c =' ';while (c<'a'||c>'z') scanf("%c", &c);
