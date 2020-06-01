@@ -11,6 +11,6 @@ from random import randint
 t = randint(1, MXT)
 print(t)
 for i in range(t):
-    n = randint(1, MX)
+    n = randint(3, MX)
     print(n, ' '.join(str(randint(1, MX)) for k in range(n)))
 
