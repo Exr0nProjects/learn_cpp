@@ -1,7 +1,7 @@
 /*
  * Problem 3 (contests/dated/2020_05_31/3)
  * Create time: Sun 31 May 2020 @ 14:37 (PDT)
- * Accept time: [!meta:end!]
+ * Accept time: Mon 01 Jun 2020 @ 16:40 (PDT)
  *
  */
 
