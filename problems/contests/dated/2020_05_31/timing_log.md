@@ -33,6 +33,10 @@ First I tried sorting the segments and greedy counting, using the segtree to che
 
 Then, I thought about how to do it like the meeting rooms dp problem, but that just TLE's (N^2 log N) and also probably MLEs (different segtrees for each index?) so thats where I gave up. I'll work on it more later.
 
+So, it apparently is a greedy thing. It's a little unfortunate that I forgot to **sort by end time**, because I've done a number of similar problems before and should've remembered this.
+
+Also, I found an issue with the segtree that I was using. During this contest I coded it with range update adding to both `segt` nd `addv`, so that `segt[k]` supposedly always has the proper value. That doesn't actually work though, since adding to an upper node won't propogate the changes to `segt[k]` of its children. So, **in the update success base case, you only add to `addv`, not `segt`**.
+
 #### Problem 3:
 Segtree range update and max query to check if each segment of the ride is at capacity, but that got WA. I wrote a brute force quickly, which accepted.
 
@@ -41,5 +45,8 @@ Segtree range update and max query to check if each segment of the ride is at ca
 Timing on this test was good, I guess, since I was able to get two problems out of the way pretty quickly. I'm not sure how to spend more time analysing the third one though, because it feels like i'm just sitting there idly spinning my mind.
 
 ### Action item
+
 I think my segtree is decently strong. Mostly need to work on other stuff, like DP.
+
+Remember to sort by end time for range combination problems!
 
