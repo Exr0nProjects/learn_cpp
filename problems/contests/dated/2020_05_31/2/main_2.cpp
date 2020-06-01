@@ -57,14 +57,14 @@ void dump()
 void build()
 {
 	D = log2(N)+1;
-	memset(segt, 0, sizeof segt);
+	memset(segt, 0x3f, sizeof segt);
 	memset(addv, 0, sizeof addv);
 	for (int i=0; i<N; ++i)
-		segt[(1<<D)+i] = -capa[i];
+		segt[(1<<D)+i] = capa[i];
 	for (int i=(1<<D)-1; i>0; --i)
-		segt[i] = max(segt[i*2], segt[i*2+1]);
+		segt[i] = min(segt[i*2], segt[i*2+1]);
 }
-void update(int ql, int qr, int v=1, int k=1, int tl=1, int tr=1<<D)
+void update(int ql, int qr, int v=-1, int k=1, int tl=1, int tr=1<<D)
 {
 	if (qr < tl || tr < ql) return;
 	if (ql <= tl && tr <= qr)
@@ -76,7 +76,7 @@ void update(int ql, int qr, int v=1, int k=1, int tl=1, int tr=1<<D)
 	int mid = tl + (tr-tl)/2;
 	update(ql, qr, v, k*2, tl, mid);
 	update(ql, qr, v, k*2+1, mid+1, tr);
-	segt[k] = max(segt[k*2], segt[k*2+1]);
+	segt[k] = min(segt[k*2], segt[k*2+1]);
 }
 int query(int ql, int qr, int k=1, int tl=1, int tr=1<<D, int acc=0)
 {
@@ -84,7 +84,7 @@ int query(int ql, int qr, int k=1, int tl=1, int tr=1<<D, int acc=0)
 	if (ql <= tl && tr <= qr) return segt[k] + acc;
 	acc += addv[k];
 	int mid = tl + (tr-tl)/2;
-	return max(query(ql, qr, k*2, tl, mid, acc), query(ql, qr, k*2+1, mid+1, tr, acc));
+	return min(query(ql, qr, k*2, tl, mid, acc), query(ql, qr, k*2+1, mid+1, tr, acc));
 }
 
 //bool cmp(const pair<int, int> &lhs, const pair<int, int> &rhs)
@@ -133,8 +133,8 @@ int main()
 		update(l, r);
 		int q = query(1, N);
 		//printf("%d (%d %d): %d\n", i, l, r, q);
-		if (q > 0)
-			update(l, r, -1); // undo that
+		if (q < 0)
+			update(l, r, 1); // undo that
 		else
 			++tot;
 	}
