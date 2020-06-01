@@ -87,10 +87,15 @@ int query(int ql, int qr, int k=1, int tl=1, int tr=1<<D, int acc=0)
 	return max(query(ql, qr, k*2, tl, mid, acc), query(ql, qr, k*2+1, mid+1, tr, acc));
 }
 
+//bool cmp(const pair<int, int> &lhs, const pair<int, int> &rhs)
+//{	// compare by range then start index
+//    if (lhs.s - lhs.f == rhs.s - rhs.f) return lhs < rhs;
+//    return lhs.s - lhs.f < rhs.s - rhs.f;
+//}
 bool cmp(const pair<int, int> &lhs, const pair<int, int> &rhs)
-{	// compare by range then start index
-	if (lhs.s - lhs.f == rhs.s - rhs.f) return lhs < rhs;
-	return lhs.s - lhs.f < rhs.s - rhs.f;
+{	// sort by end time
+	if (lhs.s == rhs.s) return lhs.f < rhs.f;
+	return lhs.s < rhs.s;
 }
 
 int main()
