@@ -87,7 +87,7 @@ int low_bit(int x) {
 }
 
 void update(int idx) {
-    if (idx == N) return;
+    if (idx >= N) return;
     bit[idx]++;
     update(idx + low_bit(idx));
 }
