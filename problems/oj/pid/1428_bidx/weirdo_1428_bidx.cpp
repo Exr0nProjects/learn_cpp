@@ -54,72 +54,96 @@ void setIO(const std::string &name = "1428_bidx");
 using namespace std;
 const ll MX = 100111;
 
-ll T, N, bidx[MX], lef[MX], rig[MX];
+ll T, N, bit[MX], c[MX], d[MX];
 
-void update(ll i, ll v)
-{
-	if (!i) return;	// FIX: can't update zero
-	for (; i<=MX; i += i&-i)	// FIX: MX not N, since we are doing the counting sort thing
-		bidx[i] += v;
-}
-ll query(int l, int r)
-{
-	//printf("query %lld %lld, r<l: %lld\n", l, r, r < l);
-	if (r < l) return 0;	// FIX: invalid range detection
+//void update(ll i, ll v)
+//{
+//    if (!i) return;	// FIX: can't update zero
+//    for (; i<=MX; i += i&(-i))	// FIX: MX not N, since we are doing the counting sort thing
+//        bit[i] += v;
+//}
+////ll query(int l, int r)
+////{
+////    //printf("query %lld %lld, r<l: %lld\n", l, r, r < l);
+////    if (r < l) return 0;	// FIX: invalid range detection
 
-	ll tot; --l;			// FIX: --l for inclusive inclusive
-	for (; r>l; r-=r&-r)
-		tot += bidx[r];
-	for (; l>r; l-=l&-l)
-		tot -= bidx[l];
-	return tot;
+////    ll tot=0; --l;			// FIX: init tot; --l for inclusive inclusive
+////    for (; r>l; r-=r&-r)
+////        tot += bit[r];
+////    for (; l>r; l-=l&-l)
+////        tot -= bit[l];
+////    return tot;
+////}
+//ll query(int i)
+//{
+//    ll tot = 0;
+//    for (; i; i-=i&(-i))
+//        tot += i;
+//    return tot;
+//}
+
+int low_bit(int x) {
+    return x & (-x);
 }
+
+void update(int idx) {
+    if (idx >= N) return;
+    bit[idx]++;
+    update(idx + low_bit(idx));
+}
+
+int query(int idx) {
+    if (idx == 0) return 0;
+    return bit[idx] + query(idx - low_bit(idx));
+}
+
 void dump()
 {
 	return;
 	for (int i=1; i<=MX; ++i)
-		printf("%3lld ", bidx[i]);
+		printf("%3lld ", bit[i]);
 	printf("\n");
 }
 
 void solve()
 {
 	scanf("%lld", &N);
-	memset(bidx, 0, sizeof bidx);
-	memset(lef, 0, sizeof lef);
-	memset(rig, 0, sizeof rig);
+	memset(bit, 0, sizeof bit);
+	memset(c, 0, sizeof c);
+	memset(d, 0, sizeof d);
 	vector<pair<ll, ll> > sorted;
+	sorted.reserve(N);
 	//printf("epic"); fflush(stdout);
 	for (ll i=0; i<N; ++i)
 	{
 		ll t; scanf("%lld", &t);
 		//printf("t: %lld, t-1: %lld\n", t, t-1);
 
-		lef[i] = query(1, t-1);
-		//printf("lef[%d] = %d\n", i, lef[i]);
+		c[i] = query(t-1);
+		//printf("c[%d] = %d\n", i, c[i]);
 		sorted.eb(t, i);
 
 		//printf("uh"); fflush(stdout);
-		update(t, 1);
+		update(t);
 		dump();
 	}
 	sort(sorted.begin(), sorted.end());
 	for (ll i=0; i<sorted.size(); ++i)
-		rig[sorted[i].s] = i - lef[sorted[i].s];
+		d[sorted[i].s] = i - c[sorted[i].s];
 
 	//for (int i=0; i<N; ++i)
-	//    printf("%d: left %4lld right %4lld\n", i, lef[i], rig[i], lef[i]*(N-rig[i]-i-1) + (i-lef[i])*rig[i]);
+	//    printf("%d: c %4lld right %4lld\n", i, c[i], d[i], c[i]*(N-d[i]-i-1) + (i-c[i])*d[i]);
 
 	ll tot = 0;
 	for (ll i=0; i<N; ++i)
-		tot += lef[i]*(N-rig[i]-i-1) + (i-lef[i])*rig[i];
+		tot += c[i]*(N-d[i]-i-1) + (i-c[i])*d[i];
 	printf("%lld\n", tot);
 }
 
 int main()
 {
 	//N = 20;
-	//memset(bidx, 0, sizeof bidx);
+	//memset(bit, 0, sizeof bit);
 	//while (true)
 	//{
 	//    char c =' ';while (c<'a'||c>'z') scanf("%c", &c);
