@@ -41,7 +41,8 @@
 using namespace std;
 const int MX = 61;
 const int MXT = 20111;
-int N, T, dp[MXT][MXT], tab[MXT], dura[MX];
+int N, T, dura[MX];
+pair<int, int> tab[MXT];
 
 pair<int, int> inc(pair<int, int> src, int dura)
 {
@@ -55,10 +56,13 @@ int main()
 	int kase; scanf("%d", &kase);
 	for (int kk=0; kk<kase; ++kk)
 	{
-		memset(tab, 0, sizeof tab);
+		//memset(tab, 0, sizeof tab);
+		for (int i=0; i<MXT; ++i) tab[i] = {0, 0};
 		memset(dura, 0, sizeof dura);
 		scanf("%d%d", &N, &T);
 		for (int i=1; i<=N; ++i) scanf("%d", &dura[i]);
+
+		--T;
 
 		//for (int i=1; i<=N; ++i)
 		//{
@@ -78,11 +82,13 @@ int main()
 			for (int j=T; j>0; --j)
 			{
 				if (j >= dura[i])
-					tab[j] = max(tab[j], tab[j-dura[i]]+1);
-				printf("%3d", tab[j]);
+					tab[j] = max(tab[j], inc(tab[j-dura[i]], dura[i]));
+				printf("    (%2d %2d)", tab[j]);
 			}
 			printf("\n");
 		}
+		//tab[T] = inc({0, 0}, 60);
+		printf("%d %d\n", tab[T].f, tab[T].s);
 	}
 
 	return 0;
