@@ -48,21 +48,29 @@ Sesh good(Sesh lhs, Sesh rhs)
 {
 	if (lhs.s <= 0) return rhs;
 	if (rhs.s <= 0) return lhs;
-	return lhs < rhs ? lhs : rhs;
+	return lhs < rhs ? rhs : lhs;	// FIX: fliped: rhs first for max
 }
 
-Sesh op(int idx, int rem)
+Sesh op(int idx, int rem, int lay=0)
 {
+	//for (int i=0; i<lay; ++i) printf("|   "); printf("op %d %d\n", idx, rem);
 	if (mem.count(mp(idx, rem))) return mem[mp(idx, rem)];
-	if (rem <= 0) return mp(0, 0); // FIX: base case
+	if (rem <= 1) return mp(0, 0); // FIX: base case
 	if (!idx) return rem > dura[idx] ? mp(1, dura[idx]) : mp(0, 0);
 	Sesh use = mp(0, 0);
-	if (rem > dura[idx]) op(idx-1, rem-dura[idx]);
-	use.f += 1;
-	use.s += dura[idx];
-	Sesh ret = good(use, op(idx-1, rem));
+	if (rem > dura[idx])
+	{
+		use = op(idx-1, rem-dura[idx], lay+1);
+		use.f += 1;
+		use.s += dura[idx];
+	}
+	
+	Sesh nouse = op(idx-1, rem, lay+1);
+	//for (int i=0; i<lay; ++i) printf("|   "); printf("=> %d %d vs %d %d\n", use.f, use.s, nouse.f, nouse.s);
+	Sesh ret = good(use, nouse);
 	mem[mp(idx, rem)] = ret;
-	printf("%d %d -> %d %d\n", idx, rem, ret.f, ret.s);
+	//printf("%d %d -> %d %d\n", idx, rem, ret.f, ret.s);
+	//for (int i=0; i<lay; ++i) printf("|   "); printf("=> %d %d\n", ret.f, ret.s);
 	return ret;
 }
 
