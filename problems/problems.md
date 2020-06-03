@@ -4,43 +4,45 @@
 
 https://docs.google.com/document/d/1yA82YtGMEV6Uogem0oPTggMuxtWZHzTv34cTuZIIcz4/edit#heading=h.a583abrtwzi4
 
-| Status | Name | OJ PID |
-|--------|------|--------|
-AC | cutting sticks | [10003](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=944)
-AC | edit step ladders | [10029](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=114&page=show_problem&problem=970)
-AC | spy in the metro | [1025](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=3466)
-AC | the tower of babylon | [437](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=378)
-don't understand problem | tour | [1347](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=4093)
-WA | uni directional tsp | [116](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=52)
-. | jin ge jin qu hao | [12563](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=4008)
-. | lighting system design | [11400](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=2395)
-AC | partition by palendromes | [11584](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=2631)
-. | color length | [1625](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=4500)
-. | bracket sequence | [1626](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=4501)
-. | minmax triangluation | [1331](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=4077)
-AC | another crisis | [12186](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=3338)
-AC | party at hali-bula | [1220](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=3661)
+| Status | Number | Name | OJ PID |
+|--------|--------|------|--------|
+AC | 1 | cutting sticks | [10003](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=944)
+AC | 2 | edit step ladders | [10029](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=114&page=show_problem&problem=970)
+AC | 3 | spy in the metro | [1025](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=3466)
+AC | 4 | the tower of babylon | [437](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=378)
+don't understand problem | 5 | tour | [1347](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=4093)
+WA | 6 | uni directional tsp | [116](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=52)
+. | 7 | jin ge jin qu hao | [12563](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=4008)
+. | 8 | lighting system design | [11400](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=2395)
+AC | 9 | partition by palendromes | [11584](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=2631)
+. | 10 | color length | [1625](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=4500)
+. | 11 | bracket sequence | [1626](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=4501)
+. | 12 | minmax triangluation | [1331](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=4077)
+AC | 13 | another crisis | [12186](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=3338)
+AC | 14 | party at hali-bula | [1220](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=3661)
   | unknown
-. | headmaster's headache | [10817](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=1758)
-. | twenty questions | [1252](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=3693)
-. | fund managment | [1412](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=4158)
-. | tango tango insurrection | [10618](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=1559)
-. | team them up | [1627](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=4502)
-AC | longest run on a snowboard | [10285](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=848&page=show_problem&problem=1226)
-AC | free candies | [10118](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=848&page=show_problem&problem=1059)
-AC | cake slicing | [1629](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=848&page=show_problem&problem=4504)
-AC | folding | [1630](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=848&page=show_problem&problem=4505)
-AC | stamps and envelope size| [242](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=848&page=show_problem&problem=178)
-X | cyborg genes | [10723](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=848&page=show_problem&problem=1664)
-X | locker | [1631](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=848&page=show_problem&problem=4506)
-X | alibaba | [1632](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=848&page=show_problem&problem=4507)
-. | storage keepers | [10163](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=848&page=show_problem&problem=1104)
-. | barisal stadium | [10641](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=848&page=show_problem&problem=1582)
-31 | https://codeforces.com/problemset/problem/234/F 32 | https://codeforces.com/problemset/problem/73/C 33 | https://codeforces.com/problemset/problem/148/E
-34 | https://codeforces.com/problemset/problem/213/C
-35 | https://codeforces.com/problemset/problem/999/F
-36 | https://acm.timus.ru/problem.aspx?space=1&num=1018
-37 | https://acm.timus.ru/problem.aspx?space=1&num=1039
+. | 16 | headmaster's headache | [10817](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=1758)
+. | 17 | twenty questions | [1252](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=3693)
+. | 18 | fund managment | [1412](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=4158)
+. | 19 | tango tango insurrection | [10618](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=1559)
+. | 20 | team them up | [1627](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=4502)
+AC | 21 | longest run on a snowboard | [10285](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=848&page=show_problem&problem=1226)
+AC | 22 | free candies | [10118](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=848&page=show_problem&problem=1059)
+AC | 23 | cake slicing | [1629](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=848&page=show_problem&problem=4504)
+AC | 24 | folding | [1630](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=848&page=show_problem&problem=4505)
+AC | 25 | stamps and envelope size| [242](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=848&page=show_problem&problem=178)
+X | 26 | cyborg genes | [10723](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=848&page=show_problem&problem=1664)
+X | 27 | locker | [1631](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=848&page=show_problem&problem=4506)
+X | 28 | alibaba | [1632](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=848&page=show_problem&problem=4507)
+. | 29 | storage keepers | [10163](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=848&page=show_problem&problem=1104)
+. | 30 | barisal stadium | [10641](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=848&page=show_problem&problem=1582)
+. | 31 | https://codeforces.com/problemset/problem/234/F
+. | 32 | https://codeforces.com/problemset/problem/73/C
+. | 33 | https://codeforces.com/problemset/problem/148/E
+. | 34 | https://codeforces.com/problemset/problem/213/C
+. | 35 | https://codeforces.com/problemset/problem/999/F
+. | 36 | https://acm.timus.ru/problem.aspx?space=1&num=1018
+. | 37 | https://acm.timus.ru/problem.aspx?space=1&num=1039
 
 \*See `problems/contests/dated/2020_03_16` for problems 31 through 35
 
