@@ -76,7 +76,7 @@ int main()
 						best.pb(j);
 				}
 		sort(best.begin(), best.end(), less<ll>{});
-		printf("Case %d: %lld %lld\n", kek+1, len+1, best[0]+663);
+		printf("Case %d: %lld %lld\n", kek+1, len+1, best[0]+678);
 	}
 
 
