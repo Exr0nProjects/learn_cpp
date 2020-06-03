@@ -44,10 +44,18 @@ const int MXT = 20111;
 int N, T, dura[MX];
 pair<int, int> tab[MXT];
 
+pair<int, int> mex(pair<int, int> lhs, pair<int, int> rhs)
+{
+	pair<int, int> ret;
+	if (lhs.f == rhs.f) ret = lhs.s < rhs.s ? rhs : lhs;
+	else ret = lhs.f < rhs.f ? rhs : lhs;
+	//printf("mex(%d %d, %d %d) = %d %d\n", lhs.f, lhs.s, rhs.f, rhs.s, ret.f, ret.s);
+}
 pair<int, int> inc(pair<int, int> src, int dura)
 {
 	++src.f;
 	src.s += dura;
+	//printf("inc -> %d %d\n", src.f, src.s);
 	return src;
 }
 
@@ -60,7 +68,7 @@ int main()
 		for (int i=0; i<MXT; ++i) tab[i] = {0, 0};
 		memset(dura, 0, sizeof dura);
 		scanf("%d%d", &N, &T);
-		for (int i=1; i<=N; ++i) scanf("%d", &dura[i]);
+		for (int i=0; i<N; ++i) scanf("%d", &dura[i]);
 
 		--T;
 
@@ -77,20 +85,30 @@ int main()
 		//}
 		//printf("\n\n");
 
-		for (int i=1; i<=N; ++i)
+		for (int i=0; i<N; ++i)
 		{
 			for (int j=T; j>0; --j)
 			{
+				if (i==2 && j==T)
+				{
+					pair<int, int> a=tab[j], b=inc(tab[j-dura[i]], dura[i]), c=mex(tab[j], inc(tab[j-dura[i]], dura[i]));
+					printf("%d %d, %d %d, %d %d", a.f, a.s, b.f, b.s, c.f, c.s);
+				}
 				if (j >= dura[i])
-					tab[j] = max(tab[j], inc(tab[j-dura[i]], dura[i]));
-				printf("    (%2d %2d)", tab[j]);
+					tab[j] = mex(tab[j], inc(tab[j-dura[i]], dura[i]));
+				printf("    (%2d %2d)", tab[j].f, tab[j].s);	// FIX: don't print out a pair, print its constituent parts!
 			}
 			printf("\n");
 		}
 		//tab[T] = inc({0, 0}, 60);
-		printf("%d %d\n", tab[T].f, tab[T].s);
+		//printf("Case %d: %d %d\n", kk+1, tab[T].f+1, tab[T].s+678);
+		printf("Case %d: %d %d\n", kk+1, tab[T].f, tab[T].s);
 	}
 
 	return 0;
 }
 
+/*
+1 3 6
+1 4 5
+*/
