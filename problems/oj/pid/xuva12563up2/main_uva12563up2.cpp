@@ -3,6 +3,15 @@
  * Create time: Wed 03 Jun 2020 @ 15:57 (PDT)
  * Accept time: [!meta:end!]
  *
+ *	Summary: this took way too long for me to write, and I ended up looking at the DP doc to do it.
+ *	I knew that it was 0/1 knapsack but I didn't realize that the bounds were too high, and didn't have a good way
+ *	of reconstructing the total time. this pair strategy ended up working okay though.
+ *	I started by trying to just fiddle with the conditions le vs lt and etc, but it was easier to just --T
+ *
+ *	I spent too long debugging this because I made some stupid mistakes: memsetting an array of pairs,
+ *	printing out a pair directly instead of its parts, and forgetting to return from the function
+ *
+ *	Atleast now I know how to do 0/1 knapsack with the rolling array
  */
 
 #include <iostream>
@@ -44,20 +53,17 @@ const int MXT = 20111;
 int N, T, dura[MX];
 pair<int, int> tab[MXT];
 
-pair<int, int> mex(pair<int, int> lhs, pair<int, int> rhs, bool tru=false)
+pair<int, int> mex(pair<int, int> lhs, pair<int, int> rhs)
 {
 	pair<int, int> ret;
 	if (lhs.f == rhs.f) ret = lhs.s < rhs.s ? rhs : lhs;
 	else ret = lhs.f < rhs.f ? rhs : lhs;
-	if (tru)
-	//printf("mex(%d %d, %d %d) = %d %d\n", lhs.f, lhs.s, rhs.f, rhs.s, ret.f, ret.s);
 	return ret;	// FIX: actually return from the function
 }
 pair<int, int> inc(pair<int, int> src, int dura)
 {
 	++src.f;
 	src.s += dura;
-	//printf("inc -> %d %d\n", src.f, src.s);
 	return src;
 }
 
@@ -66,53 +72,20 @@ int main()
 	int kase; scanf("%d", &kase);
 	for (int kk=0; kk<kase; ++kk)
 	{
-		//memset(tab, 0, sizeof tab);
-		for (int i=0; i<MXT; ++i) tab[i] = {0, 0};
+		for (int i=0; i<MXT; ++i) tab[i] = {0, 0};	// FIX: can't memset pairs
 		memset(dura, 0, sizeof dura);
 		scanf("%d%d", &N, &T);
 		for (int i=0; i<N; ++i) scanf("%d", &dura[i]);
 
-		--T;
-
-		//for (int i=1; i<=N; ++i)
-		//{
-		//    for (int j=0; j<T; ++j)
-		//    {
-		//        dp[i][j] = dp[i-1][j];
-		//        if (j >= dura[i])
-		//            dp[i][j] = max(dp[i][j], dp[i-1][j-dura[i]] + 1);
-		//        printf("%3d", dp[i][j]);
-		//    }
-		//    printf("\n");
-		//}
-		//printf("\n\n");
+		--T; // leave 1 second
 
 		for (int i=0; i<N; ++i)
-		{
 			for (int j=T; j>0; --j)
-			{
-				bool b = false;
-				//if (i==2 && j==T)
-				//{
-				//    b=true;
-				//    pair<int, int> a=tab[j], b=inc(tab[j-dura[i]], dura[i]), c=mex(tab[j], inc(tab[j-dura[i]], dura[i]));
-				//    printf("%d %d, %d %d, %d %d", a.f, a.s, b.f, b.s, c.f, c.s);
-				//}
 				if (j >= dura[i])
-					tab[j] = mex(tab[j], inc(tab[j-dura[i]], dura[i]), b);
-				//printf("    (%2d %2d)", tab[j].f, tab[j].s);	// FIX: don't print out a pair, print its constituent parts!
-			}
-			//printf("\n");
-		}
-		//tab[T] = inc({0, 0}, 60);
+					tab[j] = mex(tab[j], inc(tab[j-dura[i]], dura[i]));
 		printf("Case %d: %d %d\n", kk+1, tab[T].f+1, tab[T].s+678);
-		//printf("Case %d: %d %d\n", kk+1, tab[T].f, tab[T].s);
 	}
 
 	return 0;
 }
 
-/*
-1 3 6
-1 4 5
-*/
