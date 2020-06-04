@@ -61,17 +61,6 @@ const int MXN = 20;
 const int MXM = 110;
 int M, N, tab[MXN][MXM], pre[MXN][MXM];
 
-//void reconstruct(int i, int j)
-//{
-//    if (j)
-//    {
-//        reconstruct(pre[i][j], j-1);
-//        printf(" %d", i+1);
-//    }
-//    else
-//        printf("%d", i+1);
-//}
-
 inline int mod(int num)
 { return (num+N) %N; }
 
