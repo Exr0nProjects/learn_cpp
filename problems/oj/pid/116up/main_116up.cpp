@@ -61,58 +61,62 @@ const int MXN = 20;
 const int MXM = 110;
 int M, N, tab[MXN][MXM], pre[MXN][MXM];
 
-void reconstruct(int i, int j)
-{
-    if (j)
-	reconstruct(pre[i][j], j-1);
-    printf("%d ", i+1);
-}
+//void reconstruct(int i, int j)
+//{
+//    if (j)
+//    {
+//        reconstruct(pre[i][j], j-1);
+//        printf(" %d", i+1);
+//    }
+//    else
+//        printf("%d", i+1);
+//}
 
 inline int mod(int num)
 { return (num+N) %N; }
 
 int main()
 {
-    // freopen("test.out", "w+", stdout);
-    while (scanf("%d%d", &N, &M) == 2)
-    {
-	memset(tab, 0, sizeof tab);
-	memset(pre, 0, sizeof pre);
-
-	FOR(n, N) FORR(m, M)		// FIX: big brain: input backwards so that everything else works nicely
-	    scanf("%d", &tab[n][m]);
-
-	FOR_(j, 1, M)
-	    FOR(i, N)
-	    {
-		// get min previous step
-		pair<int, int> mn = mp(1<<30, 1<<30);	// pair< cost, i-val >
-		FOR_(k, i-1, i+2)
-		    mn = min(mn, mp(tab[mod(k)][j-1], mod(k)));
-
-		// printf("min at (%d %d) is from %d\n", i, j, mn.S);
-		
-		// use min
-		tab[i][j] += tab[mn.S][j-1];
-		pre[i][j] = mn.S;
-	    }
-
-	int ret=0;
-	FOR(i, N)
-	    if (tab[ret][M-1] > tab[i][M-1])
-		ret = i;
-
-	int ogret = ret;
-
-	FORR(j, M)
+	// freopen("test.out", "w+", stdout);
+	while (scanf("%d%d", &N, &M) == 2)
 	{
-	    printf("%d", ret+1);
-	    if (j) printf(" ");
-	    ret = pre[ret][j];
+		memset(tab, 0, sizeof tab);
+		memset(pre, 0, sizeof pre);
+
+		FOR(n, N) FORR(m, M)		// FIX: big brain: input backwards so that everything else works nicely
+			scanf("%d", &tab[n][m]);
+
+		FOR_(j, 1, M)
+			FOR(i, N)
+			{
+				// get min previous step
+				pair<int, int> mn = mp(1<<30, 1<<30);	// pair< cost, i-val >
+				FOR_(k, i-1, i+2)
+					mn = min(mn, mp(tab[mod(k)][j-1], mod(k)));
+
+				// printf("min at (%d %d) is from %d\n", i, j, mn.S);
+
+				// use min
+				tab[i][j] += tab[mn.S][j-1];
+				pre[i][j] = mn.S;
+			}
+
+		int ret=0;
+		FOR(i, N)
+			if (tab[ret][M-1] > tab[i][M-1])
+				ret = i;
+
+		int ogret = ret;
+
+		FORR(j, M)
+		{
+			printf("%d", ret+1);
+			if (j) printf(" ");
+			ret = pre[ret][j];
+		}
+
+		printf("\n%d\n", tab[ogret][M-1]);
 	}
 
-	printf("\n%d\n", tab[ogret][M-1]);
-    }
-
-    return 0;
+	return 0;
 }
