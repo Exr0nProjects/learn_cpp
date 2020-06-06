@@ -75,6 +75,8 @@ Don't make names too similar, it's easy to make typos (`djs` vs `djf`)
         - Don't start coding right away
             - Make sure to write down the equation
         - Choose or merge from smaller subproblems
+		- Find the recursive solution, then look for computational overlap
+			- Draw a recursive tree?
         - If you don't have to try the subproblems, you might have a greedy problem
 - Greedy Algorithm
     - Local optimal = global optimal
@@ -134,7 +136,7 @@ Don't make names too similar, it's easy to make typos (`djs` vs `djf`)
 - Vector
     - Continuous memory
     - Random access
-    - Dynamically allocated -- `use vector.reserve()`!
+    - Dynamically allocated -- use `vector.reserve()`!
 - Vanilla Tree
     - `N` nodes, `N-1` edges
 - Binary Tree
