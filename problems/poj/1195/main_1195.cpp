@@ -40,23 +40,42 @@
 
 using namespace std;
 const int MX = 1111;
-int N, bidx[MX];
+int N, bidx[MX][MX];
 
-int query(int l, int r)
+int prefix(int y, int x)
 {
 	int ret=0;
-	--l;
-	for (; r>l; r-=r&-r)
-		ret += bidx[r];	// FIX: += bidx[r] not += r smah
-	for (; l>r; l-=l&-l)
-		ret -= bidx[l];
+	for (; y; y-=y&-y)	// FIX: += bidx[y] not += y smah
+		for (; x; x-=x&-x)
+			ret += bidx[y][x];
 	return ret;
 }
 
-void update(int i, int v)
+int query(int l, int r, int b, int t)
 {
-	for (; i<=N; i+=i&-i)
-		bidx[i] += v;
+	--l; --b;
+	// principle inclusion exclusion
+	return prefix(r, t)
+		 - prefix(l, t)
+		 - prefix(r, b)
+		 + prefix(l, b);
+}
+
+void update(int y, int x, int v)
+{
+	for (; y<=N; y+=y&-y)
+		for (; x<=N; x+=x&-x)
+			bidx[y][x] += v;
+}
+
+void pdump()
+{
+	for (int i=1; i<=N; ++i)
+	{
+		for (int j=1; j<=N; ++j)
+			printf("%3d", query(i, j, i, j));
+		printf("\n");
+	}
 }
 
 int main()
@@ -64,16 +83,18 @@ int main()
 	int Q;
 	scanf("%d%d", &N, &Q);
 	for (int i=1; i<=N; ++i)
-	{
-		int d; scanf("%d", &d);
-		update(i, d);
-	}
+		for (int j=1; j<=N; ++j)
+		{
+			int d; scanf("%d", &d);
+			update(i, j, d);
+		}
+
 	for (int i=0; i<Q; ++i)
 	{
-		printf("bruh $");
-		int l, r;
-		scanf("%d%d", &l, &r);
-		printf("%d\n", query(l, r));
+		int l, b, r, t;
+		scanf("%d%d%d%d", &l, &b, &r, &t);
+		printf("%d\n", query(l, r, b, t));
+		pdump();
 	}
 
 	return 0;
