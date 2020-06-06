@@ -54,6 +54,8 @@ int prefix(int y, int _x)
 int query(int l, int b, int r, int t)
 {
 	--l; --b;
+	l = max(l, 0);
+	b = max(b, 0);
 	printf("query (%3d %3d) (%3d %3d)\n", l, b, r, t);
 	printf("    + %3d %3d: %3d\n", r, t, prefix(r, t));
 	printf("    - %3d %3d: %3d\n", l, t, prefix(l, t));
@@ -84,31 +86,59 @@ void pdump()
 	{
 		for (int j=1; j<=N; ++j)
 			//printf("%3d", query(i, j, i, j));
-			printf("%3d", prefix(i, j));
-			//printf("%3d", bidx[i][j]);
+			//printf("%3d", prefix(i, j));
+			printf("%3d", bidx[i][j]);
 		printf("\n");
 	}
 }
 
 int main()
 {
-	int Q;
-	scanf("%d%d", &N, &Q);
-	for (int i=1; i<=N; ++i)
-		for (int j=1; j<=N; ++j)
-		{
-			int d; scanf("%d", &d);
-			update(i, j, d);
-			pdump();
-			printf("\n");
-		}
+	//int Q;
+	//scanf("%d%d", &N, &Q);
+	//for (int i=1; i<=N; ++i)
+	//    for (int j=1; j<=N; ++j)
+	//    {
+	//        int d; scanf("%d", &d);
+	//        update(i, j, d);
+	//        pdump();
+	//        printf("\n");
+	//    }
 
-	for (int i=0; i<Q; ++i)
+	//for (int i=0; i<Q; ++i)
+	//{
+	//    int l, b, r, t;
+	//    scanf("%d%d%d%d", &l, &b, &r, &t);
+	//    printf("query(%d, %d; %d, %d) %d\n", l, b, r, t, query(l, b, r, t));
+	//    printf("prefix(%d, %d) %d\n", l, b, prefix(l, b));
+	//    pdump();
+	//}
+
+	while (true)
 	{
-		int l, b, r, t;
-		scanf("%d%d%d%d", &l, &b, &r, &t);
-		printf("query(%d, %d; %d, %d) %d\n", l, b, r, t, query(l, b, r, t));
-		printf("prefix(%d, %d) %d\n", l, b, prefix(l, b));
+		int cmd;
+		scanf("%d", &cmd);
+		if (cmd == 0)
+		{
+			scanf("%d", &N);
+			memset(bidx, 0, sizeof bidx);
+		}
+		if (cmd == 1)
+		{
+			int x, y, v;
+			scanf("%d%d%d", &x, &y, &v);
+			update(x, y, v);
+		}
+		if (cmd == 2)
+		{
+			int l, b, r, t;
+			scanf("%d%d%d%d", &l, &b, &r, &t);
+			printf("%d\n", query(l+0, b+0, r+0, t+0));
+		}
+		if (cmd == 3)
+		{
+			break;
+		}
 		pdump();
 	}
 
