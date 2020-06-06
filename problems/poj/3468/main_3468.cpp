@@ -2,7 +2,7 @@
  * Problem 3468 (poj/3468)
  * Create time: Sat 06 Jun 2020 @ 14:26 (PDT)
  * Accept time: [!meta:end!]
- *
+ * helpful link: https://kartikkukreja.wordpress.com/2013/12/02/range-updates-with-bit-fenwick-tree/
  */
 
 #include <iostream>
@@ -40,33 +40,53 @@
 
 using namespace std;
 const int MX = 100111;
-ll N, Q, arr[MX], delt[MX];
+ll N, Q, arr[MX], delt[MX], pref[MX];
+
+ll raw_prefix(ll bit[], int n)
+{
+	int tot = 0;
+	for (; n; n-=n&-n)
+		tot += bit[n];
+	return tot;
+}
+
+void raw_update(ll bit[], int n, ll v)
+{
+	for (; n<=N; n+=n&-n)
+		bit[n] += v;
+}
 
 ll query(int l, int r)
 {
 	--l;
-	ll tot=arr[0];
-	for (; r; r-=r&-r)
-		tot += delt[r];
-	for (; l; l-=l&-l)
-		tot -= delt[l];
+	// TODO: understand this algebraic magic
+	ll tot = (l+1)*raw_prefix(delt, l) - raw_prefix(pref, l);
+	tot -= (r+1)*raw_prefix(delt, r) - raw_prefix(pref, r);
 	return tot;
 }
 
 void update(int l, int r, int v)
 {
-	for (; l<=N; l+=l&-l)
-		delt[l] += v;
-	for (; r<=N; r+=r&-r)
-		delt[r] -= v;
+	raw_update(delt, l, v);
+	raw_update(delt, r+1, -v);			// +1 cuz thats the delta between arr[r] and arr[r+1]
+	raw_update(pref, l, l*v);			// pref[i] = i*delt[i], TODO: why multiply?
+	raw_update(pref, r+1, (r+1)*-v); 	// "undo" previous line
 }
 
-void dump()
-{
-	for (int i=0; i<N; ++i)
-		printf("%3d", arr[i]);
-	printf("\n");
-}
+//void update(int l, int r, int v)
+//{
+//    for (; l<=N; l+=l&-l)
+//        delt[l] += v;
+//    for (; r<=N; r+=r&-r)
+//        delt[r] -= v;
+//}
+
+//void dump()
+//{
+//    for (int i=0; i<N; ++i)
+//        printf("%3d", arr[i]);
+//    printf("\n");
+//}
 
 int main()
 {
@@ -75,6 +95,8 @@ int main()
 	{
 		scanf("%d", &arr[i]);
 		if (i) delt[i] = arr[i] - arr[i-1];
+		else delt[i] = arr[i];
+		pref[i] = i*delt[i];
 	}
 
 	for (int i=0; i<Q; ++i)
@@ -87,7 +109,7 @@ int main()
 			int d; scanf("%d", &d);
 			update(l, r, d);
 		}
-		dump();
+		//dump();
 	}
 
 	return 0;
