@@ -1,4 +1,4 @@
-# OnlineJudge
+# Problems
 
 ## DP Problems
 
@@ -100,6 +100,23 @@ https://dev.xjoi.net/contest/1363
 2164
 1086
 http://115.236.49.52:83/contest/1370
+
+## Contests and Homework
+
+### Blank Template
+| Problem | PID |
+|---------|-----|
+ | 
+
+### Binary Index Tree (BIT) HW
+| Problem | PID |
+|---------|-----|
+1 | poj2299
+2 | poj1195
+3 | poj3321
+4 | topcoder srm 310 500
+5 | hdu3584
+6 | poj3468
 
 ## Problems for you to test out your classic graph algorithms' codes
 | Algorithm | XJOI ID |
