@@ -6,28 +6,7 @@
  */
 
 #include <iostream>
-#include <sstream>
-#include <cstdio>
-#include <tuple>
-#include <vector>
-#include <string>
 #include <cstring>
-#include <list>
-#include <array>
-#include <queue>
-#include <stack>
-#include <set>
-#include <map>
-#include <unordered_set>
-#include <unordered_map>
-#include <cmath>
-#include <random>
-#include <chrono>
-#include <utility>
-#include <iterator>
-#include <exception>
-#include <algorithm>
-#include <functional>
 
 #define ll long long
 #define dl double
@@ -56,12 +35,14 @@ int query(int l, int b, int r, int t)
 	--l; --b;
 	l = max(l, 0);
 	b = max(b, 0);
-	printf("query (%3d %3d) (%3d %3d)\n", l, b, r, t);
-	printf("    + %3d %3d: %3d\n", r, t, prefix(r, t));
-	printf("    - %3d %3d: %3d\n", l, t, prefix(l, t));
-	printf("    - %3d %3d: %3d\n", r, b, prefix(r, b));
-	printf("    + %3d %3d: %3d\n", l, b, prefix(l, b));
-	printf("=> %d\n", prefix(r, t) - prefix(l, t) - prefix(r, b) + prefix(l, b));
+
+	//printf("query (%3d %3d) (%3d %3d)\n", l, b, r, t);
+	//printf("    + %3d %3d: %3d\n", r, t, prefix(r, t));
+	//printf("    - %3d %3d: %3d\n", l, t, prefix(l, t));
+	//printf("    - %3d %3d: %3d\n", r, b, prefix(r, b));
+	//printf("    + %3d %3d: %3d\n", l, b, prefix(l, b));
+	//printf("=> %d\n", prefix(r, t) - prefix(l, t) - prefix(r, b) + prefix(l, b));
+
 	// principle inclusion exclusion
 	return prefix(r, t)
 		 - prefix(l, t)
@@ -71,11 +52,11 @@ int query(int l, int b, int r, int t)
 
 void update(int y, int _x, int v)
 {
-	printf("updating %d %d\n", y, _x);
+	//printf("updating %d %d\n", y, _x);
 	for (; y<=N; y+=y&-y)
 		for (int x=_x; x<=N; x+=x&-x)	// FIX: reset x for inner loop
 		{
-			printf("    adding to %d %d\n", y, x);
+			//printf("    adding to %d %d\n", y, x);
 			bidx[y][x] += v;
 		}
 }
@@ -127,19 +108,19 @@ int main()
 		{
 			int x, y, v;
 			scanf("%d%d%d", &x, &y, &v);
-			update(x, y, v);
+			update(x+1, y+1, v);
 		}
 		if (cmd == 2)
 		{
 			int l, b, r, t;
 			scanf("%d%d%d%d", &l, &b, &r, &t);
-			printf("%d\n", query(l+0, b+0, r+0, t+0));
+			printf("%d\n", query(l+1, b+1, r+1, t+1));
 		}
 		if (cmd == 3)
 		{
 			break;
 		}
-		pdump();
+		//pdump();
 	}
 
 	return 0;
