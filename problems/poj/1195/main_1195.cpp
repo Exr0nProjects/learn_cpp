@@ -42,18 +42,24 @@ using namespace std;
 const int MX = 1111;
 int N, bidx[MX][MX];
 
-int prefix(int y, int x)
+int prefix(int y, int _x)
 {
 	int ret=0;
-	for (; y; y-=y&-y)	// FIX: += bidx[y] not += y smah
-		for (; x; x-=x&-x)
+	for (; y; y-=y&-y)				// FIX: += bidx[y] not += y smah
+		for (int x=_x; x; x-=x&-x)	// FIX: reset x for inner loop
 			ret += bidx[y][x];
 	return ret;
 }
 
-int query(int l, int r, int b, int t)
+int query(int l, int b, int r, int t)
 {
 	--l; --b;
+	printf("query (%3d %3d) (%3d %3d)\n", l, b, r, t);
+	printf("    + %3d %3d: %3d\n", r, t, prefix(r, t));
+	printf("    - %3d %3d: %3d\n", l, t, prefix(l, t));
+	printf("    - %3d %3d: %3d\n", r, b, prefix(r, b));
+	printf("    + %3d %3d: %3d\n", l, b, prefix(l, b));
+	printf("=> %d\n", prefix(r, t) - prefix(l, t) - prefix(r, b) + prefix(l, b));
 	// principle inclusion exclusion
 	return prefix(r, t)
 		 - prefix(l, t)
@@ -61,11 +67,15 @@ int query(int l, int r, int b, int t)
 		 + prefix(l, b);
 }
 
-void update(int y, int x, int v)
+void update(int y, int _x, int v)
 {
+	printf("updating %d %d\n", y, _x);
 	for (; y<=N; y+=y&-y)
-		for (; x<=N; x+=x&-x)
+		for (int x=_x; x<=N; x+=x&-x)	// FIX: reset x for inner loop
+		{
+			printf("    adding to %d %d\n", y, x);
 			bidx[y][x] += v;
+		}
 }
 
 void pdump()
@@ -73,7 +83,9 @@ void pdump()
 	for (int i=1; i<=N; ++i)
 	{
 		for (int j=1; j<=N; ++j)
-			printf("%3d", query(i, j, i, j));
+			//printf("%3d", query(i, j, i, j));
+			printf("%3d", prefix(i, j));
+			//printf("%3d", bidx[i][j]);
 		printf("\n");
 	}
 }
@@ -87,13 +99,16 @@ int main()
 		{
 			int d; scanf("%d", &d);
 			update(i, j, d);
+			pdump();
+			printf("\n");
 		}
 
 	for (int i=0; i<Q; ++i)
 	{
 		int l, b, r, t;
 		scanf("%d%d%d%d", &l, &b, &r, &t);
-		printf("%d\n", query(l, r, b, t));
+		printf("query(%d, %d; %d, %d) %d\n", l, b, r, t, query(l, b, r, t));
+		printf("prefix(%d, %d) %d\n", l, b, prefix(l, b));
 		pdump();
 	}
 
