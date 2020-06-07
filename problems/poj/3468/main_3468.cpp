@@ -60,8 +60,10 @@ ll query(int l, int r)
 {
 	--l;
 	// TODO: understand this algebraic magic
-	ll tot = (l+1)*raw_prefix(delt, l) - raw_prefix(pref, l);
-	tot -= (r+1)*raw_prefix(delt, r) - raw_prefix(pref, r);
+	ll tot = (r+1)*raw_prefix(delt, r) - raw_prefix(pref, r);
+	//printf("right: %lld\n", tot);
+	tot -= (l+1)*raw_prefix(delt, l) - raw_prefix(pref, l);
+	//printf("final: %lld\n", tot);
 	return tot;
 }
 
@@ -93,10 +95,13 @@ int main()
 	scanf("%d%d", &N, &Q);
 	for (int i=0; i<N; ++i)
 	{
-		scanf("%d", &arr[i]);
-		if (i) delt[i] = arr[i] - arr[i-1];
-		else delt[i] = arr[i];
-		pref[i] = i*delt[i];
+		//scanf("%d", &arr[i]);
+		//if (i) delt[i] = arr[i] - arr[i-1];
+		//else delt[i] = arr[i];
+		//pref[i] = i*delt[i];
+
+		int t; scanf("%d", &t);
+		update(i+1, i+1, t);
 	}
 
 	for (int i=0; i<Q; ++i)
