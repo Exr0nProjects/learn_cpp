@@ -7,27 +7,6 @@
 
 #include <iostream>
 #include <cstring>
-#include <sstream>
-#include <cstdio>
-#include <tuple>
-#include <vector>
-#include <string>
-#include <list>
-#include <array>
-#include <queue>
-#include <stack>
-#include <set>
-#include <map>
-#include <unordered_set>
-#include <unordered_map>
-#include <cmath>
-#include <random>
-#include <chrono>
-#include <utility>
-#include <iterator>
-#include <exception>
-#include <algorithm>
-#include <functional>
 
 #define ll long long
 #define dl double
@@ -74,7 +53,7 @@ void update(int l, int r, ll v)
 
 int main()
 {
-	scanf("%d", &N);
+	scanf("%lld", &N);
 	for (int i=2; i<=N; ++i)
 	{
 		int d; scanf("%d", &d);
@@ -97,7 +76,7 @@ int main()
 	}
 
 	for (int i=1; i<=N; ++i)
-		printf("%d\n", ans[i]);
+		printf("%lld\n", ans[i]);
 
 	return 0;
 }
