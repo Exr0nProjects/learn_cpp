@@ -40,7 +40,7 @@
 
 using namespace std;
 const int MX = 8111;
-ll N, delt[MX], pref[MX];
+ll N, arr[MX], ans[MX], delt[MX], pref[MX];
 
 ll rprefix(ll bit[], int i)
 {
@@ -56,22 +56,48 @@ void rupdate(ll bit[], int i, ll v)
 		bit[i] += v;
 }
 
-ll query(int l, int r)
+ll query(int l, int r)	// NOTE: techincally only need point query
 {
-	ll tot = (r+1)*rprefix(delt, r) - rprefix(pref, r);
-	return tot - (l+1)*rprefix(delt, l) - rprefix(pref, l);
+	--l;
+	ll tot = (ll)(r+1)*rprefix(delt, r) - rprefix(pref, r);
+	tot -= (ll)(l+1)*rprefix(delt, l) - rprefix(pref, l);
+	return tot;
 }
 
 void update(int l, int r, ll v)
 {
 	rupdate(delt, l, v);
 	rupdate(delt, r+1, -v);
-	rupdate(pref, l, l*v);
-	rupdate(pref, r+1, (r+1)*-v);
+	rupdate(pref, l, (ll)l*v);
+	rupdate(pref, r+1, (ll)(r+1)*-v);
 }
 
 int main()
 {
+	scanf("%d", &N);
+	for (int i=2; i<=N; ++i)
+	{
+		int d; scanf("%d", &d);
+		update(i, i, d);
+	}
+
+	//for (int i=1; i<=N; ++i) printf("%3d", query(i, i)); printf("\ninput complete\n");
+
+	for (int k=1; k<=N; ++k)
+	{
+		//for (int i=1; i<=N; ++i) printf("%3d", query(i, i)); printf("\n");
+		for (int i=N; i>0; --i)
+			if (!ans[i] && !query(i, i))			// not processed and minimum
+			{
+				//printf("next min: %d\n", i);
+				ans[i] = k;
+				update(i+1, N, -1);
+				break;
+			}
+	}
+
+	for (int i=1; i<=N; ++i)
+		printf("%d\n", ans[i]);
 
 	return 0;
 }
