@@ -114,9 +114,10 @@ http://115.236.49.52:83/contest/1370
 1 | poj2299
 2 | poj1195
 3 | poj3321
-4 | topcoder srm 310 500
-5 | hdu3584
-6 | poj3468
+4 | hdu3584
+5 | poj3468
+6 | poj1195
+removed | topcoder srm 310 500
 
 ## Problems for you to test out your classic graph algorithms' codes
 | Algorithm | XJOI ID |
