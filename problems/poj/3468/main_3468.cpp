@@ -6,28 +6,7 @@
  */
 
 #include <iostream>
-#include <sstream>
-#include <cstdio>
-#include <tuple>
-#include <vector>
-#include <string>
 #include <cstring>
-#include <list>
-#include <array>
-#include <queue>
-#include <stack>
-#include <set>
-#include <map>
-#include <unordered_set>
-#include <unordered_map>
-#include <cmath>
-#include <random>
-#include <chrono>
-#include <utility>
-#include <iterator>
-#include <exception>
-#include <algorithm>
-#include <functional>
 
 #define ll long long
 #define dl double
@@ -67,7 +46,7 @@ ll query(int l, int r)
 	return tot;
 }
 
-void update(int l, int r, int v)
+void update(int l, int r, ll v)
 {
 	raw_update(delt, l, v);
 	raw_update(delt, r+1, -v);			// +1 cuz thats the delta between arr[r] and arr[r+1]
@@ -100,7 +79,7 @@ int main()
 		//else delt[i] = arr[i];
 		//pref[i] = i*delt[i];
 
-		int t; scanf("%d", &t);
+		ll t; scanf("%lld", &t);
 		update(i+1, i+1, t);
 	}
 
@@ -111,7 +90,7 @@ int main()
 		if (c == 'Q') printf("%lld\n", query(l, r));
 		if (c == 'C')
 		{
-			int d; scanf("%d", &d);
+			ll d; scanf("%lld", &d);
 			update(l, r, d);
 		}
 		//dump();
