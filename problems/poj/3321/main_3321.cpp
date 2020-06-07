@@ -24,7 +24,7 @@ const int MX = 100111;
 int N, Q;
 
 list<int> head[MX];
-int lef[MX], rig[MX];	// how the tree maps to the bit
+int pos[MX], lef[MX], rig[MX];	// how the tree maps to the bit
 
 bool apple[MX];
 
@@ -33,15 +33,16 @@ ll bidx[MX];
 int idx=1;
 pair<int, int> get_bounds(int cur, int pre=0)
 {
+	if (pos[cur]) return mp(0, 0); // should never happen
 	//printf("    get_bounds %d from %d\n", cur, pre);
 	if (!pre) idx = 1; // simulate static variable
-	int pos = idx++;	// FIX: idx++ not cur++
+	pos[cur] = idx++;	// FIX: idx++ not cur++
 	//printf("moving on %d %d\n", cur, head[cur].size());
 
 	pair<int, int> ret(0, 0);
 	if (head[cur].size() == 1)
 	{
-		ret = mp(pos, pos); // no children
+		ret = mp(pos[cur], pos[cur]); // no children
 	}
 	else
 	{
@@ -52,7 +53,7 @@ pair<int, int> get_bounds(int cur, int pre=0)
 				//if (!ret.f) ret.f = bounds.f;
 				ret.s = bounds.s;
 			}
-		ret.f = pos;	// include self
+		ret.f = pos[cur];	// include self, FIX: pos[cur] not pos[MX]
 	}
 
 	lef[cur] = ret.f;
@@ -87,7 +88,7 @@ int main()
 	}
 
 	get_bounds(1);		// figure out how to map the input tree to the bit
-	//for (int i=1; i<=N; ++i) printf("fork %3d (%3d): %3d ..%3d\n", i, center[i], lef[i], rig[i]);
+	//for (int i=1; i<=N; ++i) printf("fork %3d (%3d): %3d ..%3d\n", i, pos[i], lef[i], rig[i]);
 
 	// init the tree to full
 	for (int i=1; i<=N; ++i)
@@ -95,16 +96,18 @@ int main()
 		update(i, 1);
 		apple[i] = 1;
 	}
+	//printf("ready for queries\n");
 
 	scanf("%d", &Q);
 	for (int i=0; i<Q; ++i)
 	{
+		//printf("kk $ ");
 		char c=0; while (c != 'Q' && c != 'C') scanf("%c", &c);
 		int d; scanf("%d", &d);
 		if (c == 'Q') printf("%d\n", query(lef[d], rig[d]));
 		if (c == 'C')
 		{
-			update(d, 1-2*apple[d]);
+			update(pos[d], 1-2*apple[d]);
 			apple[d] ^= 1;
 		}
 	}
