@@ -1,7 +1,7 @@
 /*
  * Problem 3468 (poj/3468)
  * Create time: Sat 06 Jun 2020 @ 14:26 (PDT)
- * Accept time: [!meta:end!]
+ * Accept time: Sun 07 Jun 2020 @ 13:29 (PDT)
  * helpful link: https://kartikkukreja.wordpress.com/2013/12/02/range-updates-with-bit-fenwick-tree/
  */
 
@@ -18,12 +18,12 @@
 #define s second
 
 using namespace std;
-const int MX = 100111;
-ll N, Q, arr[MX], delt[MX], pref[MX];
+const int MX = 1000111;
+ll N, Q, delt[MX], pref[MX];
 
 ll raw_prefix(ll bit[], int n)
 {
-	int tot = 0;
+	ll tot = 0;	// FIX: smah, missing ll here
 	for (; n; n-=n&-n)
 		tot += bit[n];
 	return tot;
@@ -39,11 +39,9 @@ ll query(int l, int r)
 {
 	--l;
 	// TODO: understand this algebraic magic
-	ll tot = (r+1)*raw_prefix(delt, r) - raw_prefix(pref, r);
-	//printf("right: %lld\n", tot);
-	tot -= (l+1)*raw_prefix(delt, l) - raw_prefix(pref, l);
-	//printf("final: %lld\n", tot);
-	return tot;
+	ll tot = (ll)((ll)r+1LL)*(ll)raw_prefix(delt, r) - (ll)raw_prefix(pref, r);
+	tot -= (ll)((ll)l+1LL)*(ll)raw_prefix(delt, l) - (ll)raw_prefix(pref, l);
+	return (ll)tot;
 }
 
 void update(int l, int r, ll v)
@@ -54,31 +52,11 @@ void update(int l, int r, ll v)
 	raw_update(pref, r+1, (r+1)*-v); 	// "undo" previous line
 }
 
-//void update(int l, int r, int v)
-//{
-//    for (; l<=N; l+=l&-l)
-//        delt[l] += v;
-//    for (; r<=N; r+=r&-r)
-//        delt[r] -= v;
-//}
-
-//void dump()
-//{
-//    for (int i=0; i<N; ++i)
-//        printf("%3d", arr[i]);
-//    printf("\n");
-//}
-
 int main()
 {
 	scanf("%d%d", &N, &Q);
 	for (int i=0; i<N; ++i)
 	{
-		//scanf("%d", &arr[i]);
-		//if (i) delt[i] = arr[i] - arr[i-1];
-		//else delt[i] = arr[i];
-		//pref[i] = i*delt[i];
-
 		ll t; scanf("%lld", &t);
 		update(i+1, i+1, t);
 	}
