@@ -6,12 +6,12 @@
  */
 
 #include <iostream>
+#include <cstring>
 #include <sstream>
 #include <cstdio>
 #include <tuple>
 #include <vector>
 #include <string>
-#include <cstring>
 #include <list>
 #include <array>
 #include <queue>
