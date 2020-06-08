@@ -41,23 +41,26 @@
 using namespace std;
 const int MX = 111;
 
-int N, Q, delt[MX];
+int N, Q, delt[MX][MX];
 
-ll query(int i)
+ll query(int i, int _j)
 {
 	ll tot = 0;
 	for (; i; i-=i&-i)
-		tot += delt[i];
+		for (int j=_j; j; j-=j&-j)
+			tot += delt[i][j];
 	return tot;	// FIX: don't forget to return
 }
 
-void update(int i1, int i2)
+void update(int i1, int i2, int j1, int j2)
 {
 	++i2;
 	for (; i1<=N; i1+=i1&-i1)
-		++delt[i1];
+		for (int j=j1; j<=N; j+=j&-j)
+			++delt[i1][j];
 	for (; i2<=N; i2+=i2&-i2)
-		--delt[i2];
+		for (int j=j2; j<=N; j+=j&-j)
+			--delt[i2][j];
 }
 
 int main()
@@ -66,11 +69,15 @@ int main()
 	for (int i=0; i<Q; ++i)
 	{
 		int c, i1, j1, k1;
-		scanf("%d%d", &i1, &j1);
-		update(i1, j1);
+		scanf("%d%d%d%d", &c, &i1, &j1, &k1);
+		update(c, i1, j1, k1);
 
 		for (int i=1; i<=N; ++i)
-			printf("%3lld", query(i));
+		{
+			for (int j=1; j<=N; ++j)
+				printf("%2lld", query(i, j)%2);
+			printf("\n");
+		}
 		printf("\n");
 	}
 
