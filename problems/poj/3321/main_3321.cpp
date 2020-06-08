@@ -34,26 +34,18 @@ int idx=1;
 pair<int, int> get_bounds(int cur, int pre=0)
 {
 	if (pos[cur]) return mp(0, 0); // should never happen
-	//printf("    get_bounds %d from %d\n", cur, pre);
 	if (!pre) idx = 1; // simulate static variable
 	pos[cur] = idx++;	// FIX: idx++ not cur++
-	//printf("moving on %d %d\n", cur, head[cur].size());
 
-	pair<int, int> ret(0, 0);
+	pair<int, int> ret(0, pos[cur]);	// FIX: pos[cur] not pos[MX]
 	if (head[cur].size() == 1)
-	{
-		ret = mp(pos[cur], pos[cur]); // no children
-	}
+		ret = mp(pos[cur], pos[cur]);	// no children
 	else
 	{
 		for (list<int>::iterator it=head[cur].begin(); it!=head[cur].end(); ++it)
 			if (*it != pre)
-			{
-				pair<int, int> bounds = get_bounds(*it, cur);
-				//if (!ret.f) ret.f = bounds.f;
-				ret.s = bounds.s;
-			}
-		ret.f = pos[cur];	// include self, FIX: pos[cur] not pos[MX]
+				ret.s = get_bounds(*it, cur).s;
+		ret.f = pos[cur];				// include self in the range (preorder traversal)
 	}
 
 	lef[cur] = ret.f;
