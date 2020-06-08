@@ -49,28 +49,27 @@ ll query(int i, int _j)
 	for (; i; i-=i&-i)
 		for (int j=_j; j; j-=j&-j)
 		{
-			printf("    adding %d %d\n", i, j);
+			//printf("    adding %d %d\n", i, j);
 			tot += delt[i][j];
 		}
 	return tot;	// FIX: don't forget to return
 }
 
+void rupdate(int i, int _j, int v)
+{
+	for (; i<=N; i+=i&-i)
+		for (int j=_j; j<=N; j+=j&-j)
+			delt[i][j] += v;
+}
+
 void update(int i1, int i2, int j1, int j2)
 {
 	++i2; ++j2;
-	for (; i1<=N; i1+=i1&-i1)
-		for (int j=j1; j<=N; j+=j&-j)
-		{
-			printf("    adding %d %d\n", i1, j);
-			++delt[i1][j];
-		}
+	rupdate(i1, j1, 1);
+	rupdate(i2, j2, 1);
 
-	for (; i2<=N; i2+=i2&-i2)
-		for (int j=j2; j<=N; j+=j&-j)
-		{
-			printf("    subing %d %d\n", i2, j);
-			--delt[i2][j];
-		}
+	rupdate(i1, j2, -1);
+	rupdate(i2, j1, -1);
 }
 
 int main()
@@ -83,14 +82,14 @@ int main()
 		update(c, i1, j1, k1);
 
 		printf("\n");
-        //
-		//for (int i=1; i<=N; ++i)
-		//{
-		//    for (int j=1; j<=N; ++j)
-		//        printf("%2lld", query(i, j)%2);
-		//    printf("\n");
-		//}
-		//printf("\n");
+
+		for (int i=1; i<=N; ++i)
+		{
+			for (int j=1; j<=N; ++j)
+				printf("%2lld", query(i, j)%2);
+			printf("\n");
+		}
+		printf("\n");
 	}
 
 	return 0;
