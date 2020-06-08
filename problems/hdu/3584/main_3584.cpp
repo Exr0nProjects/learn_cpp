@@ -99,19 +99,17 @@ int main()
 			printf("%d\n", query(i1, j1, k1)%2);
 		}
 
-		//printf("\n");
-        //
-		//for (int i=1; i<=N; ++i)
-		//{
-		//    for (int k=1; k<=N; ++k)
-		//    {
-		//        for (int j=1; j<=N; ++j)
-		//            printf("%2lld", query(i, j, k));
-		//        printf("  ");
-		//    }
-		//    printf("\n");
-		//}
-		//printf("\n");
+		for (int i=1; i<=N; ++i)
+		{
+			for (int k=1; k<=N; ++k)
+			{
+				for (int j=1; j<=N; ++j)
+					printf("%2lld", query(i, j, k));
+				printf("  ");
+			}
+			printf("\n");
+		}
+		printf("\n");
 	}
 
 	return 0;
