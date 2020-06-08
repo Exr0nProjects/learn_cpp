@@ -41,35 +41,45 @@
 using namespace std;
 const int MX = 111;
 
-int N, Q, delt[MX][MX];
+int N, Q, delt[MX][MX][MX];
 
-ll query(int i, int _j)
+ll query(int i, int _j, int _k)
 {
 	ll tot = 0;
 	for (; i; i-=i&-i)
 		for (int j=_j; j; j-=j&-j)
-		{
-			//printf("    adding %d %d\n", i, j);
-			tot += delt[i][j];
-		}
+			for (int k=_k; k; k-=k&-k)
+			{
+				//printf("    adding %d %d\n", i, j);
+				tot += delt[i][j][k];
+			}
 	return tot;	// FIX: don't forget to return
 }
 
-void rupdate(int i, int _j, int v)
+void rupdate(int i, int _j, int _k, int v)
 {
 	for (; i<=N; i+=i&-i)
 		for (int j=_j; j<=N; j+=j&-j)
-			delt[i][j] += v;
+			for (int k=_k; k<=N; k+=k&-k)
+				delt[i][j][k] += v;
 }
 
-void update(int i1, int i2, int j1, int j2)
+void update(int i1, int j1, int k1, int i2, int j2, int k2)
 {
-	++i2; ++j2;
-	rupdate(i1, j1, 1);
-	rupdate(i2, j2, 1);
+	++i2; ++j2; ++k2;
 
-	rupdate(i1, j2, -1);
-	rupdate(i2, j1, -1);
+	// magenta
+	rupdate(i2, j2, k2, 1);
+	// blue
+	rupdate(i2, j2, k1, -1);
+	rupdate(i2, j1, k2, -1);
+	rupdate(i1, j2, k2, -1);
+	// yellow
+	rupdate(i2, j1, k1, 1);
+	rupdate(i1, j2, k1, 1);
+	rupdate(i1, j1, k2, 1);
+	// orange
+	rupdate(i1, j1, k1, -1);
 }
 
 int main()
@@ -77,16 +87,21 @@ int main()
 	scanf("%d%d", &N, &Q);
 	for (int i=0; i<Q; ++i)
 	{
-		int c, i1, j1, k1;
-		scanf("%d%d%d%d", &c, &i1, &j1, &k1);
-		update(c, j1, i1, k1);
+		int c, i1, j1, k1, i2, j2, k2;
+		scanf("%d%d%d", &i1, &j1, &k1);
+		scanf("%d%d%d", &i2, &j2, &k2);
+		update(i1, j1, k1, i2, j2, k2);
 
 		printf("\n");
 
 		for (int i=1; i<=N; ++i)
 		{
-			for (int j=1; j<=N; ++j)
-				printf("%2lld", query(i, j));
+			for (int k=1; k<=N; ++k)
+			{
+				for (int j=1; j<=N; ++j)
+					printf("%2lld", query(i, j, k));
+				printf("  ");
+			}
 			printf("\n");
 		}
 		printf("\n");
