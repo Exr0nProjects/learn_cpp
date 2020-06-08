@@ -64,22 +64,22 @@ void rupdate(int i, int _j, int _k, int v)
 				delt[i][j][k] += v;
 }
 
-void update(int i1, int j1, int k1, int i2, int j2, int k2)
+void update(int i1, int j1, int k1, int i2, int j2, int k2, int v=1)
 {
 	++i2; ++j2; ++k2;
 
 	// magenta
-	rupdate(i2, j2, k2, 1);
+	rupdate(i2, j2, k2, -v);
 	// blue
-	rupdate(i2, j2, k1, -1);
-	rupdate(i2, j1, k2, -1);
-	rupdate(i1, j2, k2, -1);
+	rupdate(i2, j2, k1, v);
+	rupdate(i2, j1, k2, v);
+	rupdate(i1, j2, k2, v);
 	// yellow
-	rupdate(i2, j1, k1, 1);
-	rupdate(i1, j2, k1, 1);
-	rupdate(i1, j1, k2, 1);
+	rupdate(i2, j1, k1, -v);
+	rupdate(i1, j2, k1, -v);
+	rupdate(i1, j1, k2, -v);
 	// orange
-	rupdate(i1, j1, k1, -1);
+	rupdate(i1, j1, k1, v);
 }
 
 int main()
@@ -88,23 +88,30 @@ int main()
 	for (int i=0; i<Q; ++i)
 	{
 		int c, i1, j1, k1, i2, j2, k2;
-		scanf("%d%d%d", &i1, &j1, &k1);
-		scanf("%d%d%d", &i2, &j2, &k2);
-		update(i1, j1, k1, i2, j2, k2);
-
-		printf("\n");
-
-		for (int i=1; i<=N; ++i)
+		scanf("%d%d%d%d", &c, &i1, &j1, &k1);
+		if (c)
 		{
-			for (int k=1; k<=N; ++k)
-			{
-				for (int j=1; j<=N; ++j)
-					printf("%2lld", query(i, j, k));
-				printf("  ");
-			}
-			printf("\n");
+			scanf("%d%d%d", &i2, &j2, &k2);
+			update(i1, j1, k1, i2, j2, k2);
 		}
-		printf("\n");
+		else
+		{
+			printf("%d\n", query(i1, j1, k1)%2);
+		}
+
+		//printf("\n");
+        //
+		//for (int i=1; i<=N; ++i)
+		//{
+		//    for (int k=1; k<=N; ++k)
+		//    {
+		//        for (int j=1; j<=N; ++j)
+		//            printf("%2lld", query(i, j, k));
+		//        printf("  ");
+		//    }
+		//    printf("\n");
+		//}
+		//printf("\n");
 	}
 
 	return 0;
