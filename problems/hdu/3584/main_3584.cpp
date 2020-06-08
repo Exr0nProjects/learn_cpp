@@ -87,18 +87,20 @@ int main()
 	scanf("%d%d", &N, &Q);
 	for (int i=0; i<Q; ++i)
 	{
-		int c, i1, j1, k1, i2, j2, k2;
+		int c, i1, j1, k1;
 		scanf("%d%d%d%d", &c, &i1, &j1, &k1);
 		if (c)
 		{
+			int i2, j2, k2;
 			scanf("%d%d%d", &i2, &j2, &k2);
 			update(i1, j1, k1, i2, j2, k2);
 		}
 		else
 		{
-			printf("%d\n", query(i1, j1, k1)%2);
+			printf("%lld\n", query(i1, j1, k1)%2);	// FIX: output ll (long long)?
 		}
 
+		printf("\n");
 		for (int i=1; i<=N; ++i)
 		{
 			for (int k=1; k<=N; ++k)
