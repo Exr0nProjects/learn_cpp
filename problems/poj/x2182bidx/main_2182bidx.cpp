@@ -7,27 +7,6 @@
 
 #include <iostream>
 #include <cstring>
-#include <sstream>
-#include <cstdio>
-#include <tuple>
-#include <vector>
-#include <string>
-#include <list>
-#include <array>
-#include <queue>
-#include <stack>
-#include <set>
-#include <map>
-#include <unordered_set>
-#include <unordered_map>
-#include <cmath>
-#include <random>
-#include <chrono>
-#include <utility>
-#include <iterator>
-#include <exception>
-#include <algorithm>
-#include <functional>
 
 #define ll long long
 #define dl double
@@ -74,18 +53,15 @@ int main()
 	for (int i=N; i>0; --i)
 	{
 
-		int l=1, r=i+1; // inc exc
-		printf("target: arr[%d] = %d\n", i, arr[i]);
+		int l=1, r=N+1; // inc exc; FIX: actually should be N+1 not i+1 (shouldn'tv changed it earlier)
 		for (int b=0; b<60; ++b)
 		{
 			int m = (l+r)/2;
-			if (query(1, m-1) < arr[i])
+			if (query(1, m-1) <= arr[i])	// FIX: binary search comparator: le not lt
 				l = m;
 			else
 				r = m;
 		}
-		for (int i=1; i<=N; ++i) printf("%3d", query(i, i)); printf("\n");
-		printf("got l=%d (query(1, l-1) = %d)\n\n", l, query(1, l-1));
 		update(l, -1);
 		arr[i] = l;
 	}
