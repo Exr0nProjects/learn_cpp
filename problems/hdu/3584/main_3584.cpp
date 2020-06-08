@@ -79,14 +79,14 @@ int main()
 	{
 		int c, i1, j1, k1;
 		scanf("%d%d%d%d", &c, &i1, &j1, &k1);
-		update(c, i1, j1, k1);
+		update(c, j1, i1, k1);
 
 		printf("\n");
 
 		for (int i=1; i<=N; ++i)
 		{
 			for (int j=1; j<=N; ++j)
-				printf("%2lld", query(i, j)%2);
+				printf("%2lld", query(i, j));
 			printf("\n");
 		}
 		printf("\n");
