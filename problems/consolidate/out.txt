@@ -1,0 +1,152 @@
+poj/x1195/main_1195.cpp:27: for (; y; y-=y&-y) // FIX: += bidx[y] not += y smah
+poj/x1195/main_1195.cpp:28: for (int x=_x; x; x-=x&-x) // FIX: reset x for inner loop
+poj/x1195/main_1195.cpp:57: for (int x=_x; x<=N; x+=x&-x) // FIX: reset x for inner loop
+poj/x3468/main_3468.cpp:26: ll tot = 0; // FIX: smah, missing ll here
+poj/3321/main_3321.cpp:38: pos[cur] = idx++; // FIX: idx++ not cur++
+poj/3321/main_3321.cpp:40: pair<int, int> ret(0, pos[cur]); // FIX: pos[cur] not pos[MX]
+xjoi.net/x3657/3657/main_3657.cpp:70: FORR(i, N) FOR(j, i+1) // FIX: FOR(j, i+1)
+xjoi.net/1055up/main_1055up.cpp:73: if (arr[j] >= arr[i]) // FIX: ge not le
+xjoi.net/x1013/main_1013.cpp:113: if (!step[y][x] || step[y][x] > step[curr.F][curr.S]) // FIX: allow bfs to revisit nodes as long as its not going backwards
+xjoi.net/x3587down/main_3587down.cpp:70: ret = max(ret, recurse(i-1, j-1) + (a[i] == b[j])); // FIX: order of ops, need to put equality in parens
+xjoi.net/x3587down/main_3587down.cpp:79: scanf("%s%n%s%n", a+1, &A, b+1, &B); // FIX: one index so recursive doesn't access negative array index
+xjoi.net/x3587down/main_3587down.cpp:80: B -= A; --B; // FIX: fencepost and adding of scanf's character count
+xjoi.net/x1064/main_1064.cpp:66: --in[src]; // FIX: negative nums act as vis array
+xjoi.net/x1064/main_1064.cpp:67: pq.pop(); // FIX: pop imedietly...
+xjoi.net/x1064/main_1064.cpp:68: if (in[src]) return; // FIX: if in[src], not src
+xjoi.net/x1064/main_1064.cpp:91: // FIX: use pq to ensure picking smallest possible each time
+xjoi.net/x1064/main_1064.cpp:95: ++in[i]; // FIX: counter auto-subtracting when calling fill(i) from pq
+xjoi.net/x3665re1/main_3665re1.cpp:74: FOR_(j, 1, K+1) // FIX: everything is one indexed!
+hdu/3584/main_3584.cpp:55: return tot; // FIX: don't forget to return
+uva/pid/12563down/main_12563down.cpp:51: return lhs < rhs ? rhs : lhs; // FIX: fliped: rhs first for max
+uva/pid/12563down/main_12563down.cpp:58: if (rem <= 1) return mp(0, 0); // FIX: base case
+uva/pid/10118up/main_10118up.cpp:97: if (best <= update) // FIX: le so that we atleast try taking some candy
+uva/pid/x821/main_821.cpp:72: memset(dist, 0x38, sizeof dist); // FIX: can't do 0x40 because 2* that is overflow
+uva/pid/x12096/main_12096.cpp:96: else if (cmd == 'D') comp.push(comp.top()); // FIX: needs to be else if to propogate the else statement functionality so it doesn't double pop on cmd='P'. found after spending 47 mins debugging vim clipboard integration and 3 minutes in xcode rip
+uva/pid/x1395/main_1395.cpp:115: // FIX: reset djs each time we build a new MST
+uva/pid/x1395/main_1395.cpp:116: iota(djs_f, djs_f+MX, 0); // FIX: start iota at zero for index zero, even if everything else is one indexed
+uva/pid/x1395/main_1395.cpp:131: printf("%d\n", ret == 1<<30 ? -1 : ret); // FIX: output -1
+uva/pid/x1629down/main_1629down.cpp:80: if (countCherries(i, j, k, l) == 0) ret = 1<<30; // FIX: each piece needs exactly one cherry
+uva/pid/x242down/main_242down.cpp:109: if (best.empty()) // FIX: incase best coverage is zero
+uva/pid/x658/main_658.cpp:10: ! FIX: didn't clear everything correctly
+uva/pid/x658/main_658.cpp:11: ! FIX: pq was a max heap smh
+uva/pid/x658/main_658.cpp:110: // FIX: use greater for pq, how was it not breaking more??? ^^^^^^^
+uva/pid/x116up/main_116up.cpp:75: FOR(n, N) FORR(m, M) // FIX: big brain: input backwards so that everything else works nicely
+uva/pid/x10118down/main_10118down.cpp:72: FOR(i, 4) if (state[i] <N) // for each pile if can take; FIX: state[i] just has to be <N (not state[i]+1) because state[i] is the next one to take
+uva/pid/x10285down/main_10285down.cpp:75: if (maze[y][x] < maze[r][c]) // FIX: lt not le
+uva/pid/x10285down/main_10285down.cpp:78: return ret; // FIX: must return ret exactly for memoization to work
+uva/pid/x10029up/main_10029up.cpp:99: ++ret; // FIX: count a step
+uva/pid/x437up/main_437up.cpp:87: blocks.eb(1<<30, 1<<30, 0); // FIX: inf sized base
+uva/pid/x437up/main_437up.cpp:105: FOR(i, blocks.size()) // FIX: not N, it should be 3*N (orientations) +1 (base)
+uva/pid/x1601/main_1601.cpp:225: start[1] = dest[1] = cell_id; // FIX: set the second ghost, not the third
+uva/pid/x10801/main_10801.cpp:69: cin.ignore(); // FIX: waymo's string stream code
+uva/pid/x10801/main_10801.cpp:93: printf("%d\n", max(cur.f, 0)); // FIX: don't output -60 if target floor is zero
+uva/pid/x242up/main_242up.cpp:71: bcover = 0; // FIX: clear bcover for each test case, not each denomenation set
+uva/pid/x242up/main_242up.cpp:90: tab[0] = 0; // FIX: start coverage at zero, tab[0] = 0 (not inf)
+uva/pid/x242up/main_242up.cpp:115: printf("max coverage =%4d :", bcover-1); // FIX: bcover-1 because previous loop stopped when bcover doesn't work
+uva/pid/x11584down/main_11584down.cpp:70: else ret = (checkPal(i+1, j-1) && str[i] == str[j]); // FIX: checkPal(i+1, j-1) not (i-1, j+1)
+uva/pid/x1629up/main_1629up.cpp:66:{ return cake[k][l] + cake[i-1][j-1] - cake[i-1][l] - cake[k][j-1]; } // FIX: fencepost on (i, j)
+uva/pid/x1629up/main_1629up.cpp:72: while (scanf("%d%d%d", &N, &M, &K) == 3) // FIX: ==3 to stop the program properly
+uva/pid/x1629up/main_1629up.cpp:85: FOR_(n, 1, MX) FOR_(m, 1, MX) cake[n][m] += cake[n-1][m] + cake[n][m-1] - cake[n-1][m-1]; // FIX: +=, not = because otherwise we overwrite the input
+uva/pid/x1629up/main_1629up.cpp:95: FOR(h, N) FOR(w, M) FOR_(i, 1, N+1) FOR_(j, 1, M+1) // FIX: i and j are one indexed, h and w are zero indexed (because they are added to i and j)
+uva/pid/437graph/main_437graph.cpp:102: blocks.eb(mp(b, c), a); // FIX: need to try all combos
+uva/pid/x10048/main_10048.cpp:69: FOR(i, MX) FOR(j, MX) dist[i][j] = 1<<20; // FIX: reset before input duh
+uva/pid/x10048/main_10048.cpp:100: --a; --b; // FIX: don't forget to subtract to make everything zero indexed
+uva/pid/x136/main_136.cpp:78: printf("The 1500'th ugly number is %d.\n", ith); // FIX: needed newline
+uva/pid/x1151/main_1151.cpp:83: // FIX: don't reset MST because we might start in the middle
+uva/pid/x1151/main_1151.cpp:126: // FIX: don't reset before finishing MST
+uva/pid/x247/main_247.cpp:86: FOR(i, MX) FOR(j, MX) dist[i][j] = 1; // FIX: don't int overflow
+uva/pid/x247/main_247.cpp:110: circles[i]; // FIX: add lonely members to output as well
+uva/pid/x247/main_247.cpp:115: if (!dist[i][j] && !dist[j][i]) // FIX: use 0 to mean connected
+uva/pid/x1630down/main_1630down.cpp:114: ret = s; // FIX: initialize ret
+uva/pid/x1630down/list_1630down.cpp:98: return ret; // FIX: was returning based on a key that had changed the line above
+uva/pid/x1630down/list_1630down.cpp:121: auto og = src; // FIX: copy because otherwise to get a reference to the mem location, you have to empty init it (operato[])
+uva/pid/x1630down/list_1630down.cpp:123: src.erase(next(src.begin(), len), src.end()); // FIX: erase the part we want to erase, not keep
+uva/pid/x1630down/list_1630down.cpp:139: list<char> ret = src; // FIX: always init ret with src, since we might not find something better
+uva/pid/x10285graph/main_10285graph.cpp:82: // edges.clear(); // FIX: clear the edges
+uva/pid/x10029down/main_10029down.cpp:75: nxt.erase(i, 1); // FIX: erase just one character, not to the end
+uva/pid/x10029down/main_10029down.cpp:106: ++ret; // FIX: count this
+uva/pid/x1001/main_1001.cpp:96: FOR(i, N+1) dist[i] = 1<<30; // FIX: init dist
+uva/pid/xuva12563up2/main_uva12563up2.cpp:61: return ret; // FIX: actually return from the function
+uva/pid/xuva12563up2/main_uva12563up2.cpp:75: for (int i=0; i<MXT; ++i) tab[i] = {0, 0}; // FIX: can't memset pairs
+uva/pid/xmy1025down/main_my1025down.cpp:23:ll N, T, memo[MX][MT]; // FIX: make sure memo is large enough! different dimension sizes!
+usaco/bronze/2019open/xfactory/main_factory.cpp:75: travel(edges[e].t, from_count + (!vis_src[i])); // FIX: only increase the carry (from_count) if we haven't sourced from this station before
+usaco/bronze/2016dec/xblocks/main_blocks.cpp:64: for (int i=0; s1[i] != '\0'; ++i) // FIX: Had to change from strlen because strlen was not defined on usaco servers
+usaco/bronze/2016dec/xblocks/main_blocks.cpp:71: count1[i] = count2[i] = 0; // FIX: need to reset counters
+usaco/bronze/2016open/xbcs/new_bcs.cpp:99: scanf("%c", &c); //FIX: this was scanf("%d", ...) which ofc returned nothing
+usaco/bronze/2015open/xpalpath/palpath_3.cpp:75: if (i+j+1 >= n) // FIX: this also would've solved the problem, although a little less percisely
+usaco/bronze/2015open/xpalpath/palpath_3.cpp:83: return; // FIX: return even when we don't find a palendrome, because otherwise we start going past the diagonal and don't recover until we hit the top corner!
+usaco/bronze/2015open/xpalpath/palpath_4.cpp:87:{ // FIX: instead of using unordered_set.erase() in the base case of secondWalk
+usaco/training/chap2/xcastle/main_castle.cpp:86: if (a == b) return; // FIX: don't merge same set, will screw up size count
+usaco/training/chap2/xcastle/main_castle.cpp:98: FOR(i, W*H) djs_s[i] = 1; // FIX: remember to init djs arrays
+usaco/training/chap1/xpprime/main_pprime.cpp:68: FOR_(i, 2, (int) sqrt(n) +1) // FIX: start at 2, everything is divisible by one
+usaco/training/chap1/xnumtri/main_numtri.cpp:68: if (p > R*(R+1)/2) return 0; // FIX: base case
+usaco/training/chap1/xnumtri/main_numtri.cpp:71: ret += max(dp(p+l, l+1), dp(p+l+1, l+1)); // FIX: not a binary tree, so we don't do *2 *2+1
+usaco/training/chap1/xnumtri/main_numtri.cpp:83: FOR(j, i+1) // FIX: i starts as 0 not 1 so we need to do +1
+usaco/training/chap1/xnumtri/main_numtri.cpp:86: tab[cnt] = -1; // FIX: use dp for a triangle of zeros too
+usaco/silver/2018feb/teleport/main_teleport.cpp:88: ret = min(ret, cost); // FIX: should be min not max
+usaco/silver/2018feb/xsnowboots/new_snowboots.cpp:64:int best=INF; // FIX: for some reason this makes it not bus error? I suppose it's simpler...
+usaco/silver/2018feb/xsnowboots/new_snowboots.cpp:67:{ // FIX: remember what si and di mean
+usaco/silver/2018feb/xsnowboots/new_snowboots.cpp:72: if (boot >= N) return; // impossible to get to the end; FIX: make sure there is a break condition for each arg possibility
+usaco/silver/x2018jan/xmootube/main_mootube.cpp:67:// FIX: edgelist impl was flawwed, using more stl instead
+usaco/silver/x2018jan/xmootube/main_mootube.cpp:137: FOR(o, N) // FIX: o needs to be +1 everywhere cuz adjlist is one indexed
+usaco/silver/x2018jan/xlifegaurds/main_lifeguards.cpp:105: total_time += shift_change[i+1].F - event.F; // FIX: don't double count overlap between gaurd work times
+usaco/silver/x2018jan/xrental/main_rental.cpp:78: sort(shops.begin(), shops.end(), greater<pair<int, int> >{}); // FIX: sort shops in increasing order
+usaco/silver/x2018jan/xrental/main_rental.cpp:110: //rent_profit[i+1] = rent_profit[i] + rental[i]; // FIX: add rental[i] not rental[i+1], because otherwise rental[0] isn't even considered
+usaco/silver/x2018jan/xrental/main_rental.cpp:114: FOR(i, N+1) // FIX: fencepost, dp actually goes one further
+usaco/silver/2020open/moop/main_moop.cpp:96: // FIX: init djs!!!!
+usaco/silver/2020open/moop/main_moop.cpp:101: groups = N; // FIX: set groups to N *after* N is set
+usaco/silver/2020open/xsocdist/main_socdist.cpp:68: ll pre=grass[0].F, idx=0, tot=1; // FIX: don't assume that there is grass at 0
+usaco/silver/x2017feb/xcountcross/main_countcross.cpp:87: FOR(k, 4) // FIX: name colision, i was an argument and also the loop int
+usaco/silver/x2019feb/xpaintbarn/main_paintbarn.cpp:84: FOR(i, MX) FOR(j, MX) // FIX: not N
+usaco/silver/x2015dec/xhighcard/main_highcard.cpp:70: --ptr; // FIX: forgot to also decrement pointer
+usaco/silver/x2016jan/xdiv7/main_div7.cpp:51:ll sum[MAXSZ]; // FIX: change to long long
+usaco/silver/x2016dec/xhaybales/main_haybales.cpp:62: stable_sort(bales, bales+N); // ! FIX: forgot to sort at first
+usaco/silver/x2017dec/xmeasurement/main_measurement.cpp:75://set<int> ret; // FIX: Don't overcount the same day // FIXFIX: actually there is only one measurement per day so this isn't needed
+usaco/silver/x2020jan/xberries/main_berries.cpp:102: sort(trees, trees + N, [&](cn l, cn r) { return (l % b) > (r % b); }); // FIX: sort to decreasing order
+usaco/silver/x2017open/xwhere/main_where.cpp:102: int num_colors=0, num_of[26]={}; // FIX: init variables
+usaco/silver/x2017open/xwhere/main_where.cpp:119: return num_colors==2 && found_one && found_many; // FIX: was checking that there were exactly 3 reigons instead of there one of one color and possibly many of another, aka I DIDNT READ THE PROBLEM
+usaco/silver/x2017open/xwhere/main_where.cpp:141: if (contains(i, o)) return false; // FIX: should check if j contains i not if i contains j
+usaco/silver/x2016open/xreduce/main_reduce.cpp:89: ll best = (long long) 1 << 31; // FIX: i was shifting the defaulted int(1) instead of a (long long)(1) so I could only shift up to int sizes
+usaco/silver/x2016open/xreduce/main_reduce.cpp:126: lef.push(y[i]); // FIX: These should push y[i] not x[i]
+usaco/gold/2019open/xwalk/main_walk.cpp:70: (2019201913LL*j+2019201949LL*i) % 2019201997LL); // FIX: order matters
+usaco/gold/2019open/xwalk/main_walk.cpp:80: FOR(i, N+1) dist[i] = (ll)1<<60; // FIX: one index everything because the dist relies on it
+usaco/gold/2019open/xwalk/main_walk.cpp:92: sort(dist+1, dist+N+1, greater<ll>{}); // FIX: sort needs to be one indexed too
+usaco/gold/2018open/milkorder/main_milkorder.cpp:91: priority_queue<int, deque<int>, greater<int> > pq; // FIX: min pq not max
+usaco/gold/2018open/milkorder/main_milkorder.cpp:92: FOR_(i, 1, N+1) // FIX: 1 index
+usaco/gold/2020open/fcolor/main_fcolor.cpp:88: FOR(i, MX) djs[i] = 1; // FIX: init djs!
+usaco/gold/x2015dec/xdream/main_dream.cpp:69:bool vis[MX][MX][2]; // FIX: use array for vis not set
+usaco/gold/x2015dec/xdream/main_dream.cpp:116: if (vis[cur.S.F][cur.S.S][cur.F.S]) // FIX: vis goes here, not during insert!!
+usaco/gold/x2015dec/xdream/main_dream.cpp:121: if (cur.S.F == N && cur.S.S == M) // FIX: cur.S.S == M not ==N
+usaco/gold/x2015dec/xdream/main_dream.cpp:135: printf("-1\n"); // FIX: print -1 if impossible
+usaco/gold/x2015dec/xfeast/main_feast.cpp:70: FOR_(i, 1, T+1) // FIX: go through T for when T == A && A == B
+usaco/gold/x2015dec/xfeast/main_feast.cpp:81: ret = max(ret, dp[k]); // FIX: allow not drinking at all
+usaco/gold/2020feb/deleg/main_deleg.cpp:80: if (from_count.count(len-from)) // FIX: have to do .count cuz otherwise risk empty constructing things
+usaco/gold/x2018dec/xcowpatibility/main_cowpatibility.cpp:64:map<vector<int>, int> common[6]; // FIX: this doesn't need to be ll, but then i would have to cast it later
+usaco/gold/x2018dec/xcowpatibility/main_cowpatibility.cpp:76: ++common[__builtin_popcount(s)][sub]; // FIX: use popcount instead of size() to fix TLE
+usaco/gold/x2018dec/xcowpatibility/main_cowpatibility.cpp:88: FOR(f, 5) // FIX: there are five flavors not four
+usaco/gold/x2018dec/xcowpatibility/main_cowpatibility.cpp:89: scanf("%d", &fav[f]); // FIX: can't just cin into an array
+usaco/gold/x2018dec/xteamwork/main_teamwork.cpp:62:const int MX = 10111; // FIX: 10^4 not 10^3
+usaco/gold/x2018dec/xteamwork/main_teamwork.cpp:78: mx = max(mx, skill[i-k]); // FIX: running max instead of recomputing each time
+usaco/gold/x2016open/xclosing/main_closing.cpp:107: vis[closings[i]] = 1; // FIX: vis, only merge two barns if both are open
+timus/x1018/main_1018.cpp:74: if (root != 1 && head[root].size() == 1) return value[prev][root]; // leaf node; FIX: account for the apples on a leaf branch
+contests/algo/treap/x1_balanced_tree/temp.cpp:68: if (--cur->num > 0) { --cur->s; return; } // FIX: update cur size
+contests/algo/treap/x1_balanced_tree/main_1_balanced_tree.cpp:58: if (--cur->num > 0) { --cur->s; return; } // FIX: update cur size
+contests/algo/treap/x2_statistical_work/main_2_statistical_work.cpp:90: ins->n[dir]->n[1-dir] = ins; // FIX: = ins not = cur
+contests/algo/treap/x2_statistical_work/main_2_statistical_work.cpp:101:void tremove(Node *&cur) // FIX: cur here needs to be a reference to update its parent
+contests/algo/treap/x2_statistical_work/main_2_statistical_work.cpp:103: if (!cur || --cur->count > 0) return; // FIX: how it can be -1 i have no clue, but it works with `2 100 0 10`
+contests/algo/treap/x2_statistical_work/main_2_statistical_work.cpp:179: tail[i+1] = head[i]; // FIX: overlap list thingy to make insert gap calculation work
+contests/algo/treap/x2_statistical_work/main_2_statistical_work.cpp:182: tremove(gap_root, head[0]); // FIX: fencepost--inserts a ghost gap because it's the first
+contests/algo/treap/x4_depressed_cashier/main_4_depressed_cashier.cpp:153: insert(root, d-modify); // FIX: take into acount previous modifications
+contests/algo/treap/x4_depressed_cashier/main_4_depressed_cashier.cpp:154: // FIX: doesn't count as leaving if they leave immedietly
+contests/dated/2020_05_15/x1_uva1428/main_1_uva1428.cpp:68: return lsz + cur->x + getRank(cur->c[1], d); // FIX: cur->x not cur->s
+contests/dated/2020_05_15/x1_uva1428/segtree_uva1428.cpp:50: return sval[k]; // FIX: (tr-tl+1) not (tr-tl) cuz its inc inc
+contests/dated/2020_05_15/x1_uva1428/segtree_uva1428.cpp:103: update(skill[i]); // FIX: don't update range, just update one. segtree takes care of range
+contests/dated/2020_05_15/x5_uva1400/main_5_uva1400.cpp:124: //printf("%d %d (%d)\n", opm.s.f, opm.s.s, opm.f); // FIX: print both, not just opm.s.s smah
+contests/dated/2020_04_27/5_uva1027/main_uva1027.cpp:83: if (cur.s < 90) // upper case; FIX: cur.s not cur.f
+contests/dated/2020_04_20/4/main_4.cpp:37: cache.pop(); // FIX: pop the cache
+contests/dated/2020_03_23/xoj1220/main_oj1220.cpp:108: id_by_name.clear(); // FIX: also clear id_by_name;
+contests/dated/2020_03_23/xoj1220/main_oj1220.cpp:112: id(f); // FIX: mark this as the root
+contests/dated/2020_03_23/xoj12186/main_oj12186.cpp:97: child[b].push_back(i+1); // FIX: +1 not -1
+contests/dev.xjoi/dev.xjoi-1363/x2/main_2.cpp:81: FOR(i, 45) // FIX: make sure we have enough precision
+contests/dev.xjoi/dev.xjoi-1351/x1/main_1.cpp:55: for (int i=2; i<=n; ++i) // FIX: wants prime numbers up to and including n, not up to n
+contests/dev.xjoi/dev.xjoi-1351/x2/main_2.cpp:61: // printf(" "); // FIX: forgot to remove the debug output.
