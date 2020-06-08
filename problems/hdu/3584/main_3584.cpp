@@ -7,27 +7,6 @@
 
 #include <iostream>
 #include <cstring>
-#include <sstream>
-#include <cstdio>
-#include <tuple>
-#include <vector>
-#include <string>
-#include <list>
-#include <array>
-#include <queue>
-#include <stack>
-#include <set>
-#include <map>
-#include <unordered_set>
-#include <unordered_map>
-#include <cmath>
-#include <random>
-#include <chrono>
-#include <utility>
-#include <iterator>
-#include <exception>
-#include <algorithm>
-#include <functional>
 
 #define ll long long
 #define dl double
@@ -100,18 +79,18 @@ int main()
 			printf("%lld\n", query(i1, j1, k1)%2);	// FIX: output ll (long long)?
 		}
 
-		printf("\n");
-		for (int i=1; i<=N; ++i)
-		{
-			for (int k=1; k<=N; ++k)
-			{
-				for (int j=1; j<=N; ++j)
-					printf("%2lld", query(i, j, k));
-				printf("  ");
-			}
-			printf("\n");
-		}
-		printf("\n");
+		//printf("\n");
+		//for (int i=1; i<=N; ++i)
+		//{
+		//    for (int k=1; k<=N; ++k)
+		//    {
+		//        for (int j=1; j<=N; ++j)
+		//            printf("%2lld", query(i, j, k));
+		//        printf("  ");
+		//    }
+		//    printf("\n");
+		//}
+		//printf("\n");
 	}
 
 	return 0;
