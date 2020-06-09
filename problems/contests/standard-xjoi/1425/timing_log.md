@@ -12,6 +12,7 @@
 08:02 | AC #4 | might as well treap for #5
 08:21 | AC #5, maybe treap was slow to code but reliable | coding #6
 08:36 | MLE #6, now what | analysing #6
+08:41 | dunno how to improve memory | break
 
 ## Contest Reflection
 
