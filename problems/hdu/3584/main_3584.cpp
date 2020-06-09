@@ -30,7 +30,8 @@ ll query(int i, int _j, int _k)
 			for (int k=_k; k; k-=k&-k)
 			{
 				//printf("    adding %d %d\n", i, j);
-				tot += delt[i][j][k];
+				//tot += delt[i][j][k];
+				tot ^= delt[i][j][k];
 			}
 	return tot;	// FIX: don't forget to return
 }
@@ -40,7 +41,8 @@ void rupdate(int i, int _j, int _k, int v)
 	for (; i<=N; i+=i&-i)
 		for (int j=_j; j<=N; j+=j&-j)
 			for (int k=_k; k<=N; k+=k&-k)
-				delt[i][j][k] += v;
+				//delt[i][j][k] += v;
+				delt[i][j][k] ^= 1;
 }
 
 void update(int i1, int j1, int k1, int i2, int j2, int k2, int v=1)
