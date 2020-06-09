@@ -41,28 +41,29 @@
 using namespace std;
 const int MX = 1111;
 int N, weight[MX];
-vector<pair<int, int> > tree;
+list<int> head[MX];
+
+int traverse(int cur)
+{
+	//printf("at %d\n", cur);
+	int tot = 1;	// FIX: init to 1 not 0 (subtree weight)
+	for (int nxt : head[cur])
+		tot += traverse(nxt);
+	weight[cur] = tot;
+	//printf("=> %d\n", tot);
+	return tot;
+}
 
 int main()
 {
 	scanf("%d", &N);
-	tree.reserve(N+10);
 	for (int i=2; i<=N; ++i)
 	{
 		int d; scanf("%d", &d);
-		tree.eb(d, i);
+		head[d].pb(i);
 	}
-	sort(tree.begin(), tree.end(), greater<pair<int, int> >{});
 
-	for (int i=0; i<tree.size(); ++i) printf("%d %d\n", tree[i].f, tree[i].s);
-
-	for (int i=0; i<MX; ++i) weight[i] = 1;
-
-	for (int i=0; i<N-1; ++i)
-	{
-		weight[tree[i].f] += weight[tree[i].s];
-		printf("%d: %d += weight[%d] -> %d\n", i, tree[i].f, tree[i].s, weight[tree[i].f]);
-	}
+	traverse(1);
 
 	for (int i=1; i<=N; ++i) printf("%d ", weight[i]);
 
