@@ -41,7 +41,7 @@
 using namespace std;
 const int MX = 10111;
 
-int N;
+int N, M, coeff[MX][3];
 
 int heap[MX*MX], alloc=1;
 void heapup(int cur)
@@ -79,6 +79,23 @@ void heapdown(int cur)
 	}
 }
 
+// copied from problem 2
+void heapdo(int cur)
+{
+	if (cur * 2 >= alloc) return;
+	if (cur * 2 + 1 == alloc)
+	{
+		if (heap[cur] > heap[cur*2])
+			swap(heap[cur], heap[cur*2]);
+	}
+	else if (heap[cur] > min(heap[cur*2], heap[cur*2+1]))
+	{
+		int lo = cur*2 + (heap[cur*2] > heap[cur*2+1]);
+		swap(heap[cur], heap[lo]);
+		heapdo(lo);
+	}
+}
+
 void insert(int d)
 {
 	heap[alloc] = d;
@@ -86,14 +103,16 @@ void insert(int d)
 }
 int pop()
 {
-	printf("uhm\n");
 	if (alloc == 1) return 0;
-	printf("uhm\n");
 	swap(heap[1], heap[--alloc]);
-	printf("uhm\n");
-	heapdown(1);
-	printf("uhm\n");
+	heapdo(1);
 	return heap[alloc];
+}
+
+void func(int cur, int count)
+{
+	for (int i=1; i<=count; ++i)
+		insert(coeff[cur][0] *i*i + coeff[cur][1]*i + coeff[cur][2]);
 }
 
 int main()
@@ -104,6 +123,9 @@ int main()
 		if (c == 1) { scanf("%d", &d); insert(d); }
 		if (c == 2) printf("%d\n", pop());
 	}
+
+	scanf("%d%d", &N, &M);
+	for (int i=0; i<N; ++i)
 
 	return 0;
 }
