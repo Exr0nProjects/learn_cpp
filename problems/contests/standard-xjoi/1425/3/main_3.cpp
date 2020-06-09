@@ -68,13 +68,19 @@ int main()
 				maxlevel = max(maxlevel, level[j]);
 			}
 
+	int badparentcount = 0;
 	for (int i=1; i<=N; ++i)
 	{
-		if (childcount[i] != 2 && level[i] +1 != maxlevel)
-		{ printf("no\n"); return 0; }
+		if (childcount[i] != 2)
+		{
+			if (level[i] +1 != maxlevel)
+			{ printf("no\n"); return 0; }
+			++badparentcount;
+		}
 	}
 
-	printf("yes\n");
+	if (badparentcount > 1) printf("no\n");
+	else printf("yes\n");
 
 	//for (int i=1; i<=N; ++i) printf("%3d", level[i]); printf("\n");
 
