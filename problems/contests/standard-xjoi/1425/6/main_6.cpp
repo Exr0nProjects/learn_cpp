@@ -117,15 +117,21 @@ void func(int cur, int count)
 
 int main()
 {
-	while (true)
-	{
-		int c, d; scanf("%d", &c);
-		if (c == 1) { scanf("%d", &d); insert(d); }
-		if (c == 2) printf("%d\n", pop());
-	}
+	//while (true)
+	//{
+	//    int c, d; scanf("%d", &c);
+	//    if (c == 1) { scanf("%d", &d); insert(d); }
+	//    if (c == 2) printf("%d\n", pop());
+	//}
 
 	scanf("%d%d", &N, &M);
 	for (int i=0; i<N; ++i)
+		for (int j=0; j<3; ++j)
+			scanf("%d", &coeff[i][j]);
+
+	for (int i=0; i<N; ++i) func(i, M);
+	for (int i=0; i<M; ++i) printf("%d ", pop());
+	printf("\n");
 
 	return 0;
 }
