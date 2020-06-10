@@ -9,14 +9,7 @@
 #include <cstring>
 #include <vector>
 
-#define ll long long
-#define dl double
-
 #define pb push_back
-#define eb emplace_back
-#define mp make_pair
-#define f first
-#define s second
 
 using namespace std;
 const int MX = 101;
@@ -42,8 +35,6 @@ int depth(int cur, int pre=0)	// FIX: check each subtree depth individually
 int main()
 {
 	scanf("%d", &N);
-	if (__builtin_popcount(N+1) != 1)
-	{ printf("no\n"); return 0; }
 
 	for (int i=1; i<=N; ++i)
 	{
@@ -54,11 +45,11 @@ int main()
 	}
 
 	int dep = depth(root);		// FIX: ordering, this needs to assign vis before reading it
-	for (int i=1; i<N; ++i)
-		if (!vis[i])
-		{ printf("no\n"); return 0; }
+	for (int i=1; i<=N; ++i)
+		if (head[i].size() && !vis[i])
+			dep = -1;
 
-	printf("%s\n", dep >= 0 && true /* viscnt == N */ ? "yes" : "no");
+	printf("%s\n", dep >= 0 ? "yes" : "no");
 
 	return 0;
 }
