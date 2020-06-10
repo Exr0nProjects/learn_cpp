@@ -5,29 +5,9 @@
  *
  */
 
-#include <iostream>
-#include <cstring>
-#include <sstream>
 #include <cstdio>
-#include <tuple>
+#include <cstring>
 #include <vector>
-#include <string>
-#include <list>
-#include <array>
-#include <queue>
-#include <stack>
-#include <set>
-#include <map>
-#include <unordered_set>
-#include <unordered_map>
-#include <cmath>
-#include <random>
-#include <chrono>
-#include <utility>
-#include <iterator>
-#include <exception>
-#include <algorithm>
-#include <functional>
 
 #define ll long long
 #define dl double
@@ -40,13 +20,15 @@
 
 using namespace std;
 const int MX = 101;
-int N, root=0, viscnt=0;
+int N, root=0;
+bool vis[MX];
 
 vector<int> head[MX];
 
 int depth(int cur, int pre=0)	// FIX: check each subtree depth individually
 {
-	++viscnt;
+	//++viscnt;
+	vis[cur] = 1;
 	if (pre && head[cur].size() == 0) return 0;
 	if (pre && head[cur].size() != 2) return -1;
 
@@ -72,7 +54,12 @@ int main()
 		else head[parent].pb(i);
 	}
 
-	printf("%s\n", depth(root) >= 0 && true /* viscnt == N */ ? "yes" : "no");
+	int dep = depth(root);		// FIX: ordering, this needs to assign vis before reading it
+	for (int i=0; i<MX; ++i)
+		if (head[i].size() && !vis[i])
+		{ printf("no\n"); return 0; }
+
+	printf("%s\n", dep >= 0 && true /* viscnt == N */ ? "yes" : "no");
 
 	return 0;
 }
