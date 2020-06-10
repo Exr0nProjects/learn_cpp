@@ -40,12 +40,13 @@
 
 using namespace std;
 const int MX = 101;
-int N, root=0, leafs=0;
+int N, root=0, viscnt=0;
 
 vector<int> head[MX];
 
 int depth(int cur, int pre=0)	// FIX: check each subtree depth individually
 {
+	++viscnt;
 	if (pre && head[cur].size() == 0) return 0;
 	if (pre && head[cur].size() != 2) return -1;
 
@@ -67,21 +68,11 @@ int main()
 	{
 		int parent;
 		scanf("%d", &parent);
-		if (parent < 0)
-		{
-			if (!root) root = i;
-			else { printf("no\n"); return 0; }
-		}
-		else
-		{
-			head[parent].pb(i);
-		}
+		if (parent < 0) root = i;
+		else head[parent].pb(i);
 	}
 
-	if (depth(root) >= 0)
-		printf("yes\n");
-	else
-		printf("no\n");
+	printf("%s\n", depth(root) >= 0 && true /* viscnt == N */ ? "yes" : "no");
 
 	return 0;
 }
