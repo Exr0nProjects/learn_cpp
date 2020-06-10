@@ -27,8 +27,7 @@ vector<int> head[MX];
 
 int depth(int cur, int pre=0)	// FIX: check each subtree depth individually
 {
-	//++viscnt;
-	vis[cur] = 1;
+	++vis[cur];
 	if (pre && head[cur].size() == 0) return 0;
 	if (pre && head[cur].size() != 2) return -1;
 
@@ -55,8 +54,8 @@ int main()
 	}
 
 	int dep = depth(root);		// FIX: ordering, this needs to assign vis before reading it
-	for (int i=0; i<MX; ++i)
-		if (head[i].size() && !vis[i])
+	for (int i=1; i<N; ++i)
+		if (!vis[i])
 		{ printf("no\n"); return 0; }
 
 	printf("%s\n", dep >= 0 && true /* viscnt == N */ ? "yes" : "no");
