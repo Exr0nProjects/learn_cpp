@@ -40,49 +40,44 @@
 
 using namespace std;
 const int MX = 101;
-int N, root=0, par[MX], level[MX], childcount[MX], maxlevel=0;
+int N, root=0, leafs=0, childcount[MX];
 
 int main()
 {
 	scanf("%d", &N);
+	if (__builtin_popcount(N+1) != 1)
+	{ printf("no\n"); return 0; }
+
 	for (int i=1; i<=N; ++i)
 	{
-		scanf("%d", &par[i]);
-		if (par[i] < 0)
+		int parent;
+		scanf("%d", &parent);
+		if (parent == i) { printf("no\n"); return 0; }	// FIX: check if is own parent (from XC2000268AH)
+		if (parent < 0)
 		{
 			if (!root) root = i;
 			else { printf("no\n"); return 0; }
 		}
 		else
 		{
-			++childcount[par[i]];
+			++childcount[parent];
 		}
 	}
 
-	level[root] = 1;
-	for (int i=0; i<N; ++i)
-		for (int j=1; j<=N; ++j)
-			if (level[par[j]])
-			{
-				level[j] = level[par[j]] +1;
-				maxlevel = max(maxlevel, level[j]);
-			}
-
-	int badparentcount = 0;
 	for (int i=1; i<=N; ++i)
 	{
 		if (childcount[i] != 2)
 		{
-			if (level[i] +1 != maxlevel)
-			{ printf("no\n"); return 0; }
-			++badparentcount;
+			if (childcount[i] == 0)
+				++leafs;
+			else { printf("no\n"); return 0; }
 		}
 	}
 
-	if (badparentcount > 1) printf("no\n");
-	else printf("yes\n");
-
-	//for (int i=1; i<=N; ++i) printf("%3d", level[i]); printf("\n");
+	if (N+1 == 2*leafs)
+		printf("yes\n");
+	else
+		printf("no\n");
 
 	return 0;
 }
