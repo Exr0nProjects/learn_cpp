@@ -1,7 +1,7 @@
 /*
  * Problem 6 (contests/standard-xjoi/1425/6)
  * Create time: Tue 09 Jun 2020 @ 08:21 (PDT)
- * Accept time: [!meta:end!]
+ * Accept time: Tue 09 Jun 2020 @ 18:11 (PDT)
  *
  */
 
@@ -41,43 +41,51 @@
 using namespace std;
 const int MX = 10111;
 
-int N, M, coeff[MX][3];
+typedef pair<int, int> val;
 
-int heap[MX*MX], alloc=1;
+int N, M, coeff[MX][3], counter[MX];
+
+bool cmp(val lhs, val rhs)
+{
+	return lhs < rhs;
+}
+
+val heap[MX];
+int alloc=1;
 void heapup(int cur)
 {
 	if (cur == 1) return;
-	if (heap[cur] < heap[cur/2])
+	if (cmp(heap[cur], heap[cur/2]))
 	{
 		swap(heap[cur], heap[cur/2]);
 		heapup(cur/2);
 	}
 }
-void heapdown(int cur)
-{
-	printf("heapdown %d\n", cur);
-	if (!cur) return;
-	if (cur*2 >= alloc) return;
-	printf("but what?\n");
-	if (cur*2+1 == alloc)
-	{
-		if (heap[cur] > heap[cur*2])
-		{
-			swap(heap[cur], heap[cur*2]);
-			heapdown(cur*2);
-		}
-	}
-	else
-	{
-		printf("so either is possible\n");
-		int lo = cur*2 + heap[cur*2] > heap[cur*2+1];
-		if (heap[cur] > heap[lo])
-		{
-			swap(heap[cur], heap[lo]);
-			heapdown(lo);
-		}
-	}
-}
+//void heapdown(int cur)
+//{
+//    printf("heapdown %d\n", cur);
+//    if (!cur) return;
+//    if (cur*2 >= alloc) return;
+//    printf("but what?\n");
+//    if (cur*2+1 == alloc)
+//    {
+//        if (cmp(heap[2*cur], heap[cur]))
+//        {
+//            swap(heap[cur], heap[cur*2]);
+//            heapdown(cur*2);
+//        }
+//    }
+//    else
+//    {
+//        printf("so either is possible\n");
+//        int lo = cur*2 + heap[cur*2] > heap[cur*2+1];
+//        if (cmp(heap[lo], heap[cur]))
+//        {
+//            swap(heap[cur], heap[lo]);
+//            heapdown(lo);
+//        }
+//    }
+//}
 
 // copied from problem 2
 void heapdo(int cur)
@@ -85,34 +93,34 @@ void heapdo(int cur)
 	if (cur * 2 >= alloc) return;
 	if (cur * 2 + 1 == alloc)
 	{
-		if (heap[cur] > heap[cur*2])
+		if (cmp(heap[cur*2], heap[cur]))
 			swap(heap[cur], heap[cur*2]);
 	}
 	else if (heap[cur] > min(heap[cur*2], heap[cur*2+1]))
 	{
-		int lo = cur*2 + (heap[cur*2] > heap[cur*2+1]);
+		int lo = cur*2 + (!cmp(heap[cur*2], heap[cur*2+1]));
 		swap(heap[cur], heap[lo]);
 		heapdo(lo);
 	}
 }
 
-void insert(int d)
+void insert(val d)
 {
 	heap[alloc] = d;
 	heapup(alloc++);
 }
-int pop()
+val pop()
 {
-	if (alloc == 1) return 0;
+	if (alloc == 1) return mp(0, 0);
 	swap(heap[1], heap[--alloc]);
 	heapdo(1);
 	return heap[alloc];
 }
 
-void func(int cur, int count)
+void ins_next(int cur)
 {
-	for (int i=1; i<=count; ++i)
-		insert(coeff[cur][0] *i*i + coeff[cur][1]*i + coeff[cur][2]);
+	int x = ++counter[cur];
+	insert(mp(coeff[cur][0] *x*x + coeff[cur][1]*x + coeff[cur][2], cur));
 }
 
 int main()
@@ -129,8 +137,13 @@ int main()
 		for (int j=0; j<3; ++j)
 			scanf("%d", &coeff[i][j]);
 
-	for (int i=0; i<N; ++i) func(i, M);
-	for (int i=0; i<M; ++i) printf("%d ", pop());
+	for (int i=0; i<N; ++i) ins_next(i);
+	for (int i=0; i<M; ++i)
+	{
+		pair<int, int> top = pop();
+		ins_next(top.s);
+		printf("%d ", top.f);
+	}
 	printf("\n");
 
 	return 0;
