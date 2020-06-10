@@ -2,9 +2,14 @@
 dateformat="+%a %d %b %Y @ %R (%Z)"
 cache="./.template_state/last.txt"
 modpath=$1
+message=$2
 
 if [[ -z "$1" || "$1" == "_last" ]]; then
   modpath=$(< "$cache")
+fi
+
+if [[ -z "$2" ]]; then
+	message="AC $modpath (script)"
 fi
 
 echo "Marking $modpath as AC..."
@@ -20,6 +25,6 @@ rm -rf "$modpath"
 
 ./list_completed.sh
 
-"$(dirname $cache)/live_commit.sh" "./$modpath ./$newpath working.txt completed.txt" "AC $modpath (script)"
+"$(dirname $cache)/live_commit.sh" "./$modpath ./$newpath working.txt completed.txt" "$message"
 
 nohup git push > /dev/null &
