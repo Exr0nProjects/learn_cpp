@@ -199,4 +199,7 @@ segment tree					| -
 segment tree range update 		| -
 convex hull						| 
 
-
+### Solving problems
+- USACO Silver 2019dec milkvisits:
+	- N * M must be too slow, so maybe we know to solve each in N or N log N, aka query must be constant or log
+	- an NxN lookup table takes N^2 to fill
