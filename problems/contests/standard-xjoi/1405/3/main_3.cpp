@@ -47,7 +47,7 @@ void rupdate(int bit[], int i, int v)
 	for (; i<=N; i+=i&-i)
 		bit[i] += v;		// FIX: typo bit[i] += v not bit += v
 }
-int rquery(int bit[], int i)
+int rprefix(int bit[], int i)
 {
 	printf("rquery %d\n", i);
 	int tot = 0;
@@ -60,9 +60,9 @@ int query(int l, int r)
 {
 	printf("query %d %d\n", l, r);
 	-- l;
-	int ret = (r+1)*rquery(delt, r) - rquery(pref, r);
+	int ret = (r+1)*rprefix(delt, r) - rprefix(pref, r);
 	printf("query right: %d\n", ret);
-	return ret - (l+1)*rquery(delt, l) - rquery(pref, l);
+	return ret - (l+1)*rprefix(delt, l) - rprefix(pref, l);
 }
 void update(int l, int r, int v=1)
 {
@@ -72,6 +72,39 @@ void update(int l, int r, int v=1)
 	rupdate(pref, l, l*v);
 	rupdate(pref, r+1, (r+1)*-v);
 }
+
+/*
+ll raw_prefix(ll bit[], int n)
+{
+	ll tot = 0;	// FIX: smah, missing ll here
+	for (; n; n-=n&-n)
+		tot += bit[n];
+	return tot;
+}
+
+void raw_update(ll bit[], int n, ll v)
+{
+	for (; n<=N; n+=n&-n)
+		bit[n] += v;
+}
+
+ll query(int l, int r)
+{
+	--l;
+	// TODO: understand this algebraic magic
+	ll tot = (ll)((ll)r+1LL)*(ll)raw_prefix(delt, r) - (ll)raw_prefix(pref, r);
+	tot -= (ll)((ll)l+1LL)*(ll)raw_prefix(delt, l) - (ll)raw_prefix(pref, l);
+	return (ll)tot;
+}
+
+void update(int l, int r, ll v)
+{
+	raw_update(delt, l, v);
+	raw_update(delt, r+1, -v);			// +1 cuz thats the delta between arr[r] and arr[r+1]
+	raw_update(pref, l, l*v);			// pref[i] = i*delt[i], TODO: why multiply?
+	raw_update(pref, r+1, (r+1)*-v); 	// "undo" previous line
+}
+*/
 
 void dump()
 {
