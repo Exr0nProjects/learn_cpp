@@ -1,7 +1,7 @@
 /*
  * Problem 3584 (hdu/3584)
  * Create time: Sun 07 Jun 2020 @ 16:18 (PDT)
- * Accept time: [!meta:end!]
+ * Accept time: Wed 10 Jun 2020 @ 23:21 (PDT)
  *
  */
 
@@ -65,8 +65,9 @@ void update(int i1, int j1, int k1, int i2, int j2, int k2, int v=1)
 
 int main()
 {
-	while (scanf("%d%d", &N, &Q))
+	while (scanf("%d%d", &N, &Q) == 2)
 	{
+		memset(delt, 0, sizeof delt);
 		for (int i=0; i<Q; ++i)
 		{
 			int c, x1, y1, z1;
