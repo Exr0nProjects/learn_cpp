@@ -61,6 +61,7 @@ int query(int l, int r)
 	printf("query %d %d\n", l, r);
 	-- l;
 	int ret = (r+1)*rquery(delt, r) - rquery(pref, r);
+	printf("query right: %d\n", ret);
 	return ret - (l+1)*rquery(delt, l) - rquery(pref, l);
 }
 void update(int l, int r, int v=1)
@@ -90,8 +91,8 @@ int main()
 	{
 		int c, l, r;
 		scanf("%d%d%d", &c, &l, &r);
-		if (c == 1) update(l, r-1);
-		if (c == 2) printf("%d\n", query(l, r-1));
+		if (c == 1) update(l, r);
+		if (c == 2) printf("%d\n", query(l, r));
 		dump();
 	}
 
