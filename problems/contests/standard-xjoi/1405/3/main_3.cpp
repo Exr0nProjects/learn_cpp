@@ -135,7 +135,7 @@ int main()
 	{
 		int c, l, r;
 		scanf("%d%d%d", &c, &l, &r);
-		if (c == 1) update(l, r-1);
+		if (c == 1) update(l, r);
 		if (c == 2) printf("%d\n", query(l, r-1));
 		dump();
 	}
