@@ -22,6 +22,15 @@ const int MX = 111;
 
 int N, Q, delt[MX][MX][MX];
 
+void rupdate(int i, int _j, int _k, int v)
+{
+	for (; i<=N; i+=i&-i)
+		for (int j=_j; j<=N; j+=j&-j)
+			for (int k=_k; k<=N; k+=k&-k)
+				//delt[i][j][k] += v;
+				delt[i][j][k] ^= 1;
+}
+
 ll query(int i, int _j, int _k)
 {
 	ll tot = 0;
@@ -31,18 +40,11 @@ ll query(int i, int _j, int _k)
 			{
 				//printf("    adding %d %d\n", i, j);
 				//tot += delt[i][j][k];
-				tot ^= delt[i][j][k];
+				//tot ^= delt[i][j][k];
+				if (delt[i][j][k])
+					tot != tot;
 			}
 	return tot;	// FIX: don't forget to return
-}
-
-void rupdate(int i, int _j, int _k, int v)
-{
-	for (; i<=N; i+=i&-i)
-		for (int j=_j; j<=N; j+=j&-j)
-			for (int k=_k; k<=N; k+=k&-k)
-				//delt[i][j][k] += v;
-				delt[i][j][k] ^= 1;
 }
 
 void update(int i1, int j1, int k1, int i2, int j2, int k2, int v=1)
@@ -78,21 +80,9 @@ int main()
 		}
 		else
 		{
-			printf("%lld\n", query(i1, j1, k1)%2);	// FIX: output ll (long long)?
+			printf("%d\n", query(i1, j1, k1));	// FIX: output ll (long long)?
 		}
 
-		//printf("\n");
-		//for (int i=1; i<=N; ++i)
-		//{
-		//    for (int k=1; k<=N; ++k)
-		//    {
-		//        for (int j=1; j<=N; ++j)
-		//            printf("%2lld", query(i, j, k));
-		//        printf("  ");
-		//    }
-		//    printf("\n");
-		//}
-		//printf("\n");
 	}
 
 	return 0;
