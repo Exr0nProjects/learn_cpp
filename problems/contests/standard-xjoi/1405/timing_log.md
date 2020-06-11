@@ -7,6 +7,8 @@
 07:15 | start | reading problems
 07:31 | have plans for 1-3, 4 sketch, dunno 5 | coding #1
 07:36 | submitted #1 | coding #2
+07:42 | WA 90 #2, AC #1 | coding #3
+08:00 | writing range update range query hard | debugging #3
 
 ## Contest Reflection
 

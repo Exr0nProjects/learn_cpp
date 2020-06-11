@@ -43,11 +43,13 @@ const int MX = 100111;
 int N, M, delt[MX], pref[MX];
 void rupdate(int bit[], int i, int v)
 {
+	printf("rupdate %d with %d\n", i, v);
 	for (; i<=N; i+=i&-i)
-		bit += v;
+		bit[i] += v;		// FIX: typo bit[i] += v not bit += v
 }
 int rquery(int bit[], int i)
 {
+	printf("rquery %d\n", i);
 	int tot = 0;
 	for (; i; i-=i&-i)
 		tot += bit[i];
@@ -56,11 +58,14 @@ int rquery(int bit[], int i)
 
 int query(int l, int r)
 {
+	printf("query %d %d\n", l, r);
+	-- l;
 	int ret = (r+1)*rquery(delt, r) - rquery(pref, r);
 	return ret - (l+1)*rquery(delt, l) - rquery(pref, l);
 }
 void update(int l, int r, int v=1)
 {
+	printf("update %d %d\n", l, r);
 	rupdate(delt, l, v);
 	rupdate(delt, r+1, -v);
 	rupdate(pref, l, l*v);
@@ -75,6 +80,7 @@ void dump()
 	printf("\npref: ");
 	for (int i=1; i<=N; ++i)
 		printf("%3d", pref[i]);
+	printf("\n");
 }
 
 int main()
@@ -85,7 +91,7 @@ int main()
 		int c, l, r;
 		scanf("%d%d%d", &c, &l, &r);
 		if (c == 1) update(l, r-1);
-		if (c == 2) printf("%d\n", query(l, r));
+		if (c == 2) printf("%d\n", query(l, r-1));
 		dump();
 	}
 
