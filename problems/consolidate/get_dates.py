@@ -16,4 +16,5 @@ with open(INPUT_FILE, 'r') as inp, open(OUTPUT_FILE, 'w+') as oup:
                     final = ','.join((' '.join(toks[-6:-3]), ' '.join(toks[-2:]))) + ','
                     oup.write(final + '\n')
                     print(final)
+                    break
 
