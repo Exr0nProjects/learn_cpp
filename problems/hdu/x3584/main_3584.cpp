@@ -65,7 +65,7 @@ void update(int i1, int j1, int k1, int i2, int j2, int k2, int v=1)
 
 int main()
 {
-	while (scanf("%d%d", &N, &Q) == 2)
+	while (scanf("%d%d", &N, &Q) == 2)	// FIX: multi-cases SMAH
 	{
 		memset(delt, 0, sizeof delt);
 		for (int i=0; i<Q; ++i)
