@@ -43,13 +43,13 @@ const int MX = 100111;
 int N, M, delt[MX], pref[MX];
 void rupdate(int bit[], int i, int v)
 {
-	printf("rupdate %d with %d\n", i, v);
+	//printf("rupdate %d with %d\n", i, v);
 	for (; i<=N; i+=i&-i)
 		bit[i] += v;		// FIX: typo bit[i] += v not bit += v
 }
 int rprefix(int bit[], int i)
 {
-	printf("rquery %d\n", i);
+	//printf("rquery %d\n", i);
 	int tot = 0;
 	for (; i; i-=i&-i)
 		tot += bit[i];
@@ -58,15 +58,25 @@ int rprefix(int bit[], int i)
 
 int query(int l, int r)
 {
-	printf("query %d %d\n", l, r);
+	//printf("query %d %d\n", l, r);
 	-- l;
 	int ret = (r+1)*rprefix(delt, r) - rprefix(pref, r);
-	printf("query right: %d\n", ret);
-	return ret - (l+1)*rprefix(delt, l) - rprefix(pref, l);
+	//printf("query right: %d\n", ret);
+	return ret - ((l+1)*rprefix(delt, l) - rprefix(pref, l));	// FIX: order of operations: subtract c - (a-b) = c-a+b, must parens or flip sign
 }
+
+//ll query(int l, int r)
+//{
+//    --l;
+//    // TODO: understand this algebraic magic
+//    ll tot = (r+1)*(ll)rprefix(delt, r) - (ll)rprefix(pref, r);
+//    tot -= (l+1)*(ll)rprefix(delt, l) - (ll)rprefix(pref, l);
+//    return (ll)tot;
+//}
+
 void update(int l, int r, int v=1)
 {
-	printf("update %d %d\n", l, r);
+	//printf("update %d %d\n", l, r);
 	rupdate(delt, l, v);
 	rupdate(delt, r+1, -v);
 	rupdate(pref, l, l*v);
@@ -108,6 +118,7 @@ void update(int l, int r, ll v)
 
 void dump()
 {
+	return;
 	printf("delt: ");
 	for (int i=1; i<=N; ++i)
 		printf("%3d", delt[i]);
@@ -124,8 +135,8 @@ int main()
 	{
 		int c, l, r;
 		scanf("%d%d%d", &c, &l, &r);
-		if (c == 1) update(l, r);
-		if (c == 2) printf("%d\n", query(l, r));
+		if (c == 1) update(l, r-1);
+		if (c == 2) printf("%d\n", query(l, r-1));
 		dump();
 	}
 
