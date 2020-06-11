@@ -23,7 +23,16 @@ using namespace std;
 const int MX = 100111;
 int N, Q;
 
-list<int> head[MX];
+struct Edge { int s, t, n; } edges[MX*2];
+int head[MX], alloc=1;
+void addEdge(int u, int v)
+{
+	edges[alloc].s = edges[u].s ? edges[u].s +1 : 0;
+	edges[alloc].t = v;
+	edges[alloc].n = head[u];
+	head[u] = alloc++;
+}
+
 int pos[MX], lef[MX], rig[MX];	// how the tree maps to the bit
 
 bool apple[MX];
@@ -33,18 +42,23 @@ ll bidx[MX];
 int idx=1;
 pair<int, int> get_bounds(int cur, int pre=0)
 {
+	//printf("    %d from %d {s %d, t %d, n %d}\n", cur, pre, edges[head[cur]].s, edges[head[cur]].t, edges[head[cur]].n);
 	if (pos[cur]) return mp(0, 0); // should never happen
 	if (!pre) idx = 1; // simulate static variable
 	pos[cur] = idx++;	// FIX: idx++ not cur++
 
 	pair<int, int> ret(0, pos[cur]);	// FIX: pos[cur] not pos[MX]
-	if (head[cur].size() == 1)
+	if (edges[head[cur]].s == 1)	/// FIX: edges[head[cur]] not head[cur]
+	{
+		//printf("uh what\n");
 		ret = mp(pos[cur], pos[cur]);	// no children
+	}
 	else
 	{
-		for (list<int>::iterator it=head[cur].begin(); it!=head[cur].end(); ++it)
-			if (*it != pre)
-				ret.s = get_bounds(*it, cur).s;
+		//printf("head %d\n", head[cur]);
+		for (int e=head[cur]; e; e=edges[e].n)
+			if (edges[e].t != pre)
+				ret.s = get_bounds(edges[e].t, cur).s;
 		ret.f = pos[cur];				// include self in the range (preorder traversal)
 	}
 
@@ -75,8 +89,8 @@ int main()
 	for (int i=1; i<N; ++i)
 	{
 		int u, v; scanf("%d%d", &u, &v);
-		head[u].pb(v);
-		head[v].pb(u);
+		addEdge(u, v);
+		addEdge(v, u);
 	}
 
 	get_bounds(1);		// figure out how to map the input tree to the bit
