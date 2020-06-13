@@ -13,6 +13,7 @@
 13:41 | can't do 4, too math. 5 hard to code, dunno 3. | psudocoding #2
 14:52 | binary search fenceposts are being bad | debugging #2
 15:25 | binary search still broke, need numeric bounds? | debugging #2
+15:31 | this one is TLE too?
 
 ## Contest Reflection
 
