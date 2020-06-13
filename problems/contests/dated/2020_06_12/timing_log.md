@@ -6,6 +6,8 @@
 |----|----|----|
 12:54 | start | reading problems
 12:59 | not a contest, lets just write it | coding #1
+13:22 | wrote #1, CE?? | debugging #1
+13:23 | TLE #1? | debugging
 
 ## Contest Reflection
 

@@ -41,7 +41,7 @@
 using namespace std;
 const int MX = 100111;
 
-int N, D, segt[MX], sett[MX];
+int N, D, segt[2*MX], sett[2*MX];
 void init_segt()
 {
 	memset(segt, 0, sizeof segt);
