@@ -135,6 +135,11 @@ removed | topcoder srm 310 500
 4 | HDU4578
 5 | CodeChef ADDMUL
 
+### 2020-summer-401 homework links
+| Number | Name | Contest Link |
+1 | Tree, Binary Tree, Heap | http://115.236.49.52:83/contest/1425
+2 | Tree Classic Problems | http://115.236.49.52:83/contest/1448
+
 ## Problems for you to test out your classic graph algorithms' codes
 | Algorithm | XJOI ID |
 |-----------|---------|
