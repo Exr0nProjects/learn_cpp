@@ -119,6 +119,14 @@ http://115.236.49.52:83/contest/1370
 6 | poj1195
 removed | topcoder srm 310 500
 
+### Segtree Test assigned 12 June 2020
+| Problem | PID |
+1 | HDU1698
+2 | HDU4614
+3 | POJ2777
+4 | HDU4578
+5 | CodeChef ADDMUL
+
 ## Problems for you to test out your classic graph algorithms' codes
 | Algorithm | XJOI ID |
 |-----------|---------|
