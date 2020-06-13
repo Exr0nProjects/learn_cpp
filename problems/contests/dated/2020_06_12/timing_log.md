@@ -11,6 +11,7 @@
 13:25 | Q log N should be fast enough, wut? | analysing #2
 13:29 | seems doable in Q log^2 N, might as well read others | reading problems
 13:41 | can't do 4, too math. 5 hard to code, dunno 3. | psudocoding #2
+14:52 | binary search fenceposts are being bad | debugging #2
 
 ## Contest Reflection
 
