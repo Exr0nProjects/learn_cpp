@@ -1,3 +1,9 @@
+# TODO
+
+1. 401 test #1 travesral with stack (standard-xjoi/1425)
+1. 501 test (segtree 1) 06/12/2020 (12 June 2020)
+1. Extra BIT test: 52:83 contest/1405
+
 # Problems
 
 ## DP Problems
@@ -119,7 +125,9 @@ http://115.236.49.52:83/contest/1370
 6 | poj1195
 removed | topcoder srm 310 500
 
-### Segtree Test assigned 12 June 2020
+### Segtree 1 Test
+(assigned 12 June 2020)
+
 | Problem | PID |
 1 | HDU1698
 2 | HDU4614
