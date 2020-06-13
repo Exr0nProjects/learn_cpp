@@ -95,7 +95,6 @@ void update(int ql, int qr, int v, int k=1, int tl=1, int tr=1<<D)
 
 void dump()
 {
-	return;
 	for (int k=1; k<(1<<1+D); ++k)
 	{
 		if (__builtin_popcount(k) == 1) printf("\n");
@@ -124,11 +123,11 @@ void dump()
 
 int bins(int a, int d, int l=1, int r=N)	// FIX: use inc inc binsearch to match segtree
 {
-	//printf("    binary search %d..%d (%d %d)\n", l, r, a, d);
+	printf("    binary search %d..%d (%d %d)\n", l, r, a, d);
 	if (l == r) return l;
 	int mid = l + (r-l)/2;
 	int gaps = mid-a+1-query(a, mid);
-	//printf("mid %d, gaps %d\n", mid, gaps);
+	printf("mid %d, gaps %d\n", mid, gaps);
 	if (gaps == d) return bins(a, d, l, mid);	// FIX: equ--return bins(..., l, mid) not just mid
 	else if (gaps < d) return bins(a, d, mid+1, r);
 	else return bins(a, d, l, mid-1);
@@ -149,23 +148,26 @@ int main()
 			{
 				int l, r;
 				scanf("%d%d", &l, &r);
+				++l; ++r;
 				printf("%d\n", query(l, r));
 				update(l, r, 0);
 			}
 			else if (c == 1)
 			{
 				int a, d; scanf("%d%d", &a, &d);
+				++a;
 				if (query(a, N) == N-a+1) printf("Can not put any one.\n");
 				else
 				{
 					int l = bins(a, 1, a);
 					int r = bins(a, d, a);	// FIX: logic/equ?--binary search lower bound = a not = 1, else l > r
-					printf("%d %d\n", l, r);
+					printf("%d %d\n", l-1, r-1);
 					update(l, r, 1);
 				}
 			}
 			dump();
 		}
+		printf("\n");
 	}
 
 	return 0;
