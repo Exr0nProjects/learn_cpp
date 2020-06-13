@@ -124,9 +124,11 @@ void dump()
 int bins(int a, int d, int l=1, int r=N)	// inc inc
 {
 	printf("    binary search %d..%d (%d %d)\n", l, r, a, d);
+	if (l == r) return l;
 	int mid = l + (r-l)/2;
 	int gaps = mid-a+1-query(a, mid);
-	if (gaps == d) return mid;
+	printf("mid %d, gaps %d\n", mid, gaps);
+	if (gaps == d) return bins(a, d, l, mid);	// FIX: equ--return bins(..., l, mid) not just mid
 	else if (gaps < d) return bins(a, d, mid+1, r);
 	else return bins(a, d, l, mid-1);
 }
