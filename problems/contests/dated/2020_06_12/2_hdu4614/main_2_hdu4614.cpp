@@ -41,11 +41,11 @@
 using namespace std;
 const int MX = 50111;
 
-int N, D, segt[MX], sett[MX];
+int N, M, D, segt[MX], sett[MX];
 
 void init()
 {
-	scanf("%d", &N);
+	scanf("%d%d", &N, &M);
 	memset(segt, 0, sizeof segt);
 	memset(sett, -1, sizeof sett);
 	D = log2(N) +1;
@@ -136,33 +136,36 @@ int bins(int a, int d, int l=1, int r=N)	// FIX: use inc inc binsearch to match 
 
 int main()
 {
-	init();
-	dump();
-
-	while (true)
+	int T; scanf("%d", &T);
+	while (T--)
 	{
-		int c; scanf("%d", &c);
-		if (c == 1)
-		{
-			int l, r, v;
-			scanf("%d%d%d", &l, &r, &v);
-			update(l, r, v);
-		}
-		else if (c == 2)
-		{
-			int l, r; scanf("%d%d", &l, &r);
-			printf("%d", query(l, r, 1, 1, 1<<D, 1));
-		}
-		else
-		{
-			int a, d; scanf("%d%d", &a, &d);
-			if (query(a, N) == N-a+1) printf("Can not put any one.\n");
-			else
-			{
-				printf("%d %d\n", bins(a, 1, a), bins(a, d, a));	// FIX: logic/equ?--binary search lower bound = a not = 1, else l > r
-			}
-		}
+		init();
 		dump();
+
+		for (int m=0; m<M; ++m)
+		{
+			int c; scanf("%d", &c);
+			if (c == 2)
+			{
+				int l, r;
+				scanf("%d%d", &l, &r);
+				printf("%d\n", query(l, r));
+				update(l, r, 0);
+			}
+			else if (c == 1)
+			{
+				int a, d; scanf("%d%d", &a, &d);
+				if (query(a, N) == N-a+1) printf("Can not put any one.\n");
+				else
+				{
+					int l = bins(a, 1, a);
+					int r = bins(a, d, a);	// FIX: logic/equ?--binary search lower bound = a not = 1, else l > r
+					printf("%d %d\n", l, r);
+					update(l, r, 1);
+				}
+			}
+			dump();
+		}
 	}
 
 	return 0;
