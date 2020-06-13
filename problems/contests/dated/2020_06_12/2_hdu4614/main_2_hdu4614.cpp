@@ -56,7 +56,7 @@ void push_down(int k, int tl, int tr)
 {
 	if (sett[k] < 0) return;
 	sett[k<<1] = sett[k<<1|1] = sett[k];
-	segt[k<<1] = segt[k<<1|1] = (tr-tl+1)*sett[k];
+	segt[k<<1] = segt[k<<1|1] = (tr-tl+1)/2*sett[k];	// FIX: range/2 not just range, cuz its a child
 	sett[k] = -1;
 }
 void collect(int k, int tl, int tr)
@@ -86,11 +86,31 @@ void update(int ql, int qr, int v, int k=1, int tl=1, int tr=1<<D)
 	int mid = tl + (tr-tl)/2;
 	update(ql, qr, v, k<<1, tl, mid);
 	update(ql, qr, v, k<<1|1, mid+1, tr);
-	collect(k);
+	collect(k, tl, tr);
+}
+
+void dump()
+{
+	for (int k=1; k<(1<<1+D); ++k)
+	{
+		if (__builtin_popcount(k) == 1) printf("\n");
+		printf("%3d %3d,  ", segt[k], sett[k]);
+	}
+	printf("\n");
 }
 
 int main()
 {
+	init();
+	dump();
+
+	while (true)
+	{
+		int l, r, v;
+		scanf("%d%d%d", &l, &r, &v);
+		update(l, r, v);
+		dump();
+	}
 
 	return 0;
 }
