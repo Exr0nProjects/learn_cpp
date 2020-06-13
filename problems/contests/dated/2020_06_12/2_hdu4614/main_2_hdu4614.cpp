@@ -94,9 +94,21 @@ void dump()
 	for (int k=1; k<(1<<1+D); ++k)
 	{
 		if (__builtin_popcount(k) == 1) printf("\n");
-		printf("%3d %3d,  ", segt[k], sett[k]);
+		printf("%3d %3d, ", segt[k], sett[k]);
 	}
 	printf("\n");
+	for (int i=1; i<=N; ++i)
+		printf("%3d      ", query(i, i));
+	printf("\n");
+}
+
+int bins(int l, int r, int d)
+{
+	if (l +1 == r) return l;
+	int mid = l + (r-l)/2;
+	if (query(1, mid) <= d)
+		return bins(mid, r, d);
+	return bins(l, mid, d);
 }
 
 int main()
@@ -106,9 +118,24 @@ int main()
 
 	while (true)
 	{
-		int l, r, v;
-		scanf("%d%d%d", &l, &r, &v);
-		update(l, r, v);
+		int c; scanf("%d", &c);
+		if (c == 1)
+		{
+			int l, r, v;
+			scanf("%d%d%d", &l, &r, &v);
+			update(l, r, v);
+		}
+		else if (c == 2)
+		{
+			int l, r; scanf("%d%d", &l, &r);
+			printf("%d", query(l, r));
+		}
+		else
+		{
+			int a, d; scanf("%d%d", &a, &d);
+			printf("%d  ", bins(1, N, query(1, a)+1));
+			printf("%d\n", bins(1, N, query(1, a)+d));
+		}
 		dump();
 	}
 
