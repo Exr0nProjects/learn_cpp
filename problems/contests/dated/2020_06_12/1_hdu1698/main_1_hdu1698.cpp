@@ -51,7 +51,8 @@ void init_segt()
 
 	D = log2(N) +1;
 	for (int i=0; i<N; ++i)
-		scanf("%d", &segt[i+(1<<D)]);
+		//scanf("%d", &segt[i+(1<<D)]);
+		segt[i+(1<<D)] = 1;
 
 	for (int i=(1<<D)-1; i>0; --i)
 		segt[i] = segt[i*2] + segt[i*2+1];
@@ -97,7 +98,8 @@ void update(int ql, int qr, int v, int k=1, int tl=0, int tr=1<<D)
 
 void dump()
 {
-	for (int i=1; i<=1<<1+D; ++i)
+	return;
+	for (int i=1; i<1<<1+D; ++i)
 	{
 		if (__builtin_popcount(i) == 1) printf("\n");
 		printf("%3d %3d,  ", segt[i], sett[i]);
@@ -107,15 +109,21 @@ void dump()
 
 int main()
 {
-	init_segt();
-	dump();
-	printf("les go\n");
-	while (true)
+	int kase; scanf("%d", &kase);
+	for (int kk=1; kk<=kase; ++kk)
 	{
-		int l, r, v;
-		scanf("%d%d%d", &l, &r, &v);
-		update(l, r, v);
+		init_segt();
 		dump();
+		int Q; scanf("%d", &Q);
+		//printf("les go %d\n", Q);
+		while (Q--)
+		{
+			int l, r, v;
+			scanf("%d%d%d", &l, &r, &v);
+			update(l, r, v);
+			dump();
+		}
+		printf("Case %d: The total value of the hook is %d.\n", kk, query(1, N));
 	}
 
 	return 0;
