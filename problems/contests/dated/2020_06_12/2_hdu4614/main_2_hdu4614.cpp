@@ -106,13 +106,14 @@ void dump()
 	printf("\n");
 }
 
-int bins(int l, int r, int d)
+int bins(int l, int r, int a, int d)
 {
+	printf("    bins %d..%d (%d %d)\n", l, r, a, d);
 	if (l +1 == r) return l;
 	int mid = l + (r-l)/2;
-	if (query(1, mid) <= d)
-		return bins(mid, r, d);
-	return bins(l, mid, d);
+	if (mid-a-query(a, mid) <= d)	// FIX: equation--query gaps not fulls
+		return bins(mid, r, a, d);
+	return bins(l, mid, a, d);
 }
 
 int main()
@@ -137,8 +138,8 @@ int main()
 		else
 		{
 			int a, d; scanf("%d%d", &a, &d);
-			printf("%d  ", bins(1, N, query(1, a)+1));
-			printf("%d\n", bins(1, N, query(1, a)+d));
+			printf("%d  ", bins(1, N+1, a, 0));	// FIX: indexing bounds--N+1 not N cuz binsearch is exc r but N includes
+			printf("%d\n", bins(1, N+1, a, d-1));
 		}
 		dump();
 	}
