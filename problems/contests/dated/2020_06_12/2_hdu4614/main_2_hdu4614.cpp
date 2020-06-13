@@ -143,6 +143,7 @@ int main()
 
 		for (int m=0; m<M; ++m)
 		{
+			printf("\n\n\n");
 			int c; scanf("%d", &c);
 			if (c == 2)
 			{
@@ -159,8 +160,8 @@ int main()
 				if (query(a, N) == N-a+1) printf("Can not put any one.\n");
 				else
 				{
-					int l = bins(a, 1, a);
-					int r = bins(a, d, a);	// FIX: logic/equ?--binary search lower bound = a not = 1, else l > r
+					int l = bins(a, 1, a); printf("\n");
+					int r = bins(a, min(d, N-a+1-query(a, N)), a);	// FIX: logic/equ?--binary search lower bound = a not = 1, else l > r
 					printf("%d %d\n", l-1, r-1);
 					update(l, r, 1);
 				}
