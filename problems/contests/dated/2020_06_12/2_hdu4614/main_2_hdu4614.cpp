@@ -106,19 +106,29 @@ void dump()
 	printf("\n");
 }
 
-int bins(int l, int r, int a, int d)
+//int bins(int l, int r, int a, int d)
+//{
+//    printf("    bins %d..%d (%d %d)", l, r, a, d);
+//    if (l +1 == r) return l;
+//    int mid = l + (r-l)/2;
+//    printf("    mid %d, gaps %d, cond %s\n", mid, mid-a+1-query(a, mid),
+//            mid-a+1-query(a, mid) <= d ? "true" : "false"); // FIX: print, forgot to put <= d
+//    if (mid-a+1-query(a, mid) < d)	// FIX: equation--query gaps not fulls
+//    {
+//        printf("big barn\n");
+//        return bins(mid, r, a, d);
+//    }
+//    return bins(l, mid, a, d);
+//}
+
+int bins(int a, int d, int l=1, int r=N)	// inc inc
 {
-	printf("    bins %d..%d (%d %d)", l, r, a, d);
-	if (l +1 == r) return l;
+	printf("    binary search %d..%d (%d %d)\n", l, r, a, d);
 	int mid = l + (r-l)/2;
-	printf("    mid %d, gaps %d, cond %s\n", mid, mid-a+1-query(a, mid),
-			mid-a+1-query(a, mid) <= d ? "true" : "false"); // FIX: print, forgot to put <= d
-	if (mid-a+1-query(a, mid) <= d)	// FIX: equation--query gaps not fulls
-	{
-		printf("big barn\n");
-		return bins(mid, r, a, d);
-	}
-	return bins(l, mid, a, d);
+	int gaps = mid-a+1-query(a, mid);
+	if (gaps == d) return mid;
+	else if (gaps < d) return bins(a, d, mid+1, r);
+	else return bins(a, d, l, mid-1);
 }
 
 int main()
@@ -146,8 +156,8 @@ int main()
 			if (query(a, N) == N-a+1) printf("Can not put any one.\n");
 			else
 			{
-				printf("\n%d\n", bins(a, N+1, a, 1));	// FIX: indexing bounds--N+1 not N cuz binsearch is exc r but N includes
-				printf("\n%d\n", bins(a, N+1, a, d));	// FIX: logic/equ?--binary search lower bound = a not = 1, else l > r
+				printf("\n%d\n", bins(a, 1, a));	// FIX: indexing bounds--N+1 not N cuz binsearch is exc r but N includes
+				printf("\n%d\n", bins(a, d, a));	// FIX: logic/equ?--binary search lower bound = a not = 1, else l > r
 			}
 		}
 		dump();
