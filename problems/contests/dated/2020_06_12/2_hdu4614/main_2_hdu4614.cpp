@@ -56,7 +56,7 @@ void push_down(int k, int tl, int tr)
 {
 	if (sett[k] < 0) return;
 	sett[k<<1] = sett[k<<1|1] = sett[k];
-	segt[k<<1] = segt[k<<1|1] = (tr-tl+1)/2*sett[k];	// FIX: range/2 not just range, cuz its a child
+	segt[k<<1] = segt[k<<1|1] = (tr-tl+1)/2*sett[k];	// FIX: typo--range/2 not just range, cuz its a child
 	sett[k] = -1;
 }
 void collect(int k, int tl, int tr)
@@ -65,13 +65,17 @@ void collect(int k, int tl, int tr)
 	else segt[k] = segt[k<<1] + segt[k<<1|1];
 }
 
-int query(int ql, int qr, int k=1, int tl=1, int tr=1<<D)
+int query(int ql, int qr, int k=1, int tl=1, int tr=1<<D, int lay=0)
 {
+	if (lay) printf("query %d..%d @ %d (%d..%d)\n", ql, qr, k, tl, tr);
 	if (qr < tl || tr < ql) return 0;
 	if (ql <= tl && tr <= qr) return segt[k];
+	if (lay) printf("    not quite...\n");
 	push_down(k, tl, tr);
 	int mid = tl + (tr-tl)/2;
-	return query(ql, qr, k<<1, tl, mid), query(ql, qr, k<<1|1, mid+1, tr);
+	return query(ql, qr, k<<1, tl, mid, lay+!!lay)		// FIX: function args--recurse with lay+1 to propogate
+		 + query(ql, qr, k<<1|1, mid+1, tr, lay+!!lay);	// FIX: typo--query() + query(), not query(), query() smah
+
 }
 void update(int ql, int qr, int v, int k=1, int tl=1, int tr=1<<D)
 {
@@ -128,7 +132,7 @@ int main()
 		else if (c == 2)
 		{
 			int l, r; scanf("%d%d", &l, &r);
-			printf("%d", query(l, r));
+			printf("%d", query(l, r, 1, 1, 1<<D, 1));
 		}
 		else
 		{
