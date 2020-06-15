@@ -40,9 +40,9 @@
 
 using namespace std;
 const int MX = 10111;
-int N, D, segt[MX<<1], mult[MX<<1], addt[MX<<1];
+ll N, D, Q, segt[MX<<1], mult[MX<<1], addt[MX<<1];
 
-void apply_tags(int mulv, int addv, int &mult, int &addt, int &segt)
+void apply_tags(ll mulv, ll addv, ll tl, ll tr, ll &mult, ll &addt, ll &segt)
 {
 	mult = mulv; addt = addv;
 
@@ -50,50 +50,72 @@ void apply_tags(int mulv, int addv, int &mult, int &addt, int &segt)
 		segt *= mulv;
 	else
 	{
-		const int mod = addt[k] * (tr-tl+1>>1);
+		const ll mod = addt * (tr-tl+1>>1);
 		if (mulv)
 			segt += mod;
 		else
 			segt = mod;
 	}
 }
-void push_down(int k, int tl, int tr)
+void push_down(ll k, ll tl, ll tr)
 {
 	if (!(mult[k] + addt[k])) return;
-	const int lc = k<<1, rc=lc|1;
+	const ll lc = k<<1, rc=lc|1;
 
-	apply_tags(mult[k], addt[k], mult[lc], addt[lc], segt[lc]);
-	apply_tags(mult[k], addt[k], mult[rc], addt[rc], segt[rc]);
+	apply_tags(mult[k], addt[k], tl, tr, mult[lc], addt[lc], segt[lc]);
+	apply_tags(mult[k], addt[k], tl, tr, mult[rc], addt[rc], segt[rc]);
 }
-void collect(int k, int tl, int tr)
+void collect(ll k, ll tl, ll tr)
 {
 	segt[k] = segt[k<<1] + segt[k<<1|1];
+	printf("collected %lld + %lld = %lld\n", segt[k<<1], segt[k<<1|1], segt[k]);
 }
-void update(int ql, int qr, int mulv, int addv int k=1, int tl=1, int tr=1<<D)
+void update(ll ql, ll qr, ll mulv, ll addv, ll k=1, ll tl=1, ll tr=1<<D)
 {
 	if (qr < tl || tr < ql) return;
 	if (ql <= tl && tr <= qr)
 	{
-		apply_tags(mulv, addv, mult[k], addt[k], segt[k]);
+		apply_tags(mulv, addv, tl, tr, mult[k], addt[k], segt[k]);
 		return;
 	}
 	push_down(k, tl, tr);
-	int mid = tl + (tr-tl>>1);	// FIX: typo--tl + ... not lc + ...
+	ll mid = tl + (tr-tl>>1);	// FIX: typo--tl + ... not lc + ...
 	update(ql, qr, mulv, addv, k<<1, tl, mid);
 	update(ql, qr, mulv, addv, k<<1|1, mid+1, tr);
 	collect(k, tl, tr);
 }
-int query(int ql, int qr, int k=1, int tl=1, int tr=1<<D)
+ll query(ll ql, ll qr, ll k=1, ll tl=1, ll tr=1<<D)
 {
 	if (qr<tl || tr<ql) return 0;
 	if (ql<=tl && tr<=qr) return segt[k];
 	push_down(k, tl, tr);
-	int mid = tl + (tr-tl>>1);
+	ll mid = tl + (tr-tl>>1);
 	return query(ql, qr, k<<1, tl, mid) + query(ql, qr, k<<1|1, mid+1, tr);
+}
+
+void dump()
+{
+	int d = D;
+	for (int k=1; k<1<<1+D; ++k)
+	{
+		if (__builtin_popcount(k) == 1) { printf("\n"); --d; }
+		printf("%3lld *%2lld +%2lld ", segt[k], mult[k], addt[k]);
+		for (int j=1; j<d; ++j) printf("            ");
+	}
+	printf("\n");
 }
 
 int main()
 {
+	scanf("%lld%lld", &N, &Q);
+	D = log2(N)+1;
+	dump();
+	for (ll i=1; i<=N; ++i)
+	{
+		int d; scanf("%d", &d);
+		update(i, i, 0, d);
+	}
+	dump();
 
 	return 0;
 }
