@@ -51,7 +51,7 @@ void apply_tags(ll mulv, ll addv, ll tl, ll tr, ll &mult, ll &addt, ll &segt)
 	else
 	{
 		const ll mod = addt * (tr-tl+1);	// FIX: equ--apply_tags shouldn't divide range by 2, that's push_down's job
-		printf("mod = %lld .. %lld -> %lld\n", tr, tl, tr-tl+1>>1);
+		//printf("mod = %lld .. %lld -> %lld\n", tr, tl, tr-tl+1>>1);
 		if (mulv)
 			segt += mod;
 		else
@@ -69,7 +69,7 @@ void push_down(ll k, ll tl, ll tr)
 void collect(ll k, ll tl, ll tr)
 {
 	segt[k] = segt[k<<1] + segt[k<<1|1];
-	printf("collected %lld + %lld = %lld\n", segt[k<<1], segt[k<<1|1], segt[k]);
+	//printf("collected %lld + %lld = %lld\n", segt[k<<1], segt[k<<1|1], segt[k]);
 }
 void update(ll ql, ll qr, ll mulv, ll addv, ll k=1, ll tl=1, ll tr=1<<D)
 {
@@ -118,6 +118,24 @@ int main()
 		update(i, i, 0, d);
 	}
 	dump();
+
+	for (int q=0; q<Q; ++q)
+	{
+		printf("uhhhh $ ");
+		int c, l, r;
+		scanf("%d%d%d", &c, &l, &r);
+		printf("%d %d %d\n", c, l, r);
+		if (c == 4) printf("%lld\n", query(l, r));
+		else
+		{
+			int v; scanf("%lld", &v);
+			printf("and %d\n", v);
+			if (c == 1) update(l, r, 1, v);
+			if (c == 2) update(l, r, v, 0);
+			if (c == 3) update(l, r, 0, v);
+		}
+		dump();
+	}
 
 	return 0;
 }
