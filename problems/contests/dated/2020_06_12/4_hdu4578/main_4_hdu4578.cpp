@@ -42,36 +42,54 @@ using namespace std;
 const int MX = 10111;
 int N, D, segt[MX<<1], mult[MX<<1], addt[MX<<1];
 
+void apply_tags(int mulv, int addv, int &mult, int &addt, int &segt)
+{
+	mult = mulv; addt = addv;
+
+	if (addv == 0)
+		segt *= mulv;
+	else
+	{
+		const int mod = addt[k] * (tr-tl+1>>1);
+		if (mulv)
+			segt += mod;
+		else
+			segt = mod;
+	}
+}
 void push_down(int k, int tl, int tr)
 {
 	if (!(mult[k] + addt[k])) return;
 	const int lc = k<<1, rc=lc|1;
 
-	mult[lc] = mult[rc] = mult[k];
-	addt[lc] = addt[rc] = addt[k];
-
-	if (addt[k] == 0)
-	{
-		segt[lc] *= mult[k];
-		segt[rc] *= mult[k];
-	}
-	else
-	{
-		const int mod = addt[k] * (tr-tl+1>>1);
-		if (mult[k])
-		{
-			segt[lc] += mod;
-			segt[rc] += mod;
-		}
-		else
-		{
-			segt[lc] = segt[rc] = mod;
-		}
-	}
+	apply_tags(mult[k], addt[k], mult[lc], addt[lc], segt[lc]);
+	apply_tags(mult[k], addt[k], mult[rc], addt[rc], segt[rc]);
 }
 void collect(int k, int tl, int tr)
 {
 	segt[k] = segt[k<<1] + segt[k<<1|1];
+}
+void update(int ql, int qr, int mulv, int addv int k=1, int tl=1, int tr=1<<D)
+{
+	if (qr < tl || tr < ql) return;
+	if (ql <= tl && tr <= qr)
+	{
+		apply_tags(mulv, addv, mult[k], addt[k], segt[k]);
+		return;
+	}
+	push_down(k, tl, tr);
+	int mid = tl + (tr-tl>>1);	// FIX: typo--tl + ... not lc + ...
+	update(ql, qr, mulv, addv, k<<1, tl, mid);
+	update(ql, qr, mulv, addv, k<<1|1, mid+1, tr);
+	collect(k, tl, tr);
+}
+int query(int ql, int qr, int k=1, int tl=1, int tr=1<<D)
+{
+	if (qr<tl || tr<ql) return 0;
+	if (ql<=tl && tr<=qr) return segt[k];
+	push_down(k, tl, tr);
+	int mid = tl + (tr-tl>>1);
+	return query(ql, qr, k<<1, tl, mid) + query(ql, qr, k<<1|1, mid+1, tr);
 }
 
 int main()
