@@ -21,12 +21,12 @@
 
 using namespace std;
 const int MX = 300111;
-int N, D, segt[MX<<1], sett[MX<<1];	// FIX: bounds--segtee needs 2*MX
+int N, numcolors, D, segt[MX<<1], sett[MX<<1];	// FIX: bounds--segtee needs 2*MX
 
 inline int popcount(int n)
 {
 	int tot = 0;
-	for (int i=0; i<32; ++i)
+	for (int i=0; i<numcolors; ++i)
 		if (n & 1<<i) ++tot;
 	return tot;
 }
@@ -66,23 +66,6 @@ void update(int ql, int qr, int v, int k=1, int tl=1, int tr=1<<D)
 	consolidate(k, tl, tr);
 }
 
-//void update(int ql, int qr, int v, int k=1, int tl=1, int tr=1<<D)
-//{
-//    printf("update %d..%d with %d @ %d (%d..%d)\n", ql, qr, v, k, tl, tr);
-//    if (qr < tl || tr < ql) return;
-//    if (ql <= tl && tr <= qr)
-//    {
-//        sett[k] = v;
-//        segt[k] = v;
-//        return;
-//    }
-//    push_down(k, tl, tr);
-//    int mid = tl + (tr - tl) /2;
-//    update(ql, qr, v, k*2, tl, mid);
-//    update(ql, qr, v, k*2+1, mid+1, tr);
-//    consolidate(k, tl, tr);
-//}
-
 void dump()
 {
 	return;
@@ -99,8 +82,8 @@ void dump()
 int main()
 {
 	int O;
-	scanf("%d%d%d", &N, &O, &O);
-	for (; 1<<D<=N; ++D);	// FIX: init segtree
+	scanf("%d%d%d", &N, &numcolors, &O);
+	for (D=1; 1<<D<=N; ++D);	// FIX: init segtree
 	update(1, N, 1);	// FIX: init the values too
 	//printf("D = %d vs %d\n", D, (int)log2(N)+1);
 
