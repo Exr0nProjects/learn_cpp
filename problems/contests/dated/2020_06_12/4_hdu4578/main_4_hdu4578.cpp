@@ -39,11 +39,12 @@
 #define s second
 
 using namespace std;
-const int MX = 10111;
+const int MX = 100111;
 ll N, D, Q, segt[MX<<1], mult[MX<<1], addt[MX<<1];
 
 void dump()
 {
+	return;
 	int d = D+1;
 	for (int k=1; k<1<<1+D; ++k)
 	{
@@ -56,12 +57,12 @@ void dump()
 }
 void apply_tags(ll mulv, ll addv, ll tl, ll tr, ll &mult, ll &addt, ll &segt)	// FIX: logic--handle combos of tags, not just base mutual exclusives
 {
-	printf("        apply <%lld %lld> (%lld..%lld) to <%lld %lld> cur %lld\n", mulv, addv, tl, tr, mult, addt, segt);
+	//printf("        apply <%lld %lld> (%lld..%lld) to <%lld %lld> cur %lld\n", mulv, addv, tl, tr, mult, addt, segt);
 	mult *= mulv;	// FIX: equ--don't handle special mulv update if mult == 0, since set should just set, push to addt
 	addt *= mulv;
 	addt += addv;
 
-	printf("            segt %lld\n", segt);
+	//printf("            segt %lld\n", segt);
 
 	if (addv == 0)
 	{
@@ -69,7 +70,7 @@ void apply_tags(ll mulv, ll addv, ll tl, ll tr, ll &mult, ll &addt, ll &segt)	//
 	}
 	else
 	{
-		printf("     uping. segt %lld\n", segt);
+		//printf("     uping. segt %lld\n", segt);
 		const ll mod = addv		// FIX: typo--addv not addt
 				* (tr-tl+1);	// FIX: equ--apply_tags shouldn't divide range by 2, that's push_down's job
 		//printf("mod = %lld .. %lld -> %lld\n", tr, tl, tr-tl+1>>1);
@@ -78,17 +79,17 @@ void apply_tags(ll mulv, ll addv, ll tl, ll tr, ll &mult, ll &addt, ll &segt)	//
 		else
 			segt = mod;
 	}
-	printf("           => <%lld %lld> (%lld..%lld) to <%lld %lld> cur %lld\n\n", mulv, addv, tl, tr, mult, addt, segt);
+	//printf("           => <%lld %lld> (%lld..%lld) to <%lld %lld> cur %lld\n\n", mulv, addv, tl, tr, mult, addt, segt);
 }
 void push_down(ll k, ll tl, ll tr)
 {
 	if (mult[k] == 1 && addt[k] == 0) return;
-	printf("    push_down (%lld..%lld) @ %lld <%lld %lld>\n", tl, tr, k, mult[k], addt[k]);
+	//printf("    push_down (%lld..%lld) @ %lld <%lld %lld>\n", tl, tr, k, mult[k], addt[k]);
 	const ll lc = k<<1, rc=lc|1, mid=tl+(tr-tl>>1);
 
 	apply_tags(mult[k], addt[k], tl, mid, mult[lc], addt[lc], segt[lc]);
 	apply_tags(mult[k], addt[k], mid+1, tr, mult[rc], addt[rc], segt[rc]);	// FIX: typo--mid+1, tr not tl, mid+1 smah
-	printf("    end push_down\n");
+	//printf("    end push_down\n");
 }
 void collect(ll k, ll tl, ll tr)
 {
@@ -97,7 +98,7 @@ void collect(ll k, ll tl, ll tr)
 }
 void update(ll ql, ll qr, ll mulv, ll addv, ll k=1, ll tl=1, ll tr=1<<D)
 {
-	printf("    update(%lld..%lld *%lld +%lld) @ %lld (%lld..%lld)\n", ql, qr, mulv, addv, k, tl, tr);
+	//printf("    update(%lld..%lld *%lld +%lld) @ %lld (%lld..%lld)\n", ql, qr, mulv, addv, k, tl, tr);
 	if (qr < tl || tr < ql) return;
 	if (ql <= tl && tr <= qr)
 	{
@@ -113,7 +114,7 @@ void update(ll ql, ll qr, ll mulv, ll addv, ll k=1, ll tl=1, ll tr=1<<D)
 }
 ll query(ll ql, ll qr, ll k=1, ll tl=1, ll tr=1<<D)
 {
-	printf("    query(%lld..%lld) @ %lld (%lld..%lld)\n", ql, qr, k, tl, tr);
+	//printf("    query(%lld..%lld) @ %lld (%lld..%lld)\n", ql, qr, k, tl, tr);
 	if (qr<tl || tr<ql) return 0;
 	if (ql<=tl && tr<=qr) return segt[k];
 	push_down(k, tl, tr);
@@ -137,15 +138,15 @@ int main()
 
 	for (int q=0; q<Q; ++q)
 	{
-		printf("uhhhh $ ");
+		//printf("uhhhh $ ");
 		ll c, l, r;						// FIX: typo--ll not int smah (wrote int after deciding to convert to ll)
 		scanf("%lld%lld%lld", &c, &l, &r);
-		printf("%lld %lld %lld\n", c, l, r);
+		//printf("%lld %lld %lld\n", c, l, r);
 		if (c == 4) printf("%lld\n", query(l, r));
 		else
 		{
 			ll v; scanf("%lld", &v);	// FIX: typo--ll not int smah (wrote int after deciding to convert to ll)
-			printf("and %lld, soo      %lld..%lld mod %lld\n", v, l, r, v);
+			//printf("and %lld, soo      %lld..%lld mod %lld\n", v, l, r, v);
 			if (c == 1) update(l, r, 1, v);
 			if (c == 2) update(l, r, v, 0);
 			if (c == 3) update(l, r, 0, v);
