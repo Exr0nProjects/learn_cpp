@@ -39,7 +39,7 @@
 #define s second
 
 using namespace std;
-const int MX = 100111;
+const int MX = 1000111;
 
 int N, D, segt[2*MX], sett[2*MX];	// FIX: segt is double the size
 
@@ -113,16 +113,21 @@ int main()
 	int kase; scanf("%d", &kase);
 	for (int kk=1; kk<=kase; ++kk)
 	{
-		init_segt();
-		dump();
+		memset(segt, 0, sizeof segt);
+		memset(sett, 0, sizeof sett);
+
+		scanf("%d", &N);
+
+		D = log2(N) +1;
+		update(1, N, 1);
+
 		int Q; scanf("%d", &Q);
 		//printf("les go %d\n", Q);
-		while (Q--)
+		for (int q=0; q<Q; ++q)
 		{
 			int l, r, v;
 			scanf("%d%d%d", &l, &r, &v);
-			//update(l, r, v);
-			dump();
+			update(l, r, v);
 		}
 		printf("Case %d: The total value of the hook is %d.\n", kk, query(1, N));
 	}
