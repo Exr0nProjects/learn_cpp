@@ -42,21 +42,22 @@ using namespace std;
 const int MX = 10111;
 ll N, D, Q, segt[MX<<1], mult[MX<<1], addt[MX<<1];
 
-void apply_tags(ll mulv, ll addv, ll tl, ll tr, ll &mult, ll &addt, ll &segt)
+void apply_tags(ll mulv, ll addv, ll tl, ll tr, ll &mult, ll &addt, ll &segt)	// FIX: logic--handle combos of tags, not just base mutual exclusives
 {
 	printf("        apply <%lld %lld> (%lld..%lld) to <%lld %lld> cur %lld\n", mulv, addv, tl, tr, mult, addt, segt);
-	mult = mulv;
+	mult *= mulv;	// FIX: equ--don't handle special mulv update if mult == 0, since set should just set, push to addt
+	addt *= mulv;
+	addt += addv;
 
 	if (addv == 0)
 	{
 		segt *= mulv;
-		addt *= mulv;
 	}
 	else
 	{
-		const ll mod = addt * (tr-tl+1);	// FIX: equ--apply_tags shouldn't divide range by 2, that's push_down's job
+		const ll mod = addv		// FIX: typo--addv not addt
+				* (tr-tl+1);	// FIX: equ--apply_tags shouldn't divide range by 2, that's push_down's job
 		//printf("mod = %lld .. %lld -> %lld\n", tr, tl, tr-tl+1>>1);
-		addt += addv;
 		if (mulv)
 			segt += mod;
 		else
@@ -66,8 +67,8 @@ void apply_tags(ll mulv, ll addv, ll tl, ll tr, ll &mult, ll &addt, ll &segt)
 }
 void push_down(ll k, ll tl, ll tr)
 {
-	if (!(mult[k] + addt[k])) return;
-	printf("    push_down (%lld..%lld) @ %lld\n", tl, tr, k);
+	if (mult[k] != 1 || addt[k] != 0) return;
+	printf("    push_down (%lld..%lld) @ %lld <%lld %lld>\n", tl, tr, k, mult[k], addt[k]);
 	const ll lc = k<<1, rc=lc|1, mid=tl+(tr-tl>>1);
 
 	apply_tags(mult[k], addt[k], tl, mid, mult[lc], addt[lc], segt[lc]);
@@ -121,6 +122,7 @@ int main()
 {
 	scanf("%lld%lld", &N, &Q);
 	D = log2(N)+1;
+	for (int k=1; k<1<<1+D; ++k) mult[k] = 1;	// FIX: default mult to 1 not 0, which means set
 	dump();
 	for (ll i=1; i<=N; ++i)
 	{
