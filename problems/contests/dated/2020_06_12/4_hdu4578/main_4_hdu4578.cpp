@@ -44,6 +44,7 @@ ll N, D, Q, segt[MX<<1], mult[MX<<1], addt[MX<<1];
 
 void apply_tags(ll mulv, ll addv, ll tl, ll tr, ll &mult, ll &addt, ll &segt)
 {
+	printf("        apply <%lld %lld> (%lld..%lld) to <%lld %lld> cur %lld\n", mulv, addv, tl, tr, mult, addt, segt);
 	mult = mulv; addt = addv;
 
 	if (addv == 0)
@@ -57,14 +58,17 @@ void apply_tags(ll mulv, ll addv, ll tl, ll tr, ll &mult, ll &addt, ll &segt)
 		else
 			segt = mod;
 	}
+	printf("           => <%lld %lld> (%lld..%lld) to <%lld %lld> cur %lld\n\n", mulv, addv, tl, tr, mult, addt, segt);
 }
 void push_down(ll k, ll tl, ll tr)
 {
 	if (!(mult[k] + addt[k])) return;
+	printf("    push_down (%lld..%lld) @ %lld\n", tl, tr, k);
 	const ll lc = k<<1, rc=lc|1, mid=tl+(tr-tl>>1);
 
 	apply_tags(mult[k], addt[k], tl, mid, mult[lc], addt[lc], segt[lc]);
 	apply_tags(mult[k], addt[k], tl, mid+1, mult[rc], addt[rc], segt[rc]);
+	printf("    end push_down\n");
 }
 void collect(ll k, ll tl, ll tr)
 {
@@ -73,6 +77,7 @@ void collect(ll k, ll tl, ll tr)
 }
 void update(ll ql, ll qr, ll mulv, ll addv, ll k=1, ll tl=1, ll tr=1<<D)
 {
+	printf("    update(%lld..%lld *%lld +%lld) @ %lld (%lld..%lld)\n", ql, qr, mulv, addv, k, tl, tr);
 	if (qr < tl || tr < ql) return;
 	if (ql <= tl && tr <= qr)
 	{
@@ -87,6 +92,7 @@ void update(ll ql, ll qr, ll mulv, ll addv, ll k=1, ll tl=1, ll tr=1<<D)
 }
 ll query(ll ql, ll qr, ll k=1, ll tl=1, ll tr=1<<D)
 {
+	printf("    query(%lld..%lld) @ %lld (%lld..%lld)\n", ql, qr, k, tl, tr);
 	if (qr<tl || tr<ql) return 0;
 	if (ql<=tl && tr<=qr) return segt[k];
 	push_down(k, tl, tr);
@@ -101,7 +107,7 @@ void dump()
 	{
 		if (__builtin_popcount(k) == 1) { printf("\n"); --d; }
 		printf("%3lld *%2lld +%2lld ", segt[k], mult[k], addt[k]);
-		//printf("d %d\n", d);
+		//printf("d %lld\n", d);
 		for (int j=1; j<1<<d; ++j) printf("            ");
 	}
 	printf("\n");
@@ -114,7 +120,7 @@ int main()
 	dump();
 	for (ll i=1; i<=N; ++i)
 	{
-		int d; scanf("%d", &d);
+		ll d; scanf("%lld", &d);
 		update(i, i, 0, d);
 	}
 	dump();
@@ -122,14 +128,14 @@ int main()
 	for (int q=0; q<Q; ++q)
 	{
 		printf("uhhhh $ ");
-		int c, l, r;
-		scanf("%d%d%d", &c, &l, &r);
-		printf("%d %d %d\n", c, l, r);
+		ll c, l, r;						// FIX: typo--ll not int smah (wrote int after deciding to convert to ll)
+		scanf("%lld%lld%lld", &c, &l, &r);
+		printf("%lld %lld %lld\n", c, l, r);
 		if (c == 4) printf("%lld\n", query(l, r));
 		else
 		{
-			int v; scanf("%lld", &v);
-			printf("and %d\n", v);
+			ll v; scanf("%lld", &v);	// FIX: typo--ll not int smah (wrote int after deciding to convert to ll)
+			printf("and %lld, soo      %lld..%lld mod %lld\n", v, l, r, v);
 			if (c == 1) update(l, r, 1, v);
 			if (c == 2) update(l, r, v, 0);
 			if (c == 3) update(l, r, 0, v);
