@@ -7,27 +7,8 @@
 
 #include <iostream>
 #include <cstring>
-#include <sstream>
-#include <cstdio>
-#include <tuple>
-#include <vector>
-#include <string>
-#include <list>
-#include <array>
-#include <queue>
-#include <stack>
-#include <set>
-#include <map>
-#include <unordered_set>
-#include <unordered_map>
 #include <cmath>
-#include <random>
-#include <chrono>
-#include <utility>
-#include <iterator>
-#include <exception>
-#include <algorithm>
-#include <functional>
+#include <numeric>
 
 #define ll long long
 #define dl double
@@ -41,6 +22,14 @@
 using namespace std;
 const int MX = 100111;
 int N, D, segt[MX], sett[MX];
+
+inline int popcount(int n)
+{
+	int tot = 0;
+	for (int i=0; i<32; ++i)
+		if (n & 1<<i) ++tot;
+	return tot;
+}
 void push_down(int k, int tl, int tr)
 {
 	if (!sett[k]) return;
@@ -78,10 +67,11 @@ void update(int ql, int qr, int v, int k=1, int tl=1, int tr=1<<D)
 
 void dump()
 {
+	return;
 	int pad = D;
 	for (int i=1; i<1<<1+D; ++i)
 	{
-		if (__builtin_popcount(i) == 1) { printf("\n"); --pad; }
+		if (popcount(i) == 1) { printf("\n"); --pad; }
 		printf("%3d%3d, ", segt[i], sett[i]);
 		for (int i=1; i<1<<D; ++i) printf("        ");
 	}
@@ -92,12 +82,13 @@ int main()
 {
 	int O;
 	scanf("%d%d%d", &N, &O, &O);
-	D = log2(N)+1;	// FIX: init segtree
-	update(1, N, 1);
+	for (; 1<<D<=N; ++D);	// FIX: init segtree
+	//printf("D = %d vs %d\n", D, (int)log2(N)+1);
+	update(1, N, 1);	// FIX: init the values too
 	for (int i=0; i<O; ++i)
 	{
 		char c; scanf("\n%c", &c);
-		printf("got %c\n", c);
+		//printf("got %c\n", c);
 		int l, r; scanf("%d%d", &l, &r);
 		if (c == 'C')
 		{
@@ -105,7 +96,7 @@ int main()
 			update(l, r, 1<<d-1);
 		}
 		else if (c == 'P')
-			printf("%d\n", __builtin_popcount(query(l, r)));
+			printf("%d\n", popcount(query(l, r)));
 		else --i;
 		dump();
 	}
