@@ -143,10 +143,9 @@ int main()
 				if (query(a, N) == N-a+1) printf("Can not put any one.\n");
 				else
 				{
-					//bins(a, 1, a);
-					int l = bins_iter(a, 1, a);
-					//bins(a, min(d, N-a+1-query(a, N)), a);
-					int r = bins_iter(a, min(d, N-a+1-query(a, N)), a);	// FIX: logic/equ?--binary search lower bound = a not = 1, else l > r
+					int l, r;
+					l = bins_iter(a, 1, a);
+					//r = bins_iter(a, min(d, N-a+1-query(a, N)), a);	// FIX: logic/equ?--binary search lower bound = a not = 1, else l > r
 					printf("%d %d\n", l-1, r-1);
 					update(l, r, 1);
 				}
