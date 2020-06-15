@@ -50,7 +50,8 @@ void apply_tags(ll mulv, ll addv, ll tl, ll tr, ll &mult, ll &addt, ll &segt)
 		segt *= mulv;
 	else
 	{
-		const ll mod = addt * (tr-tl+1>>1);
+		const ll mod = addt * (tr-tl+1);	// FIX: equ--apply_tags shouldn't divide range by 2, that's push_down's job
+		printf("mod = %lld .. %lld -> %lld\n", tr, tl, tr-tl+1>>1);
 		if (mulv)
 			segt += mod;
 		else
@@ -60,10 +61,10 @@ void apply_tags(ll mulv, ll addv, ll tl, ll tr, ll &mult, ll &addt, ll &segt)
 void push_down(ll k, ll tl, ll tr)
 {
 	if (!(mult[k] + addt[k])) return;
-	const ll lc = k<<1, rc=lc|1;
+	const ll lc = k<<1, rc=lc|1, mid=tl+(tr-tl>>1);
 
-	apply_tags(mult[k], addt[k], tl, tr, mult[lc], addt[lc], segt[lc]);
-	apply_tags(mult[k], addt[k], tl, tr, mult[rc], addt[rc], segt[rc]);
+	apply_tags(mult[k], addt[k], tl, mid, mult[lc], addt[lc], segt[lc]);
+	apply_tags(mult[k], addt[k], tl, mid+1, mult[rc], addt[rc], segt[rc]);
 }
 void collect(ll k, ll tl, ll tr)
 {
@@ -95,12 +96,13 @@ ll query(ll ql, ll qr, ll k=1, ll tl=1, ll tr=1<<D)
 
 void dump()
 {
-	int d = D;
+	int d = D+1;
 	for (int k=1; k<1<<1+D; ++k)
 	{
 		if (__builtin_popcount(k) == 1) { printf("\n"); --d; }
 		printf("%3lld *%2lld +%2lld ", segt[k], mult[k], addt[k]);
-		for (int j=1; j<d; ++j) printf("            ");
+		//printf("d %d\n", d);
+		for (int j=1; j<1<<d; ++j) printf("            ");
 	}
 	printf("\n");
 }
