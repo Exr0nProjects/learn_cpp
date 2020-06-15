@@ -42,7 +42,7 @@ using namespace std;
 const int MX = 100111;
 
 int N, D, segt[2*MX], sett[2*MX];	// FIX: segt is double the size
-void init_segt()
+inline void init_segt()
 {
 	memset(segt, 0, sizeof segt);
 	memset(sett, 0, sizeof sett);
@@ -58,7 +58,7 @@ void init_segt()
 		segt[i] = segt[i*2] + segt[i*2+1];
 }
 
-void push_down(int k, int tl, int tr)
+inline void push_down(int k, int tl, int tr)
 {
 	if (!sett[k]) return;
 	sett[k*2] = sett[k*2+1] = sett[k];
@@ -66,7 +66,7 @@ void push_down(int k, int tl, int tr)
 	sett[k] = 0;
 }
 
-void collect(int k, int tl, int tr)
+inline void collect(int k, int tl, int tr)
 {
 	segt[k] = segt[k*2] + segt[k*2+1];
 }
