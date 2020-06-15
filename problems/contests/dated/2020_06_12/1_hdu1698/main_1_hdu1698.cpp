@@ -42,21 +42,6 @@ using namespace std;
 const int MX = 100111;
 
 int N, D, segt[2*MX], sett[2*MX];	// FIX: segt is double the size
-inline void init_segt()
-{
-	memset(segt, 0, sizeof segt);
-	memset(sett, 0, sizeof sett);
-
-	scanf("%d", &N);
-
-	D = log2(N) +1;
-	for (int i=0; i<N; ++i)
-		//scanf("%d", &segt[i+(1<<D)]);
-		segt[i+(1<<D)] = 1;
-
-	for (int i=(1<<D)-1; i>0; --i)
-		segt[i] = segt[i*2] + segt[i*2+1];
-}
 
 inline void push_down(int k, int tl, int tr)
 {
@@ -95,6 +80,22 @@ void update(int ql, int qr, int v, int k=1, int tl=0, int tr=1<<D)
 	update(ql, qr, v, k*2+1, mid+1, tr);
 	collect(k, tl, tr);
 }
+inline void init_segt()
+{
+	memset(segt, 0, sizeof segt);
+	memset(sett, 0, sizeof sett);
+
+	scanf("%d", &N);
+
+	D = log2(N) +1;
+	update(1, N, 1);
+	//for (int i=0; i<N; ++i)
+	//    //scanf("%d", &segt[i+(1<<D)]);
+	//    segt[i+(1<<D)] = 1;
+    //
+	//for (int i=(1<<D)-1; i>0; --i)
+	//    segt[i] = segt[i*2] + segt[i*2+1];
+}
 
 void dump()
 {
@@ -120,7 +121,7 @@ int main()
 		{
 			int l, r, v;
 			scanf("%d%d%d", &l, &r, &v);
-			update(l, r, v);
+			//update(l, r, v);
 			dump();
 		}
 		printf("Case %d: The total value of the hook is %d.\n", kk, query(1, N));
