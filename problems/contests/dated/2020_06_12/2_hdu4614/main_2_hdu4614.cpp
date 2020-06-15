@@ -98,16 +98,31 @@ void dump()
 	printf("\n");
 }
 
-int bins(int a, int d, int l=1, int r=N)	// FIX: use inc inc binsearch to match segtree
+//int bins(int a, int d, int l=1, int r=N)	// FIX: use inc inc binsearch to match segtree
+//{
+//    //printf("    binary search %d..%d (%d %d)\n", l, r, a, d);
+//    if (l == r) return l;
+//    int mid = l + (r-l)/2;
+//    int gaps = mid-a+1-query(a, mid);
+//    //printf("mid %d, gaps %d\n", mid, gaps);
+//    if (gaps == d) return bins(a, d, l, mid);	// FIX: equ--return bins(..., l, mid) not just mid
+//    else if (gaps < d) return bins(a, d, mid+1, r);
+//    else return bins(a, d, l, mid-1);
+//}
+
+int bins_iter(int a, int d, int l=1, int r=N)
 {
-	//printf("    binary search %d..%d (%d %d)\n", l, r, a, d);
-	if (l == r) return l;
-	int mid = l + (r-l)/2;
-	int gaps = mid-a+1-query(a, mid);
-	//printf("mid %d, gaps %d\n", mid, gaps);
-	if (gaps == d) return bins(a, d, l, mid);	// FIX: equ--return bins(..., l, mid) not just mid
-	else if (gaps < d) return bins(a, d, mid+1, r);
-	else return bins(a, d, l, mid-1);
+	for (int i=0; i<30; ++i)
+	{
+		//printf("    iter   search %d..%d (%d %d)\n", l, r, a, d);
+		if (l == r) break;
+		int mid = l + (r-l)/2;	// FIX: cannot l + (r-l)>>1 because order of ops
+		int gaps = mid-a+1-query(a, mid);
+		if (gaps == d) r = mid;
+		else if (gaps < d) l = mid+1;
+		else r = mid-1;
+	}
+	return l;
 }
 
 int main()
@@ -140,8 +155,10 @@ int main()
 				if (query(a, N) == N-a+1) printf("Can not put any one.\n");
 				else
 				{
-					int l = bins(a, 1, a);
-					int r = bins(a, min(d, N-a+1-query(a, N)), a);	// FIX: logic/equ?--binary search lower bound = a not = 1, else l > r
+					//bins(a, 1, a);
+					int l = bins_iter(a, 1, a);
+					//bins(a, min(d, N-a+1-query(a, N)), a);
+					int r = bins_iter(a, min(d, N-a+1-query(a, N)), a);	// FIX: logic/equ?--binary search lower bound = a not = 1, else l > r
 					printf("%d %d\n", l-1, r-1);
 					update(l, r, 1);
 				}
