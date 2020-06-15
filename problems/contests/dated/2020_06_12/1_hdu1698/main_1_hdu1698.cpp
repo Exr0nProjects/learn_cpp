@@ -80,32 +80,18 @@ void update(int ql, int qr, int v, int k=1, int tl=0, int tr=1<<D)
 	update(ql, qr, v, k*2+1, mid+1, tr);
 	collect(k, tl, tr);
 }
-inline void init_segt()
-{
-	memset(segt, 0, sizeof segt);
-	memset(sett, 0, sizeof sett);
-
-	scanf("%d", &N);
-
-	D = log2(N) +1;
-	update(1, N, 1);
-	//for (int i=0; i<N; ++i)
-	//    //scanf("%d", &segt[i+(1<<D)]);
-	//    segt[i+(1<<D)] = 1;
-    //
-	//for (int i=(1<<D)-1; i>0; --i)
-	//    segt[i] = segt[i*2] + segt[i*2+1];
-}
 
 void dump()
 {
-	return;
+	int pad = 1<<1+D;
 	for (int i=1; i<1<<1+D; ++i)
 	{
-		if (__builtin_popcount(i) == 1) printf("\n");
-		printf("%3d %3d,  ", segt[i], sett[i]);
+		if (__builtin_popcount(i) == 1) { printf("\n"); pad >>= 1; }
+		printf("%3d%3d, ", segt[i], sett[i]);
+		for (int j=1; j<pad; ++j) printf("        ");
 	}
 	printf("\n");
+	for (int i=1; i<=N; ++i) printf("%3d     ", query(i, i));
 }
 
 int main()
@@ -128,6 +114,7 @@ int main()
 			int l, r, v;
 			scanf("%d%d%d", &l, &r, &v);
 			update(l, r, v);
+			dump();
 		}
 		printf("Case %d: The total value of the hook is %d.\n", kk, query(1, N));
 	}
