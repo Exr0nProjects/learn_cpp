@@ -43,15 +43,6 @@ const int MX = 50111;
 
 int N, M, D, segt[2*MX], sett[2*MX];	// FIX: segt is double sized
 
-void init()
-{
-	scanf("%d%d", &N, &M);
-	memset(segt, 0, sizeof segt);
-	memset(sett, -1, sizeof sett);
-	D = log2(N) +1;
-	// no need to init segtree since it's all just zero
-}
-
 void push_down(int k, int tl, int tr)
 {
 	if (sett[k] < 0) return;
@@ -67,10 +58,10 @@ void collect(int k, int tl, int tr)
 
 int query(int ql, int qr, int k=1, int tl=1, int tr=1<<D, int lay=0)
 {
-	if (lay) printf("query %d..%d @ %d (%d..%d)\n", ql, qr, k, tl, tr);
+	//if (lay) printf("query %d..%d @ %d (%d..%d)\n", ql, qr, k, tl, tr);
 	if (qr < tl || tr < ql) return 0;
 	if (ql <= tl && tr <= qr) return segt[k];
-	if (lay) printf("    not quite...\n");
+	//if (lay) printf("    not quite...\n");
 	push_down(k, tl, tr);
 	int mid = tl + (tr-tl)/2;
 	return query(ql, qr, k<<1, tl, mid, lay+!!lay)		// FIX: function args--recurse with lay+1 to propogate
@@ -107,21 +98,6 @@ void dump()
 	printf("\n");
 }
 
-//int bins(int l, int r, int a, int d)
-//{
-//    printf("    bins %d..%d (%d %d)", l, r, a, d);
-//    if (l +1 == r) return l;
-//    int mid = l + (r-l)/2;
-//    printf("    mid %d, gaps %d, cond %s\n", mid, mid-a+1-query(a, mid),
-//            mid-a+1-query(a, mid) <= d ? "true" : "false"); // FIX: print, forgot to put <= d
-//    if (mid-a+1-query(a, mid) < d)	// FIX: equation--query gaps not fulls
-//    {
-//        printf("big barn\n");
-//        return bins(mid, r, a, d);
-//    }
-//    return bins(l, mid, a, d);
-//}
-
 int bins(int a, int d, int l=1, int r=N)	// FIX: use inc inc binsearch to match segtree
 {
 	//printf("    binary search %d..%d (%d %d)\n", l, r, a, d);
@@ -139,8 +115,11 @@ int main()
 	int T; scanf("%d", &T);
 	while (T--)
 	{
-		init();
-		dump();
+		scanf("%d%d", &N, &M);
+		memset(segt, 0, sizeof segt);
+		memset(sett, -1, sizeof sett);
+		D = log2(N) +1;
+		//dump();
 
 		for (int m=0; m<M; ++m)
 		{
@@ -167,7 +146,7 @@ int main()
 					update(l, r, 1);
 				}
 			}
-			dump();
+			//dump();
 		}
 		printf("\n");
 	}
