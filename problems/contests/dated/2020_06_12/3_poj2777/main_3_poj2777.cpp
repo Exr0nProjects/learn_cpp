@@ -21,7 +21,7 @@
 
 using namespace std;
 const int MX = 100111;
-int N, D, segt[MX], sett[MX];
+int N, D, segt[MX<<1], sett[MX<<1];	// FIX: bounds--segtee needs 2*MX
 
 inline int popcount(int n)
 {
