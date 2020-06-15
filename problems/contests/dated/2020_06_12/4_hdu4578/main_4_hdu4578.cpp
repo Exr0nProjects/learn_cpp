@@ -45,14 +45,18 @@ ll N, D, Q, segt[MX<<1], mult[MX<<1], addt[MX<<1];
 void apply_tags(ll mulv, ll addv, ll tl, ll tr, ll &mult, ll &addt, ll &segt)
 {
 	printf("        apply <%lld %lld> (%lld..%lld) to <%lld %lld> cur %lld\n", mulv, addv, tl, tr, mult, addt, segt);
-	mult = mulv; addt = addv;
+	mult = mulv;
 
 	if (addv == 0)
+	{
 		segt *= mulv;
+		addt *= mulv;
+	}
 	else
 	{
 		const ll mod = addt * (tr-tl+1);	// FIX: equ--apply_tags shouldn't divide range by 2, that's push_down's job
 		//printf("mod = %lld .. %lld -> %lld\n", tr, tl, tr-tl+1>>1);
+		addt += addv;
 		if (mulv)
 			segt += mod;
 		else
