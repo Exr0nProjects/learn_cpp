@@ -2,7 +2,7 @@ MX = 100000
 OPS = 100000
 
 MX = 100000
-OPS = 100
+OPS = 10000
 
 from random import randint
 L = randint(1, MX)

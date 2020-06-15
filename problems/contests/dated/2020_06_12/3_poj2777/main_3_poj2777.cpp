@@ -20,7 +20,7 @@
 #define s second
 
 using namespace std;
-const int MX = 100111;
+const int MX = 300111;
 int N, D, segt[MX<<1], sett[MX<<1];	// FIX: bounds--segtee needs 2*MX
 
 inline int popcount(int n)
@@ -50,38 +50,38 @@ int query(int ql, int qr, int k=1, int tl=1, int tr=1<<D)
 	int mid = tl + (tr-tl>>1);
 	return query(ql, qr, k<<1, tl, mid) | query(ql, qr, k<<1|1, mid+1, tr);
 }
+void update(int ql, int qr, int v, int k=1, int tl=1, int tr=1<<D)
+{
+	//printf("update %d..%d with %d @ %d (%d..%d %f)\n", ql, qr, v, k, tl, tr, log2(tr-tl));
+	if (qr < tl || tr < ql) return;
+	if (ql <= tl && tr <= qr)
+	{
+		sett[k] = segt[k] = v;
+		return;
+	}
+	push_down(k, tl, tr);
+	int mid = tl + (tr-tl>>1);
+	update(ql, qr, v, k<<1, tl, mid);
+	update(ql, qr, v, k<<1|1, mid+1, tr);
+	consolidate(k, tl, tr);
+}
+
 //void update(int ql, int qr, int v, int k=1, int tl=1, int tr=1<<D)
 //{
 //    printf("update %d..%d with %d @ %d (%d..%d)\n", ql, qr, v, k, tl, tr);
 //    if (qr < tl || tr < ql) return;
 //    if (ql <= tl && tr <= qr)
 //    {
-//        sett[k] = segt[k] = v;
+//        sett[k] = v;
+//        segt[k] = v;
 //        return;
 //    }
 //    push_down(k, tl, tr);
-//    int mid = tl + (tr-tl>>1);
-//    update(ql, qr, v, k<<1, tl, mid);
-//    update(ql, qr, v, k<<1|1, mid+1, tr);
+//    int mid = tl + (tr - tl) /2;
+//    update(ql, qr, v, k*2, tl, mid);
+//    update(ql, qr, v, k*2+1, mid+1, tr);
 //    consolidate(k, tl, tr);
 //}
-
-void update(int ql, int qr, int v, int k=1, int tl=1, int tr=1<<D)
-{
-	printf("update %d..%d with %d @ %d (%d..%d)\n", ql, qr, v, k, tl, tr);
-	if (qr < tl || tr < ql) return;
-	if (ql <= tl && tr <= qr)
-	{
-		sett[k] = v;
-		segt[k] = v;
-		return;
-	}
-	push_down(k, tl, tr);
-	int mid = tl + (tr - tl) /2;
-	update(ql, qr, v, k*2, tl, mid);
-	update(ql, qr, v, k*2+1, mid+1, tr);
-	consolidate(k, tl, tr);
-}
 
 void dump()
 {
@@ -102,7 +102,7 @@ int main()
 	scanf("%d%d%d", &N, &O, &O);
 	for (; 1<<D<=N; ++D);	// FIX: init segtree
 	update(1, N, 1);	// FIX: init the values too
-	printf("D = %d vs %d\n", D, (int)log2(N)+1);
+	//printf("D = %d vs %d\n", D, (int)log2(N)+1);
 
 	for (int i=0; i<O; ++i)
 	{
