@@ -47,7 +47,7 @@ inline void push_down(int k, int tl, int tr)
 {
 	if (!sett[k]) return;
 	sett[k*2] = sett[k*2+1] = sett[k];
-	segt[k*2] = segt[k*2+1] = (tr-tl)/2 * sett[k];
+	segt[k*2] = segt[k*2+1] = (tr-tl+1)/2 * sett[k];	// FIX: (tr-tl+1)/2 not (tr-tl)/2 because inc inc means you have to add 1 to get the range length
 	sett[k] = 0;
 }
 
@@ -83,6 +83,7 @@ void update(int ql, int qr, int v, int k=1, int tl=0, int tr=1<<D)
 
 void dump()
 {
+	return;
 	int pad = 1<<1+D;
 	for (int i=1; i<1<<1+D; ++i)
 	{
@@ -92,6 +93,7 @@ void dump()
 	}
 	printf("\n");
 	for (int i=1; i<=N; ++i) printf("%3d     ", query(i, i));
+	printf("\n");
 }
 
 int main()
