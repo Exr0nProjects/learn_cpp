@@ -100,7 +100,7 @@ void update(int ql, int qr, int v, int k=1, int tl=1, int tr=1<<D)
 
 inline int bins_iter(int a, int d, int l=1, int r=N)
 {
-	for (int i=0; i<30; ++i)
+	for (int i=0; i<16; ++i)
 	{
 		//printf("    iter   search %d..%d (%d %d)\n", l, r, a, d);
 		if (l == r) break;
@@ -140,12 +140,13 @@ int main()
 			{
 				int a, d; scanf("%d%d", &a, &d);
 				++a;
-				if (query(a, N) == N-a+1) printf("Can not put any one.\n");
+				const int gaps = N-a+1-query(a, N);
+				if (gaps == 0) printf("Can not put any one.\n");
 				else
 				{
-					int l, r;
+					int l, r, rhs = min(d, gaps);
 					l = bins_iter(a, 1, a);
-					//r = bins_iter(a, min(d, N-a+1-query(a, N)), a);	// FIX: logic/equ?--binary search lower bound = a not = 1, else l > r
+					r = bins_iter(a, rhs, a);	// TODO: this line tles; FIX: logic/equ?--binary search lower bound = a not = 1, else l > r
 					printf("%d %d\n", l-1, r-1);
 					update(l, r, 1);
 				}
