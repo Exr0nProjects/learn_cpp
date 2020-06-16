@@ -20,39 +20,39 @@
 #define s second
 
 using namespace std;
-const int MX = 300111;
-int N, numcolors, D, segt[MX<<1], sett[MX<<1];	// FIX: bounds--segtee needs 2*MX
+const ll MX = 300111;
+ll N, numcolors, D, segt[MX<<1], sett[MX<<1];	// FIX: bounds--segtee needs 2*MX
 
-inline int popcount(int n)
+inline ll popcount(ll n)
 {
-	int tot = 0;
-	for (int i=0; i<numcolors; ++i)
+	ll tot = 0;
+	for (ll i=0; i<numcolors; ++i)
 		if (n & 1<<i) ++tot;
 	return tot;
 }
-void push_down(int k, int tl, int tr)
+void push_down(ll k, ll tl, ll tr)
 {
 	if (!sett[k]) return;
 	segt[k<<1] = segt[k<<1|1] =
 	sett[k<<1] = sett[k<<1|1] = sett[k];
 	sett[k] = 0;
 }
-void consolidate(int k, int tl, int tr)
+void consolidate(ll k, ll tl, ll tr)
 {
 	segt[k] = segt[k<<1] | segt[k<<1|1];
 }
 
-int query(int ql, int qr, int k=1, int tl=1, int tr=1<<D)
+ll query(ll ql, ll qr, ll k=1, ll tl=1, ll tr=1<<D)
 {
 	if (qr < tl || tr < ql) return 0;
 	if (ql <= tl && tr <= qr) return segt[k];
 	push_down(k, tl, tr);
-	int mid = tl + (tr-tl>>1);
+	ll mid = tl + (tr-tl>>1);
 	return query(ql, qr, k<<1, tl, mid) | query(ql, qr, k<<1|1, mid+1, tr);
 }
-void update(int ql, int qr, int v, int k=1, int tl=1, int tr=1<<D)
+void update(ll ql, ll qr, ll v, ll k=1, ll tl=1, ll tr=1<<D)
 {
-	//printf("update %d..%d with %d @ %d (%d..%d %f)\n", ql, qr, v, k, tl, tr, log2(tr-tl));
+	//printf("update %lld..%lld with %lld @ %lld (%lld..%lld %f)\n", ql, qr, v, k, tl, tr, log2(tr-tl));
 	if (qr < tl || tr < ql) return;
 	if (ql <= tl && tr <= qr)
 	{
@@ -60,7 +60,7 @@ void update(int ql, int qr, int v, int k=1, int tl=1, int tr=1<<D)
 		return;
 	}
 	push_down(k, tl, tr);
-	int mid = tl + (tr-tl>>1);
+	ll mid = tl + (tr-tl>>1);
 	update(ql, qr, v, k<<1, tl, mid);
 	update(ql, qr, v, k<<1|1, mid+1, tr);
 	consolidate(k, tl, tr);
@@ -69,36 +69,36 @@ void update(int ql, int qr, int v, int k=1, int tl=1, int tr=1<<D)
 void dump()
 {
 	return;
-	int pad = D;
-	for (int i=1; i<1<<1+D; ++i)
+	ll pad = D;
+	for (ll i=1; i<1<<1+D; ++i)
 	{
 		if (popcount(i) == 1) { printf("\n"); --pad; }
 		printf("%3d%3d, ", segt[i], sett[i]);
-		for (int i=1; i<1<<D; ++i) printf("        ");
+		for (ll i=1; i<1<<D; ++i) printf("        ");
 	}
 	printf("\n");
 }
 
 int main()
 {
-	int O;
-	scanf("%d%d%d", &N, &numcolors, &O);
+	ll O;
+	scanf("%lld%lld%lld", &N, &numcolors, &O);
 	for (D=1; 1<<D<=N; ++D);	// FIX: init segtree
 	update(1, N, 1);	// FIX: init the values too
-	//printf("D = %d vs %d\n", D, (int)log2(N)+1);
+	//printf("D = %lld vs %lld\n", D, (int)log2(N)+1);
 
-	for (int i=0; i<O; ++i)
+	for (ll i=0; i<O; ++i)
 	{
 		char c; scanf("\n%c", &c);
 		//printf("got %c\n", c);
-		int l, r; scanf("%d%d", &l, &r);
+		ll l, r; scanf("%lld%lld", &l, &r);
 		if (c == 'C')
 		{
-			int d; scanf("%d", &d);
+			ll d; scanf("%lld", &d);
 			update(l, r, 1<<d-1);
 		}
 		else if (c == 'P')
-			printf("%d\n", popcount(query(l, r)));
+			printf("%lld\n", popcount(query(l, r)));
 		else --i;
 		dump();
 	}
