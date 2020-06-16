@@ -7,7 +7,7 @@ MXP = 1
 
 MXC = 10
 MXN = 5
-MXM = 5
+MXM = 30
 
 from random import randint
 T = randint(1, MXT)
