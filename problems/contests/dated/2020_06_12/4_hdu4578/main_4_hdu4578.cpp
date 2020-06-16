@@ -40,11 +40,11 @@
 
 using namespace std;
 const int MX = 100111;
+const int MOD = 1e9 +7;	// FIX: logic--i forgot mod exists
 ll N, D, Q, segt[MX<<1], mult[MX<<1], addt[MX<<1];
 
 void dump()
 {
-	return;
 	int d = D+1;
 	for (int k=1; k<1<<1+D; ++k)
 	{
@@ -55,12 +55,12 @@ void dump()
 	}
 	printf("\n");
 }
-void apply_tags(ll mulv, ll addv, ll tl, ll tr, ll &mult, ll &addt, ll &segt)	// FIX: logic--handle combos of tags, not just base mutual exclusives
+inline void apply_tags(ll mulv, ll addv, ll tl, ll tr, ll &mult, ll &addt, ll &segt)	// FIX: logic--handle combos of tags, not just base mutual exclusives
 {
 	//printf("        apply <%lld %lld> (%lld..%lld) to <%lld %lld> cur %lld\n", mulv, addv, tl, tr, mult, addt, segt);
-	mult *= mulv;	// FIX: equ--don't handle special mulv update if mult == 0, since set should just set, push to addt
-	addt *= mulv;
-	addt += addv;
+	mult = mult * mulv % MOD;	// FIX: equ--don't handle special mulv update if mult == 0, since set should just set, push to addt
+	addt = addt * mulv % MOD;
+	addt = (addt + addv) % MOD;
 
 	//printf("            segt %lld\n", segt);
 
@@ -79,6 +79,7 @@ void apply_tags(ll mulv, ll addv, ll tl, ll tr, ll &mult, ll &addt, ll &segt)	//
 		else
 			segt = mod;
 	}
+	segt %= MOD;
 	//printf("           => <%lld %lld> (%lld..%lld) to <%lld %lld> cur %lld\n\n", mulv, addv, tl, tr, mult, addt, segt);
 }
 void push_down(ll k, ll tl, ll tr)
@@ -102,7 +103,7 @@ void update(ll ql, ll qr, ll mulv, ll addv, ll k=1, ll tl=1, ll tr=1<<D)
 	if (qr < tl || tr < ql) return;
 	if (ql <= tl && tr <= qr)
 	{
-		dump();
+		//dump();
 		apply_tags(mulv, addv, tl, tr, mult[k], addt[k], segt[k]);
 		return;
 	}
@@ -122,19 +123,17 @@ ll query(ll ql, ll qr, ll k=1, ll tl=1, ll tr=1<<D)
 	return query(ql, qr, k<<1, tl, mid) + query(ql, qr, k<<1|1, mid+1, tr);
 }
 
-
 int main()
 {
 	scanf("%lld%lld", &N, &Q);
 	D = log2(N)+1;
 	for (int k=1; k<1<<1+D; ++k) mult[k] = 1;	// FIX: default mult to 1 not 0, which means set
-	dump();
-	for (ll i=1; i<=N; ++i)
-	{
-		ll d; scanf("%lld", &d);
-		update(i, i, 0, d);
-	}
-	dump();
+	//dump();
+	for (ll i=0; i<N; ++i)						// FIX: iter indexing--was 1..N for update, now 0..N-1 for direct build
+		scanf("%lld", &segt[(1<<D)+i]);
+	for (int k=(1<<D)-1; k; --k)				// FIX: optimization--build tree in O(N)
+		segt[k] = segt[k<<1] + segt[k<<1|1];
+	//dump();
 
 	for (int q=0; q<Q; ++q)
 	{
@@ -142,7 +141,7 @@ int main()
 		ll c, l, r;						// FIX: typo--ll not int smah (wrote int after deciding to convert to ll)
 		scanf("%lld%lld%lld", &c, &l, &r);
 		//printf("%lld %lld %lld\n", c, l, r);
-		if (c == 4) printf("%lld\n", query(l, r));
+		if (c == 4) printf("%lld\n", query(l, r)%MOD);
 		else
 		{
 			ll v; scanf("%lld", &v);	// FIX: typo--ll not int smah (wrote int after deciding to convert to ll)
@@ -151,7 +150,7 @@ int main()
 			if (c == 2) update(l, r, v, 0);
 			if (c == 3) update(l, r, 0, v);
 		}
-		dump();
+		//dump();
 	}
 
 	return 0;
