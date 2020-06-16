@@ -59,6 +59,7 @@ inline void collect(int k, int tl, int tr)
 int query(int ql, int qr, int k=1, int tl=1, int tr=1<<D, int lay=0)
 {
 	//if (lay) printf("query %d..%d @ %d (%d..%d)\n", ql, qr, k, tl, tr);
+	if (qr < ql) return 0;
 	if (qr < tl || tr < ql) return 0;
 	if (ql <= tl && tr <= qr) return segt[k];
 	//if (lay) printf("    not quite...\n");
@@ -70,6 +71,7 @@ int query(int ql, int qr, int k=1, int tl=1, int tr=1<<D, int lay=0)
 }
 void update(int ql, int qr, int v, int k=1, int tl=1, int tr=1<<D)
 {
+	if (qr < ql) return;
 	if (qr < tl || tr < ql) return;
 	if (ql <= tl && tr <= qr)
 	{
@@ -144,11 +146,23 @@ int main()
 				if (gaps == 0) printf("Can not put any one.\n");
 				else
 				{
-					int l, r, rhs = min(d, gaps);
-					l = bins_iter(a, 1, a);
-					r = bins_iter(a, rhs, a);	// TODO: this line tles; FIX: logic/equ?--binary search lower bound = a not = 1, else l > r
-					printf("%d %d\n", l-1, r-1);
-					update(l, r, 1);
+					int lhs, rhs; d = min(d, gaps);
+					lhs = bins_iter(a, 1, a);
+					//r = bins_iter(a, rhs, a);	// TODO: this line tles; FIX: logic/equ?--binary search lower bound = a not = 1, else l > r
+					int l=a, r=N;
+					for (int i=0; i<16; ++i)
+					{
+						//printf("    iter   search %d..%d (%d %d)\n", l, r, a, d);
+						if (l == r) break;
+						int mid = l + (r-l>>1);	// FIX: cannot l + (r-l)>>1 because order of ops
+						int gaps = mid-a+1-query(a, mid);
+						if (gaps == d) r = mid;
+						else if (gaps < d) l = mid+1;
+						else r = mid-1;
+					}
+					rhs = r;
+					printf("%d %d\n", lhs-1, rhs-1);
+					update(lhs, rhs, 1);
 				}
 			}
 			//dump();
