@@ -82,15 +82,52 @@ inline void apply_tags(ll mulv, ll addv, ll tl, ll tr, ll &mult, ll &addt, ll &s
 	segt %= MOD;
 	//printf("           => <%lld %lld> (%lld..%lld) to <%lld %lld> cur %lld\n\n", mulv, addv, tl, tr, mult, addt, segt);
 }
-void push_down(ll k, ll tl, ll tr)
+//void push_down(ll k, ll tl, ll tr)
+//{
+//    if (mult[k] == 1 && addt[k] == 0) return;
+//    //printf("    push_down (%lld..%lld) @ %lld <%lld %lld>\n", tl, tr, k, mult[k], addt[k]);
+//    const ll lc = k<<1, rc=lc|1, mid=tl+(tr-tl>>1);
+//
+//    apply_tags(mult[k], addt[k], tl, mid, mult[lc], addt[lc], segt[lc]);
+//    apply_tags(mult[k], addt[k], mid+1, tr, mult[rc], addt[rc], segt[rc]);	// FIX: typo--mid+1, tr not tl, mid+1 smah
+//    //printf("    end push_down\n");
+//}
+void push_down_inline(ll k, ll tl, ll tr)
 {
 	if (mult[k] == 1 && addt[k] == 0) return;
 	//printf("    push_down (%lld..%lld) @ %lld <%lld %lld>\n", tl, tr, k, mult[k], addt[k]);
 	const ll lc = k<<1, rc=lc|1, mid=tl+(tr-tl>>1);
+	const ll mod = addt[k] * (tr-tl+1>>1);
 
-	apply_tags(mult[k], addt[k], tl, mid, mult[lc], addt[lc], segt[lc]);
-	apply_tags(mult[k], addt[k], mid+1, tr, mult[rc], addt[rc], segt[rc]);	// FIX: typo--mid+1, tr not tl, mid+1 smah
-	//printf("    end push_down\n");
+	mult[lc] = mult[lc] * mult[k] % MOD;
+	addt[lc] = addt[lc] * mult[k] % MOD;
+	addt[lc] = (addt[lc] + addt[k]) % MOD;
+
+	mult[rc] = mult[rc] * mult[k] % MOD;
+	addt[rc] = addt[rc] * mult[k] % MOD;
+	addt[rc] = (addt[rc] + addt[k]) % MOD;
+
+	if (addt[k] == 0)
+	{
+		segt[lc] *= mult[k];
+		segt[rc] *= mult[k];
+	}
+	else
+	{
+		//printf("     uping. segt %lld\n", segt);
+		//printf("mod = %lld .. %lld -> %lld\n", tr, tl, tr-tl+1>>1);
+		if (mult[k])
+		{
+			segt[lc] += mod;
+			segt[rc] += mod;
+		}
+		else
+		{
+			segt[lc] = segt[rc] = mod;
+		}
+	}
+	segt[lc] %= MOD;
+	segt[rc] %= MOD;
 }
 void collect(ll k, ll tl, ll tr)
 {
@@ -107,7 +144,7 @@ void update(ll ql, ll qr, ll mulv, ll addv, ll k=1, ll tl=1, ll tr=1<<D)
 		apply_tags(mulv, addv, tl, tr, mult[k], addt[k], segt[k]);
 		return;
 	}
-	push_down(k, tl, tr);
+	push_down_inline(k, tl, tr);
 	ll mid = tl + (tr-tl>>1);	// FIX: typo--tl + ... not lc + ...
 	update(ql, qr, mulv, addv, k<<1, tl, mid);
 	update(ql, qr, mulv, addv, k<<1|1, mid+1, tr);
@@ -118,7 +155,7 @@ ll query(ll ql, ll qr, ll k=1, ll tl=1, ll tr=1<<D)
 	//printf("    query(%lld..%lld) @ %lld (%lld..%lld)\n", ql, qr, k, tl, tr);
 	if (qr<tl || tr<ql) return 0;
 	if (ql<=tl && tr<=qr) return segt[k];
-	push_down(k, tl, tr);
+	push_down_inline(k, tl, tr);
 	ll mid = tl + (tr-tl>>1);
 	return query(ql, qr, k<<1, tl, mid) + query(ql, qr, k<<1|1, mid+1, tr);
 }
