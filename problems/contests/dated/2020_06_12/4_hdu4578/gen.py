@@ -5,8 +5,9 @@ MXC = 10000
 MXT = 1
 MXP = 1
 
-MXN = 10
-MXM = 10
+MXC = 10
+MXN = 5
+MXM = 5
 
 from random import randint
 T = randint(1, MXT)

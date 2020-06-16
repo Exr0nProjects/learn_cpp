@@ -44,27 +44,28 @@ const int MX = 100111;
 const int MOD = 10007;	// FIX: logic--i forgot mod exists
 ll N, D, Q, segt[MX<<1][3], mult[MX<<1], addt[MX<<1];
 
-//void dump()
-//{
-//    int d = D+1;
-//    for (int k=1; k<1<<1+D; ++k)
-//    {
-//        if (__builtin_popcount(k) == 1) { printf("\n"); --d; }
-//        printf("%3lld *%2lld +%2lld ", segt[k], mult[k], addt[k]);
-//        //printf("d %lld\n", d);
-//        for (int j=1; j<1<<d; ++j) printf("            ");
-//    }
-//    printf("\n");
-//}
+void dump()
+{
+	//return;
+	int d = D+1;
+	for (int k=1; k<1<<1+D; ++k)
+	{
+		if (__builtin_popcount(k) == 1) { printf("\n"); --d; }
+		printf("%3lld *%2lld +%2lld ", segt[k][0], mult[k], addt[k]);
+		//printf("d %lld\n", d);
+		for (int j=1; j<1<<d; ++j) printf("            ");
+	}
+	printf("\n");
+}
 inline void apply_tags(ll mulv, ll addv, ll tl, ll tr, ll k)	// FIX: logic--handle combos of tags, not just base mutual exclusives
 {
-	//printf("        apply <%lld %lld> (%lld..%lld) to <%lld %lld> cur %lld\n", mulv, addv, tl, tr, mult, addt, segt);
+	printf("        apply <%lld %lld> (%lld..%lld) to <%lld %lld> cur %lld\n", mulv, addv, tl, tr, mult[k], addt[k], segt[k][0]);
 	mult[k] = mult[k] * mulv % MOD;	// FIX: equ--don't handle special mulv update if mult == 0, since set should just set, push to addt
-	addt[k] = (addt[k] * mulv + addv) % MOD;
+	addt[k] = (addt[k] * mulv + addv) % MOD;	// TODO: modulo on tags might brick something
 
 	//printf("            segt %lld\n", segt);
 
-	if (addv == 0)
+	if (addv == 0)	// TODO: both could mulv and addv exist
 	{
 		segt[k][0] *= mulv;
 	}
@@ -80,7 +81,7 @@ inline void apply_tags(ll mulv, ll addv, ll tl, ll tr, ll k)	// FIX: logic--hand
 			segt[k][0] = mod;
 	}
 	segt[k][0] %= MOD;
-	//printf("           => <%lld %lld> (%lld..%lld) to <%lld %lld> cur %lld\n\n", mulv, addv, tl, tr, mult, addt, segt);
+	printf("           => <%lld %lld> (%lld..%lld) to <%lld %lld> cur %lld\n\n", mulv, addv, tl, tr, mult[k], addt[k], segt[k][0]);
 }
 void push_down(ll k, ll tl, ll tr)
 {
@@ -92,6 +93,7 @@ void push_down(ll k, ll tl, ll tr)
 	//apply_tags(mult[k], addt[k], mid+1, tr, mult[rc], addt[rc], segt[rc]);	// FIX: typo--mid+1, tr not tl, mid+1 smah
 	apply_tags(mult[k], addt[k], tl, mid, lc);
 	apply_tags(mult[k], addt[k], mid+1, tr, rc);	// FIX: typo--mid+1, tr not tl, mid+1 smah
+	mult[k] = 1; addt[k] = 0;	// FIX: reset current tags
 	//printf("    end push_down\n");
 }
 //void push_down_inline(ll k, ll tl, ll tr)
@@ -170,12 +172,12 @@ void update(ll ql, ll qr, ll mulv, ll addv, ll k=1, ll tl=1, ll tr=1<<D)
 }
 ll query(ll ql, ll qr, int p, ll k=1, ll tl=1, ll tr=1<<D)
 {
-	//printf("    query(%lld..%lld) @ %lld (%lld..%lld)\n", ql, qr, k, tl, tr);
+	//printf("    query(%lld..%lld) @ %lld (%lld..%lld : %d)\n", ql, qr, k, tl, tr, segt[k][p]);
 	if (qr<tl || tr<ql) return 0;
 	if (ql<=tl && tr<=qr) return segt[k][p];
 	push_down(k, tl, tr);
 	ll mid = tl + (tr-tl>>1);
-	return query(ql, qr, p, k<<1, tl, mid) + query(ql, qr, p, k<<1|1, mid+1, tr);
+	return query(ql, qr, p, k<<1, tl, mid) + query(ql, qr, p, k<<1|1, mid+1, tr) % MOD;
 }
 
 int main()
@@ -188,15 +190,17 @@ int main()
 		memset(addt, 0, sizeof addt);
 		D = log2(N)+1;
 		for (int k=1; k<1<<1+D; ++k) mult[k] = 1;	// FIX: default mult to 1 not 0, which means set
+		dump();
 
 		for (int i=0; i<Q; ++i)
 		{
-			int c, l, r, v;
-			scanf("%d%d%d%d", &c, &l, &r, &v);
+			ll c, l, r, v;
+			scanf("%lld%lld%lld%lld", &c, &l, &r, &v);
 			if (c == 1) update(l, r, 1, v);
 			if (c == 2) update(l, r, v, 0);
 			if (c == 3) update(l, r, 0, v);
-			if (c == 4) printf("%d\n", query(l, r, v-1) % MOD);
+			if (c == 4) printf("%lld\n", query(l, r, v-1) % MOD);
+			dump();
 		}
 	}
 
