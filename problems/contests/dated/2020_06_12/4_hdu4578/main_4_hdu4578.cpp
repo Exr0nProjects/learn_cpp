@@ -43,45 +43,45 @@ const int MX = 100111;
 const int MOD = 1e9 +7;	// FIX: logic--i forgot mod exists
 ll N, D, Q, segt[MX<<1], mult[MX<<1], addt[MX<<1];
 
-void dump()
-{
-	int d = D+1;
-	for (int k=1; k<1<<1+D; ++k)
-	{
-		if (__builtin_popcount(k) == 1) { printf("\n"); --d; }
-		printf("%3lld *%2lld +%2lld ", segt[k], mult[k], addt[k]);
-		//printf("d %lld\n", d);
-		for (int j=1; j<1<<d; ++j) printf("            ");
-	}
-	printf("\n");
-}
-inline void apply_tags(ll mulv, ll addv, ll tl, ll tr, ll &mult, ll &addt, ll &segt)	// FIX: logic--handle combos of tags, not just base mutual exclusives
-{
-	//printf("        apply <%lld %lld> (%lld..%lld) to <%lld %lld> cur %lld\n", mulv, addv, tl, tr, mult, addt, segt);
-	mult = mult * mulv % MOD;	// FIX: equ--don't handle special mulv update if mult == 0, since set should just set, push to addt
-	addt = addt * mulv % MOD;
-	addt = (addt + addv) % MOD;
-
-	//printf("            segt %lld\n", segt);
-
-	if (addv == 0)
-	{
-		segt *= mulv;
-	}
-	else
-	{
-		//printf("     uping. segt %lld\n", segt);
-		const ll mod = addv		// FIX: typo--addv not addt
-				* (tr-tl+1);	// FIX: equ--apply_tags shouldn't divide range by 2, that's push_down's job
-		//printf("mod = %lld .. %lld -> %lld\n", tr, tl, tr-tl+1>>1);
-		if (mulv)
-			segt += mod;
-		else
-			segt = mod;
-	}
-	segt %= MOD;
-	//printf("           => <%lld %lld> (%lld..%lld) to <%lld %lld> cur %lld\n\n", mulv, addv, tl, tr, mult, addt, segt);
-}
+//void dump()
+//{
+//    int d = D+1;
+//    for (int k=1; k<1<<1+D; ++k)
+//    {
+//        if (__builtin_popcount(k) == 1) { printf("\n"); --d; }
+//        printf("%3lld *%2lld +%2lld ", segt[k], mult[k], addt[k]);
+//        //printf("d %lld\n", d);
+//        for (int j=1; j<1<<d; ++j) printf("            ");
+//    }
+//    printf("\n");
+//}
+//inline void apply_tags(ll mulv, ll addv, ll tl, ll tr, ll &mult, ll &addt, ll &segt)	// FIX: logic--handle combos of tags, not just base mutual exclusives
+//{
+//    //printf("        apply <%lld %lld> (%lld..%lld) to <%lld %lld> cur %lld\n", mulv, addv, tl, tr, mult, addt, segt);
+//    mult = mult * mulv % MOD;	// FIX: equ--don't handle special mulv update if mult == 0, since set should just set, push to addt
+//    addt = addt * mulv % MOD;
+//    addt = (addt + addv) % MOD;
+//
+//    //printf("            segt %lld\n", segt);
+//
+//    if (addv == 0)
+//    {
+//        segt *= mulv;
+//    }
+//    else
+//    {
+//        //printf("     uping. segt %lld\n", segt);
+//        const ll mod = addv		// FIX: typo--addv not addt
+//                * (tr-tl+1);	// FIX: equ--apply_tags shouldn't divide range by 2, that's push_down's job
+//        //printf("mod = %lld .. %lld -> %lld\n", tr, tl, tr-tl+1>>1);
+//        if (mulv)
+//            segt += mod;
+//        else
+//            segt = mod;
+//    }
+//    segt %= MOD;
+//    //printf("           => <%lld %lld> (%lld..%lld) to <%lld %lld> cur %lld\n\n", mulv, addv, tl, tr, mult, addt, segt);
+//}
 //void push_down(ll k, ll tl, ll tr)
 //{
 //    if (mult[k] == 1 && addt[k] == 0) return;
@@ -100,8 +100,7 @@ void push_down_inline(ll k, ll tl, ll tr)
 	const ll mod = addt[k] * (tr-tl+1>>1);
 
 	mult[lc] = mult[lc] * mult[k] % MOD;
-	addt[lc] = addt[lc] * mult[k] % MOD;
-	addt[lc] = (addt[lc] + addt[k]) % MOD;
+	addt[lc] = (addt[lc] * mult[k] + addt[k]) % MOD;
 
 	mult[rc] = mult[rc] * mult[k] % MOD;
 	addt[rc] = addt[rc] * mult[k] % MOD;
@@ -141,7 +140,27 @@ void update(ll ql, ll qr, ll mulv, ll addv, ll k=1, ll tl=1, ll tr=1<<D)
 	if (ql <= tl && tr <= qr)
 	{
 		//dump();
-		apply_tags(mulv, addv, tl, tr, mult[k], addt[k], segt[k]);
+		mult[k] *= mulv;
+		addt[k] *= mulv;
+		addt[k] += addv;
+		mult[k] %= MOD;
+		addt[k] %= MOD;
+
+		if (addv == 0)
+		{
+			segt[k] *= mulv;
+		}
+		else
+		{
+			const ll mod = addv	* (tr-tl+1);
+			if (mulv)
+				segt[k] += mod;
+			else
+				segt[k] = mod;
+		}
+		segt[k] %= MOD;
+
+		//apply_tags(mulv, addv, tl, tr, mult[k], addt[k], segt[k]);
 		return;
 	}
 	push_down_inline(k, tl, tr);
