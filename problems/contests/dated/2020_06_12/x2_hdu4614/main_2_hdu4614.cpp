@@ -39,7 +39,7 @@
 #define s second
 
 using namespace std;
-const int MX = 50111;
+const int MX = 500111;	// FIX: too small, segt needs lowest power of 2
 
 int N, M, D, segt[2*MX], sett[2*MX];	// FIX: segt is double sized
 
