@@ -83,6 +83,13 @@ inline void apply_tags(ll mulv, ll addv, ll tl, ll tr, ll k)	// FIX: logic--hand
 	segt[k][0] %= MOD;
 	printf("           => <%lld %lld> (%lld..%lld) to <%lld %lld> cur %lld\n\n", mulv, addv, tl, tr, mult[k], addt[k], segt[k][0]);
 }
+
+void apply_tags(int mulv, int addv, int tl, int tr, int k)
+{
+	mult[k] = mult[k] * mulv % MOD;
+	addt[k] = (addt[k] * mulv + addv) % MOD;
+	segt[k][0] = (segt[k][0] * mult[k] * (tr-tl+1>>1) + addt[k]) % MOD;
+}
 void push_down(ll k, ll tl, ll tr)
 {
 	if (mult[k] == 1 && addt[k] == 0) return;
