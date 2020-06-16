@@ -49,7 +49,7 @@ void dump()
 	{
 		if (__builtin_popcount(i) == 1) { printf("\n"); --d; }
 		printf("%3lld *%lld +%lld  ", segt[i], mult[i], addt[i]);
-		for (int i=1; i<1<<d; ++i) printf("            ");
+		for (int i=1; i<1<<d; ++i) printf("           ");
 	}
 }
 void apply(ll mulv, ll addv, ll k, ll tl, ll tr)
@@ -107,7 +107,7 @@ int main()
 	}
 	for (int i=0; i<M; ++i)
 	{
-		dump(); printf("\n$ ");
+		//dump(); printf("\n$ ");
 		ll c, l, r;
 		scanf("%lld%lld%lld", &c, &l, &r);
 		if (c == 4) printf("%lld\n", query(l, r));
