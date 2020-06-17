@@ -6,7 +6,7 @@
 using namespace std;
 
 const ll MX = 100111;
-ll N, D, M, segt[MX<<6], addt[MX<<6], lc[MX<<6], rc[MX<<6];
+ll N, D, M, alloc=1, segt[MX<<6], addt[MX<<6], lc[MX<<6], rc[MX<<6];
 
 void apply(ll addv, ll k, ll tl, ll tr)
 {
@@ -41,4 +41,28 @@ ll query(ll ql, ll qr, ll k=1, ll tl=1, ll tr=1<<D)
 	if (ql <= tl && tr <= qr) return segt[k];
 	push(k, tl, tr); ll mid = tl + (tr-tl>>1);
 	return query(ql, qr, lc[k], tl, mid) + query(ql, qr, lc[k], mid+1, tr);
+}
+
+int main()
+{
+	scanf("%d%d", &N, &M);
+	D = log2(N)+1;
+
+	// FIX: init the storage
+	for (int i=1; i<1<<D; ++i)
+	{
+		lc[i] = alloc++;
+		rc[i] = alloc++;
+	}
+
+	for (int i=0; i<M; ++i)
+	{
+		int c, l, r; scanf("%d%d%d", &c, &l, &r);
+		if (c == 1)
+		{
+			int d; scanf("%d", &d);
+			update(l, r, d);
+		}
+		if (c == 2) printf("%d\n", query(l, r));
+	}
 }
