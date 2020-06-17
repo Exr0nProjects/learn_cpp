@@ -1,13 +1,25 @@
 // persistent segtree 1, 17 june 2020
 #include <iostream>
 #include <cstring>
+#include <cmath>
 
 #define ll long long
 using namespace std;
 
 const ll MX = 100111;
-ll N, D, M, alloc=1, segt[MX<<6], addt[MX<<6], lc[MX<<6], rc[MX<<6];
+ll N, D, M, segt[MX<<6], addt[MX<<6];
+ll alloc=1, root[MX], lc[MX<<6], rc[MX<<6];
 
+void dump(ll root=1)
+{
+	ll d = D+1;
+	for (ll i=1; i<1<<1+D; ++i)
+	{
+		if (__builtin_popcount(i) == 1) { --d; printf("\n"); }
+		printf("%3d +%-2d(%-2d %2d) ", segt[i], addt[i], lc[i], rc[i]);
+		for (int i=1; i<1<<d; ++i) printf("               ");
+	}
+}
 void apply(ll addv, ll k, ll tl, ll tr)
 {
 	addt[k] += addv;
@@ -49,6 +61,7 @@ int main()
 	D = log2(N)+1;
 
 	// FIX: init the storage
+	root[1] = alloc++;	// 1 indexed for consistency
 	for (int i=1; i<1<<D; ++i)
 	{
 		lc[i] = alloc++;
@@ -57,6 +70,7 @@ int main()
 
 	for (int i=0; i<M; ++i)
 	{
+		dump(); printf("\n\n$ ");
 		int c, l, r; scanf("%d%d%d", &c, &l, &r);
 		if (c == 1)
 		{
