@@ -39,7 +39,7 @@
 #define s second
 
 using namespace std;
-const int MX = -1;
+const ll MX = -1;
 
 int main()
 {
