@@ -1,8 +1,8 @@
 MXN = 10000
 MXM = 10000
 
-MXN = 10
-MXM = 10
+MXN = 10000
+MXM = 10000
 
 from random import randint
 

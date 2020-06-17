@@ -1,7 +1,8 @@
 #include <iostream>
 #define ll long long
 
-const ll MX = 1010;
+const ll MX = 10010;
+const ll MOD = 1e9 + 7;
 ll N, M, arr[MX][MX];
 
 int main()
@@ -18,8 +19,8 @@ int main()
 		{
 			ll s = 0;
 			for (int j=l; j<=r; ++j)
-				s += arr[v][j];
-			printf("%lld\n", s);
+				s = (s + arr[v][j]) % MOD;
+			printf("%lld\n", s % MOD);
 		}
 	}
 }

@@ -8,6 +8,7 @@
 using namespace std;
 
 const ll MX = 100111;
+const ll MOD = 1e9 + 7;
 ll N, D, M, segt[MX<<6], addt[MX<<6];
 ll alloc=1, root[MX], lc[MX<<6], rc[MX<<6];
 
@@ -45,6 +46,7 @@ void apply(ll addv, ll &k, ll tl, ll tr)
 	//printf(" to %d)\n", k);
 	addt[k] += addv;
 	segt[k] += addv * (tr-tl+1);
+	addt[k] %= MOD; segt[k] %= MOD;
 	//printf("    apply result: node @ %d = %d +%d\n", k, segt[k], addt[k]);
 }
 void push(ll &k, ll tl, ll tr)
@@ -59,7 +61,7 @@ void push(ll &k, ll tl, ll tr)
 }
 void comb(ll k)
 {
-	segt[k] = segt[lc[k]] + segt[rc[k]];
+	segt[k] = (segt[lc[k]] + segt[rc[k]]) % MOD;
 }
 
 void update(ll ql, ll qr, ll v, ll &k, ll tl=1, ll tr=1<<D, int lay=1)
@@ -76,14 +78,14 @@ void update(ll ql, ll qr, ll v, ll &k, ll tl=1, ll tr=1<<D, int lay=1)
 }
 ll query(ll ql, ll qr, ll k, ll tl=1, ll tr=1<<D)
 {
-	//printf("    query %d..%d @ %d (%d..%d)\n", ql, qr, k, tl, tr);
+	//if (segt[k] < 0) printf("    query %d..%d @ %d (%d..%d)\n", ql, qr, k, tl, tr);
 	if (qr<tl || tr<ql) return 0;
 	if (ql <= tl && tr <= qr) return segt[k];
 	//printf("    pushing...");
 	push(k, tl, tr); ll mid = tl + (tr-tl>>1);
 	//printf("</push>\n");
-	return query(ql, qr, lc[k], tl, mid)
-		 + query(ql, qr, rc[k], mid+1, tr);	// FIX: typo--second should query rc[k] not lc[k] smah
+	return (query(ql, qr, lc[k], tl, mid)
+		 + query(ql, qr, rc[k], mid+1, tr))%MOD;	// FIX: typo--second should query rc[k] not lc[k] smah
 }
 
 int main()
@@ -103,11 +105,11 @@ int main()
 	{
 		//dump(root[i-1]); printf("\n\nt = %d $ ", i);
 		root[i] = root[i-1];
-		int c, l, r, v;
-		scanf("%d%d%d%d", &c, &l, &r, &v);
+		ll c, l, r, v;
+		scanf("%lld%lld%lld%lld", &c, &l, &r, &v);
 		//printf("\n");
 		if (c == 1) update(l, r, v, root[i]);
-		if (c == 2) printf("%d\n", query(l, r, root[v]));
+		if (c == 2) printf("%lld\n", query(l, r, root[v]) %MOD);
 		//dump(root[i-1]); printf("\n");
 	}
 }
