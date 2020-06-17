@@ -27,13 +27,24 @@ void dump(ll k)
 		for (int i=1; i<1<<d; ++i) printf("                  ");
 	}
 }
-void apply(ll addv, ll k, ll tl, ll tr)
+
+void dupe(ll &k)
 {
+	lc[alloc] = lc[k];
+	rc[alloc] = rc[k];
+	k = alloc++;
+}
+
+void apply(ll addv, ll &k, ll tl, ll tr)
+{
+	dupe(k);
 	addt[k] += addv;
 	segt[k] += addv * (tr-tl+1);
 }
-void push(ll k, ll tl, ll tr)
+void push(ll &k, ll tl, ll tr)
 {
+	dupe(k);	// FIX: dupe on all updates, including inside push since it updates the children
+	// FIX: dupe(k) inside push should be before tag existence check, because we account for later comb here
 	if (!addt[k]) return;
 	ll mid = tl + (tr-tl>>1);
 	apply(addt[k], lc[k], tl, mid);
@@ -45,22 +56,17 @@ void comb(ll k)
 	segt[k] = segt[lc[k]] + segt[rc[k]];
 }
 
-void dupe(ll &k)
-{
-	lc[alloc] = lc[k];
-	rc[alloc] = rc[k];
-	k = alloc++;
-}
-
-void update(ll ql, ll qr, ll v, ll &k, ll tl=1, ll tr=1<<D)
+void update(ll ql, ll qr, ll v, ll &k, ll tl=1, ll tr=1<<D, int lay=1)
 {	// TODO: wait, this is range update not point, does it still work?
+	for (int i=0; i<lay; ++i) printf("    "); printf("    update (%d..%d)+%d @ %d (%d..%d)\n", ql, qr, v, k, tl, tr);
 	if (qr < tl || tr < ql) return;
-	dupe(k);
 	if (ql <= tl && tr <= qr) return apply(v, k, tl, tr);
 	push(k, tl, tr); ll mid = tl + (tr-tl>>1);
-	update(ql, qr, v, lc[k], tl, mid);
-	update(ql, qr, v, rc[k], mid+1, tr);
+	update(ql, qr, v, lc[k], tl, mid, lay+1);
+	update(ql, qr, v, rc[k], mid+1, tr, lay+1);
+	for (int i=0; i<lay; ++i) printf("    "); printf("    k = %d\n", k);
 	comb(k);
+	for (int i=0; i<lay; ++i) printf("    "); printf("    k = %d\n", k);
 }
 ll query(ll ql, ll qr, ll k, ll tl=1, ll tr=1<<D)
 {
@@ -89,6 +95,7 @@ int main()
 		root[i] = root[i-1];
 		int c, l, r, v;
 		scanf("%d%d%d%d", &c, &l, &r, &v);
+		printf("\n");
 		if (c == 1) update(l, r, v, root[i]);
 		if (c == 2) printf("%d\n", query(l, r, root[v]));
 	}
