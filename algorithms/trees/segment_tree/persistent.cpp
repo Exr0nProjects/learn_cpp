@@ -30,6 +30,8 @@ void dump(ll k)
 
 void dupe(ll &k)
 {
+	segt[alloc] = segt[k];	// FIX: copy over tags and accumulators too
+	addt[alloc] = addt[k];
 	lc[alloc] = lc[k];
 	rc[alloc] = rc[k];
 	k = alloc++;
@@ -37,9 +39,12 @@ void dupe(ll &k)
 
 void apply(ll addv, ll &k, ll tl, ll tr)
 {
+	printf("    apply +%d @ %d (%d..%d) = %d +%d\n    (duped %d", addv, k, tl, tr, segt[k], addt[k], k);
 	dupe(k);
+	printf(" to %d)\n", k);
 	addt[k] += addv;
 	segt[k] += addv * (tr-tl+1);
+	printf("    apply result: node @ %d = %d +%d\n", k, segt[k], addt[k]);
 }
 void push(ll &k, ll tl, ll tr)
 {
@@ -98,5 +103,6 @@ int main()
 		printf("\n");
 		if (c == 1) update(l, r, v, root[i]);
 		if (c == 2) printf("%d\n", query(l, r, root[v]));
+		dump(root[i-1]); printf("\n");
 	}
 }
