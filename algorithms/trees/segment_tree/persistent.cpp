@@ -13,6 +13,7 @@ ll alloc=1, root[MX], lc[MX<<6], rc[MX<<6];
 
 void dump(ll k)
 {
+	return;
 	ll d = D+1;
 	queue<int> bfs;
 	bfs.push(k);
@@ -39,12 +40,12 @@ void dupe(ll &k)
 
 void apply(ll addv, ll &k, ll tl, ll tr)
 {
-	printf("    apply +%d @ %d (%d..%d) = %d +%d\n    (duped %d", addv, k, tl, tr, segt[k], addt[k], k);
+	//printf("    apply +%d @ %d (%d..%d) = %d +%d\n    (duped %d", addv, k, tl, tr, segt[k], addt[k], k);
 	dupe(k);
-	printf(" to %d)\n", k);
+	//printf(" to %d)\n", k);
 	addt[k] += addv;
 	segt[k] += addv * (tr-tl+1);
-	printf("    apply result: node @ %d = %d +%d\n", k, segt[k], addt[k]);
+	//printf("    apply result: node @ %d = %d +%d\n", k, segt[k], addt[k]);
 }
 void push(ll &k, ll tl, ll tr)
 {
@@ -63,22 +64,26 @@ void comb(ll k)
 
 void update(ll ql, ll qr, ll v, ll &k, ll tl=1, ll tr=1<<D, int lay=1)
 {	// TODO: wait, this is range update not point, does it still work?
-	for (int i=0; i<lay; ++i) printf("    "); printf("    update (%d..%d)+%d @ %d (%d..%d)\n", ql, qr, v, k, tl, tr);
+	//for (int i=0; i<lay; ++i) printf("    "); printf("    update (%d..%d)+%d @ %d (%d..%d)\n", ql, qr, v, k, tl, tr);
 	if (qr < tl || tr < ql) return;
 	if (ql <= tl && tr <= qr) return apply(v, k, tl, tr);
 	push(k, tl, tr); ll mid = tl + (tr-tl>>1);
 	update(ql, qr, v, lc[k], tl, mid, lay+1);
 	update(ql, qr, v, rc[k], mid+1, tr, lay+1);
-	for (int i=0; i<lay; ++i) printf("    "); printf("    k = %d\n", k);
+	//for (int i=0; i<lay; ++i) printf("    "); printf("    k = %d\n", k);
 	comb(k);
-	for (int i=0; i<lay; ++i) printf("    "); printf("    k = %d\n", k);
+	//for (int i=0; i<lay; ++i) printf("    "); printf("    k = %d\n", k);
 }
 ll query(ll ql, ll qr, ll k, ll tl=1, ll tr=1<<D)
 {
+	//printf("    query %d..%d @ %d (%d..%d)\n", ql, qr, k, tl, tr);
 	if (qr<tl || tr<ql) return 0;
 	if (ql <= tl && tr <= qr) return segt[k];
+	//printf("    pushing...");
 	push(k, tl, tr); ll mid = tl + (tr-tl>>1);
-	return query(ql, qr, lc[k], tl, mid) + query(ql, qr, lc[k], mid+1, tr);
+	//printf("</push>\n");
+	return query(ql, qr, lc[k], tl, mid)
+		 + query(ql, qr, rc[k], mid+1, tr);	// FIX: typo--second should query rc[k] not lc[k] smah
 }
 
 int main()
@@ -96,13 +101,13 @@ int main()
 
 	for (int i=1; i<=M; ++i)
 	{
-		dump(root[i-1]); printf("\n\nt = %d $ ", i);
+		//dump(root[i-1]); printf("\n\nt = %d $ ", i);
 		root[i] = root[i-1];
 		int c, l, r, v;
 		scanf("%d%d%d%d", &c, &l, &r, &v);
-		printf("\n");
+		//printf("\n");
 		if (c == 1) update(l, r, v, root[i]);
 		if (c == 2) printf("%d\n", query(l, r, root[v]));
-		dump(root[i-1]); printf("\n");
+		//dump(root[i-1]); printf("\n");
 	}
 }
