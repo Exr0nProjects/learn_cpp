@@ -2,7 +2,7 @@
  * Problem 3_poj2777 (contests/dated/2020_06_12/3_poj2777)
  * Create time: Mon 15 Jun 2020 @ 11:29 (PDT)
  * Accept time: [!meta:end!]
- *
+ * FIX: needed to check if l was larger than r, becaues I didn't read the "and A may be larger than B" in the problem statement
  */
 
 #include <iostream>
@@ -92,6 +92,7 @@ int main()
 		char c; scanf("\n%c", &c);
 		//printf("got %c\n", c);
 		ll l, r; scanf("%lld%lld", &l, &r);
+		if (r < l) swap(l, r);	// FIX: boundary checking, needed?
 		if (c == 'C')
 		{
 			ll d; scanf("%lld", &d);
