@@ -11,13 +11,13 @@ const ll MOD = 1e9 + 7;
 ll N, D, M, segt[MX<<2], mult[MX<<2], addt[MX<<2]; // multiplication then addition, set is encoded as *=0
 
 void apply(ll mulv, ll addv, ll k, ll tl, ll tr)
-{
+{	// update all tags and accumulator arrays for the child
 	mult[k] = mult[k] * mulv % MOD;
 	addt[k] = (addt[k] * mulv + addv) % MOD;
 	segt[k] = (segt[k] * mulv + addv * (tr-tl+1)) % MOD;
 }
 void push(ll k, ll tl, ll tr)
-{
+{	// check if tags[k] exists, apply tags[k] to each child, then reset tags[k]
 	if (mult[k] == 1 && !addt[k]) return; // empty tag
 	const ll mid = tl + (tr-tl>>1);
 	apply(mult[k], addt[k], k<<1, tl, mid);
@@ -25,7 +25,7 @@ void push(ll k, ll tl, ll tr)
 	mult[k] = 1; addt[k] = 0;
 }
 void comb(ll k, ll tl, ll tr)
-{
+{	// update accumulator arrays based on children
 	segt[k] = (segt[k<<1] + segt[k<<1|1]) % MOD;
 }
 
