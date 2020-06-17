@@ -2,7 +2,8 @@
 dateformat="+%a %d %b %Y @ %R (%Z)"
 cache="./.template_state/last.txt"
 modpath=$1
-message=$2
+shift 1
+message="$*"
 
 if [[ -z "$1" || "$1" == "_last" ]]; then
   modpath=$(< "$cache")
