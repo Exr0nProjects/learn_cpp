@@ -38,9 +38,17 @@ void comb(ll k)
 	segt[k] = segt[lc[k]] + segt[rc[k]];
 }
 
-void update(ll ql, ll qr, ll v, ll k=1, ll tl=1, ll tr=1<<D)
+void dupe(ll &k)
 {
+	lc[alloc] = lc[k];
+	rc[alloc] = rc[k];
+	k = alloc++;
+}
+
+void update(ll ql, ll qr, ll v, ll &k, ll tl=1, ll tr=1<<D)
+{	// TODO: wait, this is range update not point, does it still work?
 	if (qr < tl || tr < ql) return;
+	dupe(k);
 	if (ql <= tl && tr <= qr) return apply(v, k, tl, tr);
 	push(k, tl, tr); ll mid = tl + (tr-tl>>1);
 	update(ql, qr, v, lc[k], tl, mid);
@@ -67,6 +75,7 @@ int main()
 		lc[i] = alloc++;
 		rc[i] = alloc++;
 	}
+	ll updates = 1;
 
 	for (int i=0; i<M; ++i)
 	{
@@ -74,8 +83,9 @@ int main()
 		int c, l, r; scanf("%d%d%d", &c, &l, &r);
 		if (c == 1)
 		{
+			root[++updates] = root[updates-1];
 			int d; scanf("%d", &d);
-			update(l, r, d);
+			update(l, r, d, root[updates]);
 		}
 		if (c == 2) printf("%d\n", query(l, r));
 	}
