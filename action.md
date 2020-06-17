@@ -63,6 +63,9 @@
     - [ ] #3 dp15 (redo as both top down and bottom up)
     - [ ] #4 dp37 tm1039
     - [ ] dp36 (do as both)
+- [ ] Summer 2020 401 homeworks
+	- [ ] [Contest #1](http://115.236.49.52:83/contest/1425)
+	- [ ] [Contest #2](http://115.236.49.52:83/contest/1448)
 - [ ] Transformations
     - What if it was backwards?
     - What if it was rotated? (2+ dimensional arrays)
