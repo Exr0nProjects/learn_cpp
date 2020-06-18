@@ -84,26 +84,44 @@ void push(ll &k, ll tl, ll tr)
 	apply(sett[k], rc[k], mid+1, tr);
 	sett[k] = -1;
 }
-void combo(ll k)
+//void combo(ll k)
+//{
+//    segt[k] = segt[lc[k]] + segt[rc[k]];
+//}
+//
+//void update(ll ql, ll qr, ll setv, ll &k, ll tl=1, ll tr=1<<D)
+//{
+//    if (qr < tl || tr < ql) return;
+//    if (ql <= tl && tr <= qr) return apply(setv, k, tl, tr);
+//    push(k, tl, tr); ll mid = tl + (tr-tl>>1);
+//    update(ql, qr, setv, lc[k], tl, mid);
+//    update(ql, qr, setv, rc[k], mid+1, tr);
+//    combo(k);
+//}
+//ll query(ll ql, ll qr, ll k, ll tl=1, ll tr=1<<D)	// TODO: take k as refrence?
+//{
+//    if (qr < tl || tr < ql) return 0;
+//    if (ql <= tl && tr <= qr) return segt[k];
+//    push(k, tl, tr); ll mid = tl + (tr-tl>>1);
+//    return query(ql, qr, lc[k], tl, mid) + query(ql, qr, rc[k], mid+1, tr);
+//}
+
+void update(ll q, ll setv, ll &k, ll tl=1, ll tr=1<<D)
 {
+	if (q < tl || q > tr) return;
+	if (tl == tr) return apply(setv, k, tl, tr);
+	push(k, tl, tr); ll mid = tl + (tr-tl>>1);
+	if (q <= mid) update(q, setv, lc[k], tl, mid);
+	else          update(q, setv, rc[k], mid+1, tr);
 	segt[k] = segt[lc[k]] + segt[rc[k]];
 }
-
-void update(ll ql, ll qr, ll setv, ll &k, ll tl=1, ll tr=1<<D)
+ll query(ll q, ll k, ll tl=1, ll tr=1<<D)
 {
-	if (qr < tl || tr < ql) return;
-	if (ql <= tl && tr <= qr) return apply(setv, k, tl, tr);
+	if (q < tl || q > tr) return 0;
+	if (tl == tr) return segt[k];
 	push(k, tl, tr); ll mid = tl + (tr-tl>>1);
-	update(ql, qr, setv, lc[k], tl, mid);
-	update(ql, qr, setv, rc[k], mid+1, tr);
-	combo(k);
-}
-ll query(ll ql, ll qr, ll k, ll tl=1, ll tr=1<<D)	// TODO: take k as refrence?
-{
-	if (qr < tl || tr < ql) return 0;
-	if (ql <= tl && tr <= qr) return segt[k];
-	push(k, tl, tr); ll mid = tl + (tr-tl>>1);
-	return query(ql, qr, lc[k], tl, mid) + query(ql, qr, rc[k], mid+1, tr);
+	if (q <= mid) return query(q, lc[k], tl, mid);
+	else          return query(q, rc[k], mid+1, tr);
 }
 
 int main()
@@ -121,7 +139,7 @@ int main()
 	for (ll i=1; i<=N; ++i)
 	{
 		ll d; scanf("%lld", &d);
-		update(i, i, d, rt[0]);
+		update(i, d, rt[0]);
 	}
 	for (ll i=1; i<=M; ++i)
 	{
@@ -132,11 +150,11 @@ int main()
 		if (c == 1)
 		{
 			ll v; scanf("%lld", &v);
-			update(p, p, v, rt[i]);	// FIX: typo--update at p not i (i is loop iter, p was inputted)
+			update(p, v, rt[i]);	// FIX: typo--update at p not i (i is loop iter, p was inputted)
 		}
 		if (c == 2)
 		{
-			printf("%lld\n", query(p, p, rt[t]));
+			printf("%lld\n", query(p, rt[t]));
 		}
 	}
 
