@@ -40,11 +40,12 @@
 
 using namespace std;
 const ll MX = 1000111;
-ll N, D, M, segt[MX<<5], sett[MX<<5];
-ll alloc=1, lc[MX<<5], rc[MX<<5], rt[MX];
+ll N, D, M, segt[MX<<4], sett[MX<<4];
+ll alloc=1, lc[MX<<4], rc[MX<<4], rt[MX];
 
 void dump(ll k)
 {
+	return;
 	ll d = D+1;
 	queue<int> bfs;
 	bfs.push(k);
@@ -100,42 +101,42 @@ void update(ll ql, ll qr, ll setv, ll &k, ll tl=1, ll tr=1<<D)
 ll query(ll ql, ll qr, ll k, ll tl=1, ll tr=1<<D)	// TODO: take k as refrence?
 {
 	if (qr < tl || tr < ql) return 0;
-	if (ql <= tl && tr <+ qr) return segt[k];
+	if (ql <= tl && tr <= qr) return segt[k];
 	push(k, tl, tr); ll mid = tl + (tr-tl>>1);
 	return query(ql, qr, lc[k], tl, mid) + query(ql, qr, rc[k], mid+1, tr);
 }
 
 int main()
 {
-	scanf("%d%d", &N, &M);
+	scanf("%lld%lld", &N, &M);
 	D = log2(N) +1;
 	memset(sett, -1, sizeof sett);
 
 	rt[0] = alloc++;
-	for (int i=1; i<1<<D; ++i)
+	for (ll i=1; i<1<<D; ++i)
 	{
 		lc[i] = alloc++;
 		rc[i] = alloc++;
 	}
-	for (int i=1; i<=N; ++i)
+	for (ll i=1; i<=N; ++i)
 	{
-		int d; scanf("%d", &d);
+		ll d; scanf("%lld", &d);
 		update(i, i, d, rt[0]);
 	}
-	for (int i=1; i<=M; ++i)
+	for (ll i=1; i<=M; ++i)
 	{
-		dump(rt[i-1]); printf("\n\n$ ");
-		int t, c, p;	// QUIC noises
-		scanf("%d%d%d", &t, &c, &p);
+		//dump(rt[i-1]); printf("\n\n$ ");
+		ll t, c, p;	// QUIC noises
+		scanf("%lld%lld%lld", &t, &c, &p);
 		rt[i] = rt[t];
 		if (c == 1)
 		{
-			int v; scanf("%d", &v);
-			update(i, i, v, rt[i]);
+			ll v; scanf("%lld", &v);
+			update(p, p, v, rt[i]);	// FIX: typo--update at p not i (i is loop iter, p was inputted)
 		}
 		if (c == 2)
 		{
-			printf("%d\n", query(i, i, rt[t]));
+			printf("%lld\n", query(p, p, rt[t]));
 		}
 	}
 
