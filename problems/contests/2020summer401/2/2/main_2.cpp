@@ -7,27 +7,6 @@
 
 #include <iostream>
 #include <cstring>
-#include <sstream>
-#include <cstdio>
-#include <tuple>
-#include <vector>
-#include <string>
-#include <list>
-#include <array>
-#include <queue>
-#include <stack>
-#include <set>
-#include <map>
-#include <unordered_set>
-#include <unordered_map>
-#include <cmath>
-#include <random>
-#include <chrono>
-#include <utility>
-#include <iterator>
-#include <exception>
-#include <algorithm>
-#include <functional>
 
 #define ll long long
 #define dl double
@@ -40,7 +19,7 @@
 
 using namespace std;
 const ll MX = 100111;
-ll N, hasgone=0;
+ll N, gonedepth=0;
 char inp[MX];
 
 struct Node
@@ -58,6 +37,7 @@ Node *build(ll l, ll r)
 {
 	//printf("building %d..%d: \"", l, r);
 	//for (ll i=l; i<=r; ++i) printf("%c", inp[i]); printf("\"\n");
+
 	//while (inp[l] == '(' && inp[r] == ')') ++l, --r;	// FIX: cannot just assume begin and end w/ parens means whole thing is parens
 	ll paren = 0;
 	//printf("    nvm  %d..%d\n", l, r);
@@ -89,17 +69,21 @@ Node *build(ll l, ll r)
 	return new Node(d);
 }
 
-void print(Node *&cur)
+void print(Node *&cur, ll lay=1)
 {
 	if (cur->isnum) printf("%lld", cur->val);
 	else
 	{
-		if (cur->L->isnum && cur->R->isnum && !hasgone++)	// FIX: typo after change--check `!hasgone++` not `hasgone++`
+		if (cur->L->isnum && cur->R->isnum && lay > gonedepth)	// FIX: typo after change--check `!hasgone++` not `hasgone++`
 		//if (cur->L->isnum && cur->R->isnum)
+		{
+			//printf("setting calc at op %c\n", cur->op);
+			gonedepth = lay;
 			calc = cur;
-		print(cur->L);
+		}
+		print(cur->L, lay);
 		printf(" ");
-		print(cur->R);
+		print(cur->R, lay);
 		printf(" %c", cur->op);
 	}
 }
@@ -127,7 +111,7 @@ int main()
 			calc->isnum = 1;
 			calc->val = val;
 		}
-		hasgone = 0;
+		gonedepth = 0;
 		print(root); printf("\n");
 	//} while (!calc->isnum);
 	} while (!calc->isnum);

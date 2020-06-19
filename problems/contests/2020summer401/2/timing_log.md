@@ -20,26 +20,45 @@
 12:20 | buildtree seems to work on sample | coding #2
 12:33 | WA #2 10 points :( | debugging #2
 12:49 | parens assumption was broke, do the first op now, WA 30pts | debugging #2
+12:57 | maybe I have to do the deepest first | debugging #2
+13:06 | that's not it, only gets 10 pts | debugging #2
+13:13 | i don't know whats wrong | end
 
 ## Contest Reflection
 
 ### Knowledge
 What knowledge did you use in this test, and which part you didn't do well knowledge-wise?
 
+#### Problem 0: LeetCode 105
+
+Kept getting RE, didn't really debug. I've done this problem before on XJOI so I'm not worried, will fix at some point
+
 #### Problem 1:
 
--
+Just a stack. Easy enough.
+I had to make sure that a bunch of edge cases were handled with the input because chars and stuff which was kind of annoying.
 
 #### Problem 2:
 
--
+I vaugley knew how to do it at the beginning but I remember failing a problem like this in hangzhou so I saved it for last. I just needed to figure out how to build the tree, because once the tree was done then you could just solve it like problem 1.
+
+I ended up only getting 30 points on this (WA), but I don't know what's wrong yet. Will fix when I can see other people's codes.
 
 #### Problem 3:
 
--
+Lazy add and then traverse the tree, simple enough. Felt like segment tree almost, but without the range update/query.
+Was getting RE and I didn't know why, I guess manual edgelist with long longs takes up too much space.
+
+#### Problem 4:
+
+Binary search on the answer, easy enough. The bounds on the binary search were kind of scuffed though, the right bound initial value had to be exactly 1<<31 or so, because 1<<30 didn't work and neither did bigger ones like 1<<40 or 1<<60.
 
 ### Strategy
 How did you spend your time during the test, and whether there's any issue about your strategy?
 
+I probably should've spent more time on problem 0, but I really don't like leetcode. I don't know whats wrong with #2.
+
 ### Action item
 How would you change your homework, your mastery of knowledge, or class time etc in order to do better next time?
+
+This test was pretty good I guess. I don't know why the leetcode thing kept getting RE, and was kind of tired of it.
