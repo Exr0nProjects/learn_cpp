@@ -34,29 +34,21 @@ struct Node
 	Node(char c, Node *l, Node *r): isnum(0), op(c), L(l), R(r) {}
 } *root = nullptr, *calc=nullptr;
 
+inline ll pemdas(char c)
+{
+	if (c == '+' || c == '-') return 1;
+	if (c == '*' || c == '/') return 2;
+	if (c == '^') return 3;
+}
+
 Node *build(ll l, ll r, ll lay=1)
 {
-	//for (ll i=0; i<lay; ++i) printf("|   "); printf("building %d..%d: \"", l, r);
-	//for (ll i=l; i<=r; ++i) printf("%c", inp[i]); printf("\"\n");
-
-	//while (inp[l] == '(' && inp[r] == ')') ++l, --r;	// FIX: cannot just assume begin and end w/ parens means whole thing is parens
 	ll paren = 0;
-	//printf("    nvm  %d..%d\n", l, r);
 	for (ll i=r; i>=l; --i)
 	{
 		if (inp[i] == ')') ++paren;
 		if (inp[i] == '(') --paren;
-		//printf("c %c @ %d paren %d\n", inp[i], i, paren);
-		if (!paren && (inp[i] == '+' || inp[i] == '-'))
-			return new Node(inp[i], build(l, i-1, lay+1), build(i+1, r, lay+1));
-	}
-
-	//paren=0; // TODO: shouldn't be needed
-	for (ll i=r; i>=l; --i)
-	{
-		if (inp[i] == ')') ++paren;
-		if (inp[i] == '(') --paren;
-		if (!paren && (inp[i] == '*' || inp[i] == '/'))
+		if (!paren && pemdas(inp[i]) == 1)
 			return new Node(inp[i], build(l, i-1, lay+1), build(i+1, r, lay+1));
 	}
 
@@ -64,10 +56,26 @@ Node *build(ll l, ll r, ll lay=1)
 	{
 		if (inp[i] == ')') ++paren;
 		if (inp[i] == '(') --paren;
-		//printf("c %c @ %d paren %d\n", inp[i], i, paren);
-		if (!paren && inp[i] == '^') // FIX: logic--higher order of ops means it should be grouped closer which means parsed later
+		if (!paren && pemdas(inp[i]) == 2)
 			return new Node(inp[i], build(l, i-1, lay+1), build(i+1, r, lay+1));
 	}
+
+	for (ll i=r; i>=l; --i)
+	{
+		if (inp[i] == ')') ++paren;
+		if (inp[i] == '(') --paren;
+		if (!paren && pemdas(inp[i]) == 3)
+			return new Node(inp[i], build(l, i-1, lay+1), build(i+1, r, lay+1));
+	}
+
+	//for (ll o=1; o<=3; ++o)
+	//    for (ll i=r; i>=l; --i)
+	//    {
+	//        if (inp[i] == ')') ++paren;
+	//        if (inp[i] == '(') --paren;
+	//        if (!paren && pemdas(inp[i]) == o)
+	//            return new Node(inp[i], build(l, i-1, lay+1), build(i+1, r, lay+1));
+	//    }
 
 	if (inp[l] == '(' && inp[r] == ')')
 		return build(l+1, r-1, lay);	// FIX: deal with full parens wrap by checking if op exists first
@@ -75,7 +83,6 @@ Node *build(ll l, ll r, ll lay=1)
 	ll d = 0;
 	for (ll i=l; i<=r; ++i)
 		d = d*10 + inp[i]-'0';
-	//printf("d = %lld\n", d);
 	return new Node(d);
 }
 

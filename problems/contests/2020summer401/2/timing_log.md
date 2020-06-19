@@ -44,6 +44,11 @@ I vaugley knew how to do it at the beginning but I remember failing a problem li
 
 I ended up only getting 30 points on this (WA), but I don't know what's wrong yet. Will fix when I can see other people's codes.
 
+Theres a power operator. Bruh text.
+So that was a quick fix, I just needed to add the power operation in (in the right place, mind you. after multiplication checking)
+
+I'm going to clean up the code a little and resubmit to look cool.
+
 #### Problem 3:
 
 Lazy add and then traverse the tree, simple enough. Felt like segment tree almost, but without the range update/query.
@@ -54,11 +59,11 @@ Was getting RE and I didn't know why, I guess manual edgelist with long longs ta
 Binary search on the answer, easy enough. The bounds on the binary search were kind of scuffed though, the right bound initial value had to be exactly 1<<31 or so, because 1<<30 didn't work and neither did bigger ones like 1<<40 or 1<<60.
 
 ### Strategy
-How did you spend your time during the test, and whether there's any issue about your strategy?
 
 I probably should've spent more time on problem 0, but I really don't like leetcode. I don't know whats wrong with #2.
 
 ### Action item
-How would you change your homework, your mastery of knowledge, or class time etc in order to do better next time?
+
+READ THE PROBLEM!
 
 This test was pretty good I guess. I don't know why the leetcode thing kept getting RE, and was kind of tired of it.
