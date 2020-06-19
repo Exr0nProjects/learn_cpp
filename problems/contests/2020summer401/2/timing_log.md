@@ -18,6 +18,7 @@
 11:57 | looks fine | coding #2
 12:13 | buildtree bad... | debugging #2
 12:20 | buildtree seems to work on sample | coding #2
+12:33 | WA #2 10 points :( | debugging #2
 
 ## Contest Reflection
 
