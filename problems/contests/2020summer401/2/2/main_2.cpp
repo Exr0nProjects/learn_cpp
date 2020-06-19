@@ -52,7 +52,7 @@ struct Node
 
 	Node(ll v): isnum(1), val(v), L(nullptr), R(nullptr) {}
 	Node(char c, Node *l, Node *r): isnum(0), op(c), L(l), R(r) {}
-} *root = nullptr;
+} *root = nullptr, *&calc=root;
 
 Node *build(ll l, ll r)
 {
@@ -85,11 +85,13 @@ Node *build(ll l, ll r)
 	return new Node(d);
 }
 
-void print(Node *cur)
+void print(Node *&cur)
 {
 	if (cur->isnum) printf("%lld", cur->val);
 	else
 	{
+		//if (cur->L->isnum && cur->R->isnum)
+		//    calc = cur;
 		print(cur->L);
 		printf(" ");
 		print(cur->R);
@@ -102,8 +104,27 @@ int main()
 	scanf("%s%n", inp, &N);	// TODO: input hecka sketch, invis characters messes up %n count
 	printf("got %d chars\n", N);
 	root = build(0, N-1);	// FIX: indexing--build takes inclusive so upper is N-1 not N
-
 	print(root); printf("\n");
+
+	//printf("starting calculation\n");
+	//do
+	//{
+	//    print(root); printf("\n");
+	//    printf("calc = %d : %d %c\n", calc->isnum, calc->val, calc->op);
+	//    if (calc)
+	//    {
+	//        Node *del = calc;
+	//        ll val, a=calc->L->val, b=calc->R->val;
+	//        delete calc->L;
+	//        delete calc->R;
+	//        if (calc->op == '+') val = a + b;
+	//        if (calc->op == '-') val = a - b;
+	//        if (calc->op == '*') val = a * b;
+	//        if (calc->op == '/') val = a / b;
+	//        calc = new Node(val);
+	//        delete del;
+	//    }
+	//} while (calc);
 
 	return 0;
 }
