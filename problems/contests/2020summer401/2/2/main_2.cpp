@@ -40,7 +40,7 @@
 
 using namespace std;
 const ll MX = 100111;
-ll N;
+ll N, hasgone=0;
 char inp[MX];
 
 struct Node
@@ -65,6 +65,7 @@ Node *build(ll l, ll r)
 	{
 		if (inp[i] == ')') ++paren;
 		if (inp[i] == '(') --paren;
+		//printf("c %c @ %d paren %d\n", inp[i], i, paren);
 		if (!paren && (inp[i] == '+' || inp[i] == '-'))
 			return new Node(inp[i], build(l, i-1), build(i+1, r));
 	}
@@ -90,7 +91,7 @@ void print(Node *&cur)
 	if (cur->isnum) printf("%lld", cur->val);
 	else
 	{
-		if (cur->L->isnum && cur->R->isnum)
+		if (cur->L->isnum && cur->R->isnum && !hasgone++)	// FIX: typo after change--check `!hasgone++` not `hasgone++`
 			calc = cur;
 		print(cur->L);
 		printf(" ");
@@ -106,10 +107,10 @@ int main()
 	root = build(0, N-1);	// FIX: indexing--build takes inclusive so upper is N-1 not N
 	print(root); printf("\n");
 
-	//printf("starting calculation\n");
+	printf("starting calculation\n");
 	do
 	{
-		//printf("calc = %d : %d %c\n", calc->isnum, calc->val, calc->op);
+		//if (calc) printf("calc = %d : %d %c\n", calc->isnum, calc->val, calc->op);
 		if (!calc->isnum)
 		{
 			ll val, a=calc->L->val, b=calc->R->val;
@@ -122,6 +123,7 @@ int main()
 			calc->isnum = 1;
 			calc->val = val;
 		}
+		hasgone = 0;
 		print(root); printf("\n");
 	//} while (!calc->isnum);
 	} while (!calc->isnum);
