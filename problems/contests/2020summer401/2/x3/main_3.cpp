@@ -39,42 +39,42 @@
 #define s second
 
 using namespace std;
-const ll MX = 10111;
-ll N, Q, addt[MX];
+const ll MX = 11000111;
+ll N, Q, addt[MX], counter=0;
 
-//struct Edge { ll f, t, n; } edges[MX<<1];
-//ll head[MX], alloc=1;
-//void addEdge(ll a, ll b)
-//{
-//    edges[alloc].f = a;
-//    edges[alloc].t = b;
-//    edges[alloc].n = head[a];
-//    head[a] = alloc++;
-//}
-//void traverse(ll cur, ll pre=0, ll acc=0)
-//{
-//    acc += addt[cur];
-//    for (ll e=head[cur]; e; e=edges[e].n)
-//    {
-//        if (edges[e].t != pre)
-//            traverse(edges[e].t, cur, acc);
-//    }
-//    addt[cur] = acc;
-//}
-
-list<int> head[MX];
-void addEdge(ll a, ll b)
+struct Edge { int t, n; } edges[MX<<1];
+ll head[MX], alloc=1;
+void addEdge(int a, int b)
 {
-	head[a].pb(b);
+	edges[alloc].t = b;
+	edges[alloc].n = head[a];
+	head[a] = alloc++;
 }
 void traverse(ll cur, ll pre=0, ll acc=0)
 {
 	acc += addt[cur];
-	for (ll nxt : head[cur])
-		if (nxt != pre)
-			traverse(nxt, cur, acc);
+	for (ll e=head[cur]; e; e=edges[e].n)
+	{
+		if (edges[e].t != pre)
+			traverse(edges[e].t, cur, acc);
+	}
 	addt[cur] = acc;
 }
+
+//list<int> head[MX];
+//void addEdge(ll a, ll b)
+//{
+//    head[a].pb(b);
+//}
+//void traverse(ll cur, ll pre=0, ll acc=0)
+//{
+//    if (counter++ > MX) return;
+//    acc += addt[cur];
+//    for (ll nxt : head[cur])
+//        if (nxt != pre)
+//            traverse(nxt, cur, acc);
+//    addt[cur] = acc;
+//}
 
 int main()
 {
