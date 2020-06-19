@@ -11,6 +11,13 @@
 10:44 | stack going everywhere badness | debugging #1
 10:56 | finally works for sample, AC #1 | coding #3
 11:05 | #3 works for sample, RE | debugging #3
+11:15 | AC #3, apparently #3 is maaasive | coding #4
+11:26 | WA #4 ?? | debugging #4
+11:30 | AC #4, had to guess the right max number smah | analysing #2
+11:45 | go backwards, construct tree, output preorder, collapse deepest | psudocoding #2
+11:57 | looks fine | coding #2
+12:13 | buildtree bad... | debugging #2
+12:20 | buildtree seems to work on sample | coding #2
 
 ## Contest Reflection
 
