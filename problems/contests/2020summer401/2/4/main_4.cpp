@@ -46,8 +46,7 @@ bool check(ll num)	// FIX: ll num not int
 {
 	ll need=0;
 	for (ll i=0; i<N && need <= K; ++i)
-		need += hav[i] - num*req[i];
-	printf("need %lld\n", need);
+		need += max(num*req[i] - hav[i], 0LL);	// FIX: equ--req-hav not hav-req; FIX: bounds--max with zero
 	return need <= K;
 }
 
@@ -59,10 +58,10 @@ int main()
 	for (ll i=0; i<N; ++i)
 		scanf("%lld", &hav[i]);
 
-	ll l=0, r=(ll)1<<20;
-	for (ll i=0; i<70; ++i)
+	ll l=0, r=(ll)1<<40;
+	for (ll i=0; i<50; ++i)
 	{
-		printf("%lld..%lld\n", l, r);
+		//printf("%lld..%lld\n", l, r);
 		ll mid = l + (r-l>>1);
 		if (check(mid)) l = mid;
 		else r = mid;
