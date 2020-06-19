@@ -58,7 +58,7 @@ Node *build(ll l, ll r)
 {
 	//printf("building %d..%d: \"", l, r);
 	//for (ll i=l; i<=r; ++i) printf("%c", inp[i]); printf("\"\n");
-	while (inp[l] == '(' && inp[r] == ')') ++l, --r;
+	//while (inp[l] == '(' && inp[r] == ')') ++l, --r;	// FIX: cannot just assume begin and end w/ parens means whole thing is parens
 	ll paren = 0;
 	//printf("    nvm  %d..%d\n", l, r);
 	for (ll i=r; i>=l; --i)
@@ -79,6 +79,9 @@ Node *build(ll l, ll r)
 			return new Node(inp[i], build(l, i-1), build(i+1, r));
 	}
 
+	if (inp[l] == '(' && inp[r] == ')')
+		return build(l+1, r-1);	// FIX: deal with full parens wrap by checking if op exists first
+
 	ll d = 0;
 	for (ll i=l; i<=r; ++i)
 		d = d*10 + inp[i]-'0';
@@ -92,6 +95,7 @@ void print(Node *&cur)
 	else
 	{
 		if (cur->L->isnum && cur->R->isnum && !hasgone++)	// FIX: typo after change--check `!hasgone++` not `hasgone++`
+		//if (cur->L->isnum && cur->R->isnum)
 			calc = cur;
 		print(cur->L);
 		printf(" ");
@@ -107,7 +111,7 @@ int main()
 	root = build(0, N-1);	// FIX: indexing--build takes inclusive so upper is N-1 not N
 	print(root); printf("\n");
 
-	printf("starting calculation\n");
+	//printf("starting calculation\n");
 	do
 	{
 		//if (calc) printf("calc = %d : %d %c\n", calc->isnum, calc->val, calc->op);
