@@ -1,12 +1,13 @@
 /*
  * Problem 2 (contests/2020summer401/2/2)
  * Create time: Fri 19 Jun 2020 @ 11:57 (PDT)
- * Accept time: [!meta:end!]
+ * Accept time: Fri 19 Jun 2020 @ 14:13 (PDT)
  *
  */
 
 #include <iostream>
 #include <cstring>
+#include <cmath>
 
 #define ll long long
 #define dl double
@@ -19,7 +20,7 @@
 
 using namespace std;
 const ll MX = 100111;
-ll N, gonedepth=0;
+int N, gonedepth=0;
 char inp[MX];
 
 struct Node
@@ -33,9 +34,9 @@ struct Node
 	Node(char c, Node *l, Node *r): isnum(0), op(c), L(l), R(r) {}
 } *root = nullptr, *calc=nullptr;
 
-Node *build(ll l, ll r)
+Node *build(ll l, ll r, ll lay=1)
 {
-	//printf("building %d..%d: \"", l, r);
+	//for (ll i=0; i<lay; ++i) printf("|   "); printf("building %d..%d: \"", l, r);
 	//for (ll i=l; i<=r; ++i) printf("%c", inp[i]); printf("\"\n");
 
 	//while (inp[l] == '(' && inp[r] == ')') ++l, --r;	// FIX: cannot just assume begin and end w/ parens means whole thing is parens
@@ -47,7 +48,7 @@ Node *build(ll l, ll r)
 		if (inp[i] == '(') --paren;
 		//printf("c %c @ %d paren %d\n", inp[i], i, paren);
 		if (!paren && (inp[i] == '+' || inp[i] == '-'))
-			return new Node(inp[i], build(l, i-1), build(i+1, r));
+			return new Node(inp[i], build(l, i-1, lay+1), build(i+1, r, lay+1));
 	}
 
 	//paren=0; // TODO: shouldn't be needed
@@ -56,11 +57,20 @@ Node *build(ll l, ll r)
 		if (inp[i] == ')') ++paren;
 		if (inp[i] == '(') --paren;
 		if (!paren && (inp[i] == '*' || inp[i] == '/'))
-			return new Node(inp[i], build(l, i-1), build(i+1, r));
+			return new Node(inp[i], build(l, i-1, lay+1), build(i+1, r, lay+1));
+	}
+
+	for (ll i=r; i>=l; --i)
+	{
+		if (inp[i] == ')') ++paren;
+		if (inp[i] == '(') --paren;
+		//printf("c %c @ %d paren %d\n", inp[i], i, paren);
+		if (!paren && inp[i] == '^') // FIX: logic--higher order of ops means it should be grouped closer which means parsed later
+			return new Node(inp[i], build(l, i-1, lay+1), build(i+1, r, lay+1));
 	}
 
 	if (inp[l] == '(' && inp[r] == ')')
-		return build(l+1, r-1);	// FIX: deal with full parens wrap by checking if op exists first
+		return build(l+1, r-1, lay);	// FIX: deal with full parens wrap by checking if op exists first
 
 	ll d = 0;
 	for (ll i=l; i<=r; ++i)
@@ -108,6 +118,7 @@ int main()
 			if (calc->op == '-') val = a - b;
 			if (calc->op == '*') val = a * b;
 			if (calc->op == '/') val = a / b;
+			if (calc->op == '^') val = pow(a, b);
 			calc->isnum = 1;
 			calc->val = val;
 		}
