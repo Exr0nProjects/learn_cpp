@@ -1,7 +1,7 @@
 /*
  * Problem 4 (contests/2020summer401/2/4)
  * Create time: Fri 19 Jun 2020 @ 11:16 (PDT)
- * Accept time: [!meta:end!]
+ * Accept time: Fri 19 Jun 2020 @ 11:30 (PDT)
  *
  */
 
@@ -58,7 +58,7 @@ int main()
 	for (ll i=0; i<N; ++i)
 		scanf("%lld", &hav[i]);
 
-	ll l=0, r=(ll)1<<40;
+	ll l=0, r=(ll)1<<31;	// FIX: had to guess the right number smah
 	for (ll i=0; i<50; ++i)
 	{
 		//printf("%lld..%lld\n", l, r);
