@@ -41,52 +41,63 @@
 using namespace std;
 const ll MX = 50111;
 ll N, D, Q;
-ll alloc=1, segt[MX<<6], sett[MX<<6], lc[MX<<6], rc[MX<<6], rt[MX];
+ll alloc=1, segt[MX<<6], addt[MX<<6], lc[MX<<6], rc[MX<<6], rt[MX];
 void dupe(ll &k)
 {
 	segt[alloc] = segt[k];
-	sett[alloc] = sett[k];
+	addt[alloc] = addt[k];
 	lc[alloc] = lc[k];
 	rc[alloc] = rc[k];
 	k = alloc++;
 }
-void apply(ll setv, ll &k, ll tl, ll tr)
+void apply(ll addv, ll &k, ll tl, ll tr)
 {
-	if (setv < 0) return;
+	if (!addv) return;
 	dupe(k);
-	sett[k] = setv;
-	segt[k] = setv * (tr-tl+1);
+	addt[k] = addv;
+	segt[k] += addv * (tr-tl+1);
 }
 void push(ll &k, ll tl, ll tr)
 {
 	dupe(k);
 	ll mid = tl + (tr-tl>>1);
-	apply(sett[k], lc[k], tl, mid);
-	apply(sett[k], rc[k], mid+1, tr);
-	sett[k] = -1;
+	apply(addt[k], lc[k], tl, mid);
+	apply(addt[k], rc[k], mid+1, tr);
+	addt[k] = 0;
 }
 void comb(ll k)
 {
 	segt[k] = segt[lc[k]] + segt[rc[k]];
 }
 
-void update(ll ql, ll qr, ll setv, ll &k, ll tl=1, ll tr=1<<D)
+void update(ll ql, ll qr, ll addv, ll &k, ll tl=1, ll tr=1<<D)
 {
 	if (qr < tl || tr < ql) return;
-	if (ql <= tl && tr <= qr) return apply(setv, k, tl, tr);
+	if (ql <= tl && tr <= qr) return apply(addv, k, tl, tr);
 	push(k, tl, tr); ll mid = tl + (tr-tl>>1);
-	update(ql, qr, setv, lc[k], tl, mid);
-	update(ql, qr, setv, rc[k], mid+1, tr);
+	update(ql, qr, addv, lc[k], tl, mid);
+	update(ql, qr, addv, rc[k], mid+1, tr);
 	comb(k);
 }
-ll query(ll ql, ll qr, ll k, ll tl=1, ll tr=1<<D, ll setv=-1)
+//ll query(ll ql, ll qr, ll k, ll tl=1, ll tr=1<<D, ll setv=-1)
+//{
+//    if (qr < tl || tr < ql) return;
+//    if (setv < 0) setv = sett[k];
+//    if (ql <= tl && tr <= qr) return setv < 0 ? segt[k] : setv*(tr-tl+1);
+//    ll mid = tl + (tr-tl>>1);
+//    return query(ql, qr, lc[k], tl, mid, setv)
+//         + query(ql, qr, rc[k], mid+1, tr, setv);
+//}
+ll querykth(ll k1, ll k2, ll kth, ll tl=1, ll tr=1<<D)
 {
-	if (qr < tl || tr < ql) return;
-	if (setv < 0) setv = sett[k];
-	if (ql <= tl && tr <= qr) return setv < 0 ? segt[k] : setv*(tr-tl+1);
+	if (tl == tr) return tl;
+	push(k1, tl, tr); push(k2, tl, tr);
 	ll mid = tl + (tr-tl>>1);
-	return query(ql, qr, lc[k], tl, mid, setv)
-		 + query(ql, qr, rc[k], mid+1, tr, setv);
+	ll lsize = segt[lc[k2]] - segt[lc[k1]];
+	if (lsize >= kth)
+		return querykth(lc[k1], lc[k2], kth, tl, mid);
+	else
+		return querykth(lsize, mid+1, tr);
 }
 
 int main()
@@ -94,16 +105,16 @@ int main()
 	int T; scanf("%lld", &T);
 	while (T--)
 	{
-		scanf("%lld%lld", &N, &M);
+		scanf("%lld%lld", &N, &Q);
 		D = log2(N) +1;
 		memset(segt, 0, sizeof segt);
-		memset(sett, 0, sizeof sett);
+		memset(addt, 0, sizeof addt);
 		memset(lc, 0, sizeof lc);
 		memset(rc, 0, sizeof rc);
 		memset(rt, 0, sizeof rt);
 
 		rt[0] = alloc ++;
-		for (ll k=1; k<1<<1+D; ++i)
+		for (ll k=1; k<1<<1+D; ++k)
 		{
 			lc[k] = alloc++;
 			rc[k] = alloc++;
@@ -111,7 +122,8 @@ int main()
 		for (ll i=1; i<=N; ++i)
 		{
 			ll d; scanf("%lld", &d);
-			update(i, i, d, rt[0]);
+			rt[i] = rt[i-1];
+			update(d+1, d+1, 1, rt[i]);
 		}
 
 		for (ll i=0; i<Q; ++i)
@@ -121,11 +133,12 @@ int main()
 			if (c == 'Q')
 			{
 				ll v; scanf("%lld", &v);
-				printf("%lld\n", queryk(l, r, v));
+				printf("%lld\n", querykth(l, r, v));
 			}
 			else if (c == 'C')
 			{
-				update(l, l, r);
+				//update(l, l, r, );
+				// TODO
 			}
 			else printf("got char '%c'\n", c);
 		}
