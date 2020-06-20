@@ -91,7 +91,45 @@ ll query(ll ql, ll qr, ll k, ll tl=1, ll tr=1<<D, ll setv=-1)
 
 int main()
 {
+	int T; scanf("%lld", &T);
+	while (T--)
+	{
+		scanf("%lld%lld", &N, &M);
+		D = log2(N) +1;
+		memset(segt, 0, sizeof segt);
+		memset(sett, 0, sizeof sett);
+		memset(lc, 0, sizeof lc);
+		memset(rc, 0, sizeof rc);
+		memset(rt, 0, sizeof rt);
 
+		rt[0] = alloc ++;
+		for (ll k=1; k<1<<1+D; ++i)
+		{
+			lc[k] = alloc++;
+			rc[k] = alloc++;
+		}
+		for (ll i=1; i<=N; ++i)
+		{
+			ll d; scanf("%lld", &d);
+			update(i, i, d, rt[0]);
+		}
+
+		for (ll i=0; i<Q; ++i)
+		{
+			char c=0; scanf("\n%c", &c);
+			ll l, r; scanf("%lld%lld", &l, &r);
+			if (c == 'Q')
+			{
+				ll v; scanf("%lld", &v);
+				printf("%lld\n", queryk(l, r, v));
+			}
+			else if (c == 'C')
+			{
+				update(l, l, r);
+			}
+			else printf("got char '%c'\n", c);
+		}
+	}
 	return 0;
 }
 
