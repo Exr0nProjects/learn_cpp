@@ -90,14 +90,16 @@ void update(ll ql, ll qr, ll addv, ll &k, ll tl=1, ll tr=1<<D)
 //}
 ll querykth(ll k1, ll k2, ll kth, ll tl=1, ll tr=1<<D)
 {
+	printf("query %dth %d and %d (%d..%d)\n", kth, k1, k2, tl, tr);
 	if (tl == tr) return tl;
 	push(k1, tl, tr); push(k2, tl, tr);
 	ll mid = tl + (tr-tl>>1);
 	ll lsize = segt[lc[k2]] - segt[lc[k1]];
+	printf("%d - %d = %d\n", segt[lc[k2]], segt[lc[k1]], lsize);
 	if (lsize >= kth)
 		return querykth(lc[k1], lc[k2], kth, tl, mid);
 	else
-		return querykth(lsize, mid+1, tr);
+		return querykth(rc[k1], rc[k2], kth-lsize, mid+1, tr);
 }
 
 int main()
@@ -133,7 +135,7 @@ int main()
 			if (c == 'Q')
 			{
 				ll v; scanf("%lld", &v);
-				printf("%lld\n", querykth(l, r, v));
+				printf("%lld\n", querykth(rt[l-1], rt[r], v)-1);
 			}
 			else if (c == 'C')
 			{
