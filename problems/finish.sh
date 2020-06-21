@@ -9,9 +9,10 @@ if [[ -z "$1" || "$1" == "_last" ]]; then
   modpath=$(< "$cache")
 fi
 
-if [[ -z "$2" ]]; then
-	message="AC $modpath (script)"
+if [[ -z "$message" ]]; then
+	message="(script)"
 fi
+message="AC $modpath: $message"
 
 echo "Marking $modpath as AC..."
 
