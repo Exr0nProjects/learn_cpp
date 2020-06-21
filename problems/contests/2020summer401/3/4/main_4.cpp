@@ -41,23 +41,32 @@
 using namespace std;
 const ll MX = -1;
 
-ll digits(ll n)
-{
-	ll tot=0;
-	tot += min(n, 9LL);
-	if (n > 9) tot += (min(n, 99LL)-9) * 2;
-	if (n > 99) tot += (min(n, 999LL)-99) * 3;
-	return tot;
-}
-
 int main()
 {
 
-	while (1)
+	ll d; scanf("%lld", &d);
+	ll base=1, len = 1, add=0;
+	for (; len <= d; ++base)
 	{
-		ll d; scanf("%lld", &d);
-		printf("%lld\n", digits(d));
+		add += (ll)log10(base) + 1;
+		//printf("%3lld added on %3lld\n", base, add);
+		len += add;
+		//printf("len = %lld\n", len);
 	}
+	----base; len-=add; --len;
+	//printf("base %lld, len %lld\n", base, len);
+
+	ll pad=1;
+	for (; len<d; ++pad)
+	{
+		len += (ll)log10(pad)+1;
+	}
+	--pad;
+	//printf("pad %lld len %lld\n", pad, len);
+
+	while (len > d) --len, pad /= 10;
+
+	printf("%lld\n", pad%10);
 
 	return 0;
 }
