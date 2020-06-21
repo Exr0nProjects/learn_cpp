@@ -92,15 +92,17 @@ void update(int q, int addv, int &k, int tl=1, int tr=1<<D)
 	tsum[k] = tsum[lc[k]] + tsum[rc[k]];
 }
 
-unsigned int querykdup(int k1, int k2, int kdup, int tl=1, int tr=1<<D)
+unsigned int querykdup(int k1, int k2, int kdup, int tl=1, int tr=1<<D, int add1=0, int add2=0)
 {
-	//printf("query %d %d kdup %d (%d..%d)\n", k1, k2, kdup, tl, tr);
-	if (tsum[k2] - tsum[k1] <= kdup) return -1;
+	//printf("query %d %d kdup %d (%d..%d) +%d +%d\n", k1, k2, kdup, tl, tr, add1, add2);
+	if (tsum[k2]+add2*(tr-tl+1)
+	  - tsum[k1]-add1*(tr-tl+1) <= kdup) return -1;
 	if (tl == tr) return tl;
-	push(k1, tl, tr); push(k2, tl, tr);
+	add1 += addt[k1]; add2 += addt[k2];
+	//push(k1, tl, tr); push(k2, tl, tr);
 	int mid = tl + (tr-tl>>1);
-	return min(querykdup(lc[k1], lc[k2], kdup, tl, mid),
-			   querykdup(rc[k1], rc[k2], kdup, mid+1, tr));
+	return min(querykdup(lc[k1], lc[k2], kdup, tl, mid, add1, add2),
+			   querykdup(rc[k1], rc[k2], kdup, mid+1, tr, add1, add2));
 }
 
 int main()
