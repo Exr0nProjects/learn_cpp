@@ -46,6 +46,7 @@ ll alc=1, segt[MX<<6], sett[MX<<6], lc[MX<<6], rc[MX<<6], rt[MX];
 void dupe(ll &k)
 {
 	segt[alc] = segt[k];
+	sett[alc] = sett[k];	// FIX: postchange--dupe sett[k] as well
 	lc[alc] = lc[k];
 	rc[alc] = rc[k];
 	k = alc++;
@@ -90,10 +91,12 @@ ll query(ll ql, ll qr, ll k, ll tl=1, ll tr=1<<D)
 
 ll querykth(ll k1, ll k2, ll kth, ll tl=1, ll tr=1<<D)
 {
+	//printf("query %dth at %d, %d (%d..%d)\n", kth, k1, k2, tl, tr);
 	if (tl == tr) return tl;
 	push(k1, tl, tr); push(k2, tl, tr); // FIX: push on query
 	ll mid = tl + (tr-tl>>1);
 	ll lsize = segt[lc[k2]] - segt[lc[k1]];	// FIX: equ--size of k2 - sizeof k1, not just one of them
+	//printf("%d - %d = %d\n", segt[lc[k2]], segt[lc[k1]], lsize);
 	if (kth <= lsize) return querykth(lc[k1], lc[k2], kth, tl, mid);
 	else return querykth(rc[k1], rc[k2], kth-lsize, mid+1, tr);
 }
@@ -107,12 +110,13 @@ int main()
 	{
 		lc[i] = alc++;
 		rc[i] = alc++;
+		sett[i] = -1;	// FIX: clears--init set tags
 	}
 	for (ll i=1; i<=N; ++i)
 	{
 		ll d; scanf("%lld", &d);
 		rt[i] = rt[i-1];
-		update(i, d, rt[i]);
+		update(d, 1, rt[i]);	// FIX: equ--update(d, 1, ...) not update(i, d, ...)
 	}
 
 	for (ll i=0; i<M; ++i)
