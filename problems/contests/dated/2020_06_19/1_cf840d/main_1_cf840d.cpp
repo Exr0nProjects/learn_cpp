@@ -58,7 +58,7 @@ void dump(ll k)
 	printf("\n");
 }
 
-void dupe(ll &k)
+inline void dupe(int &k)
 {
 	tsum[alc] = tsum[k];
 	addt[alc] = addt[k];
@@ -66,36 +66,32 @@ void dupe(ll &k)
 	rc[alc] = rc[k];
 	k = alc++;
 }
-void apply(ll addv, ll &k, ll tl, ll tr)
+inline void apply(ll addv, int &k, int tl, int tr)
 {
-	if (!addv) return;
 	dupe(k);
 	addt[k] = addv;
 	tsum[k] += addv*(tr-tl+1);
 }
-void push(ll &k, ll tl, ll tr)
+inline void push(int &k, int tl, int tr)
 {
 	dupe(k);
+	if (!addt[k]) return;
 	ll mid = tl + (tr-tl>>1);
 	apply(addt[k], lc[k], tl, mid);
 	apply(addt[k], rc[k], mid+1, tr);
 	addt[k] = 0;
 }
-void comb(ll k)
-{
-	tsum[k] = tsum[lc[k]] + tsum[rc[k]];
-}
 
-void update(ll q, ll addv, ll &k, ll tl=1, ll tr=1<<D)
+void update(int q, ll addv, int &k, int tl=1, int tr=1<<D)
 {
 	if (q < tl || q > tr) return;
 	if (tl == tr) return apply(addv, k, tl, tr);
 	push(k, tl, tr); ll mid = tl + (tr-tl>>1);
 	if (q <= mid) update(q, addv, lc[k], tl, mid);
 	else update(q, addv, rc[k], mid+1, tr);
-	comb(k);
+	tsum[k] = tsum[lc[k]] + tsum[rc[k]];
 }
-ll querykdup(ll k1, ll k2, ll kdup, ll tl=1, ll tr=1<<D)
+ll querykdup(int k1, int k2, ll kdup, int tl=1, int tr=1<<D)
 {
 	//printf("query dup %d: @%d, %d (%d..%d)\n", kdup, k1, k2, tl, tr);
 	if (tl == tr) return tsum[k2]-tsum[k1] > kdup ? tl : -1;
