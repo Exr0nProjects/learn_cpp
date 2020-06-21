@@ -40,8 +40,8 @@
 
 using namespace std;
 const ll MX = 300111;
-ll N, D, Q, tsum[MX<<6], addt[MX<<6];
-ll alc=1, lc[MX<<6], rc[MX<<6], rt[MX];
+ll N, D, Q, tsum[MX<<5], addt[MX<<5];
+int alc=1, lc[MX<<5], rc[MX<<5], rt[MX];
 
 void dump(ll k)
 {
@@ -52,7 +52,7 @@ void dump(ll k)
 		if (__builtin_popcount(i) == 1) { --d; printf("\n"); }
 		k = bfs.front(); bfs.pop();
 		bfs.push(lc[k]); bfs.push(rc[k]);
-		printf("%3d+%-d @%-2d(%-2d %2d)", tsum[i], addt[i], i, lc[i], rc[i]);
+		printf("%3d+%-d @%-2d(%-2d %2d)", tsum[k], addt[k], k, lc[k], rc[k]);	// FIX: typo--print k not i
 		for (ll i=1; i<1<<d; ++i) printf("                ");
 	}
 	printf("\n");
@@ -97,12 +97,12 @@ void update(ll q, ll addv, ll &k, ll tl=1, ll tr=1<<D)
 }
 ll querykdup(ll k1, ll k2, ll kdup, ll tl=1, ll tr=1<<D)
 {
-	printf("query dup %d: @%d, %d (%d..%d)\n", kdup, k1, k2, tl, tr);
+	//printf("query dup %d: @%d, %d (%d..%d)\n", kdup, k1, k2, tl, tr);
 	if (tl == tr) return tsum[k2]-tsum[k1] > kdup ? tl : -1;
 	push(k1, tl, tr); push(k2, tl, tr);
 	ll mid = tl + (tr-tl>>1);
 	unsigned ll ret = -1; // unsigned so the min overwrites this
-	printf("lef %3d   rig %3d     vs kdup = %d\n", tsum[lc[k2]]-tsum[lc[k1]], tsum[rc[k2]]-tsum[rc[k1]], kdup);
+	//printf("lef %3d   rig %3d     vs kdup = %d\n", tsum[lc[k2]]-tsum[lc[k1]], tsum[rc[k2]]-tsum[rc[k1]], kdup);
 	if (tsum[lc[k2]]-tsum[lc[k1]] > kdup)
 		ret = min(ret, (unsigned ll)querykdup(lc[k1], lc[k2], kdup, tl, mid));
 	if (tsum[rc[k2]]-tsum[rc[k1]] > kdup)
@@ -128,11 +128,7 @@ int main()
 		update(d, 1, rt[i]);
 	}
 
-	for (ll i=1; i<=N; ++i)
-	{
-		printf("\ntree at %d:", i);
-		dump(rt[i]);
-	}
+	//for (ll i=1; i<=N; ++i) { printf("\ntree at %d:", i); dump(rt[i]); }
 
 	for (ll i=0; i<Q; ++i)
 	{
