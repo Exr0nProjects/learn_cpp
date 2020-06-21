@@ -39,7 +39,7 @@
 #define s second
 
 using namespace std;
-const int MX = 300111;
+const int MX = 301111;
 int N, D, Q, tsum[MX<<5], addt[MX<<5];
 int alc=1, lc[MX<<5], rc[MX<<5], rt[MX];
 
@@ -91,21 +91,6 @@ void update(int q, int addv, int &k, int tl=1, int tr=1<<D)
 	else update(q, addv, rc[k], mid+1, tr);
 	tsum[k] = tsum[lc[k]] + tsum[rc[k]];
 }
-//int querykdup(int k1, int k2, int kdup, int tl=1, int tr=1<<D)
-//{
-//    //printf("query dup %d: @%d, %d (%d..%d)\n", kdup, k1, k2, tl, tr);
-//    if (tl == tr) return tsum[k2]-tsum[k1] > kdup ? tl : -1;
-//    push(k1, tl, tr); push(k2, tl, tr);
-//    int mid = tl + (tr-tl>>1);
-//    int ret = 1000000; // unsigned so the min overwrites this
-//    //printf("lef %3d   rig %3d     vs kdup = %d\n", tsum[lc[k2]]-tsum[lc[k1]], tsum[rc[k2]]-tsum[rc[k1]], kdup);
-//    if (tsum[lc[k2]]-tsum[lc[k1]] > kdup)
-//        ret = min(ret, querykdup(lc[k1], lc[k2], kdup, tl, mid));
-//    if (tsum[rc[k2]]-tsum[rc[k1]] > kdup)
-//        ret = min(ret, querykdup(rc[k1], rc[k2], kdup, mid+1, tr));
-//    if (ret > 100000) return -1;
-//    return ret;
-//}
 
 unsigned int querykdup(int k1, int k2, int kdup, int tl=1, int tr=1<<D)
 {
