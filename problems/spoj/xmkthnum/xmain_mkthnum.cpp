@@ -1,7 +1,7 @@
 /*
  * Problem mkthnum (spoj/mkthnum)
  * Create time: Sun 21 Jun 2020 @ 09:25 (PDT)
- * Accept time: [!meta:end!]
+ * Accept time: Sun 21 Jun 2020 @ 10:03 (PDT)
  *
  */
 
@@ -40,7 +40,9 @@
 
 using namespace std;
 const ll MX = 100111;
-ll N, D, M;
+ll N, D, M, ddesc[MX];
+pair<ll, ll> sort1[MX];
+pair<ll, pair<ll, ll> > sort2[MX];
 ll alc=1, segt[MX<<6], sett[MX<<6], lc[MX<<6], rc[MX<<6], rt[MX];
 
 void dupe(ll &k)
@@ -104,6 +106,20 @@ ll querykth(ll k1, ll k2, ll kth, ll tl=1, ll tr=1<<D)
 int main()
 {
 	scanf("%lld%lld", &N, &M);
+	// FIX: descretization
+	for (ll i=1; i<=N; ++i)
+	{
+		ll d; scanf("%lld", &d);
+		sort1[i] = mp(d, i);
+	}
+	sort(sort1+1, sort1+N+1);
+	for (ll i=1; i<=N; ++i)
+	{
+		ddesc[i] = sort1[i].f;
+		sort2[i] = mp(sort1[i].s, mp(sort1[i].f, i));
+	}
+	sort(sort2+1, sort2+N+1);
+
 	D = log2(N) +1;
 	rt[0] = alc++;
 	for (ll i=1; i<1<<D; ++i)
@@ -112,17 +128,17 @@ int main()
 		rc[i] = alc++;
 		sett[i] = -1;	// FIX: clears--init set tags
 	}
+
 	for (ll i=1; i<=N; ++i)
 	{
-		ll d; scanf("%lld", &d);
 		rt[i] = rt[i-1];
-		update(d, 1, rt[i]);	// FIX: equ--update(d, 1, ...) not update(i, d, ...)
+		update(sort2[i].s.s, 1, rt[i]);	// FIX: equ--update(d, 1, ...) not update(i, d, ...)
 	}
 
 	for (ll i=0; i<M; ++i)
 	{
 		ll l, r, k; scanf("%lld%lld%lld", &l, &r, &k);
-		printf("%lld\n", querykth(rt[l-1], rt[r], k));
+		printf("%lld\n", ddesc[querykth(rt[l-1], rt[r], k)]);
 	}
 
 	return 0;
