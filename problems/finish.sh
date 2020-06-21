@@ -16,12 +16,12 @@ message="AC $modpath: $message"
 
 echo "Marking $modpath as AC..."
 
-newpath="$(dirname $modpath)/x$(basename $modpath)"
+newpath="$(dirname $modpath)/x_$(basename $modpath)"
 cp -r $modpath $newpath
 
 cat "$modpath/main_$(basename $modpath).cpp"\
     | sed "s/\[\!meta\:end\!\]$/$(date "$dateformat")/g"\
-    > "$newpath/xmain_$(basename $modpath).cpp"
+    > "$newpath/x_main_$(basename $modpath).cpp"
 
 rm -rf "$modpath"
 
