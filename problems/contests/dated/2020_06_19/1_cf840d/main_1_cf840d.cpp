@@ -40,12 +40,27 @@
 
 using namespace std;
 const ll MX = 300111;
-ll N, D, Q, tmin[MX<<6], addt[MX<<6];
+ll N, D, Q, tsum[MX<<6], addt[MX<<6];
 ll alc=1, lc[MX<<6], rc[MX<<6], rt[MX];
+
+void dump(ll k)
+{
+	ll d = D+1;
+	queue<ll> bfs; bfs.push(k);
+	for (ll i=1; i<1<<1+D; ++i)
+	{
+		if (__builtin_popcount(i) == 1) { --d; printf("\n"); }
+		k = bfs.front(); bfs.pop();
+		bfs.push(lc[k]); bfs.push(rc[k]);
+		printf("%3d+%-d @%-2d(%-2d %2d)", tsum[i], addt[i], i, lc[i], rc[i]);
+		for (ll i=1; i<1<<d; ++i) printf("                ");
+	}
+	printf("\n");
+}
 
 void dupe(ll &k)
 {
-	tmin[alc] = tmin[k];
+	tsum[alc] = tsum[k];
 	addt[alc] = addt[k];
 	lc[alc] = lc[k];
 	rc[alc] = rc[k];
@@ -56,7 +71,7 @@ void apply(ll addv, ll &k, ll tl, ll tr)
 	if (!addv) return;
 	dupe(k);
 	addt[k] = addv;
-	tmin[k] += addv;
+	tsum[k] += addv*(tr-tl+1);
 }
 void push(ll &k, ll tl, ll tr)
 {
@@ -68,7 +83,7 @@ void push(ll &k, ll tl, ll tr)
 }
 void comb(ll k)
 {
-	tmin[k] = min(tmin[lc[k]], tmn[rc[k]]);
+	tsum[k] = tsum[lc[k]] + tsum[rc[k]];
 }
 
 void update(ll q, ll addv, ll &k, ll tl=1, ll tr=1<<D)
@@ -82,13 +97,49 @@ void update(ll q, ll addv, ll &k, ll tl=1, ll tr=1<<D)
 }
 ll querykdup(ll k1, ll k2, ll kdup, ll tl=1, ll tr=1<<D)
 {
-	if (tl == tr) return tl;
+	printf("query dup %d: @%d, %d (%d..%d)\n", kdup, k1, k2, tl, tr);
+	if (tl == tr) return tsum[k2]-tsum[k1] > kdup ? tl : -1;
 	push(k1, tl, tr); push(k2, tl, tr);
 	ll mid = tl + (tr-tl>>1);
-	ll ldup =
+	unsigned ll ret = -1; // unsigned so the min overwrites this
+	printf("lef %3d   rig %3d     vs kdup = %d\n", tsum[lc[k2]]-tsum[lc[k1]], tsum[rc[k2]]-tsum[rc[k1]], kdup);
+	if (tsum[lc[k2]]-tsum[lc[k1]] > kdup)
+		ret = min(ret, (unsigned ll)querykdup(lc[k1], lc[k2], kdup, tl, mid));
+	if (tsum[rc[k2]]-tsum[rc[k1]] > kdup)
+		ret = min(ret, (unsigned ll)querykdup(rc[k1], rc[k2], kdup, mid+1, tr));
+	return ret;
+}
 
 int main()
 {
+	scanf("%lld%lld", &N, &Q);
+	D = log2(N)+1;
+	rt[0] = alc++;
+	for (ll i=1; i<1<<D; ++i)
+	{
+		lc[i] = alc++;
+		rc[i] = alc++;
+	}
+
+	for (ll i=1; i<=N; ++i)
+	{
+		ll d; scanf("%lld", &d);
+		rt[i] = rt[i-1];
+		update(d, 1, rt[i]);
+	}
+
+	for (ll i=1; i<=N; ++i)
+	{
+		printf("\ntree at %d:", i);
+		dump(rt[i]);
+	}
+
+	for (ll i=0; i<Q; ++i)
+	{
+		ll l, r, k;
+		scanf("%lld%lld%lld", &l, &r, &k);
+		printf("%lld\n", querykdup(rt[l-1], rt[r], (r-l+1)/k)); // FIX: r-l+1 not l-r+1 smah
+	}
 
 	return 0;
 }
