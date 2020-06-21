@@ -2,6 +2,7 @@
 // Sun 21 Jun 2020 @ 10:33 (PDT)
 
 #include <iostream>
+#include <numeric>
 #define ll long long
 using namespace std;
 
@@ -70,8 +71,9 @@ int main()
 	{
 		ll d; scanf("%lld", &d);
 		rt[i] = rt[i-1];
+		printf("updating %d @ %d: %d..%d\n", d, i, vis[d]+1, i);
 		update(vis[d]+1, i, 1, rt[i]);
-		vis[d] = i-1;
+		vis[d] = i;
 	}
 	for (ll i=0; i<Q; ++i)
 	{
