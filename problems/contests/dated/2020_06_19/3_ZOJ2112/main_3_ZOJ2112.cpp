@@ -98,19 +98,6 @@ Node *bound(Node *cur, int d, int dir=0)
 	return cur->d < d == dir ? nullptr : cur;	// FIX: equation--return cur if opposite direction
 }
 
-//#define RESET "\033[0m"
-//#define BLACK "\x1b[38;5;239m"
-//void dump(Node *cur, int lay=1, long long lbar=0, long long rbar=0)
-//{
-//    if (lay == 1) printf("dump:\n");
-//    if (!cur) return;
-//    dump(cur->c[1], lay+1);
-//    for (int i=0; i<lay; ++i)
-//        printf("%c   ", (lbar|rbar)&(1<<i) ? '|' : ' ');
-//    printf("%d %s(%4d @ %x)%s\n", cur->d, BLACK, cur->w, cur, RESET);
-//    dump(cur->c[0], lay+1);
-//}
-
 inline ll at(ll v, ll t)
 {	// allow segtree to use treap
 	return bound(treaps[v], t)->k;
@@ -182,20 +169,35 @@ ll querykth(ll v, ll t1, ll t2, ll kth, ll tl=1, ll tr=1<<D)
 		return querykth(v<<1|1, t1, t2, kth-lsize, mid+1, tr);
 }
 
+#define RESET "\033[0m"
+#define BLACK "\x1b[38;5;239m"
 void dump_segt(ll v, ll t)
 {
 	ll d = D+1;
 	queue<pair<ll, ll> > bfs; bfs.push(mp(v, t));
+	printf("%s", BLACK);
 	for (ll i=1; i<1<<1+D; ++i)
 	{
 		auto p = bfs.front(); bfs.pop();
 		bfs.push(mp(p.f<<1, p.s)); bfs.push(mp(p.f<<1|1, p.s));
 		ll k = at(p.f, p.s);
 		if (__builtin_popcount(i) == 1) { --d; printf("\n"); }
+		if (!d) printf("%s", RESET);
 		printf("%2d: %2d +%-2d   ", k, segt[k], addt[k]);
 		for (ll i=1; i<1<<d; ++i) printf("             ");
 	}
 	printf("\n");
+}
+
+void dump_treap(Node *cur, int lay=1, long long lbar=0, long long rbar=0)
+{
+	if (lay == 1) printf("dump:\n");
+	if (!cur) return;
+	dump_treap(cur->c[1], lay+1);
+	for (int i=0; i<lay; ++i)
+		printf("%c   ", (lbar|rbar)&(1<<i) ? '|' : ' ');
+	printf("%d %s(%4d @ %x)%s\n", cur->d, BLACK, cur->w, cur, RESET);
+	dump_treap(cur->c[0], lay+1);
 }
 
 void bigdump(ll time)
@@ -264,17 +266,23 @@ int main()
 			{
 				ll kth; scanf("%lld", &kth);
 				//printf("%lld\n", querykth(1, l-1, r, kth)-1); // TODO put back
-				printf("%lld\n", querykth(1, l-1, r, kth));
+				printf("=> %lld\n", querykth(1, l-1, r, kth));
 			}
 			else if (c == 'C')
 			{
-				for (ll v=arr[i]+(1<<D), newv=r+(1<<D); v>1; v>>=1, newv>>=1)
+				--r;	// TODO: remove
+				--arr[l];	// TODO: remove
+				for (ll v=arr[l]+(1<<D), newv=r+(1<<D); v>1; v>>=1, newv>>=1)
 				{
 					ll k = at(v, l);
+					printf("iter: v%d newv%d k%d\n", v, newv, k);
 					remove(treaps[v], l);
 					insert(treaps[newv], l, k);
-					if (v < 1<<D) comb(k, v, l);	// TODO: is this enough to update the node?
+					printf("segt[prev] = %d\n", segt[at(v, l-1)]);
+					if (v < 1<<D) comb(k, newv, l);	// TODO: is this enough to update the node?
+					else segt[k] = segt[at(newv, l-1)] +1;
 				}
+				++arr[l];	// TODO: remove
 			}
 			else printf("got char '%c'\n", c);
 		}
