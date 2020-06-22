@@ -44,9 +44,9 @@ ll N, D, Q;
 
 struct Node
 {
-	int d, w, idx;
+	int d, w, k;
 	Node *c[2] = {};
-	Node(int d, int idx): d(d), w(rand()%1000), idx(idx) {}
+	Node(int d, int idx): d(d), w(rand()%1000), k(idx) {}
 } *treaps[MX];
 void rotate(Node *&cur, bool dir)
 {
@@ -96,56 +96,68 @@ Node *bound(Node *cur, int d, int dir=0)
 	return cur->d < d == dir ? nullptr : cur;	// FIX: equation--return cur if opposite direction
 }
 
-#define RESET "\033[0m"
-#define BLACK "\x1b[38;5;239m"
-void dump(Node *cur, int lay=1, long long lbar=0, long long rbar=0)
-{
-	if (lay == 1) printf("dump:\n");
-	if (!cur) return;
-	dump(cur->c[1], lay+1);
-	for (int i=0; i<lay; ++i)
-		printf("%c   ", (lbar|rbar)&(1<<i) ? '|' : ' ');
-	printf("%d %s(%4d @ %x)%s\n", cur->d, BLACK, cur->w, cur, RESET);
-	dump(cur->c[0], lay+1);
+//#define RESET "\033[0m"
+//#define BLACK "\x1b[38;5;239m"
+//void dump(Node *cur, int lay=1, long long lbar=0, long long rbar=0)
+//{
+//    if (lay == 1) printf("dump:\n");
+//    if (!cur) return;
+//    dump(cur->c[1], lay+1);
+//    for (int i=0; i<lay; ++i)
+//        printf("%c   ", (lbar|rbar)&(1<<i) ? '|' : ' ');
+//    printf("%d %s(%4d @ %x)%s\n", cur->d, BLACK, cur->w, cur, RESET);
+//    dump(cur->c[0], lay+1);
+//}
+
+inline ll child(ll v, ll t)
+{	// allow segtree to use treap
+	return bound(treaps[v], d)->k;
 }
 
 ll alloc=1, segt[MX<<6], addt[MX<<6], lc[MX<<6], rc[MX<<6], rt[MX];
-void dupe(ll &k)
+// k = raw index in presistent segtree storage
+// v = segtree node id (heap array storage index)
+// t = time
+ll dupe(ll v, ll t)
 {
+	ll k = child(v, t);
 	segt[alloc] = segt[k];
 	addt[alloc] = addt[k];
 	lc[alloc] = lc[k];
 	rc[alloc] = rc[k];
-	k = alloc++;
+	insert(treaps[v], t, alloc);
+	return alloc++;
 }
-void apply(ll addv, ll &k, ll tl, ll tr)
+ll apply(ll addv, ll v, ll t, ll tl, ll tr)
 {
 	if (!addv) return;
-	dupe(k);
+	ll k = dupe(v, t);
 	addt[k] = addv;
 	segt[k] += addv * (tr-tl+1);
+	return k;
 }
-void push(ll &k, ll tl, ll tr)
+ll push(ll v, ll t, ll tl, ll tr)
 {
-	dupe(k);
+	ll k = dupe(v, t);
 	ll mid = tl + (tr-tl>>1);
-	apply(addt[k], lc[k], tl, mid);
-	apply(addt[k], rc[k], mid+1, tr);
+	apply(addt[k], child(v<<1, t), tl, mid);
+	apply(addt[k], child(v<<1|1, t), mid+1, tr);
 	addt[k] = 0;
+	return k;
 }
 void comb(ll k)
 {
 	segt[k] = segt[lc[k]] + segt[rc[k]];
 }
 
-void update(ll ql, ll qr, ll addv, ll &k, ll tl=1, ll tr=1<<D)
+void update(ll ql, ll qr, ll addv, ll v, ll t, ll tl=1, ll tr=1<<D)
 {
 	if (qr < tl || tr < ql) return;
-	if (ql <= tl && tr <= qr) return apply(addv, k, tl, tr);
-	push(k, tl, tr); ll mid = tl + (tr-tl>>1);
-	update(ql, qr, addv, lc[k], tl, mid);
-	update(ql, qr, addv, rc[k], mid+1, tr);
-	comb(k);
+	if (ql <= tl && tr <= qr) return apply(addv, v, t, tl, tr);
+	ll k = push(v, t, tl, tr); ll mid = tl + (tr-tl>>1);
+	update(ql, qr, addv, v<<1, t, tl, mid);
+	update(ql, qr, addv, v<<1|1, t, mid+1, tr);
+	comb(child(v, t));	// should be equivalent to `comb(k);`
 }
 //ll query(ll ql, ll qr, ll k, ll tl=1, ll tr=1<<D, ll setv=-1)
 //{
@@ -156,31 +168,32 @@ void update(ll ql, ll qr, ll addv, ll &k, ll tl=1, ll tr=1<<D)
 //    return query(ql, qr, lc[k], tl, mid, setv)
 //         + query(ql, qr, rc[k], mid+1, tr, setv);
 //}
-ll querykth(ll k1, ll k2, ll kth, ll tl=1, ll tr=1<<D)
-{
-	printf("query %dth %d and %d (%d..%d)\n", kth, k1, k2, tl, tr);
+ll querykth(ll v, ll t1, ll t2, ll kth, ll tl=1, ll tr=1<<D)
+{	// TODO
+	printf("query %dth (%d and %d @%d (%d..%d))\n", kth, t1, t2, v, tl, tr);
 	if (tl == tr) return tl;
-	push(k1, tl, tr); push(k2, tl, tr);
+	push(v, t1, tl, tr); push(v, t2, tl, tr);
 	ll mid = tl + (tr-tl>>1);
-	ll lsize = segt[lc[k2]] - segt[lc[k1]];
-	printf("%d - %d = %d\n", segt[lc[k2]], segt[lc[k1]], lsize);
+	ll lsize = segt[child(v<<1, t2)] - segt[child(v<<1, t1)];
+	printf("%d - %d = %d\n", segt[child(v, t2)], segt[child(v, t1)], lsize);
 	if (lsize >= kth)
-		return querykth(lc[k1], lc[k2], kth, tl, mid);
+		return querykth(child(v<<1, t1), child(v<<1, t2), kth, tl, mid);
 	else
-		return querykth(rc[k1], rc[k2], kth-lsize, mid+1, tr);
+		return querykth(child(v<<1|1, t1), child(v<<1|1, t2), kth-lsize, mid+1, tr);
 }
 
 int main()
 {
-	while (true)
-	{
-		char c=0; while(c<'a' || c>'z') scanf("%c", &c);
-		ll v, d; scanf("%lld%lld", &v, &d);
-		if (c == 'i') insert(treaps[v], d, d);
-		if (c == 'r') remove(treaps[v], d);
-		if (c == 'b') printf("=> %d\n", bound(treaps[v], d)->idx);
-		printf("treap %d:\n", v); dump(treaps[v]);
-	}
+	//while (true)
+	//{
+	//    char c=0; while(c<'a' || c>'z') scanf("%c", &c);
+	//    ll v, d; scanf("%lld%lld", &v, &d);
+	//    if (c == 'i') insert(treaps[v], d, d);
+	//    if (c == 'r') remove(treaps[v], d);
+	//    if (c == 'b') printf("=> %d\n", bound(treaps[v], d)->idx);
+	//    printf("treap %d:\n", v); dump(treaps[v]);
+	//}
+
 	int T; scanf("%lld", &T);
 	while (T--)
 	{
