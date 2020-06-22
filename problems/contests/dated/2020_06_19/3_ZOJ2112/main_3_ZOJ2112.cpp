@@ -111,10 +111,10 @@ Node *bound(Node *cur, int d, int dir=0)
 
 inline ll child(ll v, ll t)
 {	// allow segtree to use treap
-	return bound(treaps[v], d)->k;
+	return bound(treaps[v], t)->k;
 }
 
-ll alloc=1, segt[MX<<6], addt[MX<<6], lc[MX<<6], rc[MX<<6], rt[MX];
+ll alloc=1, segt[MX<<6], addt[MX<<6], rt[MX];
 // k = raw index in presistent segtree storage
 // v = segtree node id (heap array storage index)
 // t = time
@@ -123,14 +123,12 @@ ll dupe(ll v, ll t)
 	ll k = child(v, t);
 	segt[alloc] = segt[k];
 	addt[alloc] = addt[k];
-	lc[alloc] = lc[k];
-	rc[alloc] = rc[k];
 	insert(treaps[v], t, alloc);
 	return alloc++;
 }
 ll apply(ll addv, ll v, ll t, ll tl, ll tr)
 {
-	if (!addv) return;
+	if (!addv) return child(v, t);
 	ll k = dupe(v, t);
 	addt[k] = addv;
 	segt[k] += addv * (tr-tl+1);
@@ -140,24 +138,24 @@ ll push(ll v, ll t, ll tl, ll tr)
 {
 	ll k = dupe(v, t);
 	ll mid = tl + (tr-tl>>1);
-	apply(addt[k], child(v<<1, t), tl, mid);
-	apply(addt[k], child(v<<1|1, t), mid+1, tr);
+	apply(addt[k], v<<1, t, tl, mid);
+	apply(addt[k], v<<1|1, t, mid+1, tr);
 	addt[k] = 0;
 	return k;
 }
-void comb(ll k)
+void comb(ll k, ll v, ll t)
 {
-	segt[k] = segt[lc[k]] + segt[rc[k]];
+	segt[k] = segt[child(v<<1, t)] + segt[child(v<<1|1, t)];
 }
 
 void update(ll ql, ll qr, ll addv, ll v, ll t, ll tl=1, ll tr=1<<D)
 {
 	if (qr < tl || tr < ql) return;
-	if (ql <= tl && tr <= qr) return apply(addv, v, t, tl, tr);
+	if (ql <= tl && tr <= qr) { apply(addv, v, t, tl, tr); return; }
 	ll k = push(v, t, tl, tr); ll mid = tl + (tr-tl>>1);
 	update(ql, qr, addv, v<<1, t, tl, mid);
 	update(ql, qr, addv, v<<1|1, t, mid+1, tr);
-	comb(child(v, t));	// should be equivalent to `comb(k);`
+	comb(k, v, t);	// should be equivalent to `comb(k);`
 }
 //ll query(ll ql, ll qr, ll k, ll tl=1, ll tr=1<<D, ll setv=-1)
 //{
@@ -177,9 +175,9 @@ ll querykth(ll v, ll t1, ll t2, ll kth, ll tl=1, ll tr=1<<D)
 	ll lsize = segt[child(v<<1, t2)] - segt[child(v<<1, t1)];
 	printf("%d - %d = %d\n", segt[child(v, t2)], segt[child(v, t1)], lsize);
 	if (lsize >= kth)
-		return querykth(child(v<<1, t1), child(v<<1, t2), kth, tl, mid);
+		return querykth(v<<1, t1, t2, kth, tl, mid);
 	else
-		return querykth(child(v<<1|1, t1), child(v<<1|1, t2), kth-lsize, mid+1, tr);
+		return querykth(v<<1|1, t1, t2, kth-lsize, mid+1, tr);
 }
 
 int main()
@@ -194,28 +192,23 @@ int main()
 	//    printf("treap %d:\n", v); dump(treaps[v]);
 	//}
 
-	int T; scanf("%lld", &T);
+	ll T; scanf("%lld", &T);
 	while (T--)
 	{
 		scanf("%lld%lld", &N, &Q);
 		D = log2(N) +1;
 		memset(segt, 0, sizeof segt);
 		memset(addt, 0, sizeof addt);
-		memset(lc, 0, sizeof lc);
-		memset(rc, 0, sizeof rc);
-		memset(rt, 0, sizeof rt);
 
-		rt[0] = alloc ++;
-		for (ll k=1; k<1<<1+D; ++k)
+		for (ll v=1; v<1<<1+D; ++v)
 		{
-			lc[k] = alloc++;
-			rc[k] = alloc++;
+			insert(treaps[v], 0, 0);
 		}
 		for (ll i=1; i<=N; ++i)
 		{
 			ll d; scanf("%lld", &d);
 			rt[i] = rt[i-1];
-			update(d+1, d+1, 1, rt[i]);
+			update(d+1, d+1, 1, 1, i);
 		}
 
 		for (ll i=0; i<Q; ++i)
@@ -224,8 +217,8 @@ int main()
 			ll l, r; scanf("%lld%lld", &l, &r);
 			if (c == 'Q')
 			{
-				ll v; scanf("%lld", &v);
-				printf("%lld\n", querykth(rt[l-1], rt[r], v)-1);
+				ll kth; scanf("%lld", &kth);
+				printf("%lld\n", querykth(1, l-1, r, kth)-1);
 			}
 			else if (c == 'C')
 			{
