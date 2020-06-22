@@ -40,7 +40,7 @@
 
 using namespace std;
 const ll MX = 50111;
-ll N, D, Q;
+ll N, D, Q, arr[MX];
 
 struct Node
 {
@@ -109,7 +109,7 @@ Node *bound(Node *cur, int d, int dir=0)
 //    dump(cur->c[0], lay+1);
 //}
 
-inline ll child(ll v, ll t)
+inline ll at(ll v, ll t)
 {	// allow segtree to use treap
 	return bound(treaps[v], t)->k;
 }
@@ -120,7 +120,7 @@ ll alc=1, segt[MX<<6], addt[MX<<6];
 // t = time
 ll dupe(ll v, ll t)
 {
-	ll k = child(v, t);
+	ll k = at(v, t);
 	segt[alc] = segt[k];
 	addt[alc] = addt[k];
 	insert(treaps[v], t, alc);
@@ -128,7 +128,7 @@ ll dupe(ll v, ll t)
 }
 ll apply(ll addv, ll v, ll t, ll tl, ll tr)
 {
-	if (!addv) return child(v, t);
+	if (!addv) return at(v, t);
 	ll k = dupe(v, t);
 	addt[k] = addv;
 	segt[k] += addv * (tr-tl+1);
@@ -145,7 +145,7 @@ ll push(ll v, ll t, ll tl, ll tr)
 }
 void comb(ll k, ll v, ll t)
 {
-	segt[k] = segt[child(v<<1, t)] + segt[child(v<<1|1, t)];
+	segt[k] = segt[at(v<<1, t)] + segt[at(v<<1|1, t)];
 }
 
 void update(ll ql, ll qr, ll addv, ll v, ll t, ll tl=1, ll tr=1<<D)
@@ -172,8 +172,8 @@ ll querykth(ll v, ll t1, ll t2, ll kth, ll tl=1, ll tr=1<<D)
 	if (tl == tr) return tl;
 	push(v, t1, tl, tr); push(v, t2, tl, tr);
 	ll mid = tl + (tr-tl>>1);
-	ll lsize = segt[child(v<<1, t2)] - segt[child(v<<1, t1)];
-	printf("%d - %d = %d\n", segt[child(v, t2)], segt[child(v, t1)], lsize);
+	ll lsize = segt[at(v<<1, t2)] - segt[at(v<<1, t1)];
+	printf("%d - %d = %d\n", segt[at(v, t2)], segt[at(v, t1)], lsize);
 	if (lsize >= kth)
 		return querykth(v<<1, t1, t2, kth, tl, mid);
 	else
@@ -188,7 +188,7 @@ void dump_segt(ll v, ll t)
 	{
 		auto p = bfs.front(); bfs.pop();
 		bfs.push(mp(p.f<<1, p.s)); bfs.push(mp(p.f<<1|1, p.s));
-		ll k = child(p.f, p.s);
+		ll k = at(p.f, p.s);
 		if (__builtin_popcount(i) == 1) { --d; printf("\n"); }
 		printf("%2d: %2d +%-2d   ", k, segt[k], addt[k]);
 		for (ll i=1; i<1<<d; ++i) printf("             ");
@@ -204,7 +204,7 @@ void bigdump(ll time)
 		printf("t=%-3d", t);
 		for (ll v=1; v<1<<1+D; ++v)
 		{
-			ll got = child(v, t);
+			ll got = at(v, t);
 			if (got != last[t])
 			{
 				printf("%5d", got);
@@ -244,8 +244,8 @@ int main()
 		}
 		for (ll i=1; i<=N; ++i)
 		{
-			ll d; scanf("%lld", &d);
-			update(d+1, d+1, 1, 1, i);
+			scanf("%lld", &arr[i]);
+			update(arr[i]+1, arr[i]+1, 1, 1, i);
 		}
 
 		for (ll i=i; i<=Q; ++i)
@@ -260,8 +260,13 @@ int main()
 			}
 			else if (c == 'C')
 			{
-				//update(l, l, r, );
-				// TODO
+				for (ll v=arr[i]+(1<<D), newv=r+(1<<D); v>1; v>>=1, newv>>=1)
+				{
+					ll k = at(v, l);
+					remove(treaps[v], l);
+					insert(treaps[newv], l, k);
+					if (v < 1<<D) comb(k, v, l);	// TODO: is this enough to update the node?
+				}
 			}
 			else printf("got char '%c'\n", c);
 		}
