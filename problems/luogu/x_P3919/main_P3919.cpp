@@ -56,7 +56,7 @@ int main()
 		int t, c, p, d; scanf("%d%d%d", &t, &c, &p);
 		rt[q] = rt[t];
 		if (c == 2) printf("%d\n", query_iter(p, rt[q]));
-		if (c == 1)
+		else
 		{
 			scanf("%d", &d);
 			update(p, d, rt[q]);
