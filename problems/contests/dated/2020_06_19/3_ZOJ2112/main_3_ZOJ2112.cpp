@@ -46,7 +46,7 @@ struct Node
 {
 	int d, w, idx;
 	Node *c[2] = {};
-	Node(int d, int idx): d(d), w(rand()), idx(idx) {}
+	Node(int d, int idx): d(d), w(rand()%1000), idx(idx) {}
 } *treaps[MX];
 void rotate(Node *&cur, bool dir)
 {
@@ -74,7 +74,7 @@ void remove(Node *&cur, int d)
 		{
 			bool dir = cur->c[0]->w < cur->c[1]->w;
 			rotate(cur, dir);
-			remove(cur->c[1-dir]);
+			remove(cur->c[1-dir], d);
 		}
 		else
 		{
@@ -85,28 +85,27 @@ void remove(Node *&cur, int d)
 	}
 	else
 	{
-		remove(cur->c[cur->d<d]);
+		remove(cur->c[cur->d<d], d);
 	}
 }
 Node *bound(Node *cur, int d, int dir=0)
 {
 	if (!cur || cur->d == d) return cur;
-	Node *got = bound(cur->c[cur->d<d]);
+	Node *got = bound(cur->c[cur->d<d], d, dir);
 	if (got) return got;
-	return cur->d < d == dir ? cur : nullptr;
+	return cur->d < d == dir ? nullptr : cur;	// FIX: equation--return cur if opposite direction
 }
 
 #define RESET "\033[0m"
 #define BLACK "\x1b[38;5;239m"
 void dump(Node *cur, int lay=1, long long lbar=0, long long rbar=0)
 {
-	return;
 	if (lay == 1) printf("dump:\n");
 	if (!cur) return;
 	dump(cur->c[1], lay+1);
 	for (int i=0; i<lay; ++i)
 		printf("%c   ", (lbar|rbar)&(1<<i) ? '|' : ' ');
-	printf("%d x%d %s(%4d @ %x)%s\n", cur->d, cur->n, BLACK, cur->w, cur, RESET);
+	printf("%d %s(%4d @ %x)%s\n", cur->d, BLACK, cur->w, cur, RESET);
 	dump(cur->c[0], lay+1);
 }
 
@@ -173,6 +172,15 @@ ll querykth(ll k1, ll k2, ll kth, ll tl=1, ll tr=1<<D)
 
 int main()
 {
+	while (true)
+	{
+		char c=0; while(c<'a' || c>'z') scanf("%c", &c);
+		ll v, d; scanf("%lld%lld", &v, &d);
+		if (c == 'i') insert(treaps[v], d, d);
+		if (c == 'r') remove(treaps[v], d);
+		if (c == 'b') printf("=> %d\n", bound(treaps[v], d)->idx);
+		printf("treap %d:\n", v); dump(treaps[v]);
+	}
 	int T; scanf("%lld", &T);
 	while (T--)
 	{
