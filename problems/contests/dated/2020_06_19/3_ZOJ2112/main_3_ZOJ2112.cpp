@@ -40,6 +40,8 @@
 
 using namespace std;
 const ll MX = 50111;
+//const ll MXA = 1e9 + 100;	 // TODO descretize
+const ll MXA = 3;
 ll N, D, Q, arr[MX];
 
 struct Node
@@ -205,11 +207,14 @@ void bigdump(ll time)
 		for (ll v=1; v<1<<1+D; ++v)
 		{
 			ll got = at(v, t);
-			if (got != last[t])
+			if (got != last[v])
 			{
 				printf("%5d", got);
-				last[t] = got;
+				last[v] = got;
 			}
+			else
+				printf("     ");
+				//printf("%5d", got);
 		}
 		printf("\n");
 	}
@@ -234,7 +239,7 @@ int main()
 	while (T--)
 	{
 		scanf("%lld%lld", &N, &Q);
-		D = log2(N) +1;
+		D = log2(MXA) +1;
 		memset(segt, 0, sizeof segt);
 		memset(addt, 0, sizeof addt);
 
@@ -245,18 +250,21 @@ int main()
 		for (ll i=1; i<=N; ++i)
 		{
 			scanf("%lld", &arr[i]);
-			update(arr[i]+1, arr[i]+1, 1, 1, i);
+			//update(arr[i]+1, arr[i]+1, 1, 1, i);	// TODO put back
+			update(arr[i], arr[i], 1, 1, i);
 		}
 
-		for (ll i=i; i<=Q; ++i)
+		for (ll i=1; i<=Q; ++i)
 		{
-			bigdump(i); printf("\n\n$ ");
+			bigdump(N); printf("\n\n$ ");
 			char c=0; scanf("\n%c", &c);
 			ll l, r; scanf("%lld%lld", &l, &r);
+			printf("working...\n");
 			if (c == 'Q')
 			{
 				ll kth; scanf("%lld", &kth);
-				printf("%lld\n", querykth(1, l-1, r, kth)-1);
+				//printf("%lld\n", querykth(1, l-1, r, kth)-1); // TODO put back
+				printf("%lld\n", querykth(1, l-1, r, kth));
 			}
 			else if (c == 'C')
 			{
