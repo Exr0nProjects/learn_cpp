@@ -39,15 +39,10 @@
 #define s second
 
 using namespace std;
-const ll MX = 100111;
-ll N, D, Q, val[MX<<6];
-ll alc=1, lc[MX<<6], rc[MX<<6], rt[MX];
+const ll MX = 1000111;
+ll N, D, Q, val[MX<<5];
+ll alc=1, lc[MX<<5], rc[MX<<5], rt[MX];
 
-void dump(ll k)
-{
-	for (ll i=0; i<N; ++i) printf("%3d", val[k+i]);
-	printf("\n");
-}
 void dupe(ll &k)
 {
 	val[alc] = val[k];
@@ -55,26 +50,6 @@ void dupe(ll &k)
 	rc[alc] = rc[k];
 	k = alc++;
 }
-//void apply(ll setv, ll &k, ll tl, ll tr)
-//{
-//    if (setv < 0) return;
-//    dupe(k);
-//    sett[k] = setv;
-//    tsum[k] = setv * (tr-tl+1);
-//}
-//void push(ll &k, ll tl, ll tr)
-//{
-//    dupe(k);
-//    ll mid = tl + (tr-tl>>1);
-//    apply(sett[k], lc[k], tl, mid);
-//    apply(sett[k], rc[k], mid+1, tr);
-//    sett[k] = -1;
-//}
-//void comb(ll k)
-//{
-//    tsum[k] = tsum[lc[k]] + tsum[rc[k]];
-//}
-
 void update(ll q, ll setv, ll &k, ll tl=1, ll tr=1<<D)
 {
 	dupe(k);
@@ -103,20 +78,15 @@ int main()
 	{
 		lc[i] = alc++;
 		rc[i] = alc++;
-		//lc[i] = i<<1;
-		//rc[i] = i<<1|1;
 	}
 
 	for (ll i=0; i<N; ++i)
 	{
-		//ll d; scanf("%lld", &d);
-		//update(i, d, rt[0]);
 		scanf("%lld", &val[i+(1<<D)]);
 	}
 
 	for (ll q=1; q<=Q; ++q)
 	{
-		//dump(rt[q-1]); printf("\n$ ");
 		ll t, c, p; scanf("%lld%lld%lld", &t, &c, &p);
 		rt[q] = rt[t];
 		if (c == 2) printf("%lld\n", query(p, rt[q]));
