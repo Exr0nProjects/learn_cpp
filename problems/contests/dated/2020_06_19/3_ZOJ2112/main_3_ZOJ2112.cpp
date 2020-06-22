@@ -114,17 +114,17 @@ inline ll child(ll v, ll t)
 	return bound(treaps[v], t)->k;
 }
 
-ll alloc=1, segt[MX<<6], addt[MX<<6], rt[MX];
+ll alc=1, segt[MX<<6], addt[MX<<6];
 // k = raw index in presistent segtree storage
 // v = segtree node id (heap array storage index)
 // t = time
 ll dupe(ll v, ll t)
 {
 	ll k = child(v, t);
-	segt[alloc] = segt[k];
-	addt[alloc] = addt[k];
-	insert(treaps[v], t, alloc);
-	return alloc++;
+	segt[alc] = segt[k];
+	addt[alc] = addt[k];
+	insert(treaps[v], t, alc);
+	return alc++;
 }
 ll apply(ll addv, ll v, ll t, ll tl, ll tr)
 {
@@ -167,7 +167,7 @@ void update(ll ql, ll qr, ll addv, ll v, ll t, ll tl=1, ll tr=1<<D)
 //         + query(ql, qr, rc[k], mid+1, tr, setv);
 //}
 ll querykth(ll v, ll t1, ll t2, ll kth, ll tl=1, ll tr=1<<D)
-{	// TODO
+{
 	printf("query %dth (%d and %d @%d (%d..%d))\n", kth, t1, t2, v, tl, tr);
 	if (tl == tr) return tl;
 	push(v, t1, tl, tr); push(v, t2, tl, tr);
@@ -178,6 +178,44 @@ ll querykth(ll v, ll t1, ll t2, ll kth, ll tl=1, ll tr=1<<D)
 		return querykth(v<<1, t1, t2, kth, tl, mid);
 	else
 		return querykth(v<<1|1, t1, t2, kth-lsize, mid+1, tr);
+}
+
+void dump_segt(ll v, ll t)
+{
+	ll d = D+1;
+	queue<pair<ll, ll> > bfs; bfs.push(mp(v, t));
+	for (ll i=1; i<1<<1+D; ++i)
+	{
+		auto p = bfs.front(); bfs.pop();
+		bfs.push(mp(p.f<<1, p.s)); bfs.push(mp(p.f<<1|1, p.s));
+		ll k = child(p.f, p.s);
+		if (__builtin_popcount(i) == 1) { --d; printf("\n"); }
+		printf("%2d: %2d +%-2d   ", k, segt[k], addt[k]);
+		for (ll i=1; i<1<<d; ++i) printf("             ");
+	}
+	printf("\n");
+}
+
+void bigdump(ll time)
+{
+	ll last[MX] = {};
+	for (ll t=0; t<=time; ++t)
+	{
+		printf("t=%-3d", t);
+		for (ll v=1; v<1<<1+D; ++v)
+		{
+			ll got = child(v, t);
+			if (got != last[t])
+			{
+				printf("%5d", got);
+				last[t] = got;
+			}
+		}
+		printf("\n");
+	}
+
+	for (ll t=0; t<=time; ++t)
+		dump_segt(1, t);
 }
 
 int main()
@@ -202,17 +240,17 @@ int main()
 
 		for (ll v=1; v<1<<1+D; ++v)
 		{
-			insert(treaps[v], 0, 0);
+			insert(treaps[v], 0, alc++);
 		}
 		for (ll i=1; i<=N; ++i)
 		{
 			ll d; scanf("%lld", &d);
-			rt[i] = rt[i-1];
 			update(d+1, d+1, 1, 1, i);
 		}
 
-		for (ll i=0; i<Q; ++i)
+		for (ll i=i; i<=Q; ++i)
 		{
+			bigdump(i); printf("\n\n$ ");
 			char c=0; scanf("\n%c", &c);
 			ll l, r; scanf("%lld%lld", &l, &r);
 			if (c == 'Q')
