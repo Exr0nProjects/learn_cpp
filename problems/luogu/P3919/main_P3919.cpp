@@ -40,63 +40,56 @@
 
 using namespace std;
 const ll MX = 100111;
-ll N, D, Q, tsum[MX<<6], sett[MX<<6];
+ll N, D, Q, val[MX<<6];
 ll alc=1, lc[MX<<6], rc[MX<<6], rt[MX];
 
 void dump(ll k)
 {
-	ll d = D+1;
-	queue<ll> bfs; bfs.push(k);
-	for (ll i=1; i<1<<1+D; ++i)
-	{
-		k = bfs.front(); bfs.pop();
-		bfs.push(lc[k]); bfs.push(rc[k]);
-		if (__builtin_popcount(i) == 1) { printf("\n"); --d; }
-		printf("%3d: %-2d+%-2d  ", k, tsum[k], sett[k]);
-		for (ll i=1; i<1<<d; ++i) printf("            ");
-	}
+	for (ll i=0; i<N; ++i) printf("%3d", val[k+i]);
+	printf("\n");
 }
 void dupe(ll &k)
 {
-	tsum[alc] = tsum[k];
-	sett[alc] = sett[k];
+	val[alc] = val[k];
 	lc[alc] = lc[k];
 	rc[alc] = rc[k];
 	k = alc++;
 }
-void apply(ll setv, ll &k, ll tl, ll tr)
-{
-	if (setv < 0) return;
-	dupe(k);
-	sett[k] = setv;
-	tsum[k] = setv * (tr-tl+1);
-}
-void push(ll &k, ll tl, ll tr)
-{
-	dupe(k);
-	ll mid = tl + (tr-tl>>1);
-	apply(sett[k], lc[k], tl, mid);
-	apply(sett[k], rc[k], mid+1, tr);
-	sett[k] = -1;
-}
-void comb(ll k)
-{
-	tsum[k] = tsum[lc[k]] + tsum[rc[k]];
-}
+//void apply(ll setv, ll &k, ll tl, ll tr)
+//{
+//    if (setv < 0) return;
+//    dupe(k);
+//    sett[k] = setv;
+//    tsum[k] = setv * (tr-tl+1);
+//}
+//void push(ll &k, ll tl, ll tr)
+//{
+//    dupe(k);
+//    ll mid = tl + (tr-tl>>1);
+//    apply(sett[k], lc[k], tl, mid);
+//    apply(sett[k], rc[k], mid+1, tr);
+//    sett[k] = -1;
+//}
+//void comb(ll k)
+//{
+//    tsum[k] = tsum[lc[k]] + tsum[rc[k]];
+//}
 
 void update(ll q, ll setv, ll &k, ll tl=1, ll tr=1<<D)
 {
-	if (q < tl || q > tr) return;
-	if (tl == tr) return apply(setv, k, tl, tr);
-	push(k, tl, tr); ll mid = tl + (tr-tl>>1);
+	dupe(k);
+	if (tl == tr) { val[k] = setv; return; }
+
+	ll mid = tl + (tr-tl>>1);
 	if (q <= mid) update(q, setv, lc[k], tl, mid);
 	else update(q, setv, rc[k], mid+1, tr);
 }
-ll query(ll q, ll &k, ll tl=1, ll tr=1<<D)
+ll query(ll q, ll k, ll tl=1, ll tr=1<<D)
 {
-	if (q < tl || q > tr) return 0;
-	if (tl == tr) return tsum[k];
-	push(k, tl, tr); ll mid = tl + (tr-tl>>1);
+	//printf("query %d @ %d(%d..%d)\n", q, k, tl, tr);
+	if (tl == tr) return val[k];
+	ll mid = tl + (tr-tl>>1);
+
 	if (q <= mid) return query(q, lc[k], tl, mid);
 	else return query(q, rc[k], mid+1, tr);
 }
@@ -106,16 +99,19 @@ int main()
 	scanf("%lld%lld", &N, &Q);
 	D = log2(N)+1;
 	rt[0] = alc++;
-	for (ll i=1; i<=N; ++i)
+	for (ll i=1; i<1<<D; ++i)
 	{
 		lc[i] = alc++;
 		rc[i] = alc++;
+		//lc[i] = i<<1;
+		//rc[i] = i<<1|1;
 	}
 
-	for (ll i=1; i<=N; ++i)
+	for (ll i=0; i<N; ++i)
 	{
-		ll d; scanf("%lld", &d);
-		update(i, d, rt[0]);
+		//ll d; scanf("%lld", &d);
+		//update(i, d, rt[0]);
+		scanf("%lld", &val[i+(1<<D)]);
 	}
 
 	for (ll q=1; q<=Q; ++q)
