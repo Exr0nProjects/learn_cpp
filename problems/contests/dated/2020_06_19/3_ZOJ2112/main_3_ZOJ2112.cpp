@@ -41,6 +41,75 @@
 using namespace std;
 const ll MX = 50111;
 ll N, D, Q;
+
+struct Node
+{
+	int d, w, idx;
+	Node *c[2] = {};
+	Node(int d, int idx): d(d), w(rand()), idx(idx) {}
+} *treaps[MX];
+void rotate(Node *&cur, bool dir)
+{
+	if (!cur || !cur->c[dir]) return;
+	Node *thn = cur->c[dir];
+	cur->c[dir] = thn->c[1-dir];
+	thn->c[1-dir] = cur;
+	cur = thn;
+}
+Node *insert(Node *&cur, int d, int idx)
+{
+	if (!cur) return cur = new Node(d, idx);
+	Node *&stp = cur->c[cur->d < d];
+	Node *ins = insert(stp, d, idx);
+	if (cur->w < stp->w)
+		rotate(cur, cur->d<d);
+	return ins;
+}
+void remove(Node *&cur, int d)
+{
+	if (!cur) return;
+	if (cur->d == d)
+	{
+		if (cur->c[0] && cur->c[1])
+		{
+			bool dir = cur->c[0]->w < cur->c[1]->w;
+			rotate(cur, dir);
+			remove(cur->c[1-dir]);
+		}
+		else
+		{
+			Node *thn = cur;
+			cur = cur->c[0] ? cur->c[0] : cur->c[1];
+			delete thn;
+		}
+	}
+	else
+	{
+		remove(cur->c[cur->d<d]);
+	}
+}
+Node *bound(Node *cur, int d, int dir=0)
+{
+	if (!cur || cur->d == d) return cur;
+	Node *got = bound(cur->c[cur->d<d]);
+	if (got) return got;
+	return cur->d < d == dir ? cur : nullptr;
+}
+
+#define RESET "\033[0m"
+#define BLACK "\x1b[38;5;239m"
+void dump(Node *cur, int lay=1, long long lbar=0, long long rbar=0)
+{
+	return;
+	if (lay == 1) printf("dump:\n");
+	if (!cur) return;
+	dump(cur->c[1], lay+1);
+	for (int i=0; i<lay; ++i)
+		printf("%c   ", (lbar|rbar)&(1<<i) ? '|' : ' ');
+	printf("%d x%d %s(%4d @ %x)%s\n", cur->d, cur->n, BLACK, cur->w, cur, RESET);
+	dump(cur->c[0], lay+1);
+}
+
 ll alloc=1, segt[MX<<6], addt[MX<<6], lc[MX<<6], rc[MX<<6], rt[MX];
 void dupe(ll &k)
 {
