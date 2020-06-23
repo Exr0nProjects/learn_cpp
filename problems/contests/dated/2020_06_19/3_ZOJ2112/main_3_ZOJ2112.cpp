@@ -70,12 +70,12 @@ void dump_segtree(int k)
 	printf(RESET);
 	printf("\n");
 }
-void dump_persistent(int l, int r)
+void dump_persistent(int l, int r, int tree[])
 {
 	for (int i=l; i<=r; ++i)
 	{
 		printf("tree %d:", i);
-		dump_segtree(rt_bit[i]);
+		dump_segtree(tree[i]);
 		printf("\n");
 	}
 }
@@ -159,36 +159,36 @@ int querykth(int v1, int v2, int kth, int k1, int k2, int tl=1, int tr=1<<D)
 }
 int update(int idx, int val)
 {
-	bit_update(idx, 5, arr[idx], -1);	// TODO: replace 5 with M
-	bit_update(idx, 5, val, 1);
+	bit_update(idx, M, arr[idx], -1);
+	bit_update(idx, M, val, 1);
 	arr[idx] = val;
 }
 
 int main()
 {
-	{ // test BIT
-		scanf("%d%d", &N, &M);
-		for (int i=1; i<=N; ++i)
-			scanf("%d", &arr[i]);
-		rt_bit[0] = alc++;
-		//D = 64-__builtin_clz(N);
-		D = 2;
-		for (int i=1; i<1<<D; ++i)
-		{
-			lc[i] = alc++;
-			rc[i] = alc++;
-		}
-		for (int i=1; i<=M; ++i)
-			rt_bit[i] = rt_bit[0];
-
-		for (int i=1; i<=M; ++i)
-		{
-			dump_persistent(0, M);
-			int idx, val;
-			scanf("%d%d", &idx, &val);
-			update(idx, val);
-		}
-	}
+	//{ // test BIT
+	//    scanf("%d%d", &N, &M);
+	//    for (int i=1; i<=N; ++i)
+	//        scanf("%d", &arr[i]);
+	//    rt_bit[0] = alc++;
+	//    //D = 64-__builtin_clz(N);
+	//    D = 2;
+	//    for (int i=1; i<1<<D; ++i)
+	//    {
+	//        lc[i] = alc++;
+	//        rc[i] = alc++;
+	//    }
+	//    for (int i=1; i<=M; ++i)
+	//        rt_bit[i] = rt_bit[0];
+    //
+	//    for (int i=1; i<=M; ++i)
+	//    {
+	//        dump_persistent(0, M, rt_bit);
+	//        int idx, val;
+	//        scanf("%d%d", &idx, &val);
+	//        update(idx, val);
+	//    }
+	//}
 
 	int kases;
 	scanf("%d", &kases);
@@ -221,6 +221,7 @@ int main()
 			raw_update(d, 1, rt_org[i]);
 		}
 
+		dump_persistent(1, N, rt_org);
 		for (int i=1; i<=M; ++i)
 		{
 			char c=0; while (c < 'A' || c > 'Z') scanf("%c", &c);
