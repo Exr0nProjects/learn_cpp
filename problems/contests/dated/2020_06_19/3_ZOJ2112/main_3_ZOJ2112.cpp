@@ -48,37 +48,37 @@ int N, D, M, arr[MX];
 int alc=1, lc[MXTN], rc[MXTN], rt_org[MX], rt_bit[MX];
 int tsum[MXTN], addt[MXTN];
 
-#define RESET "\033[0m"
-#define BLACK "\x1b[38;5;239m"
-void dump_segtree(int k)
-{
-	queue<int> bfs; bfs.push(k);
-	int d = D+1;
-	printf(BLACK);
-	for (int i=1; i<1<<1+D; ++i)
-	{
-		if (__builtin_popcount(i) == 1) { printf("\n"); --d; }
-		k = bfs.front(); bfs.pop();
-		bfs.push(lc[k]); bfs.push(rc[k]);
-		if (i >= 1<<D) printf(RESET);
-		//printf("%3d: %2d+%-2d (%-2d %2d)   ", k, tsum[k], addt[k], lc[k], rc[k]);
-		//for (int i=1; i<1<<d; ++i) printf("                     ");
-
-		printf("%3d: %2d+%-2d  ", k, tsum[k], addt[k], lc[k], rc[k]);
-		for (int i=1; i<1<<d; ++i) printf("            ");
-	}
-	printf(RESET);
-	printf("\n");
-}
-void dump_persistent(int l, int r, int tree[])
-{
-	for (int i=l; i<=r; ++i)
-	{
-		printf("tree %d:", i);
-		dump_segtree(tree[i]);
-		printf("\n");
-	}
-}
+//#define RESET "\033[0m"
+//#define BLACK "\x1b[38;5;239m"
+//void dump_segtree(int k)
+//{
+//    queue<int> bfs; bfs.push(k);
+//    int d = D+1;
+//    printf(BLACK);
+//    for (int i=1; i<1<<1+D; ++i)
+//    {
+//        if (__builtin_popcount(i) == 1) { printf("\n"); --d; }
+//        k = bfs.front(); bfs.pop();
+//        bfs.push(lc[k]); bfs.push(rc[k]);
+//        if (i >= 1<<D) printf(RESET);
+//        //printf("%3d: %2d+%-2d (%-2d %2d)   ", k, tsum[k], addt[k], lc[k], rc[k]);
+//        //for (int i=1; i<1<<d; ++i) printf("                     ");
+//
+//        printf("%3d: %2d+%-2d  ", k, tsum[k], addt[k], lc[k], rc[k]);
+//        for (int i=1; i<1<<d; ++i) printf("            ");
+//    }
+//    printf(RESET);
+//    printf("\n");
+//}
+//void dump_persistent(int l, int r, int tree[])
+//{
+//    for (int i=l; i<=r; ++i)
+//    {
+//        printf("tree %d:", i);
+//        dump_segtree(tree[i]);
+//        printf("\n");
+//    }
+//}
 
 void dupe(int &k)
 {
@@ -118,7 +118,8 @@ void raw_update(int q, int addv, int &k, int tl=1, int tr=1<<D)
 }
 int aligned_query(int ql, int qr, int k, int tl=1, int tr=1<<D)
 {	// query where the range is gaurenteed to be aligned to a segment tree interval
-	if (ql != tl && qr != tr) return 0;	// shouldn't happen
+	//printf("        aligned query %d..%d @ %d (%d..%d)\n", ql, qr, k, tl, tr);
+	if (qr < tl || tr < ql) return 0;	// FIX: equ--can't just check if either side is equal
 	if (ql == tl && qr == tr) return tsum[k];
 	push(k, tl, tr); int mid = tl + (tr-tl>>1);
 	if (ql == tl) return aligned_query(ql, qr, lc[k], tl, mid);
@@ -133,23 +134,27 @@ void bit_rupdate(int v, int t, int x)
 }
 void bit_update(int l, int r, int t, int x)
 {
-	printf("updating prefix freq of %d from %d..%d by %d\n", t, l, r, x);
+	//printf("updating prefix freq of %d from %d..%d by %d\n", t, l, r, x);
 	bit_rupdate(l, t, x);
 	bit_rupdate(r+1, t, -x);
 }
 int bit_query(int v, int tl, int tr)
 {
-	printf("    bit query version %d for (%d..%d)\n", v, tl, tr);
+	//printf("    bit query version %d for (%d..%d)\n", v, tl, tr);
 	int tot = 0;
 	for (; v; v-=v&-v)
+	{
+		//printf("    checking verison %d\n", v);
 		tot += aligned_query(tl, tr, rt_bit[v]);
+	}
+	//printf("    => %d\n", tot);
 	return tot;
 }
 
 // solve functions
 int querykth(int v1, int v2, int kth, int k1, int k2, int tl=1, int tr=1<<D)
 {
-	printf("query #%d at (%d..%d) from (%d, %d] k(%d..%d)\n", kth, tl, tr, v1, v2, k1, k2);
+	//printf("query #%d at (%d..%d) from (%d, %d] k(%d..%d)\n", kth, tl, tr, v1, v2, k1, k2);
 	if (tl == tr) return tl;
 
 	int mid = tl + (tr-tl>>1);
@@ -159,7 +164,7 @@ int querykth(int v1, int v2, int kth, int k1, int k2, int tl=1, int tr=1<<D)
 	int lsize = tsum[lc[k2]] + bq2
 			  - tsum[lc[k1]] - bq1;
 
-	printf("lsize (%d..%d) = (%d + %d) - (%d + %d) = %d\n", tl, mid, tsum[lc[k2]], bq2, tsum[lc[k1]], bq1, lsize);
+	//printf("lsize (%d..%d) = (%d + %d) - (%d + %d) = %d\n", tl, mid, tsum[lc[k2]], bq2, tsum[lc[k1]], bq1, lsize);
 	if (kth <= lsize)
 		return querykth(v1, v2, kth, lc[k1], lc[k2], tl, mid);
 	else
@@ -229,10 +234,10 @@ int main()
 			raw_update(arr[i], 1, rt_org[i]);
 		}
 
-		dump_persistent(0, N, rt_org);
+		//dump_persistent(0, N, rt_org);
 		for (int i=1; i<=M; ++i)
 		{
-			dump_persistent(0, N, rt_bit);
+			//dump_persistent(0, N, rt_bit);
 			char c=0; while (c < 'A' || c > 'Z') scanf("%c", &c);
 			int l, r, k, t; scanf("%d", &l);
 			if (c == 'Q')
