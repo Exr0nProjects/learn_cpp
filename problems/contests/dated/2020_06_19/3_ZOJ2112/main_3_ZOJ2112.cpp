@@ -46,19 +46,56 @@ const ll MXTN = MX<<7;
 int alc=1, lc[MXTN], rc[MXTN], rt_org[MX], rt_bit[MX];
 int tsum[MXTN], addt[MXTN];
 
-void dupe(int &k);
-void apply(int addv, int &k, int tl, int tr);
-void push(int &k, int tl, int tr):
-void comb(int k);
+void dupe(int &k)
+{
+	lc[alc] = lc[k];
+	rc[alc] = rc[k];
+	tsum[alc] = tsum[k];
+	addt[alc] = addt[k];
+	k = alc++;
+}
+void apply(int addv, int &k, int tl, int tr)
+{
+	if (!addv) return;
+	dupe(k);
+	addt[k] += addv;
+	tsum[k] += addv*(tr-tl+1);
+}
+void push(int &k, int tl, int tr)
+{
+	dupe(k);
+	ll mid = tl + (tr-tl>>1);
+	apply(addt[k], lc[k], tl, mid);
+	apply(addt[k], rc[k], mid+1, tr);
+	addt[k] = 0;
+}
+void comb(int k)
+{
+	tsum[k] = tsum[lc[k]] + tsum[rc[k]];
+}
 
 void update(int q, int addv, int &k, int tl=1, int tr=N);
 int querykth(int k1, int k2, int kth, int tl=1, int tr=N);
 int aligned_query(int ql, int qr, int k, int tl=1, int tr=N);
 
 // BIT
-void bit_rupdate(int v, int t, int x);
-void bit_update(int l, int r, int t, int x);
-int bit_query(int v, int tl, int tr);
+void bit_rupdate(int v, int t, int x)
+{
+	for (; v<=N; v+=v&-v)
+		update(t, x, rt_bit[v]);
+}
+void bit_update(int l, int r, int t, int x)
+{
+	bit_rupdate(l, t, x);
+	bit_rupdate(r+1, t, -x);
+}
+int bit_query(int v, int tl, int tr)
+{
+	int tot = 0;
+	for (; v; v-=v&-v)
+		tot += aligned_query(tl, tr, rt_bit[v]);
+	return tot;
+}
 
 int main()
 {
