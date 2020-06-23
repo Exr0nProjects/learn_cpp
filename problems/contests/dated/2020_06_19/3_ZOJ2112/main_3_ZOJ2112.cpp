@@ -42,7 +42,7 @@ using namespace std;
 const ll MX = 100111;
 const ll MXTN = MX<<7;
 
-int N, M, arr[MX];
+int N, D, M, arr[MX];
 
 // segment tree
 int alc=1, lc[MXTN], rc[MXTN], rt_org[MX], rt_bit[MX];
@@ -76,7 +76,7 @@ void comb(int k)
 	tsum[k] = tsum[lc[k]] + tsum[rc[k]];
 }
 
-void raw_update(int q, int addv, int &k, int tl=1, int tr=N)
+void raw_update(int q, int addv, int &k, int tl=1, int tr=1<<D)
 {
 	if (tl == tr) return apply(addv, k, tl, tr);
 	push(k, tl, tr); int mid = tl + (tr-tl>>1);
@@ -84,7 +84,7 @@ void raw_update(int q, int addv, int &k, int tl=1, int tr=N)
 	else raw_update(q, addv, rc[k], mid+1, tr);
 	comb(k);
 }
-int aligned_query(int ql, int qr, int k, int tl=1, int tr=N)
+int aligned_query(int ql, int qr, int k, int tl=1, int tr=1<<D)
 {	// query where the range is gaurenteed to be aligned to a segment tree interval
 	if (ql != tl && qr != tr) return 0;	// shouldn't happen
 	if (ql == tl && qr == tr) return tsum[k];
@@ -113,8 +113,7 @@ int bit_query(int v, int tl, int tr)
 }
 
 // solve functions
-int querykth(int v1,            int v2,            int kth,
-		     int k1=rt_org[v1], int k2=rt_org[v2], int tl=1, int tr=N)
+int querykth(int v1, int v2, int kth, int k1, int k2, int tl=1, int tr=1<<D)
 {
 	if (tl == tr) return tl;
 	int lsize = tsum[lc[k2]] + bit_query(v2, tl, tr)
@@ -134,6 +133,53 @@ int update(int idx, int val)
 
 int main()
 {
+	int kases;
+	scanf("%d", &kases);
+	while (kases--)
+	{
+		scanf("%d%d", &N, &M);
+		memset(lc, 0, sizeof lc);
+		memset(rc, 0, sizeof rc);
+		memset(tsum, 0, sizeof tsum);
+		memset(addt, 0, sizeof addt);
+		memset(rt_org, 0, sizeof rt_org);
+		memset(rt_bit, 0, sizeof rt_bit);
+
+		memset(arr, 0, sizeof arr);
+
+		rt_org[0] = alc++;
+		D = 64-__builtin_clz(N);
+		for (int i=1; i<1<<D; ++i)
+		{
+			lc[i] = alc++;
+			rc[i] = alc++;
+		}
+
+		for (int i=1; i<=N; ++i)
+		{
+			int d; scanf("%d", &d);
+			rt_org[i] = rt_org[i-1];
+			raw_update(d, 1, rt_org[i]);
+		}
+		for (int i=1; i<=M; ++i)
+			rt_bit[i] = rt_org[0];
+
+		for (int i=1; i<=M; ++i)
+		{
+			char c=0; while (c < 'A' || c > 'Z') scanf("%c", &c);
+			int l, r, k, t; scanf("%d", &l);
+			if (c == 'Q')
+			{
+				scanf("%d%d", &r, &k);
+				printf("%d\n", querykth(l, r, k, rt_org[l], rt_org[r]));
+			}
+			else
+			{
+				scanf("%d", &t);
+				update(l, t);
+			}
+		}
+	}
 
 	return 0;
 }
