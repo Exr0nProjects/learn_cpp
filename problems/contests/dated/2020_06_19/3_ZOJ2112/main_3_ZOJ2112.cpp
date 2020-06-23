@@ -148,14 +148,20 @@ int bit_query(int v, int tl, int tr)
 // solve functions
 int querykth(int v1, int v2, int kth, int k1, int k2, int tl=1, int tr=1<<D)
 {
+	printf("query #%d at (%d..%d) from %d..%d k(%d..%d)\n", kth, tl, tr, v1, v2, k1, k2);
 	if (tl == tr) return tl;
-	int lsize = tsum[lc[k2]] + bit_query(v2, tl, tr)
-			  - tsum[lc[k1]] - bit_query(v1, tl, tr);
+
+	int bq1 = bit_query(v1, tl, tr);
+	int bq2 = bit_query(v2, tl, tr);
+	int lsize = tsum[lc[k2]] + bq2
+			  - tsum[lc[k1]] - bq1;
+	printf("lsize = (%d + %d) - (%d + %d) = %d\n", tsum[lc[k2]], bq2, tsum[lc[k1]], bq1, lsize);
+
 	int mid = tl + (tr-tl>>1);
 	if (kth <= lsize)
 		return querykth(v1, v2, kth, lc[k1], lc[k2], tl, mid);
 	else
-		return querykth(v1, v2, kth, rc[k1], rc[k2], mid+1, tr);
+		return querykth(v1, v2, kth-lsize, rc[k1], rc[k2], mid+1, tr);	// FIX: equ--kth-lsize when stepping right
 }
 int update(int idx, int val)
 {
@@ -221,7 +227,7 @@ int main()
 			raw_update(d, 1, rt_org[i]);
 		}
 
-		dump_persistent(1, N, rt_org);
+		dump_persistent(0, N, rt_org);
 		for (int i=1; i<=M; ++i)
 		{
 			char c=0; while (c < 'A' || c > 'Z') scanf("%c", &c);
@@ -229,7 +235,7 @@ int main()
 			if (c == 'Q')
 			{
 				scanf("%d%d", &r, &k);
-				printf("%d\n", querykth(l, r, k, rt_org[l], rt_org[r]));
+				printf("%d\n", querykth(l-1, r, k, rt_org[l-1], rt_org[r]));
 			}
 			else
 			{
