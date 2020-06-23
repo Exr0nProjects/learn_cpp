@@ -139,6 +139,7 @@ void bit_update(int l, int r, int t, int x)
 }
 int bit_query(int v, int tl, int tr)
 {
+	printf("    bit query version %d for (%d..%d)\n", v, tl, tr);
 	int tot = 0;
 	for (; v; v-=v&-v)
 		tot += aligned_query(tl, tr, rt_bit[v]);
@@ -148,16 +149,17 @@ int bit_query(int v, int tl, int tr)
 // solve functions
 int querykth(int v1, int v2, int kth, int k1, int k2, int tl=1, int tr=1<<D)
 {
-	printf("query #%d at (%d..%d) from %d..%d k(%d..%d)\n", kth, tl, tr, v1, v2, k1, k2);
+	printf("query #%d at (%d..%d) from (%d, %d] k(%d..%d)\n", kth, tl, tr, v1, v2, k1, k2);
 	if (tl == tr) return tl;
 
-	int bq1 = bit_query(v1, tl, tr);
-	int bq2 = bit_query(v2, tl, tr);
+	int mid = tl + (tr-tl>>1);
+
+	int bq1 = bit_query(v1, tl, mid);	// FIX: equ--bit query is for left child, so only query to mid
+	int bq2 = bit_query(v2, tl, mid);
 	int lsize = tsum[lc[k2]] + bq2
 			  - tsum[lc[k1]] - bq1;
-	printf("lsize = (%d + %d) - (%d + %d) = %d\n", tsum[lc[k2]], bq2, tsum[lc[k1]], bq1, lsize);
 
-	int mid = tl + (tr-tl>>1);
+	printf("lsize (%d..%d) = (%d + %d) - (%d + %d) = %d\n", tl, mid, tsum[lc[k2]], bq2, tsum[lc[k1]], bq1, lsize);
 	if (kth <= lsize)
 		return querykth(v1, v2, kth, lc[k1], lc[k2], tl, mid);
 	else
