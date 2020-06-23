@@ -128,7 +128,7 @@ int aligned_query(int ql, int qr, int k, int tl=1, int tr=1<<D)
 // BIT
 void bit_rupdate(int v, int t, int x)
 {
-	for (; v<=M; v+=v&-v)
+	for (; v<=N; v+=v&-v)
 		raw_update(t, x, rt_bit[v]);
 }
 void bit_update(int l, int r, int t, int x)
@@ -165,8 +165,8 @@ int querykth(int v1, int v2, int kth, int k1, int k2, int tl=1, int tr=1<<D)
 }
 int update(int idx, int val)
 {
-	bit_update(idx, M, arr[idx], -1);
-	bit_update(idx, M, val, 1);
+	bit_update(idx, N, arr[idx], -1);
+	bit_update(idx, N, val, 1);
 	arr[idx] = val;
 }
 
@@ -217,19 +217,20 @@ int main()
 			lc[i] = alc++;
 			rc[i] = alc++;
 		}
-		for (int i=1; i<=M; ++i)
+		for (int i=1; i<=N; ++i)
 			rt_bit[i] = rt_org[0];
 
 		for (int i=1; i<=N; ++i)
 		{
-			int d; scanf("%d", &d);
+			scanf("%d", &arr[i]);
 			rt_org[i] = rt_org[i-1];
-			raw_update(d, 1, rt_org[i]);
+			raw_update(arr[i], 1, rt_org[i]);
 		}
 
 		dump_persistent(0, N, rt_org);
 		for (int i=1; i<=M; ++i)
 		{
+			dump_persistent(0, N, rt_bit);
 			char c=0; while (c < 'A' || c > 'Z') scanf("%c", &c);
 			int l, r, k, t; scanf("%d", &l);
 			if (c == 'Q')
