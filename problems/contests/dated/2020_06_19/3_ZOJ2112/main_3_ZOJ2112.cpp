@@ -48,6 +48,38 @@ int N, D, M, arr[MX];
 int alc=1, lc[MXTN], rc[MXTN], rt_org[MX], rt_bit[MX];
 int tsum[MXTN], addt[MXTN];
 
+#define RESET "\033[0m"
+#define BLACK "\x1b[38;5;239m"
+void dump_segtree(int k)
+{
+	queue<int> bfs; bfs.push(k);
+	int d = D+1;
+	printf(BLACK);
+	for (int i=1; i<1<<1+D; ++i)
+	{
+		if (__builtin_popcount(i) == 1) { printf("\n"); --d; }
+		k = bfs.front(); bfs.pop();
+		bfs.push(lc[k]); bfs.push(rc[k]);
+		if (i >= 1<<D) printf(RESET);
+		//printf("%3d: %2d+%-2d (%-2d %2d)   ", k, tsum[k], addt[k], lc[k], rc[k]);
+		//for (int i=1; i<1<<d; ++i) printf("                     ");
+
+		printf("%3d: %2d+%-2d  ", k, tsum[k], addt[k], lc[k], rc[k]);
+		for (int i=1; i<1<<d; ++i) printf("            ");
+	}
+	printf(RESET);
+	printf("\n");
+}
+void dump_persistent(int l, int r)
+{
+	for (int i=l; i<=r; ++i)
+	{
+		printf("tree %d:", i);
+		dump_segtree(rt_bit[i]);
+		printf("\n");
+	}
+}
+
 void dupe(int &k)
 {
 	lc[alc] = lc[k];
@@ -101,6 +133,7 @@ void bit_rupdate(int v, int t, int x)
 }
 void bit_update(int l, int r, int t, int x)
 {
+	printf("updating prefix freq of %d from %d..%d by %d\n", t, l, r, x);
 	bit_rupdate(l, t, x);
 	bit_rupdate(r+1, t, -x);
 }
@@ -126,13 +159,37 @@ int querykth(int v1, int v2, int kth, int k1, int k2, int tl=1, int tr=1<<D)
 }
 int update(int idx, int val)
 {
-	bit_update(idx, M, arr[idx], -1);
-	bit_update(idx, M, val, 1);
+	bit_update(idx, 5, arr[idx], -1);	// TODO: replace 5 with M
+	bit_update(idx, 5, val, 1);
 	arr[idx] = val;
 }
 
 int main()
 {
+	{ // test BIT
+		scanf("%d%d", &N, &M);
+		for (int i=1; i<=N; ++i)
+			scanf("%d", &arr[i]);
+		rt_bit[0] = alc++;
+		//D = 64-__builtin_clz(N);
+		D = 2;
+		for (int i=1; i<1<<D; ++i)
+		{
+			lc[i] = alc++;
+			rc[i] = alc++;
+		}
+		for (int i=1; i<=M; ++i)
+			rt_bit[i] = rt_bit[0];
+
+		for (int i=1; i<=M; ++i)
+		{
+			dump_persistent(0, M);
+			int idx, val;
+			scanf("%d%d", &idx, &val);
+			update(idx, val);
+		}
+	}
+
 	int kases;
 	scanf("%d", &kases);
 	while (kases--)
@@ -154,6 +211,8 @@ int main()
 			lc[i] = alc++;
 			rc[i] = alc++;
 		}
+		for (int i=1; i<=M; ++i)
+			rt_bit[i] = rt_org[0];
 
 		for (int i=1; i<=N; ++i)
 		{
@@ -161,8 +220,6 @@ int main()
 			rt_org[i] = rt_org[i-1];
 			raw_update(d, 1, rt_org[i]);
 		}
-		for (int i=1; i<=M; ++i)
-			rt_bit[i] = rt_org[0];
 
 		for (int i=1; i<=M; ++i)
 		{
