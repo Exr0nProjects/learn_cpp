@@ -40,7 +40,7 @@
 
 using namespace std;
 const ll MX = 100111;
-const ll MXTN = MX<<7;
+const ll MXTN = MX<<6;
 
 int N, D, M, arr[MX];
 
