@@ -43,26 +43,26 @@ const ll MX = 100111;
 ll N, D, vis[MX], tsum[MX<<6], addt[MX<<6];
 ll alc=1, lc[MX<<6], rc[MX<<6], rt[MX];
 
-#define RESET "\033[0m"
-#define BLACK "\x1b[38;5;239m"
-void dump(ll k)
-{
-    queue<ll> bfs; bfs.push(k);
-    ll d = D+1;
-    printf(BLACK);
-    for (ll i=1; i<1<<1+D; ++i)
-    {
-        if (__builtin_popcount(i) == 1) { --d; printf("\n"); }
-        k = bfs.front(); bfs.pop();
-        if (i >= 1<<D) printf(RESET);
-        bfs.push(lc[k]); bfs.push(rc[k]);
-        //printf("%2d: %2d+%2d (%-2d %2d)  ", k, tsum[k], addt[k], lc[k], rc[k]);
-        //for (ll i=1; i<1<<d; ++i) printf("                   ");
-        printf("%2d: %2d%+2d   ", k, tsum[k], addt[k], lc[k], rc[k]);
-        for (ll i=1; i<1<<d; ++i) printf("           ");
-    }
-    printf("\n");
-}
+//#define RESET "\033[0m"
+//#define BLACK "\x1b[38;5;239m"
+//void dump(ll k)
+//{
+//    queue<ll> bfs; bfs.push(k);
+//    ll d = D+1;
+//    printf(BLACK);
+//    for (ll i=1; i<1<<1+D; ++i)
+//    {
+//        if (__builtin_popcount(i) == 1) { --d; printf("\n"); }
+//        k = bfs.front(); bfs.pop();
+//        if (i >= 1<<D) printf(RESET);
+//        bfs.push(lc[k]); bfs.push(rc[k]);
+//        //printf("%2d: %2d+%2d (%-2d %2d)  ", k, tsum[k], addt[k], lc[k], rc[k]);
+//        //for (ll i=1; i<1<<d; ++i) printf("                   ");
+//        printf("%2d: %2d%+2d   ", k, tsum[k], addt[k], lc[k], rc[k]);
+//        for (ll i=1; i<1<<d; ++i) printf("           ");
+//    }
+//    printf("\n");
+//}
 
 void dupe(ll &k)
 {
@@ -79,18 +79,6 @@ void apply(ll addv, ll &k, ll tl, ll tr)
     addt[k] += addv;
     tsum[k] += addv * (tr-tl+1);
 }
-void push(ll &k, ll tl, ll tr)
-{
-    ll mid = tl + (tr-tl>>1);
-    dupe(k);
-    apply(addt[k], lc[k], tl, mid);
-    apply(addt[k], rc[k], mid+1, tr);
-    addt[k] = 0;
-}
-void comb(ll k)
-{
-    tsum[k] = tsum[lc[k]] + tsum[rc[k]];
-}
 
 void update(ll ql, ll qr, ll addv, ll &k, ll tl=1, ll tr=1<<D)
 {
@@ -99,18 +87,11 @@ void update(ll ql, ll qr, ll addv, ll &k, ll tl=1, ll tr=1<<D)
     dupe(k); ll mid = tl + (tr-tl>>1);
     update(ql, qr, addv, lc[k], tl, mid);
     update(ql, qr, addv, rc[k], mid+1, tr);
-    comb(k);
+    tsum[k] = tsum[lc[k]] + tsum[rc[k]];
 }
-//ll query(ll ql, ll qr, ll &k, ll tl=1, ll tr=1<<D, ll acc=0)
-//{
-//    if (ql < tl || tr < ql) return 0;
-//    if (ql <= tl && tr <= qr) return tsum[k] + acc;
-//    acc += addt[k]; ll mid = tl + (tr-tl>>1);   // TODO: if query broke, replace acc with push()
-//    return query(ql, qr, lc[k], tl, mid, acc)
-//         + query(ql, qr, rc[k], mid+1, tr, acc);
-//}
-ll query(ll q, ll &k, ll tl=1, ll tr=1<<D, ll acc=0)
+ll query(ll q, ll k, ll tl=1, ll tr=1<<D, ll acc=0)
 {
+    printf("recs: %d..%d +%d\n", tl, tr, acc);
     if (tl == tr) return tsum[k] + acc;
     acc += addt[k];
     ll mid = tl+(tr-tl>>1);
@@ -118,14 +99,28 @@ ll query(ll q, ll &k, ll tl=1, ll tr=1<<D, ll acc=0)
     else return query(q, rc[k], mid+1, tr, acc);
 }
 
+ll query_iter(ll q, ll k, ll tl=1, ll tr=1<<D)
+{
+    ll acc = addt[k];
+    for (; tl < tr; acc += addt[k])
+    {
+        printf("iter: %d..%d +%d\n", tl, tr, acc);
+        const ll mid = tl + (tr-tl>>1);
+        if (q <= mid) k = lc[k], tr = mid;
+        else          k = rc[k], tl = mid+1;
+    }
+    return tsum[k] + acc;
+}
+
 ll bins(ll s, ll k)
 {
     ll l=s, r=N+1;   // exclude r
-    for (ll i=1; i<20; ++i)
+    for (ll i=1; r-l>1; ++i)
     {
         ll mid = l + (r-l>>1);
         //printf("        query %d..%d = %d\n", s, mid, query(s, rt[mid]));
-        if (query(s, rt[mid]) <= k)
+        printf("\n"); query(s, rt[mid]);
+        if (query_iter(s, rt[mid]) <= k)
             l = mid;
         else
             r = mid;
@@ -156,15 +151,18 @@ int main()
     }
 
     vector<int> ans;
+    ll cnt=2;
     for (ll k=1; k<=N; ++k)
     {
-        ll cnt=0;
-        for (ll s=1; s <= N; ++cnt)
-            s = bins(s, k)+1;
+        if (cnt > 1)
+        {
+            cnt = 0;
+            for (ll s=1; s <= N; ++cnt)
+                s = bins(s, k)+1;
+        }
+
         if (k > 1) printf(" ");
         printf("%lld", cnt);
-        //ans.pb(cnt);
-        //printf("\n");
     }
     //for (int a : ans) printf("%lld ", a);
     printf("\n");
