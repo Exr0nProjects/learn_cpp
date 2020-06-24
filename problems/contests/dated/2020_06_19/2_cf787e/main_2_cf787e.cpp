@@ -89,27 +89,27 @@ void update(ll ql, ll qr, ll addv, ll &k, ll tl=1, ll tr=1<<D)
     update(ql, qr, addv, rc[k], mid+1, tr);
     tsum[k] = tsum[lc[k]] + tsum[rc[k]];
 }
-ll query(ll q, ll k, ll tl=1, ll tr=1<<D, ll acc=0)
-{
-    printf("recs: %d..%d +%d\n", tl, tr, acc);
-    if (tl == tr) return tsum[k] + acc;
-    acc += addt[k];
-    ll mid = tl+(tr-tl>>1);
-    if (q <= mid) return query(q, lc[k], tl, mid, acc);
-    else return query(q, rc[k], mid+1, tr, acc);
-}
+//ll query(ll q, ll k, ll tl=1, ll tr=1<<D, ll acc=0)
+//{
+//    //printf("recs: %d..%d +%d\n", tl, tr, acc);
+//    if (tl == tr) return tsum[k] + acc;
+//    acc += addt[k];
+//    ll mid = tl+(tr-tl>>1);
+//    if (q <= mid) return query(q, lc[k], tl, mid, acc);
+//    else return query(q, rc[k], mid+1, tr, acc);
+//}
 
 ll query_iter(ll q, ll k, ll tl=1, ll tr=1<<D)
 {
     ll acc = addt[k];
     for (; tl < tr; acc += addt[k])
     {
-        printf("iter: %d..%d +%d\n", tl, tr, acc);
         const ll mid = tl + (tr-tl>>1);
         if (q <= mid) k = lc[k], tr = mid;
         else          k = rc[k], tl = mid+1;
+        //printf("iter: %d..%d +%d\n", tl, tr, acc);
     }
-    return tsum[k] + acc;
+    return tsum[k] + acc - addt[k];
 }
 
 ll bins(ll s, ll k)
@@ -119,7 +119,8 @@ ll bins(ll s, ll k)
     {
         ll mid = l + (r-l>>1);
         //printf("        query %d..%d = %d\n", s, mid, query(s, rt[mid]));
-        printf("\n"); query(s, rt[mid]);
+        //if (query(s, rt[mid]) != query_iter(s, rt[mid])) printf("NOT EQUAL!!! %d vs %d\n", query(s, rt[mid]), query_iter(s, rt[mid]));
+        //printf("\n"); query(s, rt[mid]);
         if (query_iter(s, rt[mid]) <= k)
             l = mid;
         else
