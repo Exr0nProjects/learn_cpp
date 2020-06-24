@@ -191,39 +191,8 @@ int main()
     ll start_mus = get_ns();
 
     ll ans[MX] = {}, last_count = 0;
-    //for (ll k=1; k<=N; ++k)
-    //    ans[count_groups(k)] ++;
-    ll k=1, groups;
-    for (; k<=N; ++k)
-    {
-        groups = count_groups(k);
-        ans[groups] ++;
-        //printf("added to %d\n", groups);
-        if (last_count == groups) break;
-        else last_count = groups;
-    }
-    ans[groups] -= 2;
-    //printf("found dupe at k=%d\n", k);
-    for (--k; k<=N;)
-    {
-        //printf("binary searching for other end of %d (k %d)\n", groups, k);
-        // binary search over k
-        ll l=k, r=N+1;  // exclude r, so leave k as an option, TODO shouldn't be needed
-        for (; l+1<r;)
-        {
-            ll mid = l+r>>1;
-            //printf("    %d..%d, mid %d has %d\n", l, r, mid, count_groups(mid));
-            if (count_groups(mid) < groups)
-                r = mid;
-            else
-                l = mid;
-        }
-        //printf("binary search got %d\n", l);
-        ans[groups] += l-k+1;
-        k = l+1;
-        //printf("now k is %d\n", k);
-        groups = count_groups(k);
-    }
+    for (ll k=1; k<=N; ++k)
+        ans[count_groups(k)] ++;
 
     bool gone=0;
     for (ll k=N; k>0; --k)
@@ -236,6 +205,7 @@ int main()
         }
     }
     printf("\n");
+
 
     start_mus = get_ns() - start_mus;
     //printf("on average, each k took %d mus for a total of %d\n", start_mus / N, start_mus);
