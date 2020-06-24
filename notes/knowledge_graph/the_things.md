@@ -6,13 +6,44 @@
 - Derived From
 - Careful
 
-# Trees
+# Tree
+- Properties
+    - There is only one path between each pair of nodes
+    - The number of edges is one less than the number of nodes
+
+## Rooted Tree
+- Properties
+    - There is only one root
+    - Every node has only one parent, except for the root
+    - Every pair of nodes has one lowest common ancestor
+- Derived from
+    - [Tree](#tree)
+
+### Least Common Ancestor
+- Properties
+    - Only one in a rooted tree
+- Algorithms
+    - Doubling method ([exponential search?](https://www.geeksforgeeks.org/exponential-search/))
+    - Single pass
+- Derived From
+    - [Rooted Tree](#rooted-tree)
+
+## Binary Tree
+- Properties
+    - Rooted and Directed (has a root, each node has a parent).
+    - Maximum of two children per parent
+- Derived from
+    - [Rooted Tree](#rooted-tree)
 
 ## Binary Search Tree
+- Properties
+    - [Binary Tree](#binary-tree)
+    - Sorted from left to right
+    - Insert/Query in (depth of the tree) time, `log N`
+- Derived From
+    - [Binary Tree](#binary-tree)
 
-### Balanced BST
-
-#### Tree Rotations
+#### Tree Rotation
 <details>
 <summary>Standard Code</summary>
 
@@ -34,12 +65,15 @@ void rotate(Node &cur, bool dir)        // 1 = left rotate, 0 = right rotate. Ro
 }
 ```
 </details>
+
 - Properties
     - Preserves the BST property while changing the shape of the tree
     - Essentially swaps a child and parent nodes' position
         - This means it can be used as `swap` in heapify (see [treap](#treap))
 - Uses
-    
+    - Balanced BSTs to reshape the tree and improve complexity
+- Derived From
+    - [Binary Search Tree property](#binary-search-tree)
 
 #### Treap
 - Treap
@@ -54,6 +88,15 @@ void rotate(Node &cur, bool dir)        // 1 = left rotate, 0 = right rotate. Ro
         - Range update (PIE)
         - Prefix Sums
 
+# Prefix Sums
+- Operations:
+    - addition
+    - xor
+    - why? associative, communitive, x op 0 = x, has inverse
+- fencepost: prefix `l..r (l <= i <= r) = prefix[r] - prefix[l-1]`
+    - since if you did `- prefix[l]` then you subtract the `l` but you want to include `l` in the range
+
+
 - Sparse Table
 
 String Matching
@@ -66,22 +109,12 @@ disjoint set (dsu)
 - Path compression
 - Merge by size/rank
 
-LCA
-- Doubling method ([exponential search?](https://www.geeksforgeeks.org/exponential-search/))
-- Single pass
 
 For Loops
 - Start stop step
 - Edge list traversal
 - bitwise stepping (binary indexed tree)
 
-# Prefix Sums
-- Operations:
-    - addition
-    - xor
-    - why? associative, communitive, x op 0 = x, has inverse
-- fencepost: prefix `l..r (l <= i <= r) = prefix[r] - prefix[l-1]`
-    - since if you did `- prefix[l]` then you subtract the `l` but you want to include `l` in the range
 
 # binary search
 - Look for the sorting property
