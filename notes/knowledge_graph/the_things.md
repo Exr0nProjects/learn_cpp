@@ -1,15 +1,58 @@
 
-Trees
+# Things to keep in mind
+- Properties
+- Algorithms
+- Classic Problems/Uses
+- Derived From
+- Careful
+
+# Trees
+
+## Binary Search Tree
+
+### Balanced BST
+
+#### Tree Rotations
+<details>
+<summary>Standard Code</summary>
+
+```cpp
+struct Node
+{
+    ll d, w;                            // data, weight, more fields possible
+    Node *c[2] = {};                    // pointers to the children of this node, left = 0, right = 1, nullptr for none
+    Node(ll d): d(d), w(rand()) {}
+};
+
+void rotate(Node &cur, bool dir)        // 1 = left rotate, 0 = right rotate. Rotate the `dir` child to the top.
+{
+    if (!cur || !cur->c[dir]) return;   // return if the current or new root is nullptr (failsafe)
+    Node *thn = cur->c[dir];            // create temporary pointer to the new root
+    cur->c[dir] = thn->c[1-dir];        // swap the between subtree's parent pointer
+    thn->c[1-dir] = cur;                // set `cur` to child of `thn`, swapping their depth in the tree
+    cur = thn;                          // update the pointer reference to maintain call site's pointer on subtree root
+}
+```
+</details>
+- Properties
+    - Preserves the BST property while changing the shape of the tree
+    - Essentially swaps a child and parent nodes' position
+        - This means it can be used as `swap` in heapify (see [treap](#treap))
+- Uses
+    
+
+#### Treap
 - Treap
+
 - Range trees
-	- Segment Tree
-		- Persistent Segment Tree
-			- "vanilla" usage
-			- array frequency prefix
-			- counting distinct elements in range
-	- Binary Indexed Tree
-		- Range update (PIE)
-		- Prefix Sums
+    - Segment Tree
+        - Persistent Segment Tree
+            - "vanilla" usage
+            - array frequency prefix
+            - counting distinct elements in range
+    - Binary Indexed Tree
+        - Range update (PIE)
+        - Prefix Sums
 
 - Sparse Table
 
@@ -17,7 +60,7 @@ String Matching
 - KMP
 - Trie
 - AC Automaton
-	- Fail pointers
+    - Fail pointers
 disjoint set (dsu)
 - Tree structure
 - Path compression
@@ -34,21 +77,21 @@ For Loops
 
 # Prefix Sums
 - Operations:
-	- addition
-	- xor
-	- why? associative, communitive, x op 0 = x, has inverse
+    - addition
+    - xor
+    - why? associative, communitive, x op 0 = x, has inverse
 - fencepost: prefix `l..r (l <= i <= r) = prefix[r] - prefix[l-1]`
-	- since if you did `- prefix[l]` then you subtract the `l` but you want to include `l` in the range
+    - since if you did `- prefix[l]` then you subtract the `l` but you want to include `l` in the range
 
 # binary search
 - Look for the sorting property
-	- Look for a number in a sorted list
-	- The larger the number is, the more/less likely for something
-		- Binary search over the answer
-		- max of min or min of max
-	- remember: either include left include right or include left exclude right
+    - Look for a number in a sorted list
+    - The larger the number is, the more/less likely for something
+        - Binary search over the answer
+        - max of min or min of max
+    - remember: either include left include right or include left exclude right
 - Check function
-	- Can be left/right, or left/mid/right
+    - Can be left/right, or left/mid/right
 
 # heaps
 - full binary tree
@@ -62,34 +105,34 @@ For Loops
 - satisfies bst property (values) and heap property (weights, random)
 - rotations!
 - extensions
-	- counted treap (multiset)
-		- store extra `n` and `s` for num and size
-		- remember to modify both when modifying one
-		- `setSize` in rotate, insert, remove
-	- ranked treap
-		- can get rank of a number when traversing (log n)
-		- count how many times stepped right during traversal from root
-		- also works with counted treap
-	- getkth treap
-		- get the kth smallest/largest number in log n
-		- step right or left depending on left subtree size
-	- pred/succ treap
-		- store predessessor or successor
-		- three ways to do this
-			- lower bound (best, log n, node doesn't have to exist)
-				- traverse, store the last time you stepped in the other direction
-			- otf constructon
-				- constant time given a pointer to the node
-				- doesn't work if node doesn't exist in the treap
-				- kind of annoying to write (update insert and remove fxns)
-			- inorder traversal
-				- generally bad
-				- need to retraverse each time a node is inserted
+    - counted treap (multiset)
+        - store extra `n` and `s` for num and size
+        - remember to modify both when modifying one
+        - `setSize` in rotate, insert, remove
+    - ranked treap
+        - can get rank of a number when traversing (log n)
+        - count how many times stepped right during traversal from root
+        - also works with counted treap
+    - getkth treap
+        - get the kth smallest/largest number in log n
+        - step right or left depending on left subtree size
+    - pred/succ treap
+        - store predessessor or successor
+        - three ways to do this
+            - lower bound (best, log n, node doesn't have to exist)
+                - traverse, store the last time you stepped in the other direction
+            - otf constructon
+                - constant time given a pointer to the node
+                - doesn't work if node doesn't exist in the treap
+                - kind of annoying to write (update insert and remove fxns)
+            - inorder traversal
+                - generally bad
+                - need to retraverse each time a node is inserted
 - usages
-	- deduplication/has num
-	- previous/next in sorted array
-	- running min/max of a set
-	- rank of a number (counting inversions)
+    - deduplication/has num
+    - previous/next in sorted array
+    - running min/max of a set
+    - rank of a number (counting inversions)
 
 # indirection
 - swap array values for indicies
@@ -97,8 +140,8 @@ For Loops
 - watch out for MLE
 - may have to do descretization
 - usages
-	- counting inversions
-	- transform the problem/limits
+    - counting inversions
+    - transform the problem/limits
 
 # descretization
 - compress big range of numbers, preserve relative size
@@ -117,30 +160,30 @@ For Loops
 - most problems are 1 indexed
 - zero indexing is good for math (modulo)
 - often a good idea to leave zero for special cases / sentry
-	- edgelist
-	- storing full binary tree/heap in array
+    - edgelist
+    - storing full binary tree/heap in array
 
 # recursive backtracking
 - store some external state
-	- operations
-		- step in
-		- recurse, process the state
-		- undo
-	- can be used in top down DP if external state is full represented by the problem fram (dp candy problem)
+    - operations
+        - step in
+        - recurse, process the state
+        - undo
+    - can be used in top down DP if external state is full represented by the problem fram (dp candy problem)
 
 # convex hull
 - sweep line
-	- events = points
-	- each time, check if the point is on the inside of the line
-		- if so, continue
-		- if not, binary search backtrack until convex property is satisfied
-	- does one half, just repeat the same for the bottom when done
+    - events = points
+    - each time, check if the point is on the inside of the line
+        - if so, continue
+        - if not, binary search backtrack until convex property is satisfied
+    - does one half, just repeat the same for the bottom when done
 # any intersecting segments
 - sweep line
-	- events: lines start/end/intersect
-	- treap of intersections between segments and sweepline
-	- lemma: all intersections occur between lines that are neighbors
-	- solution: keep track of neighboring lines in a treap, swap on intersect
+    - events: lines start/end/intersect
+    - treap of intersections between segments and sweepline
+    - lemma: all intersections occur between lines that are neighbors
+    - solution: keep track of neighboring lines in a treap, swap on intersect
 
 # topological sort
 - only possible in directed acyclic graphs
@@ -177,14 +220,14 @@ For Loops
     - If there are overlapping subproblems, try DP
     - Dynamic Programming - Decrement problem size
         1. Frame the Question!
-		1. Write down the Equation
+        1. Write down the Equation
         - Don't start coding right away
             - Make sure to write down the equation
         - Choose or merge from smaller subproblems
-		- Find the recursive solution, then look for computational overlap
-			- Draw a recursive tree?
+        - Find the recursive solution, then look for computational overlap
+            - Draw a recursive tree?
         - If you don't have to try the subproblems, you might have a greedy problem
-		- Must have overlapping subproblems
+        - Must have overlapping subproblems
 - Greedy Algorithm
     - Local optimal = global optimal
 - Divide and Conquer
