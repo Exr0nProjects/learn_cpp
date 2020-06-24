@@ -43,6 +43,16 @@ const ll MX = 100111;
 ll N, D, vis[MX], tsum[MX<<6], addt[MX<<6];
 ll alc=1, lc[MX<<6], rc[MX<<6], rt[MX];
 
+#include <chrono>
+using namespace std::chrono;
+// from https://stackoverflow.com/a/19555298
+ll get_ns()
+{
+    return duration_cast< microseconds >(
+        system_clock::now().time_since_epoch()
+    ).count();
+}
+
 //#define RESET "\033[0m"
 //#define BLACK "\x1b[38;5;239m"
 //void dump(ll k)
@@ -109,7 +119,7 @@ ll query_iter(ll q, ll k, ll tl=1, ll tr=1<<D)
         else          k = rc[k], tl = mid+1;
         //printf("iter: %d..%d +%d\n", tl, tr, acc);
     }
-    return tsum[k] + acc - addt[k];
+    return tsum[k] + acc - addt[k]; // FIX: equ--subtract extra addt[k]
 }
 
 ll bins(ll s, ll k)
@@ -135,12 +145,17 @@ int main()
     scanf("%lld", &N);
     D = 64-__builtin_clzll(N);
 
+    ll ns = get_ns();
     rt[0] = alc++;
     for (ll i=1; i<1<<D; ++i)
     {
         lc[i] = alc++;
         rc[i] = alc++;
+        //lc[i] = i<<1;
+        //rc[i] = i<<1|1;
     }
+    printf("init psegtree took %d mus\n", get_ns() - ns);
+    ns = get_ns();
 
     for (ll i=1; i<=N; ++i)
     {
@@ -150,11 +165,14 @@ int main()
         vis[d] = i;
         //dump(rt[i]);
     }
+    printf("input took %d mus\n", get_ns() - ns);
 
     vector<int> ans;
     ll cnt=2;
+    ll total_mus = 0;
     for (ll k=1; k<=N; ++k)
     {
+        ll ns = get_ns();
         if (cnt > 1)
         {
             cnt = 0;
@@ -162,11 +180,13 @@ int main()
                 s = bins(s, k)+1;
         }
 
+        total_mus += get_ns() - ns;
         if (k > 1) printf(" ");
         printf("%lld", cnt);
     }
     //for (int a : ans) printf("%lld ", a);
     printf("\n");
+    printf("on average, each k took %d mus\n", total_mus / N);
 
 	return 0;
 }
