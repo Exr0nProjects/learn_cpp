@@ -35,6 +35,22 @@
 - Derived from
     - [Rooted Tree](#rooted-tree)
 
+### Full Binary Tree
+- Properties
+    - All leaf nodes are on the last two layers
+    - At most one node has exactly one child, and it is on the second last layer
+    - The bottom layer is the only one that doesn't have `(1<<k) -1` (a mersene number of) nodes
+    - All nodes to the left of the one child node have two children, and all to the right have none
+    - Can be stored in an array (with an `alloc` variable to remember how many nodes there are)
+        - One Indexed:
+            - Root is at `1`
+            - `lc[k] = 2*k = k<<1`, `rc[k] = 2*k+1 = k<<1|1`
+        - Zero Indexed:
+            - Root is at `0`
+            - `lc[k] = 2*k+1 = k<<1|1`, `rc[k] = 2*k+2 = k+1<<1`
+- Derived From
+    - [Binary Tree](#binary-tree)
+
 ## Binary Search Tree
 - Properties
     - [Binary Tree](#binary-tree)
@@ -42,6 +58,39 @@
     - Insert/Query in (depth of the tree) time, `log N`
 - Derived From
     - [Binary Tree](#binary-tree)
+
+### Tree Traversal
+- Properties
+    - Multiple types (three in a binary tree)
+        - Preorder traversal: root before children
+        - Inorder traversal: root between children
+        - Postorder traversal: root after children
+    - DFS traversal of a (usually binary) tree
+    - If all tree nodes are distinct, two traversals stored in sequence can be used to reconstruct the tree
+        - For example, a preorder and inorder traversal is enough information to encode the connections of the tree
+        - Recover by finding the preorder root (first element) in the inorder string and recurse.
+- Derived From
+    - [Depth First Search](#depth-first-search)
+
+### Heap
+- Properties
+    - Each parent is either larger (max heap) or smaller (min heap) than both it's children
+    - Full binary tree (no holes)
+    - Implemented with heapify up and down
+        - Take a heap with one branch/path out of order and use swaps to maintain the heap property
+    - Can be built in o(n)
+    - Can be stored in an array (full binary tree)
+    - treaps
+- Uses
+    - Running median problem
+        - Given a stream of numbers, output the current median of the set
+        - Solution: use a min heap and a max heap, pushing to one or the other as numbers come in based on their sizes
+        - The number on top of the larger heap is the median, or the average of the two
+    - [Djikstra](#djikstra)
+    - [Prim](#prim)
+- Derived From
+    - [Full Binary Tree](#full-binary-tree)
+
 
 #### Tree Rotation
 <details>
@@ -75,69 +124,11 @@ void rotate(Node &cur, bool dir)        // 1 = left rotate, 0 = right rotate. Ro
 - Derived From
     - [Binary Search Tree property](#binary-search-tree)
 
-#### Treap
-- Treap
-
-- Range trees
-    - Segment Tree
-        - Persistent Segment Tree
-            - "vanilla" usage
-            - array frequency prefix
-            - counting distinct elements in range
-    - Binary Indexed Tree
-        - Range update (PIE)
-        - Prefix Sums
-
-# Prefix Sums
-- Operations:
-    - addition
-    - xor
-    - why? associative, communitive, x op 0 = x, has inverse
-- fencepost: prefix `l..r (l <= i <= r) = prefix[r] - prefix[l-1]`
-    - since if you did `- prefix[l]` then you subtract the `l` but you want to include `l` in the range
-
-
-- Sparse Table
-
-String Matching
-- KMP
-- Trie
-- AC Automaton
-    - Fail pointers
-disjoint set (dsu)
-- Tree structure
-- Path compression
-- Merge by size/rank
-
-
-For Loops
-- Start stop step
-- Edge list traversal
-- bitwise stepping (binary indexed tree)
-
-
-# binary search
-- Look for the sorting property
-    - Look for a number in a sorted list
-    - The larger the number is, the more/less likely for something
-        - Binary search over the answer
-        - max of min or min of max
-    - remember: either include left include right or include left exclude right
-- Check function
-    - Can be left/right, or left/mid/right
-
-# heaps
-- full binary tree
-- heapify up and down
-- can be built in o(n)
-- stored in array
-- treaps
-
-# treap
-- balanced binary search tree
-- satisfies bst property (values) and heap property (weights, random)
-- rotations!
-- extensions
+### Treap
+- Properties
+    - Balanced binary search tree
+    - Satisfies bst property (values) and heap property (weights, random)
+- Extensions
     - counted treap (multiset)
         - store extra `n` and `s` for num and size
         - remember to modify both when modifying one
@@ -161,11 +152,226 @@ For Loops
             - inorder traversal
                 - generally bad
                 - need to retraverse each time a node is inserted
-- usages
+- Derived From
+    - [Tree Rotation](#tree-rotation)
+    - [Binary Search Tree](#binary-search-tree)
+    - [Heap](#heap)
+- Usages
     - deduplication/has num
     - previous/next in sorted array
     - running min/max of a set
     - rank of a number (counting inversions)
+
+
+// TODO: these \/
+- Range trees
+    - Segment Tree
+        - Persistent Segment Tree
+            - "vanilla" usage
+            - array frequency prefix
+            - counting distinct elements in range
+    - Binary Indexed Tree
+        - Range update (PIE)
+        - Prefix Sums
+
+
+# Precomputation
+- Properties
+    - Compute some intermediate values that can be used later to solve a problem
+    - Problems often come in a build then query format
+
+## Range Precomputation
+- Properties
+    - Precompute a reduction over a range, usually with an operation (min max sum xor multiply)
+    - When querying, if the range of the query is larger than the range that is precomputed then the precomputed range can be used
+        - Otherwise, the query would have to go into the range and reduce it to the answer by itself
+    - Properties of reduction
+        - Can be paused in the middle and resumed later
+            - This is why we can reduce part of the array and then come back afterwards to use that precomputation
+    - Ranges should not be too large or too small
+        - If the range is too large then small or offcenter queries won't be able to use it
+        - If the range is too small then the query will have to combine/reduce many ranges
+- Uses
+    - Range problems (range update, query)
+    - counting inversions
+- Derived from
+    - [Precomputation](#precomputation)
+
+# Prefix Sum
+- Properties
+    - A way of collapsing an array such that you can expand it later
+    - Stereotypical DP
+    - Similar to taking the integral of something
+    - Can be on any level of derivitive/integral, delta prefix sums are often used
+    - Can be used for range update/query but it takes O(n) to do one of the operations
+        - So with a delta prefix array, you can do range update in constant time but need to make a pass to query the sum
+        - With a normal prefix sum, you can do range query in constant time but need to make a pass to update
+    - A number of operations/reducers can be used to combine the numbers:
+        - addition
+        - multiplication
+        - xor
+        - why? associative, communitive, x op 0 = x, has inverse
+        - The important thing is that you need to be able to "undo" a combination to query a range
+    - DP Equation: `prefix[i] = arr[i] + prefix[i-1]`
+- Careful
+    - fencepost: prefix `l..r (l <= i <= r) = prefix[r] - prefix[l-1]`
+        - since if you did `- prefix[l]` then you subtract the `l` but you want to include `l` in the range
+
+# Sparse Table
+
+<details>
+<summary>Standard Code</summary>
+
+```cpp
+int N, D, table[20][MX];                         
+
+void init()
+{
+    scanf("%d", &N);
+    D = log2(N)+1;                                  // D = depth of the table
+    memset(table, 0, sizeof table);                 // reset the memory
+    for (int i=0; i<N; ++i)                         // input original array into bottom layer
+        scanf("%d", &table[0][i]);                  // this layer has range=1<<0=1, aka only stores one element
+    for (int j=1; j<D; ++j)                         // for each layer, range = 1<<j (inclusive)
+        for (int i=0; i+(1<<j)<=N; ++i)             // for each start pos in the table which doesn't overflow given the range
+            table[j][i] = table[j-1][i]             // reduce the range from the two segments it covers
+                        + table[j-1][i+(1<<j-1)];   // from start to halfway through plus from halfway through to end
+
+    // print the table
+    for (int j=0; j<D; ++j)
+    {
+        for (int i=0; i<N; ++i)
+            printf("%3d", table[j][i]);
+        printf("\n");
+    }
+}
+
+int query(int l, int r)                             // include left exclude right
+{                                                   // this version works for sum, no overlap
+    if (l > r) return -1;                           // sanity bounds check, not strictly needed
+    int dif=r-l, ret=0;                             // dif is the range which will be bitmasked
+    for (int bit=0; bit<32; ++bit)                  // for each power of two that goes into the range
+        if (dif & (1<<bit))                         
+        {
+            printf("%d..%d\n", l, l+(1<<bit));      // (output the range we are using)
+            ret += table[bit][l];                   // use that power of two
+            l += (1<<bit);                          // move over by that range, to start the next power of two segment
+        }                                           // this function works because all numbers can be represented
+    return ret;                                     // as a sum of powers of two, so `dif` can be also (also how binary works)
+}
+```
+
+</details>
+
+- Uses
+    - Range query in log n time after being built
+- Properties
+    - a log N by N array that stores the collapsation of ranges (min/max, sum)
+    - Each layer stores progressively larger ranges, in lengths of powers of 2
+    - Ranges can start at any location
+    - Easiest query includes overlap, so it's better suited for an operation that replaces (min/max) instead of sum
+- Derived from
+    - [Range Precomputation](#range-precomputation)
+
+# Stack
+
+TODO
+
+# Queue
+
+TODO
+
+# Recursion
+
+TODO
+
+# Iteration
+
+TODO
+
+# Depth First Search
+- Properties
+    - Search a space (usually with a recursive function)
+    - Depth first property
+        - When there is a fork, choose one path and go down it as far as you can
+        - When you hit a dead end, backtrack and go down the next deepest available fork
+        - Essentially, down before over
+    - Avoid Loops
+        - Previous argument
+            - When traversing trees, a simple `pre` argument is enough to avoid revisiting a node
+            - <details> <summary>Standard Code</summary>
+                ```cpp
+                void dfs(ll cur, ll pre=0)
+                {
+                    for (ll nxt : head[cur])
+                        if (nxt != pre)
+                            dfs(nxt, cur);
+                }
+                ```
+            </details>
+        - `vis` array
+            - When traversing graphs or spaces, us a [`vis` array](#vis-array)
+- Derived from
+    - [Recursion](#recursion)
+
+# Breadth First Search
+
+TODO
+
+## Vis Array
+
+- Properties
+    - Boolean array to store whether the location has been visited or not
+    - Conceptually a map of node to boolean, usually either a 1d or 2d array or `map<pair<int, int>, bool>`
+
+# binary search
+- Look for the sorting property
+    - Look for a number in a sorted list
+    - The larger the number is, the more/less likely for something
+        - Binary search over the answer
+        - max of min or min of max
+    - remember: either include left include right or include left exclude right
+- Check function
+    - Can be left/right, or left/mid/right
+
+# Disjoint Set Union
+
+
+## Minimum Spanning Tree
+
+TODO
+
+### Prim
+
+TODO
+
+### Kruskal
+
+TODO
+
+## Shortest Path
+
+TODO
+
+## Djikstra
+
+TODO
+
+# Things TODO
+String Matching
+- KMP
+- Trie
+- AC Automaton
+    - Fail pointers
+- Tree structure
+- Path compression
+- Merge by size/rank
+
+
+For Loops
+- Start stop step
+- Edge list traversal
+- bitwise stepping (binary indexed tree)
 
 # indirection
 - swap array values for indicies
@@ -226,7 +432,6 @@ For Loops
 - no cycles
 - directed edges
 - all dp problems can be represented as DAGs
-
 ## Algorithmic Paradighms
 
 - Brute Force
