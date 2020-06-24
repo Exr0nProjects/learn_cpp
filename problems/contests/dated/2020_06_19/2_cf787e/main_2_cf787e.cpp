@@ -114,7 +114,8 @@ ll query_iter(ll q, ll k, ll tl=1, ll tr=1<<D)
     ll acc = addt[k];
     for (; tl < tr; acc += addt[k])
     {
-        const ll mid = tl + (tr-tl>>1);
+        //const ll mid = tl + (tr-tl>>1);
+        const ll mid = tr+tl>>1;
         if (q <= mid) k = lc[k], tr = mid;
         else          k = rc[k], tl = mid+1;
         //printf("iter: %d..%d +%d\n", tl, tr, acc);
@@ -138,6 +139,26 @@ ll bins(ll s, ll k)
     }
     //printf("    bins from %d with %d colors => %d..%d\n", s, k, s, l);
     return l;
+}
+
+ll count_groups(ll k)
+{
+    ll cnt = 0;
+    for (ll s=1; s <= N; ++cnt)
+    {
+        ll l=s, r=N+1;   // exclude r
+        for (ll i=1; r-l>1; ++i)
+        {
+            //ll mid = l + (r-l>>1);
+            const ll mid = l+r >>1;
+            if (query_iter(s, rt[mid]) <= k)
+                l = mid;
+            else
+                r = mid;
+        }
+        s = l+1;
+    }
+    return cnt;
 }
 
 int main()
@@ -174,12 +195,10 @@ int main()
     {
         if (cnt > 1)
         {
-            cnt = 0;
-            for (ll s=1; s <= N; ++cnt)
-                s = bins(s, k)+1;
+            cnt = count_groups(k);
         }
 
-        //if (k > 1) printf(" "); printf("%lld", cnt);
+        if (k > 1) printf(" "); printf("%lld", cnt);
     }
     //for (int a : ans) printf("%lld ", a);
     printf("\n");
