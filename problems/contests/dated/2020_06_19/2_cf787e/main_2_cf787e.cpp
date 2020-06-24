@@ -191,35 +191,37 @@ int main()
     ll start_mus = get_ns();
 
     ll ans[MX] = {}, last_count = 0;
+    //for (ll k=1; k<=N; ++k)
+    //    ans[count_groups(k)] ++;
     ll k=1, groups;
     for (; k<=N; ++k)
     {
         groups = count_groups(k);
         ans[groups] ++;
-        printf("added to %d\n", groups);
+        //printf("added to %d\n", groups);
         if (last_count == groups) break;
         else last_count = groups;
     }
     ans[groups] -= 2;
-    printf("found dupe at k=%d\n", k);
+    //printf("found dupe at k=%d\n", k);
     for (--k; k<=N; ++k)
     {
-        printf("binary searching for other end of %d (k %d)\n", groups, k);
+        //printf("binary searching for other end of %d (k %d)\n", groups, k);
         // binary search over k
-        ll l=0, r=k+1;  // exclude r, so leave k as an option, TODO shouldn't be needed
-        for (; l<r;)
+        ll l=k, r=N+1;  // exclude r, so leave k as an option, TODO shouldn't be needed
+        for (; l+1<r;)
         {
             ll mid = l+r>>1;
-            printf("    %d..%d, mid %d has %d\n", l, r, mid, count_groups(mid));
+            //printf("    %d..%d, mid %d has %d\n", l, r, mid, count_groups(mid));
             if (count_groups(mid) < groups)
-                l = mid;
-            else
                 r = mid;
+            else
+                l = mid;
         }
-        printf("binary search got %d\n", l);
-        ans[groups] += k-l-1;
-        k += k-l-1;
-        printf("now k is %d\n", k);
+        //printf("binary search got %d\n", l);
+        ans[groups] += l-k+1;
+        k = l+1;
+        //printf("now k is %d\n", k);
         groups = count_groups(k);
     }
 
