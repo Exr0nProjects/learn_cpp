@@ -169,10 +169,9 @@ int main()
 
     vector<int> ans;
     ll cnt=2;
-    ll total_mus = 0;
+    ll start_mus = get_ns();
     for (ll k=1; k<=N; ++k)
     {
-        ll ns = get_ns();
         if (cnt > 1)
         {
             cnt = 0;
@@ -180,13 +179,12 @@ int main()
                 s = bins(s, k)+1;
         }
 
-        total_mus += get_ns() - ns;
-        if (k > 1) printf(" ");
-        printf("%lld", cnt);
+        //if (k > 1) printf(" "); printf("%lld", cnt);
     }
     //for (int a : ans) printf("%lld ", a);
     printf("\n");
-    printf("on average, each k took %d mus\n", total_mus / N);
+    start_mus = get_ns() - start_mus;
+    printf("on average, each k took %d mus for a total of %d\n", start_mus / N, start_mus);
 
 	return 0;
 }
