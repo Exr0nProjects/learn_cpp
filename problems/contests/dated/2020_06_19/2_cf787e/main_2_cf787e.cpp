@@ -43,6 +43,27 @@ const ll MX = 100111;
 ll N, D, vis[MX], tsum[MX<<6], addt[MX<<6];
 ll alc=1, lc[MX<<6], rc[MX<<6], rt[MX];
 
+#define RESET "\033[0m"
+#define BLACK "\x1b[38;5;239m"
+void dump(ll k)
+{
+    queue<ll> bfs; bfs.push(k);
+    ll d = D+1;
+    printf(BLACK);
+    for (ll i=1; i<1<<1+D; ++i)
+    {
+        if (__builtin_popcount(i) == 1) { --d; printf("\n"); }
+        k = bfs.front(); bfs.pop();
+        if (i >= 1<<D) printf(RESET);
+        bfs.push(lc[k]); bfs.push(rc[k]);
+        //printf("%2d: %2d+%2d (%-2d %2d)  ", k, tsum[k], addt[k], lc[k], rc[k]);
+        //for (ll i=1; i<1<<d; ++i) printf("                   ");
+        printf("%2d: %2d%+2d   ", k, tsum[k], addt[k], lc[k], rc[k]);
+        for (ll i=1; i<1<<d; ++i) printf("           ");
+    }
+    printf("\n");
+}
+
 void dupe(ll &k)
 {
     tsum[alc] = tsum[k];
@@ -92,7 +113,6 @@ ll query(ll q, ll &k, ll tl=1, ll tr=1<<D, ll acc=0)
 {
     if (tl == tr) return tsum[k] + acc;
     acc += addt[k];
-    //push(k, tl, tr);
     ll mid = tl+(tr-tl>>1);
     if (q <= mid) return query(q, lc[k], tl, mid, acc);
     else return query(q, rc[k], mid+1, tr, acc);
@@ -104,13 +124,13 @@ ll bins(ll s, ll k)
     for (ll i=1; i<20; ++i)
     {
         ll mid = l + (r-l>>1);
-        printf("        query %d..%d = %d\n", s, mid, query(s, rt[mid]));
+        //printf("        query %d..%d = %d\n", s, mid, query(s, rt[mid]));
         if (query(s, rt[mid]) <= k)
             l = mid;
         else
             r = mid;
     }
-    printf("    bins from %d with %d colors => %d..%d\n", s, k, s, l);
+    //printf("    bins from %d with %d colors => %d..%d\n", s, k, s, l);
     return l;
 }
 
@@ -130,8 +150,9 @@ int main()
     {
         rt[i] = rt[i-1];
         ll d; scanf("%d", &d);
-        update(vis[d], i, 1, rt[i]);
+        update(vis[d]+1, i, 1, rt[i]);  // FIX: fencepost typo--vis[d] +1 not just vis[d]
         vis[d] = i;
+        //dump(rt[i]);
     }
 
     vector<int> ans;
@@ -140,10 +161,13 @@ int main()
         ll cnt=0;
         for (ll s=1; s <= N; ++cnt)
             s = bins(s, k)+1;
-        ans.pb(cnt);
-        printf("\n");
+        if (k > 1) printf(" ");
+        printf("%lld", cnt);
+        //ans.pb(cnt);
+        //printf("\n");
     }
-    for (int a : ans) printf("%lld ", a); printf("\n");
+    //for (int a : ans) printf("%lld ", a);
+    printf("\n");
 
 	return 0;
 }
