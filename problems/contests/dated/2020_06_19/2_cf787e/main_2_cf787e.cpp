@@ -175,7 +175,7 @@ int main()
         //lc[i] = i<<1;
         //rc[i] = i<<1|1;
     }
-    printf("init psegtree took %d mus\n", get_ns() - ns);
+    //printf("init psegtree took %d mus\n", get_ns() - ns);
     ns = get_ns();
 
     for (ll i=1; i<=N; ++i)
@@ -186,24 +186,52 @@ int main()
         vis[d] = i;
         //dump(rt[i]);
     }
-    printf("input took %d mus\n", get_ns() - ns);
+    //printf("input took %d mus\n", get_ns() - ns);
 
-    vector<int> ans;
-    ll cnt=2;
     ll start_mus = get_ns();
-    for (ll k=1; k<=N; ++k)
-    {
-        if (cnt > 1)
-        {
-            cnt = count_groups(k);
-        }
 
-        if (k > 1) printf(" "); printf("%lld", cnt);
+    ll ans[MX] = {}, last_count = 0;
+    ll k=1, groups;
+    for (; k<=N; ++k)
+    {
+        groups = count_groups(k);
+        ans[groups] ++;
+        printf("added to %d\n", groups);
+        if (last_count == groups) break;
+        else last_count = groups;
     }
-    //for (int a : ans) printf("%lld ", a);
+    ans[groups] -= 2;
+    printf("found dupe at k=%d\n", k);
+    for (--k; k<=N; ++k)
+    {
+        printf("binary searching for other end of %d (k %d)\n", groups, k);
+        // binary search over k
+        ll l=0, r=k+1;  // exclude r, so leave k as an option, TODO shouldn't be needed
+        for (; l<r;)
+        {
+            ll mid = l+r>>1;
+            printf("    %d..%d, mid %d has %d\n", l, r, mid, count_groups(mid));
+            if (count_groups(mid) < groups)
+                l = mid;
+            else
+                r = mid;
+        }
+        printf("binary search got %d\n", l);
+        ans[groups] += k-l-1;
+        k += k-l-1;
+        printf("now k is %d\n", k);
+        groups = count_groups(k);
+    }
+
+    for (ll k=N; k>0; --k)
+    {
+        for (ll i=0; i<ans[k]; ++i)
+            printf("%lld ", k);
+    }
     printf("\n");
+
     start_mus = get_ns() - start_mus;
-    printf("on average, each k took %d mus for a total of %d\n", start_mus / N, start_mus);
+    //printf("on average, each k took %d mus for a total of %d\n", start_mus / N, start_mus);
 
 	return 0;
 }
