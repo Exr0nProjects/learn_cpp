@@ -39,8 +39,9 @@
 #define s second
 
 using namespace std;
-const ll MX = 100111;
-const ll MXTN = MX<<6;
+const ll MX = 50111;
+const ll MXM = 10111;
+const ll MXTN = 2*MX + MX*16 + MXM*4*16*16;
 
 int N, D, M, arr[MX];
 
@@ -116,12 +117,13 @@ void raw_update(int q, int addv, int &k, int tl=1, int tr=1<<D)
 	else raw_update(q, addv, rc[k], mid+1, tr);
 	comb(k);
 }
-int aligned_query(int ql, int qr, int k, int tl=1, int tr=1<<D)
+int aligned_query(int ql, int qr, int k, int tl=1, int tr=1<<D, int acc=0)
 {	// query where the range is gaurenteed to be aligned to a segment tree interval
 	//printf("        aligned query %d..%d @ %d (%d..%d)\n", ql, qr, k, tl, tr);
 	if (qr < tl || tr < ql) return 0;	// FIX: equ--can't just check if either side is equal
-	if (ql == tl && qr == tr) return tsum[k];
-	push(k, tl, tr); int mid = tl + (tr-tl>>1);
+	if (ql == tl && qr == tr) return tsum[k] + acc;
+	int mid = tl + (tr-tl>>1);
+	acc += addt[k]*(tr-tl+1);
 	if (ql == tl) return aligned_query(ql, qr, lc[k], tl, mid);
 	else return aligned_query(ql, qr, rc[k], mid+1, tr);
 }
