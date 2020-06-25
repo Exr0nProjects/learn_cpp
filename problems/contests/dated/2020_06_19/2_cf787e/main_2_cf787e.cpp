@@ -143,33 +143,51 @@ ll query_iter(ll q, ll k, ll tl=1, ll tr=1<<D)
 
 ll get_next_group(ll kth, ll k, ll tl=1, ll tr=1<<D)
 {
-    if (tl == tr) return tl;
-    ll mid = tl + (tr-tl>>1), lsize = tsum[lc[k]];
-    if (kth <= lsize)
-        return get_next_group(kth, lc[k], tl, mid);
+    printf("        kth %d k %d (%d..%d)  ", kth, k, tl, tr);
+    if (k <= 0) return 100000;
+    if (tl == tr) return tsum[k] == kth ? tl : 1000000;
+    ll mid = tl + (tr-tl>>1), rsize = tsum[rc[k]];
+    printf("        mid %d rsize %d\n", mid, rsize);
+    if (kth == rsize)
+        return min(get_next_group(kth, rc[k], mid+1, tr), get_next_group(kth-rsize, lc[k], tl, mid));
+    else if (kth > rsize)
+        return get_next_group(kth-rsize, lc[k], tl, mid);
     else
-        return get_next_group(kth-lsize, rc[k], mid+1, tr);
+        return get_next_group(kth, rc[k], mid+1, tr);
 }
 
 ll count_groups(ll k)
 {
     printf("countgroups %d\n", k);
     ll cnt = 0;
-    for (ll s=1; s <= N; ++cnt)
+    //for (ll s=1; s <= N; ++cnt)
+    //for (ll s=N; s>0; ++cnt)
+    //{
+    //    //ll l=s, r=N+1;   // exclude r
+    //    //for (ll i=1; r-l>1; ++i)
+    //    //{
+    //    //    //ll mid = l + (r-l>>1);
+    //    //    const ll mid = l+r >>1;
+    //    //    if (query_iter(s, rt[mid]) <= k)
+    //    //        l = mid;
+    //    //    else
+    //    //        r = mid;
+    //    //}
+    //    //s = l+1;
+    //    //printf("        s = %d, bins: %d   get_next_group: %d\n", s, l, get_next_group(s, rt[k]));
+    //    printf("next group from s=%d is %d\n", s, get_next_group(k, rt[s]));
+    //    --s;
+    //}
+
+    for (ll e=N; e>0; ++cnt)
     {
-        ll l=s, r=N+1;   // exclude r
-        for (ll i=1; r-l>1; ++i)
-        {
-            //ll mid = l + (r-l>>1);
-            const ll mid = l+r >>1;
-            if (query_iter(s, rt[mid]) <= k)
-                l = mid;
-            else
-                r = mid;
-        }
-        printf("        s = %d, bins: %d   get_next_group: %d\n", s, l, get_next_group(s, rt[k]));
-        s = l+1;
+        printf("set end = %d\n", e);
+        ll got = get_next_group(k, rt[e]);
+        printf("next group to e=%d is %d\n", e, got);
+        e = got;
+        scanf("%*c%*c");
     }
+
     return cnt;
 }
 
