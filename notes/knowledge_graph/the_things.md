@@ -6,10 +6,33 @@
 - Derived From
 - Careful
 
+# Graph
+- Properties
+    - Pretty much the most versitile thing
+    - A collection of nodes and edges
+        - Each edge connects two nodes (usually but maybe not different)
+- Algorithms
+    - Traversal
+        - [Depth First Search](#depth-first-search)
+        - [Breadth First Search](#breadth-first-search)
+    - Singe Source Shortest Path
+        - Greedy: [Djikstra](#djikstra)
+        - Negative Edges: [Bellman Ford](#bellman-ford)
+    - All Pairs Shortest Path
+        - [Floyd Warshall](#floyd)
+    - [Minimum Spanning Tree](#minimum-spanning-tree)
+
+## Graph Storage
+- 
+
+
 # Tree
 - Properties
+    - It's a graph
     - There is only one path between each pair of nodes
     - The number of edges is one less than the number of nodes
+- Derived From
+    - [Graph](#graph)
 
 ## Rooted Tree
 - Properties
@@ -356,6 +379,10 @@ TODO
 ## Djikstra
 
 TODO
+
+## Floyd
+
+## Bellman Ford
 
 # Things TODO
 String Matching
