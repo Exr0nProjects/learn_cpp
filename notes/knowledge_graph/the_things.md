@@ -23,7 +23,49 @@
     - [Minimum Spanning Tree](#minimum-spanning-tree)
 
 ## Graph Storage
-- 
+- Properties
+    - Store connections, uses depend on algorithm
+        - In algorithms that only care about edges
+            - Ex. bellman ford, kruskal
+            - You can use a list of edges that isn't sorted by source
+    - Methods sorted by source
+        - Adjacency Matrix
+            - A N by N array that stores the weight between two nodes (`adj[i][j] = cost to get from i to j`)
+        - Adjacency List
+            - An array of lists, each list is the edges that come from node `i`
+            - Usually stored as `list<int> head[MX];` where head is the head of the linked list
+        - Edge list (manual adjacency list)
+            - Simulate linked list heap storage with an array
+            - <details><summary>Standard Code</summary>
+
+                ```cpp
+                struct Edge { ll f, t, n; } edges[MX*MX]; // from, to, next
+                ll head[MX], alc=1;
+                void addEdge(ll u, ll v)
+                {
+                    // add a directed edge from `u` to `v`
+                    edges[alc].f = u;                   // set `from` value of node, not really needed
+                    edges[alc].t = v;                   // set `to` value, this is the important one
+                    edges[alc].n = head[u];             // store the id of the next edge in the linked list
+                    head[u] = alc++;                    // add the new edge to the linkedlist for that node
+                }
+
+                // to loop over the edgelist
+                for (ll e=head[cur]; e; e=edges[e].n)   // `e` is the edge id/index
+                    if (edges[e].t != pre)              // access `next` with `edges[e].t`
+                        visit(edges[e].t, cur);
+                ```
+
+            </details>
+- Algorithms
+    - Anything that uses a [graph](#graph)
+- Classic Problems/Uses
+    - Anything that uses a [graph](#graph)
+- Derived From
+    - [Linked List](#linked-list)
+    - [Dynamic Allocation](#dynamic-allocation)
+- Careful
+    - `edges` array needs to be the number of nodes squared!
 
 
 # Tree
@@ -185,6 +227,168 @@ void rotate(Node &cur, bool dir)        // 1 = left rotate, 0 = right rotate. Ro
     - running min/max of a set
     - rank of a number (counting inversions)
 
+## Range Tree
+- Properties
+    - Stores a set of range precomputations
+    - Usually a wrapper over an input array (may start empty)
+- Algorithms
+    - [Segment Tree](#segment-tree)
+    - [Binary Indexed Tree](#binary-indexed-tree)
+- Classic Problems/Uses
+- Derived From
+    - [Range Precomputation](#range-precomputation)
+    - [Ranges](#ranges)
+    - [Tree](#tree)
+- Careful
+    - Be sure to remember how your range indexing works!
+        - include left or right?
+        - zero indexed or one?
+
+### Segment Tree
+<details><summary>Standard Code</summary>
+
+```cpp
+ll N, D, tsum[MX], addt[MX];
+void point_update(ll q, ll addv,                // update one point in the segment tree with these arguments
+                  ll k=1, ll tl=1, ll tr=1<<D)  // and these defaults (start at root with range of entire segtree
+{
+    if (tl == tr)                               // the range is one, therefore we must be at a leaf node and done traversing
+    {
+        addt[k] += addv;                        // update the add tag, can also use an `apply` function for this
+        tsum[k] += addv *(tr-tl+1);             // update the sum, remember to multiply by range and fencepost cuz inc l inc r
+    }
+    ll mid = tl + (tr-tl>>1);                   // push_down here if using set_tag
+    if (q <= mid)                               // if query would be in the left subtree
+        point_update(q, addv, k<<1, tl, mid);   // query left, use `lc[k]` if persistent/dynamic
+    else
+        point_update(q, addv, k<<1|1, mid+1, tr); // remember mid+1 cuz inc l inc r
+    tsum[k] = tsum[k<<1] + tsum[k<<1|1];        // remember to update this sum on postorder dfs
+}
+void range_update(ll ql, ll qr, ll addv,
+                  ll k=1, ll tl=1, ll tr=1<<D)
+{
+    if (qr < tl || tr < ql) return;             // return if query range is out of tree range (no overlap)
+    if (ql <= tl && tr <= qr)                   // if query fully covers this segment
+        return apply(addv, k, tl, tr);          // apply the tag
+    ll mid = tl + (tr-tl>>1);                   // get the middle of the range to propogate subtree range
+    range_update(ql, qr, addv, k<<1, tl, mid);  // update both subtrees (cuz range) recursive basecase 
+    range_update(ql, qr, addv, k<<1|1, mid+1, tr);  // will stop it if out of bounds
+    comb(k);                                    // combine subtree accumulators
+}
+
+ll point_query(ll q, ll k=1, ll tl=1, ll tr=1<<D)
+{
+    if (tl == tr) return tsum[k];               // if left and right bounds equal, we are at leaf
+    push(k); ll mid = tl + (tr-tl>>1);          // this uses push, but for only add tag you can use an accumulator
+    if (q <= mid)
+        return point_query(q, k<<1, tl, mid);   // propogate to proper subtree (tail recursive!)
+    else return point_query(q, k<<1|1, mid+1, tr);
+}
+ll range_query(ll ql, ll qr, ll k=1, ll tl=1, ll tr=1<<D,   // standard stuff
+               ll acc=0)                        // we can use an accumulator for addtag so we don't have to push
+{
+    if (qr < tl || tr < ql) return 0;           // sum + 0 = sum, so we return zero in the base case
+    if (ql <= tl && tr <= qr)                   // if tree range covered by query
+        return tsum[k] + acc);                  // return sum + add tags from traversal
+    acc += addt[k];                             // this might need to go before previous lines
+                                                //      depending on if addt[k] counds for tsum[k] or not
+    return range_query(ql, qr, k<<1, tl, mid)   // return the sum of subtree ranges if query range doesn't fully cover this
+         + range_query(ql, qr, k<<1|1, mid+1, tr);
+}
+```
+
+</details>
+
+- Properties
+    - Stores larger segments at the top
+    - Each segment is a power of two in length
+    - Binary: A segment tree is a binary tree
+    - Symmetrical: The structure is recursive and the left and right subtree are the same
+    - Tags and lazy computation:
+        - Uses tags to store updates that are combined during query when needed
+- Algorithms
+- Classic Problems/Uses
+- Derived From
+    - [Lazy Computation](#lazy-computation)
+    - [Range Tree](#range-tree)
+- Careful
+
+#### Segment Tree Tags
+<details><summary>Standard Code</summary>
+
+```cpp
+ll tsum[MX], sett[MX], addt[MX];
+void apply(ll setv, ll addv, ll k, ll tl, ll tr)// apply tags represented by `{ setv, addv }` to node `k`
+{
+    if (setv == -1 && !addt) return;            // don't apply anything because tag is null
+    if (setv >= 0)                              // if set tag
+        tsum[k] = setv * (tr-tl+1);             // apply set tag first (add tag is ignored)
+    else                                        // else, no set tag
+        tsum[k] += addv * (tr-tl+1);            // apply add tag (remember to multiply
+                                                //      by the range of the node)
+    sett[k] = setv;                             // push the themselves down
+    addt[k] = addv;
+}
+void push(ll k, ll tl, ll tr)                   // push_down the tags to both subtrees
+{
+    ll mid = tl + (tr-tl>>1);                   // get mid value to tell `apply` the subtree range
+    apply(sett[k], addt[k], k<<1, tl, mid);     // apply to the left subtree
+    apply(sett[k], addt[k], k<<1|1, mid+1, tr); // and the right
+    sett[k] = -1; addt[k] = 0;                  // reset tags to null
+}
+void comb(ll k)                                 // combine accumulators
+{
+    tsum[k] = tsum[k<<1] + tsum[k<<1|1];        // good place to do modulo, or if many accumulators
+}
+```
+
+</details>
+
+- Properties
+    - Tags usually represent the operations that can be applied to the underlying array
+    - Some tags are order sensitive (set tag) while others can be applied at any time (add tag)
+        - Order sensitive tags require only one per path to leaf, so you need push_down (`push()`)
+        - Combinable tags (add tag, mulitply) can be computed lazily
+    - Tag precedence and representation matters
+        - Decide how any combination of tags will be applied to any other combination
+        - Write the `apply` function, which takes tags and a target node in the segtree
+        - With the operations `{multiply, set, add}` its possible to just use multiply and add
+            - Multiply by zero and add to simulate set tag
+            - Multiply has higher precedence
+            - See problems codechef-addmul and HDU2578
+- Algorithms
+- Classic Problems/Uses
+- Derived From
+    - [Lazy Computation](#lazy-computation)
+- Careful
+
+#### Segment Tree Binary Search
+- Properties
+    - Binary Search over a set of precomputed/intermediate tags on a segment tree
+    - Usually can find the answer to something in logN time (traversing the segtree).
+- Algorithms
+- Classic Problems/Uses
+    - [SPOJ MKTHNUM](https://www.spoj.com/problems/MKTHNUM/)
+- Derived From
+    - [Tree Precomputation Binary Search](#tree-precomputation-binary-search)
+- Careful
+    - The tags must be prefix-sumable to be able to subtract one side from the other/root
+
+#### Persistent Segment Tree
+TODO
+- Properties
+- Algorithms
+- Classic Problems/Uses
+- Derived From
+- Careful
+
+### Binary Indexed Tree
+TODO
+- Properties
+- Algorithms
+- Classic Problems/Uses
+- Derived From
+- Careful
 
 // TODO: these \/
 - Range trees
@@ -219,6 +423,25 @@ void rotate(Node &cur, bool dir)        // 1 = left rotate, 0 = right rotate. Ro
     - counting inversions
 - Derived from
     - [Precomputation](#precomputation)
+
+## Lazy Computation
+TODO
+- Properties
+- Algorithms
+- Classic Problems/Uses
+- Derived From
+- Careful
+
+## Tree Precomputaiton Binary Search
+- Properties
+    - Binary search over intermediate values in a tree
+- Algorithms
+    - Treap find rank/kth
+    - Segment Tree prefix frequency
+- Classic Problems/Uses
+- Derived From
+    - [Lazy Computation](#lazy-computation)
+- Careful
 
 # Prefix Sum
 - Properties
@@ -296,6 +519,36 @@ int query(int l, int r)                             // include left exclude righ
 - Derived from
     - [Range Precomputation](#range-precomputation)
 
+
+# Array
+- Properties
+    - Continuous memory
+    - Random access
+    - Philosophy: unkown number of the same thing that we should be able to loop over
+- Algorithms
+- Classic Problems/Uses
+- Derived From
+- Careful
+
+## Vis Array
+- Properties
+    - Boolean array to store whether the location has been visited or not
+    - Conceptually a map of node to boolean, usually either a 1d or 2d array or `map<pair<int, int>, bool>`
+- Algorithms
+- Classic Problems/Uses
+- Derived From
+- Careful
+
+## Dynamic Allocation
+- Properties
+    - On sparse storage, we can create "linked lists" in our arrays manually
+- Algorithms
+- Classic Problems/Uses
+- Derived From
+    - [Array](#array)
+- Careful
+
+
 # Stack
 
 TODO
@@ -340,12 +593,6 @@ TODO
 # Breadth First Search
 
 TODO
-
-## Vis Array
-
-- Properties
-    - Boolean array to store whether the location has been visited or not
-    - Conceptually a map of node to boolean, usually either a 1d or 2d array or `map<pair<int, int>, bool>`
 
 # binary search
 - Look for the sorting property
@@ -418,6 +665,9 @@ For Loops
 # ranges
 - most range combine is include left include right (segment tree, BIT, sparse table)
 - most range query is include left exclude right by default (binary search)
+- Careful
+    - Range Boundary Semantics
+        - is it include left include right? or include left exclude right?
 
 # greedy range sequencing
 - sort by end time
@@ -537,9 +787,6 @@ For Loops
         - Edge list - not organized by source of each edge
 
 ## Data Structures
-- Array
-    - Continuous memory
-    - Random access
 - Vector
     - Continuous memory
     - Random access
