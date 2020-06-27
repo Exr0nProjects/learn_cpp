@@ -40,7 +40,7 @@
 
 using namespace std;
 const ll MX = 100111;
-ll N, D, vis[MX], tsum[MX<<6], addt[MX<<6];
+ll N, D, vis[MX], tmin[MX<<6], addt[MX<<6];
 ll alc=1, lc[MX<<6], rc[MX<<6], rt[MX];
 
 #include <chrono>
@@ -53,30 +53,30 @@ ll get_ns()
     ).count();
 }
 
-//#define RESET "\033[0m"
-//#define BLACK "\x1b[38;5;239m"
-//void dump(ll k)
-//{
-//    queue<ll> bfs; bfs.push(k);
-//    ll d = D+1;
-//    printf(BLACK);
-//    for (ll i=1; i<1<<1+D; ++i)
-//    {
-//        if (__builtin_popcount(i) == 1) { --d; printf("\n"); }
-//        k = bfs.front(); bfs.pop();
-//        if (i >= 1<<D) printf(RESET);
-//        bfs.push(lc[k]); bfs.push(rc[k]);
-//        //printf("%2d: %2d+%2d (%-2d %2d)  ", k, tsum[k], addt[k], lc[k], rc[k]);
-//        //for (ll i=1; i<1<<d; ++i) printf("                   ");
-//        printf("%2d: %2d%+2d   ", k, tsum[k], addt[k], lc[k], rc[k]);
-//        for (ll i=1; i<1<<d; ++i) printf("           ");
-//    }
-//    printf("\n");
-//}
+#define RESET "\033[0m"
+#define BLACK "\x1b[38;5;239m"
+void dump(ll k)
+{
+    queue<ll> bfs; bfs.push(k);
+    ll d = D+1;
+    printf(BLACK);
+    for (ll i=1; i<1<<1+D; ++i)
+    {
+        if (__builtin_popcount(i) == 1) { --d; printf("\n"); }
+        k = bfs.front(); bfs.pop();
+        if (i >= 1<<D) printf(RESET);
+        bfs.push(lc[k]); bfs.push(rc[k]);
+        //printf("%2d: %2d+%2d (%-2d %2d)  ", k, tsum[k], addt[k], lc[k], rc[k]);
+        //for (ll i=1; i<1<<d; ++i) printf("                   ");
+        printf("%2d: %2d%+2d   ", k, tmin[k], addt[k], lc[k], rc[k]);
+        for (ll i=1; i<1<<d; ++i) printf("           ");
+    }
+    printf("\n");
+}
 
 void dupe(ll &k)
 {
-    tsum[alc] = tsum[k];
+    tmin[alc] = tmin[k];
     addt[alc] = addt[k];
     lc[alc] = lc[k];
     rc[alc] = rc[k];
@@ -87,7 +87,7 @@ void apply(ll addv, ll &k, ll tl, ll tr)
     if (!addv) return;
     dupe(k);
     addt[k] += addv;
-    tsum[k] += addv * (tr-tl+1);
+    tmin[k] += addv;
 }
 
 void update(ll ql, ll qr, ll addv, ll &k, ll tl=1, ll tr=1<<D)
@@ -97,7 +97,7 @@ void update(ll ql, ll qr, ll addv, ll &k, ll tl=1, ll tr=1<<D)
     dupe(k); ll mid = tl + (tr-tl>>1);
     update(ql, qr, addv, lc[k], tl, mid);
     update(ql, qr, addv, rc[k], mid+1, tr);
-    tsum[k] = tsum[lc[k]] + tsum[rc[k]];
+    tmin[k] = min(tmin[lc[k]], tmin[rc[k]]);
 }
 //ll query(ll q, ll k, ll tl=1, ll tr=1<<D, ll acc=0)
 //{
@@ -109,19 +109,19 @@ void update(ll ql, ll qr, ll addv, ll &k, ll tl=1, ll tr=1<<D)
 //    else return query(q, rc[k], mid+1, tr, acc);
 //}
 
-ll query_iter(ll q, ll k, ll tl=1, ll tr=1<<D)
-{
-    ll acc = addt[k];
-    for (; tl < tr; acc += addt[k])
-    {
-        //const ll mid = tl + (tr-tl>>1);
-        const ll mid = tr+tl>>1;
-        if (q <= mid) k = lc[k], tr = mid;
-        else          k = rc[k], tl = mid+1;
-        //printf("iter: %d..%d +%d\n", tl, tr, acc);
-    }
-    return tsum[k] + acc - addt[k]; // FIX: equ--subtract extra addt[k]
-}
+//ll query_iter(ll q, ll k, ll tl=1, ll tr=1<<D)
+//{
+//    ll acc = addt[k];
+//    for (; tl < tr; acc += addt[k])
+//    {
+//        //const ll mid = tl + (tr-tl>>1);
+//        const ll mid = tr+tl>>1;
+//        if (q <= mid) k = lc[k], tr = mid;
+//        else          k = rc[k], tl = mid+1;
+//        //printf("iter: %d..%d +%d\n", tl, tr, acc);
+//    }
+//    return tmin[k] + acc - addt[k]; // FIX: equ--subtract extra addt[k]
+//}
 
 //ll bins(ll s, ll k)
 //{
@@ -141,19 +141,33 @@ ll query_iter(ll q, ll k, ll tl=1, ll tr=1<<D)
 //    return l;
 //}
 
-ll get_next_group(ll kth, ll k, ll tl=1, ll tr=1<<D)
-{
-    printf("        kth %d k %d (%d..%d)  ", kth, k, tl, tr);
-    if (k <= 0) return 100000;
-    if (tl == tr) return tsum[k] == kth ? tl : 1000000;
-    ll mid = tl + (tr-tl>>1), rsize = tsum[rc[k]];
-    printf("        mid %d rsize %d\n", mid, rsize);
-    if (kth == rsize)
-        return min(get_next_group(kth, rc[k], mid+1, tr), get_next_group(kth-rsize, lc[k], tl, mid));
-    else if (kth > rsize)
-        return get_next_group(kth-rsize, lc[k], tl, mid);
+//ll get_next_group(ll kth, ll k, ll tl=1, ll tr=1<<D)
+//{
+//    printf("        kth %d k %d (%d..%d)  ", kth, k, tl, tr);
+//    if (k <= 0) return 100000;
+//    if (tl == tr) return tsum[k] == kth ? tl : 1000000;
+//    ll mid = tl + (tr-tl>>1), rsize = tsum[rc[k]];
+//    printf("        mid %d rsize %d\n", mid, rsize);
+//    if (kth == rsize)
+//        return min(get_next_group(kth, rc[k], mid+1, tr), get_next_group(kth-rsize, lc[k], tl, mid));
+//    else if (kth > rsize)
+//        return get_next_group(kth-rsize, lc[k], tl, mid);
+//    else
+//        return get_next_group(kth, rc[k], mid+1, tr);
+//}
+
+ll get_next_group_part_3(ll kth, ll k, ll tl=1, ll tr=1<<D, ll acc=0)
+{   // this works for min array. could've used delta arrays too and previous method
+    printf("get #%d @ %d(%d..%d)\n", kth, k, tl, tr);
+    if (tl == tr) return tl;
+    acc += addt[k];
+    ll lmin = tmin[lc[k]] + acc;
+    ll mid = tl + (tr-tl>>1);
+    printf("    min of %d..%d = %d, stepping %s\n", tl, mid, lmin, kth >= lmin ? "left" : "right");
+    if (kth >= lmin)
+        return get_next_group_part_3(kth, lc[k], tl, mid, acc);
     else
-        return get_next_group(kth, rc[k], mid+1, tr);
+        return get_next_group_part_3(kth, rc[k], mid+1, tr, acc);
 }
 
 ll count_groups(ll k)
@@ -182,9 +196,9 @@ ll count_groups(ll k)
     for (ll e=N; e>0; ++cnt)
     {
         printf("set end = %d\n", e);
-        ll got = get_next_group(k, rt[e]);
+        ll got = get_next_group_part_3(k, rt[e]);
         printf("next group to e=%d is %d\n", e, got);
-        e = got;
+        e = got-1;
         scanf("%*c%*c");
     }
 
@@ -214,7 +228,7 @@ int main()
         ll d; scanf("%d", &d);
         update(vis[d]+1, i, 1, rt[i]);  // FIX: fencepost typo--vis[d] +1 not just vis[d]
         vis[d] = i;
-        //dump(rt[i]);
+        dump(rt[i]);
     }
     //printf("input took %d mus\n", get_ns() - ns);
 
@@ -242,7 +256,7 @@ int main()
         for (; l+1<r;)
         {
             ll mid = l+r>>1;
-            printf("    %d..%d, mid %d has %d\n", l, r, mid, count_groups(mid));
+            //printf("    %d..%d, mid %d has %d\n", l, r, mid, count_groups(mid));
             if (count_groups(mid) < groups)
                 r = mid;
             else
