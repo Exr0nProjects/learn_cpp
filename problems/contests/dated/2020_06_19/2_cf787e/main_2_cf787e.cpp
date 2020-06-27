@@ -42,6 +42,7 @@ using namespace std;
 const ll MX = 100111;
 ll N, D, vis[MX], tmin[MX<<6], addt[MX<<6];
 ll alc=1, lc[MX<<6], rc[MX<<6], rt[MX];
+ll memo[MX][MX];
 
 #include <chrono>
 using namespace std::chrono;
@@ -53,26 +54,26 @@ ll get_ns()
     ).count();
 }
 
-#define RESET "\033[0m"
-#define BLACK "\x1b[38;5;239m"
-void dump(ll k)
-{
-    queue<ll> bfs; bfs.push(k);
-    ll d = D+1;
-    printf(BLACK);
-    for (ll i=1; i<1<<1+D; ++i)
-    {
-        if (__builtin_popcount(i) == 1) { --d; printf("\n"); }
-        k = bfs.front(); bfs.pop();
-        if (i >= 1<<D) printf(RESET);
-        bfs.push(lc[k]); bfs.push(rc[k]);
-        //printf("%2d: %2d+%2d (%-2d %2d)  ", k, tsum[k], addt[k], lc[k], rc[k]);
-        //for (ll i=1; i<1<<d; ++i) printf("                   ");
-        printf("%2d: %2d%+2d   ", k, tmin[k], addt[k], lc[k], rc[k]);
-        for (ll i=1; i<1<<d; ++i) printf("           ");
-    }
-    printf("\n");
-}
+//#define RESET "\033[0m"
+//#define BLACK "\x1b[38;5;239m"
+//void dump(ll k)
+//{
+//    queue<ll> bfs; bfs.push(k);
+//    ll d = D+1;
+//    printf(BLACK);
+//    for (ll i=1; i<1<<1+D; ++i)
+//    {
+//        if (__builtin_popcount(i) == 1) { --d; printf("\n"); }
+//        k = bfs.front(); bfs.pop();
+//        if (i >= 1<<D) printf(RESET);
+//        bfs.push(lc[k]); bfs.push(rc[k]);
+//        //printf("%2d: %2d+%2d (%-2d %2d)  ", k, tsum[k], addt[k], lc[k], rc[k]);
+//        //for (ll i=1; i<1<<d; ++i) printf("                   ");
+//        printf("%2d: %2d%+2d   ", k, tmin[k], addt[k], lc[k], rc[k]);
+//        for (ll i=1; i<1<<d; ++i) printf("           ");
+//    }
+//    printf("\n");
+//}
 
 void dupe(ll &k)
 {
@@ -158,21 +159,25 @@ void update(ll ql, ll qr, ll addv, ll &k, ll tl=1, ll tr=1<<D)
 
 ll get_next_group_part_3(ll kth, ll k, ll tl=1, ll tr=1<<D, ll acc=0)
 {   // this works for min array. could've used delta arrays too and previous method
-    printf("get #%d @ %d(%d..%d)\n", kth, k, tl, tr);
+    //if (memo[kth][k]) return memo[kth][k];
+    //printf("get #%d @ %d(%d..%d)\n", kth, k, tl, tr);
     if (tl == tr) return tl;
     acc += addt[k];
     ll lmin = tmin[lc[k]] + acc;
     ll mid = tl + (tr-tl>>1);
-    printf("    min of %d..%d = %d, stepping %s\n", tl, mid, lmin, kth >= lmin ? "left" : "right");
+    //printf("    min of %d..%d = %d, stepping %s\n", tl, mid, lmin, kth >= lmin ? "left" : "right");
+    ll ret;
     if (kth >= lmin)
-        return get_next_group_part_3(kth, lc[k], tl, mid, acc);
+        ret = get_next_group_part_3(kth, lc[k], tl, mid, acc);
     else
-        return get_next_group_part_3(kth, rc[k], mid+1, tr, acc);
+        ret = get_next_group_part_3(kth, rc[k], mid+1, tr, acc);
+    //memo[kth][k] = ret;
+    return ret;
 }
 
 ll count_groups(ll k)
 {
-    printf("countgroups %d\n", k);
+    //printf("countgroups %d\n", k);
     ll cnt = 0;
     //for (ll s=1; s <= N; ++cnt)
     //for (ll s=N; s>0; ++cnt)
@@ -195,11 +200,11 @@ ll count_groups(ll k)
 
     for (ll e=N; e>0; ++cnt)
     {
-        printf("set end = %d\n", e);
+        //printf("set end = %d\n", e);
         ll got = get_next_group_part_3(k, rt[e]);
-        printf("next group to e=%d is %d\n", e, got);
+        //printf("next group to e=%d is %d\n", e, got);
         e = got-1;
-        scanf("%*c%*c");
+        //scanf("%*c%*c");
     }
 
     return cnt;
@@ -228,7 +233,7 @@ int main()
         ll d; scanf("%d", &d);
         update(vis[d]+1, i, 1, rt[i]);  // FIX: fencepost typo--vis[d] +1 not just vis[d]
         vis[d] = i;
-        dump(rt[i]);
+        //dump(rt[i]);
     }
     //printf("input took %d mus\n", get_ns() - ns);
 
