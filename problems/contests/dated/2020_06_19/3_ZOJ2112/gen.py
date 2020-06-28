@@ -1,0 +1,25 @@
+T = 4
+N = 500000
+M = 100000
+MX = 10000
+
+T = 1
+N = 7
+M = 10
+MX = 10
+
+from random import randint
+
+print(T)
+for t in range(T):
+    print(N, M)
+    print(' '.join(str(randint(1, MX)) for i in range(N)))
+    for i in range(M):
+        cmd = 'Q' if randint(0, 1) else 'C'
+        print(cmd, end=' ')
+        if (cmd == 'Q'):
+            l = randint(1, MX)
+            r = randint(l, MX)
+            print(l, r, randint(1, r-l+1))
+        else:
+            print(randint(1, N), randint(1, MX))

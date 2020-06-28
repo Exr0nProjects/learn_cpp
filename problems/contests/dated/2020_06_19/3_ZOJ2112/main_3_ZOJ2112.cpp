@@ -47,62 +47,47 @@ int N, D, M, arr[MX];
 
 // segment tree
 int alc=1, lc[MXTN], rc[MXTN], rt_org[MX], rt_bit[MX];
-int tsum[MXTN], addt[MXTN];
+int tsum[MXTN];
 
-//#define RESET "\033[0m"
-//#define BLACK "\x1b[38;5;239m"
-//void dump_segtree(int k)
-//{
-//    queue<int> bfs; bfs.push(k);
-//    int d = D+1;
-//    printf(BLACK);
-//    for (int i=1; i<1<<1+D; ++i)
-//    {
-//        if (__builtin_popcount(i) == 1) { printf("\n"); --d; }
-//        k = bfs.front(); bfs.pop();
-//        bfs.push(lc[k]); bfs.push(rc[k]);
-//        if (i >= 1<<D) printf(RESET);
-//        //printf("%3d: %2d+%-2d (%-2d %2d)   ", k, tsum[k], addt[k], lc[k], rc[k]);
-//        //for (int i=1; i<1<<d; ++i) printf("                     ");
-//
-//        printf("%3d: %2d+%-2d  ", k, tsum[k], addt[k], lc[k], rc[k]);
-//        for (int i=1; i<1<<d; ++i) printf("            ");
-//    }
-//    printf(RESET);
-//    printf("\n");
-//}
-//void dump_persistent(int l, int r, int tree[])
-//{
-//    for (int i=l; i<=r; ++i)
-//    {
-//        printf("tree %d:", i);
-//        dump_segtree(tree[i]);
-//        printf("\n");
-//    }
-//}
+#define RESET "\033[0m"
+#define BLACK "\x1b[38;5;239m"
+void dump_segtree(int k)
+{
+	queue<int> bfs; bfs.push(k);
+	int d = D+1;
+	printf(BLACK);
+	for (int i=1; i<1<<1+D; ++i)
+	{
+		if (__builtin_popcount(i) == 1) { printf("\n"); --d; }
+		k = bfs.front(); bfs.pop();
+		bfs.push(lc[k]); bfs.push(rc[k]);
+		if (i >= 1<<D) printf(RESET);
+		//printf("%3d: %2d+%-2d (%-2d %2d)   ", k, tsum[k], addt[k], lc[k], rc[k]);
+		//for (int i=1; i<1<<d; ++i) printf("                     ");
+
+		printf("%3d: %2d+%-2d  ", k, tsum[k], addt[k], lc[k], rc[k]);
+		for (int i=1; i<1<<d; ++i) printf("            ");
+	}
+	printf(RESET);
+	printf("\n");
+}
+void dump_persistent(int l, int r, int tree[])
+{
+	return;
+	for (int i=l; i<=r; ++i)
+	{
+		printf("tree %d:", i);
+		dump_segtree(tree[i]);
+		printf("\n");
+	}
+}
 
 void dupe(int &k)
 {
 	lc[alc] = lc[k];
 	rc[alc] = rc[k];
 	tsum[alc] = tsum[k];
-	addt[alc] = addt[k];
 	k = alc++;
-}
-void apply(int addv, int &k, int tl, int tr)
-{
-	if (!addv) return;
-	dupe(k);
-	addt[k] += addv;
-	tsum[k] += addv*(tr-tl+1);
-}
-void push(int &k, int tl, int tr)
-{
-	dupe(k);
-	int mid = tl + (tr-tl>>1);
-	apply(addt[k], lc[k], tl, mid);
-	apply(addt[k], rc[k], mid+1, tr);
-	addt[k] = 0;
 }
 void comb(int k)
 {
@@ -111,8 +96,8 @@ void comb(int k)
 
 void raw_update(int q, int addv, int &k, int tl=1, int tr=1<<D)
 {
-	if (tl == tr) return apply(addv, k, tl, tr);
-	push(k, tl, tr); int mid = tl + (tr-tl>>1);
+	if (tl == tr) { tsum[k] += addv; return; }
+	dupe(k); int mid = tl + (tr-tl>>1);
 	if (q <= mid) raw_update(q, addv, lc[k], tl, mid);
 	else raw_update(q, addv, rc[k], mid+1, tr);
 	comb(k);
@@ -124,8 +109,8 @@ int aligned_query(int ql, int qr, int k, int tl=1, int tr=1<<D, int acc=0)
 	if (ql == tl && qr == tr) return tsum[k] + acc;
 	int mid = tl + (tr-tl>>1);
 	acc += addt[k]*(tr-tl+1);
-	if (ql == tl) return aligned_query(ql, qr, lc[k], tl, mid);
-	else return aligned_query(ql, qr, rc[k], mid+1, tr);
+	if (ql == tl) return aligned_query(ql, qr, lc[k], tl, mid, acc);
+	else return aligned_query(ql, qr, rc[k], mid+1, tr, acc);	// TODO: why don't we pass acc here?
 }
 
 // BIT
@@ -151,6 +136,56 @@ int bit_query(int v, int tl, int tr)
 	}
 	//printf("    => %d\n", tot);
 	return tot;
+}
+
+int querykth_helper(int b1[], int b2[], int acc1[], int acc2[], int kth, int k1, int k2, int tl=1, int tr=1<<D)
+{
+	//printf("query #%d at (%d..%d) from (%d, %d] k(%d..%d)\n", kth, tl, tr, v1, v2, k1, k2);
+	if (tl == tr) return tl;
+
+	int mid = tl + (tr-tl>>1);
+	int bitq = 0;
+	for (int i=0; i<20; ++i)
+	{
+		acc1[i] += addt[b1[i]];
+		acc2[i] += addt[b2[i]];
+		bitq += tsum[lc[b2[i]]] + acc2[i]*(tr-tl+1)
+			  - tsum[lc[b1[i]]] - acc1[i]*(tr-tl+1);
+	}
+
+	//int bq1 = bit_query(v1, tl, mid);	// FIX: equ--bit query is for left child, so only query to mid
+	//int bq2 = bit_query(v2, tl, mid);
+	//int lsize = tsum[lc[k2]] + bq2
+	//          - tsum[lc[k1]] - bq1;
+	int lsize = tsum[lc[k2]] - tsum[lc[k1]] + bitq;
+
+	//printf("lsize (%d..%d) = (%d + %d) - (%d + %d) = %d\n", tl, mid, tsum[lc[k2]], bq2, tsum[lc[k1]], bq1, lsize);
+	if (kth <= lsize)
+	{
+		for (int i=0; i<20; ++i)
+		{
+			b1[i] = lc[b1[i]];
+			b2[i] = lc[b2[i]];
+		}
+		return querykth_helper(b1, b2, acc1, acc2, kth, lc[k1], lc[k2], tl, mid);
+	}
+	else
+	{
+		for (int i=0; i<20; ++i)
+		{
+			b1[i] = rc[b1[i]];
+			b2[i] = rc[b2[i]];
+		}
+		return querykth_helper(b1, b2, acc1, acc2, kth-lsize, rc[k1], rc[k2], mid+1, tr);	// FIX: equ--kth-lsize when stepping right
+	}
+}
+int querykth(int v1, int v2, int kth)
+{
+	int b1[20] = {}, b2[20] = {};
+	int acc1[20] = {}, acc2[20] = {};
+	for (int i=0; v1; v1-=v1&-v1, ++i) b1[i] = v1;
+	for (int i=0; v2; v2-=v2&-v2, ++i) b2[i] = v2;
+	return querykth_helper(b1, b2, acc1, acc2, kth, rt_org[v1], rt_org[v2]);
 }
 
 // solve functions
@@ -239,7 +274,7 @@ int main()
 		//dump_persistent(0, N, rt_org);
 		for (int i=1; i<=M; ++i)
 		{
-			//dump_persistent(0, N, rt_bit);
+			dump_persistent(0, N, rt_bit);
 			char c=0; while (c < 'A' || c > 'Z') scanf("%c", &c);
 			int l, r, k, t; scanf("%d", &l);
 			if (c == 'Q')
@@ -251,6 +286,7 @@ int main()
 			{
 				scanf("%d", &t);
 				update(l, t);
+				arr[l] = t;	// FIX: maintainence--maintain the arr array
 			}
 		}
 	}
