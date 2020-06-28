@@ -224,25 +224,16 @@ int main()
 
 		memset(arr, 0, sizeof arr);
 
-		rt_org[0] = alc++;
-		D = 64-__builtin_clz(N);	// TODO: not quite, should be desceretized value
-		for (int i=1; i<1<<D; ++i)
+		// descretize
+		map<int, int> desc;
+		queue<pair<pair<int, int>, int> > query;
+		int reflect[MX + MXM];
+		for (int i=0; i<=N; ++i)
 		{
-			lc[i] = alc++;
-			rc[i] = alc++;
-		}
-		for (int i=1; i<=N; ++i)
-			rt_bit[i] = rt_org[0];
-
-		//dump_persistent(0, N, rt_org);
-		for (int i=1; i<=N; ++i)
-		{
-			scanf("%d", &arr[i]);
-			rt_org[i] = rt_org[i-1];
-			raw_update(arr[i], 1, rt_org[i]);
+			ll d; scanf("%d", &d);
+			desc[d] = 0;
 		}
 
-		//dump_persistent(0, N, rt_org);
 		for (int i=1; i<=M; ++i)
 		{
 			//dump_persistent(0, N, rt_bit);
@@ -251,14 +242,52 @@ int main()
 			if (c == 'Q')
 			{
 				scanf("%d%d", &r, &k);
-				//printf("================================== %d %d\n", r, k);
-				printf("%d\n", querykth(l-1, r, k, rt_org[l-1], rt_org[r]));
+				query.push(mp(mp(l, r), k));
 			}
 			else
 			{
 				scanf("%d", &t);
-				update(l, t);
+				query.push(mp(mp(l, t), 0));
+				desc[t] = 0;
 			}
+		}
+
+		int idx=1;
+		for (map<int, int>::iterator it=desc.begin(); it!=desc.end(); ++it)
+		{
+			reflect[idx] = it->f;
+			it->s = idx++;
+		}
+
+		// init
+		rt_org[0] = alc++;
+		D = 32-__builtin_clz(idx);
+		printf("d = %d\n", D);
+		for (int i=1; i<1<<D; ++i)
+		{
+			lc[i] = alc++;
+			rc[i] = alc++;
+		}
+		for (int i=1; i<=N; ++i)
+			rt_bit[i] = rt_org[0];
+
+		// input
+		//dump_persistent(0, N, rt_org);
+		for (int i=1; i<=N; ++i)
+		{
+			rt_org[i] = rt_org[i-1];
+			raw_update(arr[i], 1, rt_org[i]);
+		}
+
+		//dump_persistent(0, N, rt_org);
+		for (; !query.empty(); query.pop())
+		{
+			//dump_persistent(0, N, rt_bit);
+			pair<pair<int, int>, int> top = query.front();
+			if (top.s)
+				printf("%d\n", reflect[querykth(top.f.f-1, top.f.s, top.s, rt_org[top.f.f-1], rt_org[top.f.s])]);
+			else
+				update(top.f.f, top.f.s);
 		}
 	}
 
