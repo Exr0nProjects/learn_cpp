@@ -86,6 +86,15 @@ void raw_update(int q, int addv, int &k, int tl=1, int tr=1<<D)
 	else raw_update(q, addv, rc[k], mid+1, tr);
 	tsum[k] = tsum[lc[k]] + tsum[rc[k]];
 }
+
+int raw_query(int ql, int qr, int k, int tl=1, int tr=1<<D)
+{
+	if (qr < tl || tr < ql) return 0;
+	if (ql <= tl && tr <= qr) return tsum[k];
+	int mid = tl + (tr-tl>>1);
+	return raw_query(ql, qr, lc[k], tl, mid)
+		 + raw_query(ql, qr, rc[k], mid+1, tr);
+}
 int aligned_query(int ql, int qr, int k, int tl=1, int tr=1<<D)
 {	// query where the range is gaurenteed to be aligned to a segment tree interval
 	//printf("        aligned query %d..%d @ %d (%d..%d)\n", ql, qr, k, tl, tr);
