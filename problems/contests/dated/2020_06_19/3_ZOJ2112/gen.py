@@ -4,9 +4,9 @@ M = 100000
 MX = 10000
 
 T = 1
-N = 7
+N = 50
 M = 10
-MX = 10
+MX = N
 
 from random import randint
 
@@ -18,8 +18,8 @@ for t in range(T):
         cmd = 'Q' if randint(0, 1) else 'C'
         print(cmd, end=' ')
         if (cmd == 'Q'):
-            l = randint(1, MX)
-            r = randint(l, MX)
+            l = randint(1, N)
+            r = randint(l, N)
             print(l, r, randint(1, r-l+1))
         else:
             print(randint(1, N), randint(1, MX))

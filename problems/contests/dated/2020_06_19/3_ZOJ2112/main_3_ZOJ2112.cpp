@@ -65,15 +65,15 @@ void dump_segtree(int k)
 		//printf("%3d: %2d+%-2d (%-2d %2d)   ", k, tsum[k], addt[k], lc[k], rc[k]);
 		//for (int i=1; i<1<<d; ++i) printf("                     ");
 
-		printf("%3d: %2d+%-2d  ", k, tsum[k], addt[k], lc[k], rc[k]);
-		for (int i=1; i<1<<d; ++i) printf("            ");
+		printf("%3d: %2d(%-2d %2d)  ", k, tsum[k], lc[k], rc[k]);
+		for (int i=1; i<1<<d; ++i) printf("                ");
 	}
 	printf(RESET);
 	printf("\n");
 }
 void dump_persistent(int l, int r, int tree[])
 {
-	return;
+	//return;
 	for (int i=l; i<=r; ++i)
 	{
 		printf("tree %d:", i);
@@ -96,21 +96,21 @@ void comb(int k)
 
 void raw_update(int q, int addv, int &k, int tl=1, int tr=1<<D)
 {
+	dupe(k);
 	if (tl == tr) { tsum[k] += addv; return; }
-	dupe(k); int mid = tl + (tr-tl>>1);
+	int mid = tl + (tr-tl>>1);
 	if (q <= mid) raw_update(q, addv, lc[k], tl, mid);
 	else raw_update(q, addv, rc[k], mid+1, tr);
 	comb(k);
 }
-int aligned_query(int ql, int qr, int k, int tl=1, int tr=1<<D, int acc=0)
+int aligned_query(int ql, int qr, int k, int tl=1, int tr=1<<D)
 {	// query where the range is gaurenteed to be aligned to a segment tree interval
 	//printf("        aligned query %d..%d @ %d (%d..%d)\n", ql, qr, k, tl, tr);
 	if (qr < tl || tr < ql) return 0;	// FIX: equ--can't just check if either side is equal
-	if (ql == tl && qr == tr) return tsum[k] + acc;
+	if (ql == tl && qr == tr) return tsum[k];
 	int mid = tl + (tr-tl>>1);
-	acc += addt[k]*(tr-tl+1);
-	if (ql == tl) return aligned_query(ql, qr, lc[k], tl, mid, acc);
-	else return aligned_query(ql, qr, rc[k], mid+1, tr, acc);	// TODO: why don't we pass acc here?
+	if (ql == tl) return aligned_query(ql, qr, lc[k], tl, mid);
+	else return aligned_query(ql, qr, rc[k], mid+1, tr);	// TODO: why don't we pass acc here?
 }
 
 // BIT
@@ -121,77 +121,71 @@ void bit_rupdate(int v, int t, int x)
 }
 void bit_update(int l, int r, int t, int x)
 {
-	//printf("updating prefix freq of %d from %d..%d by %d\n", t, l, r, x);
+	printf("updating prefix freq of %d from %d..%d by %d\n", t, l, r, x);
 	bit_rupdate(l, t, x);
 	bit_rupdate(r+1, t, -x);
 }
 int bit_query(int v, int tl, int tr)
 {
-	//printf("    bit query version %d for (%d..%d)\n", v, tl, tr);
+	printf("    bit query version %d for (%d..%d)\n", v, tl, tr);
 	int tot = 0;
 	for (; v; v-=v&-v)
 	{
-		//printf("    checking verison %d\n", v);
+		printf("    checking verison %d\n", v);
 		tot += aligned_query(tl, tr, rt_bit[v]);
 	}
-	//printf("    => %d\n", tot);
+	printf("    => %d\n", tot);
 	return tot;
 }
 
-int querykth_helper(int b1[], int b2[], int acc1[], int acc2[], int kth, int k1, int k2, int tl=1, int tr=1<<D)
-{
-	//printf("query #%d at (%d..%d) from (%d, %d] k(%d..%d)\n", kth, tl, tr, v1, v2, k1, k2);
-	if (tl == tr) return tl;
-
-	int mid = tl + (tr-tl>>1);
-	int bitq = 0;
-	for (int i=0; i<20; ++i)
-	{
-		acc1[i] += addt[b1[i]];
-		acc2[i] += addt[b2[i]];
-		bitq += tsum[lc[b2[i]]] + acc2[i]*(tr-tl+1)
-			  - tsum[lc[b1[i]]] - acc1[i]*(tr-tl+1);
-	}
-
-	//int bq1 = bit_query(v1, tl, mid);	// FIX: equ--bit query is for left child, so only query to mid
-	//int bq2 = bit_query(v2, tl, mid);
-	//int lsize = tsum[lc[k2]] + bq2
-	//          - tsum[lc[k1]] - bq1;
-	int lsize = tsum[lc[k2]] - tsum[lc[k1]] + bitq;
-
-	//printf("lsize (%d..%d) = (%d + %d) - (%d + %d) = %d\n", tl, mid, tsum[lc[k2]], bq2, tsum[lc[k1]], bq1, lsize);
-	if (kth <= lsize)
-	{
-		for (int i=0; i<20; ++i)
-		{
-			b1[i] = lc[b1[i]];
-			b2[i] = lc[b2[i]];
-		}
-		return querykth_helper(b1, b2, acc1, acc2, kth, lc[k1], lc[k2], tl, mid);
-	}
-	else
-	{
-		for (int i=0; i<20; ++i)
-		{
-			b1[i] = rc[b1[i]];
-			b2[i] = rc[b2[i]];
-		}
-		return querykth_helper(b1, b2, acc1, acc2, kth-lsize, rc[k1], rc[k2], mid+1, tr);	// FIX: equ--kth-lsize when stepping right
-	}
-}
-int querykth(int v1, int v2, int kth)
-{
-	int b1[20] = {}, b2[20] = {};
-	int acc1[20] = {}, acc2[20] = {};
-	for (int i=0; v1; v1-=v1&-v1, ++i) b1[i] = v1;
-	for (int i=0; v2; v2-=v2&-v2, ++i) b2[i] = v2;
-	return querykth_helper(b1, b2, acc1, acc2, kth, rt_org[v1], rt_org[v2]);
-}
+//int querykth_helper(int b1[], int b2[], int kth, int k1, int k2, int tl=1, int tr=1<<D)
+//{
+//    //printf("query #%d at (%d..%d) from (%d, %d] k(%d..%d)\n", kth, tl, tr, v1, v2, k1, k2);
+//    if (tl == tr) return tl;
+//
+//    int mid = tl + (tr-tl>>1);
+//    int bitq = 0;
+//    for (int i=0; i<20; ++i)
+//        bitq += tsum[lc[b2[i]]] - tsum[lc[b1[i]]];
+//
+//    //int bq1 = bit_query(v1, tl, mid);	// FIX: equ--bit query is for left child, so only query to mid
+//    //int bq2 = bit_query(v2, tl, mid);
+//    //int lsize = tsum[lc[k2]] + bq2
+//    //          - tsum[lc[k1]] - bq1;
+//    int lsize = tsum[lc[k2]] - tsum[lc[k1]] + bitq;
+//
+//    //printf("lsize (%d..%d) = (%d + %d) - (%d + %d) = %d\n", tl, mid, tsum[lc[k2]], bq2, tsum[lc[k1]], bq1, lsize);
+//    if (kth <= lsize)
+//    {
+//        for (int i=0; i<20; ++i)
+//        {
+//            b1[i] = lc[b1[i]];
+//            b2[i] = lc[b2[i]];
+//        }
+//        return querykth_helper(b1, b2, kth, lc[k1], lc[k2], tl, mid);
+//    }
+//    else
+//    {
+//        for (int i=0; i<20; ++i)
+//        {
+//            b1[i] = rc[b1[i]];
+//            b2[i] = rc[b2[i]];
+//        }
+//        return querykth_helper(b1, b2, kth-lsize, rc[k1], rc[k2], mid+1, tr);	// FIX: equ--kth-lsize when stepping right
+//    }
+//}
+//int querykth(int v1, int v2, int kth)
+//{
+//    int b1[20] = {}, b2[20] = {};
+//    for (int i=0; v1; v1-=v1&-v1, ++i) b1[i] = v1;
+//    for (int i=0; v2; v2-=v2&-v2, ++i) b2[i] = v2;
+//    return querykth_helper(b1, b2, kth, rt_org[v1], rt_org[v2]);
+//}
 
 // solve functions
 int querykth(int v1, int v2, int kth, int k1, int k2, int tl=1, int tr=1<<D)
 {
-	//printf("query #%d at (%d..%d) from (%d, %d] k(%d..%d)\n", kth, tl, tr, v1, v2, k1, k2);
+	printf("query #%d at (%d..%d) from (%d, %d] k(%d..%d)\n", kth, tl, tr, v1, v2, k1, k2);
 	if (tl == tr) return tl;
 
 	int mid = tl + (tr-tl>>1);
@@ -201,7 +195,7 @@ int querykth(int v1, int v2, int kth, int k1, int k2, int tl=1, int tr=1<<D)
 	int lsize = tsum[lc[k2]] + bq2
 			  - tsum[lc[k1]] - bq1;
 
-	//printf("lsize (%d..%d) = (%d + %d) - (%d + %d) = %d\n", tl, mid, tsum[lc[k2]], bq2, tsum[lc[k1]], bq1, lsize);
+	printf("lsize (%d..%d) = (%d + %d) - (%d + %d) = %d\n\n", tl, mid, tsum[lc[k2]], bq2, tsum[lc[k1]], bq1, lsize);
 	if (kth <= lsize)
 		return querykth(v1, v2, kth, lc[k1], lc[k2], tl, mid);
 	else
@@ -216,29 +210,6 @@ int update(int idx, int val)
 
 int main()
 {
-	//{ // test BIT
-	//    scanf("%d%d", &N, &M);
-	//    for (int i=1; i<=N; ++i)
-	//        scanf("%d", &arr[i]);
-	//    rt_bit[0] = alc++;
-	//    //D = 64-__builtin_clz(N);
-	//    D = 2;
-	//    for (int i=1; i<1<<D; ++i)
-	//    {
-	//        lc[i] = alc++;
-	//        rc[i] = alc++;
-	//    }
-	//    for (int i=1; i<=M; ++i)
-	//        rt_bit[i] = rt_bit[0];
-    //
-	//    for (int i=1; i<=M; ++i)
-	//    {
-	//        dump_persistent(0, M, rt_bit);
-	//        int idx, val;
-	//        scanf("%d%d", &idx, &val);
-	//        update(idx, val);
-	//    }
-	//}
 
 	int kases;
 	scanf("%d", &kases);
@@ -248,14 +219,13 @@ int main()
 		memset(lc, 0, sizeof lc);
 		memset(rc, 0, sizeof rc);
 		memset(tsum, 0, sizeof tsum);
-		memset(addt, 0, sizeof addt);
 		memset(rt_org, 0, sizeof rt_org);
 		memset(rt_bit, 0, sizeof rt_bit);
 
 		memset(arr, 0, sizeof arr);
 
 		rt_org[0] = alc++;
-		D = 64-__builtin_clz(N);
+		D = 64-__builtin_clz(N);	// TODO: not quite, should be desceretized value
 		for (int i=1; i<1<<D; ++i)
 		{
 			lc[i] = alc++;
@@ -264,6 +234,7 @@ int main()
 		for (int i=1; i<=N; ++i)
 			rt_bit[i] = rt_org[0];
 
+		//dump_persistent(0, N, rt_org);
 		for (int i=1; i<=N; ++i)
 		{
 			scanf("%d", &arr[i]);
@@ -274,19 +245,19 @@ int main()
 		//dump_persistent(0, N, rt_org);
 		for (int i=1; i<=M; ++i)
 		{
-			dump_persistent(0, N, rt_bit);
+			//dump_persistent(0, N, rt_bit);
 			char c=0; while (c < 'A' || c > 'Z') scanf("%c", &c);
 			int l, r, k, t; scanf("%d", &l);
 			if (c == 'Q')
 			{
 				scanf("%d%d", &r, &k);
+				//printf("================================== %d %d\n", r, k);
 				printf("%d\n", querykth(l-1, r, k, rt_org[l-1], rt_org[r]));
 			}
 			else
 			{
 				scanf("%d", &t);
 				update(l, t);
-				arr[l] = t;	// FIX: maintainence--maintain the arr array
 			}
 		}
 	}
@@ -294,3 +265,10 @@ int main()
 	return 0;
 }
 
+/*
+
+1
+7 4
+4 7 7 2 2 6 6
+
+ */
