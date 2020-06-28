@@ -5,29 +5,11 @@
  *
  */
 
-#include <iostream>
-#include <cstring>
-#include <sstream>
-#include <cstdio>
-#include <tuple>
-#include <vector>
-#include <string>
-#include <list>
-#include <array>
-#include <queue>
-#include <stack>
-#include <set>
-#include <map>
-#include <unordered_set>
-#include <unordered_map>
-#include <cmath>
-#include <random>
-#include <chrono>
-#include <utility>
-#include <iterator>
-#include <exception>
 #include <algorithm>
-#include <functional>
+#include <cstring>
+#include <utility>
+#include <cstdio>
+#include <map>
 
 #define ll long long
 #define dl double
@@ -39,48 +21,53 @@
 #define s second
 
 using namespace std;
-const ll MX = 50111;
-const ll MXM = 10111;
-const ll MXTN = 2*MX + MX*16 + MXM*4*16*16;
+const int MX = 50010;
+const int MXM = 10010;
+//const ll MXTN = 2*MX + MX*16 + MXM*4*16*16;
+const int MXTN = MX*45;
 
 int N, D, M, arr[MX];
+
+map<int, int> desc;
+pair<pair<int, int>, int> query[MXM];
+int reflect[MX + MXM];
 
 // segment tree
 int alc=1, lc[MXTN], rc[MXTN], rt_org[MX], rt_bit[MX];
 int tsum[MXTN];
 
-#define RESET "\033[0m"
-#define BLACK "\x1b[38;5;239m"
-void dump_segtree(int k)
-{
-	queue<int> bfs; bfs.push(k);
-	int d = D+1;
-	printf(BLACK);
-	for (int i=1; i<1<<1+D; ++i)
-	{
-		if (__builtin_popcount(i) == 1) { printf("\n"); --d; }
-		k = bfs.front(); bfs.pop();
-		bfs.push(lc[k]); bfs.push(rc[k]);
-		if (i >= 1<<D) printf(RESET);
-		//printf("%3d: %2d+%-2d (%-2d %2d)   ", k, tsum[k], addt[k], lc[k], rc[k]);
-		//for (int i=1; i<1<<d; ++i) printf("                     ");
-
-		printf("%3d: %2d(%-2d %2d)  ", k, tsum[k], lc[k], rc[k]);
-		for (int i=1; i<1<<d; ++i) printf("                ");
-	}
-	printf(RESET);
-	printf("\n");
-}
-void dump_persistent(int l, int r, int tree[])
-{
-	//return;
-	for (int i=l; i<=r; ++i)
-	{
-		printf("tree %d:", i);
-		dump_segtree(tree[i]);
-		printf("\n");
-	}
-}
+//#define RESET "\033[0m"
+//#define BLACK "\x1b[38;5;239m"
+//void dump_segtree(int k)
+//{
+//    queue<int> bfs; bfs.push(k);
+//    int d = D+1;
+//    printf(BLACK);
+//    for (int i=1; i<1<<1+D; ++i)
+//    {
+//        if (__builtin_popcount(i) == 1) { printf("\n"); --d; }
+//        k = bfs.front(); bfs.pop();
+//        bfs.push(lc[k]); bfs.push(rc[k]);
+//        if (i >= 1<<D) printf(RESET);
+//        //printf("%3d: %2d+%-2d (%-2d %2d)   ", k, tsum[k], addt[k], lc[k], rc[k]);
+//        //for (int i=1; i<1<<d; ++i) printf("                     ");
+//
+//        printf("%3d: %2d(%-2d %2d)  ", k, tsum[k], lc[k], rc[k]);
+//        for (int i=1; i<1<<d; ++i) printf("                ");
+//    }
+//    printf(RESET);
+//    printf("\n");
+//}
+//void dump_persistent(int l, int r, int tree[])
+//{
+//    //return;
+//    for (int i=l; i<=r; ++i)
+//    {
+//        printf("tree %d:", i);
+//        dump_segtree(tree[i]);
+//        printf("\n");
+//    }
+//}
 
 void dupe(int &k)
 {
@@ -88,10 +75,6 @@ void dupe(int &k)
 	rc[alc] = rc[k];
 	tsum[alc] = tsum[k];
 	k = alc++;
-}
-void comb(int k)
-{
-	tsum[k] = tsum[lc[k]] + tsum[rc[k]];
 }
 
 void raw_update(int q, int addv, int &k, int tl=1, int tr=1<<D)
@@ -101,7 +84,7 @@ void raw_update(int q, int addv, int &k, int tl=1, int tr=1<<D)
 	int mid = tl + (tr-tl>>1);
 	if (q <= mid) raw_update(q, addv, lc[k], tl, mid);
 	else raw_update(q, addv, rc[k], mid+1, tr);
-	comb(k);
+	tsum[k] = tsum[lc[k]] + tsum[rc[k]];
 }
 int aligned_query(int ql, int qr, int k, int tl=1, int tr=1<<D)
 {	// query where the range is gaurenteed to be aligned to a segment tree interval
@@ -139,50 +122,6 @@ int bit_query(int v, int tl, int tr)
 	//printf("    => %d\n", tot);
 	return tot;
 }
-
-//int querykth_helper(int b1[], int b2[], int kth, int k1, int k2, int tl=1, int tr=1<<D)
-//{
-//    //printf("query #%d at (%d..%d) from (%d, %d] k(%d..%d)\n", kth, tl, tr, v1, v2, k1, k2);
-//    if (tl == tr) return tl;
-//
-//    int mid = tl + (tr-tl>>1);
-//    int bitq = 0;
-//    for (int i=0; i<20; ++i)
-//        bitq += tsum[lc[b2[i]]] - tsum[lc[b1[i]]];
-//
-//    //int bq1 = bit_query(v1, tl, mid);	// FIX: equ--bit query is for left child, so only query to mid
-//    //int bq2 = bit_query(v2, tl, mid);
-//    //int lsize = tsum[lc[k2]] + bq2
-//    //          - tsum[lc[k1]] - bq1;
-//    int lsize = tsum[lc[k2]] - tsum[lc[k1]] + bitq;
-//
-//    //printf("lsize (%d..%d) = (%d + %d) - (%d + %d) = %d\n", tl, mid, tsum[lc[k2]], bq2, tsum[lc[k1]], bq1, lsize);
-//    if (kth <= lsize)
-//    {
-//        for (int i=0; i<20; ++i)
-//        {
-//            b1[i] = lc[b1[i]];
-//            b2[i] = lc[b2[i]];
-//        }
-//        return querykth_helper(b1, b2, kth, lc[k1], lc[k2], tl, mid);
-//    }
-//    else
-//    {
-//        for (int i=0; i<20; ++i)
-//        {
-//            b1[i] = rc[b1[i]];
-//            b2[i] = rc[b2[i]];
-//        }
-//        return querykth_helper(b1, b2, kth-lsize, rc[k1], rc[k2], mid+1, tr);	// FIX: equ--kth-lsize when stepping right
-//    }
-//}
-//int querykth(int v1, int v2, int kth)
-//{
-//    int b1[20] = {}, b2[20] = {};
-//    for (int i=0; v1; v1-=v1&-v1, ++i) b1[i] = v1;
-//    for (int i=0; v2; v2-=v2&-v2, ++i) b2[i] = v2;
-//    return querykth_helper(b1, b2, kth, rt_org[v1], rt_org[v2]);
-//}
 
 // solve functions
 int querykth(int v1, int v2, int kth, int k1, int k2, int tl=1, int tr=1<<D)
@@ -227,9 +166,6 @@ int main()
 		memset(arr, 0, sizeof arr);
 
 		// descretize
-		map<int, int> desc;
-		queue<pair<pair<int, int>, int> > query;
-		int reflect[MX + MXM];
 		for (int i=1; i<=N; ++i)
 		{
 			ll d; scanf("%d", &d);
@@ -237,7 +173,7 @@ int main()
 			desc[d] = 0;
 		}
 
-		for (int i=1; i<=M; ++i)
+		for (int i=0; i<M; ++i)
 		{
 			//dump_persistent(0, N, rt_bit);
 			char c=0; while (c < 'A' || c > 'Z') scanf("%c", &c);
@@ -245,12 +181,12 @@ int main()
 			if (c == 'Q')
 			{
 				scanf("%d%d", &r, &k);
-				query.push(mp(mp(l, r), k));
+				query[i] = mp(mp(l, r), k);
 			}
 			else
 			{
 				scanf("%d", &t);
-				query.push(mp(mp(l, t), 0));
+				query[i] = mp(mp(l, t), 0);
 				desc[t] = 0;
 			}
 		}
@@ -286,10 +222,10 @@ int main()
 		}
 
 		//dump_persistent(0, N, rt_org);
-		for (; !query.empty(); query.pop())
+		for (int i=0; i<M; ++i)
 		{
 			//dump_persistent(0, N, rt_bit);
-			pair<pair<int, int>, int> top = query.front();
+			pair<pair<int, int>, int> top = query[i];
 			if (top.s)
 				printf("%d\n", reflect[querykth(top.f.f-1, top.f.s, top.s, rt_org[top.f.f-1], rt_org[top.f.s])]);
 			else
