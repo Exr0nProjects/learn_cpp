@@ -77,22 +77,13 @@ void dupe(int &k)
 	k = alc++;
 }
 
-void raw_update(int q, int addv, int &k, int tl=1, int tr=1<<D)
+void raw_update(int q, int addv, int &k, int tl=1, int tr=1<<D, bool sketchy=0)
 {
-	dupe(k);
+	if (sketchy && !k) dupe(k);
 	if (tl == q && tr == q) { tsum[k] += addv; return; }
 	int mid = tl + (tr-tl>>1);
 	if (q <= mid) raw_update(q, addv, lc[k], tl, mid);
 	else raw_update(q, addv, rc[k], mid+1, tr);
-	tsum[k] = tsum[lc[k]] + tsum[rc[k]];
-}
-void sketchy_update(int q, int addv, int &k, int tl=1, int tr=1<<D)
-{
-	if (!k) dupe(k);
-	if (tl == q && tr == q) { tsum[k] += addv; return; }
-	int mid = tl + (tr-tl>>1);
-	if (q <= mid) sketchy_update(q, addv, lc[k], tl, mid);
-	else sketchy_update(q, addv, rc[k], mid+1, tr);
 	tsum[k] = tsum[lc[k]] + tsum[rc[k]];
 }
 
@@ -117,16 +108,13 @@ int raw_query(int ql, int qr, int k, int tl=1, int tr=1<<D)
 //}
 
 // BIT
-void bit_rupdate(int v, int t, int x)
-{
-	for (; v<=N; v+=v&-v)
-		sketchy_update(t, x, rt_bit[v]);
-}
 void bit_update(int l, int r, int t, int x)
 {
 	//printf("updating prefix freq of %d from %d..%d by %d\n", t, l, r, x);
-	bit_rupdate(l, t, x);
-	bit_rupdate(r+1, t, -x);
+	for (int v=l; v<=N; v+=v&-v)
+		raw_update(t, x, rt_bit[v], 1, 1<<D, 1);
+	for (int v=r+1; v<=N; v+=v&-v)
+		raw_update(t, -x, rt_bit[v], 1, 1<<D, 1);
 }
 int bit_query(int v, int tl, int tr)
 {
@@ -181,7 +169,10 @@ int main()
 		memset(rt_org, 0, sizeof rt_org);
 		memset(rt_bit, 0, sizeof rt_bit);
 
-		memset(arr, 0, sizeof arr);
+		memset(arr, 0, sizeof arr);	// FIX: more clears
+		memset(query, 0, sizeof query);
+		memset(reflect, 0, sizeof reflect);
+		desc.clear();
 
 		// descretize
 		for (int i=1; i<=N; ++i)
@@ -220,14 +211,14 @@ int main()
 			arr[i] = desc[arr[i]];
 
 		// init
-		rt_org[0] = alc++;
 		D = 32-__builtin_clz(idx);
+		//rt_org[0] = alc++;
 		//printf("%d => %d\n", idx, D);
-		for (int i=1; i<1<<D; ++i)
-		{
-			lc[i] = alc++;
-			rc[i] = alc++;
-		}
+		//for (int i=1; i<1<<D; ++i)
+		//{
+		//    lc[i] = alc++;
+		//    rc[i] = alc++;
+		//}
 		//for (int i=1; i<=N; ++i)
 		//    rt_bit[i] = rt_org[0];
 
