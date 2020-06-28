@@ -109,8 +109,10 @@ int aligned_query(int ql, int qr, int k, int tl=1, int tr=1<<D)
 	if (qr < tl || tr < ql) return 0;	// FIX: equ--can't just check if either side is equal
 	if (ql == tl && qr == tr) return tsum[k];
 	int mid = tl + (tr-tl>>1);
-	if (ql == tl) return aligned_query(ql, qr, lc[k], tl, mid);
-	else return aligned_query(ql, qr, rc[k], mid+1, tr);	// TODO: why don't we pass acc here?
+	return aligned_query(ql, qr, lc[k], tl, mid)		// FIX: logic--aligned query doesn't just work like that, just use normal query
+		 + aligned_query(ql, qr, rc[k], mid+1, tr);
+	//if (ql == tl) return aligned_query(ql, qr, lc[k], tl, mid);
+	//else return aligned_query(ql, qr, rc[k], mid+1, tr);	// TODO: why don't we pass acc here?
 }
 
 // BIT
@@ -121,20 +123,20 @@ void bit_rupdate(int v, int t, int x)
 }
 void bit_update(int l, int r, int t, int x)
 {
-	printf("updating prefix freq of %d from %d..%d by %d\n", t, l, r, x);
+	//printf("updating prefix freq of %d from %d..%d by %d\n", t, l, r, x);
 	bit_rupdate(l, t, x);
 	bit_rupdate(r+1, t, -x);
 }
 int bit_query(int v, int tl, int tr)
 {
-	printf("    bit query version %d for (%d..%d)\n", v, tl, tr);
+	//printf("    bit query version %d for (%d..%d)\n", v, tl, tr);
 	int tot = 0;
 	for (; v; v-=v&-v)
 	{
-		printf("    checking verison %d\n", v);
+		//printf("    checking verison %d\n", v);
 		tot += aligned_query(tl, tr, rt_bit[v]);
 	}
-	printf("    => %d\n", tot);
+	//printf("    => %d\n", tot);
 	return tot;
 }
 
@@ -185,7 +187,7 @@ int bit_query(int v, int tl, int tr)
 // solve functions
 int querykth(int v1, int v2, int kth, int k1, int k2, int tl=1, int tr=1<<D)
 {
-	printf("query #%d at (%d..%d) from (%d, %d] k(%d..%d)\n", kth, tl, tr, v1, v2, k1, k2);
+	//printf("query #%d at (%d..%d) from (%d, %d] k(%d..%d)\n", kth, tl, tr, v1, v2, k1, k2);
 	if (tl == tr) return tl;
 
 	int mid = tl + (tr-tl>>1);
@@ -195,7 +197,7 @@ int querykth(int v1, int v2, int kth, int k1, int k2, int tl=1, int tr=1<<D)
 	int lsize = tsum[lc[k2]] + bq2
 			  - tsum[lc[k1]] - bq1;
 
-	printf("lsize (%d..%d) = (%d + %d) - (%d + %d) = %d\n\n", tl, mid, tsum[lc[k2]], bq2, tsum[lc[k1]], bq1, lsize);
+	//printf("lsize (%d..%d) = (%d + %d) - (%d + %d) = %d\n\n", tl, mid, tsum[lc[k2]], bq2, tsum[lc[k1]], bq1, lsize);
 	if (kth <= lsize)
 		return querykth(v1, v2, kth, lc[k1], lc[k2], tl, mid);
 	else
@@ -228,9 +230,10 @@ int main()
 		map<int, int> desc;
 		queue<pair<pair<int, int>, int> > query;
 		int reflect[MX + MXM];
-		for (int i=0; i<=N; ++i)
+		for (int i=1; i<=N; ++i)
 		{
 			ll d; scanf("%d", &d);
+			arr[i] = d;
 			desc[d] = 0;
 		}
 
@@ -255,14 +258,17 @@ int main()
 		int idx=1;
 		for (map<int, int>::iterator it=desc.begin(); it!=desc.end(); ++it)
 		{
+			//printf("compressing %d to %d\n", it->f, idx);
 			reflect[idx] = it->f;
 			it->s = idx++;
 		}
+		for (int i=1; i<=N; ++i)
+			arr[i] = desc[arr[i]];
 
 		// init
 		rt_org[0] = alc++;
 		D = 32-__builtin_clz(idx);
-		printf("d = %d\n", D);
+		//printf("%d => %d\n", idx, D);
 		for (int i=1; i<1<<D; ++i)
 		{
 			lc[i] = alc++;
@@ -287,7 +293,7 @@ int main()
 			if (top.s)
 				printf("%d\n", reflect[querykth(top.f.f-1, top.f.s, top.s, rt_org[top.f.f-1], rt_org[top.f.s])]);
 			else
-				update(top.f.f, top.f.s);
+				update(top.f.f, desc[top.f.s]);
 		}
 	}
 

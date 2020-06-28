@@ -3,10 +3,10 @@ N = 500000
 M = 100000
 MX = 10000
 
-T = 1
-N = 50
-M = 10
-MX = N
+T = 4
+N = 500000
+M = 100000
+MX = 1000000000
 
 from random import randint
 
