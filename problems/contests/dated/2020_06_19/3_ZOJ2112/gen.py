@@ -9,9 +9,9 @@ M = 100000
 MX = 1000000000
 
 T = 4
-N = 50000
-M = 10000
-MX = 10000
+N = 500000
+M = 100000
+MX = 100000000
 
 from random import randint
 

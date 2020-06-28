@@ -80,10 +80,19 @@ void dupe(int &k)
 void raw_update(int q, int addv, int &k, int tl=1, int tr=1<<D)
 {
 	dupe(k);
-	if (tl == tr) { tsum[k] += addv; return; }
+	if (tl == q && tr == q) { tsum[k] += addv; return; }
 	int mid = tl + (tr-tl>>1);
 	if (q <= mid) raw_update(q, addv, lc[k], tl, mid);
 	else raw_update(q, addv, rc[k], mid+1, tr);
+	tsum[k] = tsum[lc[k]] + tsum[rc[k]];
+}
+void sketchy_update(int q, int addv, int &k, int tl=1, int tr=1<<D)
+{
+	if (!k) dupe(k);
+	if (tl == q && tr == q) { tsum[k] += addv; return; }
+	int mid = tl + (tr-tl>>1);
+	if (q <= mid) sketchy_update(q, addv, lc[k], tl, mid);
+	else sketchy_update(q, addv, rc[k], mid+1, tr);
 	tsum[k] = tsum[lc[k]] + tsum[rc[k]];
 }
 
@@ -95,23 +104,23 @@ int raw_query(int ql, int qr, int k, int tl=1, int tr=1<<D)
 	return raw_query(ql, qr, lc[k], tl, mid)
 		 + raw_query(ql, qr, rc[k], mid+1, tr);
 }
-int aligned_query(int ql, int qr, int k, int tl=1, int tr=1<<D)
-{	// query where the range is gaurenteed to be aligned to a segment tree interval
-	//printf("        aligned query %d..%d @ %d (%d..%d)\n", ql, qr, k, tl, tr);
-	if (qr < tl || tr < ql) return 0;	// FIX: equ--can't just check if either side is equal
-	if (ql == tl && qr == tr) return tsum[k];
-	int mid = tl + (tr-tl>>1);
-	return aligned_query(ql, qr, lc[k], tl, mid)		// FIX: logic--aligned query doesn't just work like that, just use normal query
-		 + aligned_query(ql, qr, rc[k], mid+1, tr);
-	//if (ql == tl) return aligned_query(ql, qr, lc[k], tl, mid);
-	//else return aligned_query(ql, qr, rc[k], mid+1, tr);	// TODO: why don't we pass acc here?
-}
+//int aligned_query(int ql, int qr, int k, int tl=1, int tr=1<<D)
+//{	// query where the range is gaurenteed to be aligned to a segment tree interval
+//    //printf("        aligned query %d..%d @ %d (%d..%d)\n", ql, qr, k, tl, tr);
+//    if (qr < tl || tr < ql) return 0;	// FIX: equ--can't just check if either side is equal
+//    if (ql == tl && qr == tr) return tsum[k];
+//    int mid = tl + (tr-tl>>1);
+//    return aligned_query(ql, qr, lc[k], tl, mid)		// FIX: logic--aligned query doesn't just work like that, just use normal query
+//         + aligned_query(ql, qr, rc[k], mid+1, tr);
+//    //if (ql == tl) return aligned_query(ql, qr, lc[k], tl, mid);
+//    //else return aligned_query(ql, qr, rc[k], mid+1, tr);	// TODO: why don't we pass acc here?
+//}
 
 // BIT
 void bit_rupdate(int v, int t, int x)
 {
 	for (; v<=N; v+=v&-v)
-		raw_update(t, x, rt_bit[v]);
+		sketchy_update(t, x, rt_bit[v]);
 }
 void bit_update(int l, int r, int t, int x)
 {
@@ -126,7 +135,7 @@ int bit_query(int v, int tl, int tr)
 	for (; v; v-=v&-v)
 	{
 		//printf("    checking verison %d\n", v);
-		tot += aligned_query(tl, tr, rt_bit[v]);
+		tot += raw_query(tl, tr, rt_bit[v]);
 	}
 	//printf("    => %d\n", tot);
 	return tot;
@@ -219,8 +228,8 @@ int main()
 			lc[i] = alc++;
 			rc[i] = alc++;
 		}
-		for (int i=1; i<=N; ++i)
-			rt_bit[i] = rt_org[0];
+		//for (int i=1; i<=N; ++i)
+		//    rt_bit[i] = rt_org[0];
 
 		// input
 		//dump_persistent(0, N, rt_org);
