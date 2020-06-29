@@ -97,17 +97,6 @@ int raw_query(int ql, int qr, int k, int tl=1, int tr=1<<D)
     return raw_query(ql, qr, lc[k], tl, mid)
         + raw_query(ql, qr, rc[k], mid+1, tr);
 }
-//int aligned_query(int ql, int qr, int k, int tl=1, int tr=1<<D)
-//{	// query where the range is gaurenteed to be aligned to a segment tree interval
-//    //printf("        aligned query %d..%d @ %d (%d..%d)\n", ql, qr, k, tl, tr);
-//    if (qr < tl || tr < ql) return 0;	// FIX: equ--can't just check if either side is equal
-//    if (ql == tl && qr == tr) return tsum[k];
-//    int mid = tl + (tr-tl>>1);
-//    return aligned_query(ql, qr, lc[k], tl, mid)		// FIX: logic--aligned query doesn't just work like that, just use normal query
-//         + aligned_query(ql, qr, rc[k], mid+1, tr);
-//    //if (ql == tl) return aligned_query(ql, qr, lc[k], tl, mid);
-//    //else return aligned_query(ql, qr, rc[k], mid+1, tr);	// TODO: why don't we pass acc here?
-//}
 
 // BIT
 void bit_update(int l, int r, int t, int x)
