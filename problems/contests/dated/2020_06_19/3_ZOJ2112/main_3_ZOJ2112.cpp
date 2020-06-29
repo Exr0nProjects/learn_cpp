@@ -202,11 +202,10 @@ int main()
             arr[i] = desc[arr[i]];
 
         // init
-        D = 32-__builtin_clz(idx);
-        //for (D=0; 1<<D < N; ++D);
-        //++D;
+        //D = 32-__builtin_clz(idx);
+        for (D=0; 1<<D < N; ++D);
         //D = log2(idx)+1;
-        //printf("idx = %d, d = %d\n", idx, D);
+        printf("idx = %d, d = %d\n", idx, D);
 
         //rt_org[0] = alc++;
         //printf("%d => %d\n", idx, D);
