@@ -9,6 +9,7 @@
 #include <cstring>
 #include <utility>
 #include <cstdio>
+#include <cmath>
 #include <map>
 
 #define ll long long
@@ -24,7 +25,7 @@ using namespace std;
 const int MX = 50010;
 const int MXM = 10010;
 //const ll MXTN = 2*MX + MX*16 + MXM*4*16*16;
-const int MXTN = MX*45;
+const int MXTN = MX*48;
 
 int N, D, M, arr[MX];
 
@@ -77,9 +78,10 @@ void dupe(int &k)
     k = alc++;
 }
 
-void raw_update(int q, int addv, int &k, int tl=1, int tr=1<<D, bool sketchy=0)
+void raw_update(int q, int addv, int &k, int tl=1, int tr=1<<D, bool dupeall=1)
 {
-    if (sketchy && !k) dupe(k);
+    if (dupeall || !k) dupe(k);
+
     if (tl == q && tr == q) { tsum[k] += addv; return; }
     int mid = tl + (tr-tl>>1);
     if (q <= mid) raw_update(q, addv, lc[k], tl, mid);
@@ -112,9 +114,9 @@ void bit_update(int l, int r, int t, int x)
 {
     //printf("updating prefix freq of %d from %d..%d by %d\n", t, l, r, x);
     for (int v=l; v<=N; v+=v&-v)
-        raw_update(t, x, rt_bit[v], 1, 1<<D, 1);
-    for (int v=r+1; v<=N; v+=v&-v)
-        raw_update(t, -x, rt_bit[v], 1, 1<<D, 1);
+        raw_update(t, x, rt_bit[v], 1, 1<<D, 0);
+    for (int v=r+1; v<=N; v+=v&-v)  // TODO: remove, not needed since we only update the delta sum to the end
+        raw_update(t, -x, rt_bit[v], 1, 1<<D, 0);
 }
 int bit_query(int v, int tl, int tr)
 {
@@ -212,6 +214,11 @@ int main()
 
         // init
         D = 32-__builtin_clz(idx);
+        //for (D=0; 1<<D < N; ++D);
+        //++D;
+        //D = log2(idx)+1;
+        //printf("idx = %d, d = %d\n", idx, D);
+
         //rt_org[0] = alc++;
         //printf("%d => %d\n", idx, D);
         //for (int i=1; i<1<<D; ++i)
