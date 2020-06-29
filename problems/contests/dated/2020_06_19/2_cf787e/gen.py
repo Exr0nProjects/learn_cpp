@@ -1,6 +1,6 @@
 N = 100000
 
-N = 100000
+N = 10000
 print(N)
 
 from random import randint

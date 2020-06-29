@@ -134,7 +134,7 @@ int main()
             ll got = get_next_group_part_3(k, rt[e]);
             e = got-1;
         }
-        printf("%d ", cnt);
+        printf("%d\n", cnt);
     }
     printf("\n");
 
