@@ -48,19 +48,21 @@ bool input()
 {
     memset(buf, 0, sizeof buf);
     memset(del, 0, sizeof del);
-    for (N=0; ; ++N)
-    {
-        char c = getchar();
-        printf("got '%c'\n", c);
-        if (c == EOF) return false;
-        if (c == '\n') continue;
-        if (c == ' ') break;
-        buf[N] = c;
-    }
-    printf("awaiting m...\n");
+    return ~scanf("%s%n%lld", buf, &N, &M);
+    //for (N=0; ; ++N)
+    //{
+    //    //char c = getchar();
+    //    char c; scanf("%c", &c);
+    //    printf("got '%c'\n", c);
+    //    if (c == EOF) return false;
+    //    if (c == '\n') continue;
+    //    if (c == ' ') break;
+    //    buf[N] = c;
+    //}
+    //printf("got '%s', awaiting m...\n", buf);
     //if (scanf("%lld\n", &M) < 0) return false;
-    scanf("%lld\n", &M);
-    return true;
+    //scanf("%lld\n", &M);
+    //return true;
 }
 
 int main()
@@ -84,12 +86,13 @@ int main()
         bool gone=0;
         for (ll i=0; i<N; ++i)
         {
-            if (!del[i] && (gone || buf[i] != '0'))
+            if (!del[i] && (gone || buf[i] > '0'))
             {
                 printf("%c", buf[i]);
                 gone=1;
             }
         }
+        //printf("gone? %d\n", gone);
         if (!gone) printf("0");
         printf("\n");
     }
