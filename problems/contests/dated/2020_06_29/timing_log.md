@@ -20,8 +20,6 @@ sort by x, BIT on y with indirection and counting inversions
 
 sort by strength, indirection and counting inversions? how to only count those with overlapping ranges?
 
-also is it possible to third wheel when there are only two people?
-
 #### Problem 3: poj2886
 
 "reverse" sieve of eratosthenes to find number with max factors under N,

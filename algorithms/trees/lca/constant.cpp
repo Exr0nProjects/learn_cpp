@@ -13,7 +13,7 @@
 #define s second
 using namespace std;
 
-const ll MX = 100111;
+const ll MX = 1000111;
 struct Edge { ll f, t, n; } edges[MX<<1];
 ll N, head[MX], alc=1;
 pair<ll, ll> sparse[MX<<1][26];

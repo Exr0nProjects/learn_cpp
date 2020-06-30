@@ -1,5 +1,5 @@
 MX = 100000
-MX = 1000
+MX = 100
 
 from random import randint
 
