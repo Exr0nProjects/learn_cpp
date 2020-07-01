@@ -48,8 +48,7 @@ int main()
         for (ll i=0; i<N; ++i)
         {
             int s, e;
-            scanf("%d%d", &s, &e);
-            //scanf("%d%d", &cows[i].f.s, &cows[i].f.f);
+            scanf("%d%d", &s, &e);  // FIX: input format--can't scanf lld else it'll tle
             cows[i].f.f = e+1;
             cows[i].f.s = -(s+1);
             cows[i].s = i;
@@ -64,17 +63,6 @@ int main()
                 update(-cows[same_idx].f.s, i-same_idx);
                 same_idx = i;
             }
-            //if (cows[i].f.f+cows[i].f.s != laststr)
-            //{
-            //    //for (ll j=laststr_idx; j<i; ++j)
-            //    //{
-            //    //    //printf("    adding cow %d (%d..%d)\n", cows[j].s, -cows[j].f.s-1, cows[j].f.f-1);
-            //    //    update(-cows[j].f.s, 1);
-            //    //}
-            //    update(-cows[laststr_idx].f.s, i-laststr_idx);
-            //    laststr = cows[i].f.f+cows[i].f.s;
-            //    laststr_idx = i;
-            //}
             ans[cows[i].s] = prefix(-cows[i].f.s);
             //printf("weaker than %d\n", ans[cows[i].s]);
         }
