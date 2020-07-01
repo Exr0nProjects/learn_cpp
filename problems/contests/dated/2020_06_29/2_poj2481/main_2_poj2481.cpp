@@ -5,27 +5,9 @@
  *
  */
 
-#include <iostream>
-#include <cstring>
-#include <sstream>
 #include <cstdio>
-#include <tuple>
-#include <vector>
-#include <string>
-#include <list>
-#include <array>
-#include <queue>
-#include <stack>
-#include <set>
-#include <map>
-#include <unordered_set>
-#include <unordered_map>
-#include <cmath>
-#include <random>
-#include <chrono>
+#include <cstring>
 #include <utility>
-#include <iterator>
-#include <exception>
 #include <algorithm>
 #include <functional>
 
@@ -47,6 +29,13 @@ void update(ll n, ll v)
 {
     for (; n<=MX; n+=n&-n)
         bidx[n] += v;
+}
+ll prefix(ll n)
+{
+    ll tot = 0;
+    for (; n; n-=n&-n)
+        tot += bidx[n];
+    return tot;
 }
 ll query(ll l, ll r)
 {
@@ -71,23 +60,23 @@ int main()
             cows[i].f.s *= -1;
             cows[i].s = i;
         }
-        sort(cows, cows+N);
+        sort(cows, cows+N, greater<pair<pair<ll, ll>, ll> >{});
         ll laststr = 0, laststr_idx=0;
         for (ll i=0; i<N; ++i)
         {
-            printf("cow %d (%d..%d)\n", cows[i].s, -cows[i].f.s-1, cows[i].f.f-1);
+            //printf("cow %d (%d..%d)\n", cows[i].s, -cows[i].f.s-1, cows[i].f.f-1);
             if (cows[i].f.f+cows[i].f.s != laststr)
             {
                 for (ll j=laststr_idx; j<i; ++j)
                 {
-                    printf("    adding cow %d (%d..%d)\n", cows[j].s, -cows[j].f.s-1, cows[j].f.f-1);
+                    //printf("    adding cow %d (%d..%d)\n", cows[j].s, -cows[j].f.s-1, cows[j].f.f-1);
                     update(-cows[j].f.s, 1);
                 }
                 laststr = cows[i].f.f+cows[i].f.s;
                 laststr_idx = i;
             }
-            ans[cows[i].s] = query(-cows[i].f.s, cows[i].f.f);
-            printf("stronger than %d\n", ans[cows[i].s]);
+            ans[cows[i].s] = prefix(-cows[i].f.s);
+            //printf("weaker than %d\n", ans[cows[i].s]);
         }
         for (ll i=0; i<N; ++i)
         {
@@ -108,7 +97,7 @@ int main()
 1 6
 3 7
 3 5
--> 1 0 2 1 0
+-> 0 2 0 0 2
 
 6
 0 5
@@ -117,5 +106,5 @@ int main()
 5 11
 6 8
 10 12
--> 1 2 0 1 0 0
+-> 0 0 2 0 2 0
 */
