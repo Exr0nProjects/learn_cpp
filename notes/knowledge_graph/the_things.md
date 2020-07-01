@@ -84,11 +84,21 @@
 - Derived from
     - [Tree](#tree)
 
+### PIE on Tree
+- Properties
+    - A way of combining ranges across a tree path:
+        - Add the range from each of the two endpoints to the root
+        - Subtract the range from the root to the LCA
+- Derived From
+    - Principle of Inclusion and Exclusion
+    - [LCA](#least-common-ancestor)
+
 ### Least Common Ancestor
 - Properties
     - Only one in a rooted tree
 - Algorithms
-    - Doubling method ([exponential search?](https://www.geeksforgeeks.org/exponential-search/))
+    - Constant time: sparse table of dfs order traversal, min depth in range of any occurance of the two endpoints
+    - Doubling method ~~([exponential search?](https://www.geeksforgeeks.org/exponential-search/))~~ [with rmq](https://www.geeksforgeeks.org/find-lca-in-binary-tree-using-rmq/)
     - Single pass
 - Derived From
     - [Rooted Tree](#rooted-tree)
@@ -368,7 +378,13 @@ void comb(ll k)                                 // combine accumulators
     - Usually can find the answer to something in logN time (traversing the segtree).
 - Algorithms
 - Classic Problems/Uses
-    - [SPOJ MKTHNUM](https://www.spoj.com/problems/MKTHNUM/)
+    - Binary search on empty spaces:
+        [POJ 2182 Lost Cows](http://poj.org/problem?id=2182),
+        [POJ 2828 Buy Tickets](http://poj.org/problem?id=2828),
+        [POJ 2886 Who Gets the Most Candies?](http://poj.org/problem?id=2886)
+    - Binary Search across PST of prefix frequency:
+        [SPOJ MKTHNUM](https://www.spoj.com/problems/MKTHNUM/),
+        [SPOJ COT](https://www.spoj.com/problems/COT/)
 - Derived From
     - [Tree Precomputation Binary Search](#tree-precomputation-binary-search)
 - Careful
