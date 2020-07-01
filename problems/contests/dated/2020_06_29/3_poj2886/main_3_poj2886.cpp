@@ -66,6 +66,15 @@ void update(ll q, ll k=1, ll tl=0, ll tr=(1<<D)-1)
         tsum[k] = tsum[k<<1] + tsum[k<<1|1];
     }
 }
+ll query(ll ql, ll qr, ll k=1, ll tl=0, ll tr=(1<<D)-1)
+{
+    printf("    query %d..%d @ %d (%d..%d)\n", ql, qr, k, tl, tr);
+    if (qr < tl || tr < ql) return 0;
+    if (ql <= tl && tr <= qr) return tsum[k];
+    ll mid = tl + (tr - tl>>1);
+    return query(ql, qr, k<<1, tl, mid)
+         + query(ql, qr, k<<1|1, mid+1, tr);
+}
 ll querykth(ll kth, ll k=1, ll tl=0, ll tr=(1<<D)-1)
 {
     //printf("query %dth @ %d(%d..%d)\n", kth, k, tl, tr);
@@ -85,7 +94,7 @@ int main()
         memset(names, 0, sizeof names);
 
         for (ll i=0; i<N; ++i)
-            scanf("%s%d", names[i], &card[i]);
+            scanf("%s%lld", names[i], &card[i]);
         D = log2(N)+1;
 
         ll players=N, maxcandy = 0, winner, cur=K-1;
@@ -104,9 +113,27 @@ int main()
                 maxcandy = factors;
                 winner = cur;
             }
-            ll nxt = modulo(cur-1 + modulo(card[cur], players), players);
-            printf("    next up: %d -1 + %d %% %d = %d + %d = %lld\n", cur, card[cur], players, cur-1, modulo(card[cur], players), nxt);
+
+            // remove this player
+            ll cur_pos = cur - query(0, cur)+1;
+            //if (card[cur] > 0) --cur_pos;
+            printf("current pos: %lld, card[cur] = %lld\n", cur_pos, card[cur]);
+
+            ll nxt = modulo(cur_pos + card[cur], players);
+            printf("next pos: (%lld)%%%lld = %lld\n", cur_pos+card[cur], players, nxt);
+
             cur = querykth(nxt+1);
+            printf("actual next: %d\n", cur);
+
+            //ll nxt = card[cur] > 0 ? cur+1 : cur-1;
+            //printf("stepped from %d to %d\n", cur, nxt);
+            //
+            //printf("%d += %d => %d ", nxt, card[cur], nxt+card[cur]);
+            //nxt = modulo(nxt + card[cur], players);
+            //printf("-> %d\n", nxt);
+
+            //ll nxt = modulo(cur-1 + modulo(card[cur], players), players);
+            //printf("    next up: %d -1 + %d %% %d = %d + %d = %lld\n", cur, card[cur], players, cur-1, modulo(card[cur], players), nxt);
             //printf("    ==> %lld\n", cur);
         }
         if (count_factors(N) > maxcandy)
@@ -125,6 +152,7 @@ a 1
 b 1
 c 2
 -> b, c, a
+-> c 2
 
 4 3
 a 3
