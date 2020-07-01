@@ -118,7 +118,7 @@ int main()
 
             // remove this player
             ll cur_pos = cur - query(0, cur)+1;
-            //if (card[cur] > 0) --cur_pos;
+            if (card[cur] > 0) --cur_pos;
             printf("current pos: %lld, card[cur] = %lld\n", cur_pos, card[cur]);
 
             ll nxt = modulo(cur_pos + card[cur], players);
@@ -127,17 +127,6 @@ int main()
             dump();
             cur = querykth(nxt+1);
             printf("actual next: %lld\n", cur);
-
-            //ll nxt = card[cur] > 0 ? cur+1 : cur-1;
-            //printf("stepped from %lld to %lld\n", cur, nxt);
-            //
-            //printf("%lld += %lld => %lld ", nxt, card[cur], nxt+card[cur]);
-            //nxt = modulo(nxt + card[cur], players);
-            //printf("-> %lld\n", nxt);
-
-            //ll nxt = modulo(cur-1 + modulo(card[cur], players), players);
-            //printf("    next up: %lld -1 + %lld %% %lld = %lld + %lld = %lld\n", cur, card[cur], players, cur-1, modulo(card[cur], players), nxt);
-            //printf("    ==> %lld\n", cur);
         }
         if (count_factors(N) > maxcandy)
             printf("%s %lld\n", names[cur], count_factors(N));
