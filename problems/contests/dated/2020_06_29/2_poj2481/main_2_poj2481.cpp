@@ -37,15 +37,6 @@ ll prefix(ll n)
         tot += bidx[n];
     return tot;
 }
-ll query(ll l, ll r)
-{
-    ll tot = 0; --l;
-    for (; r>l; r-=r&-r)
-        tot += bidx[r];
-    for (; l>r; l-=l&-l)
-        tot -= bidx[l];
-    return tot;
-}
 
 int main()
 {
@@ -53,36 +44,42 @@ int main()
     {
         memset(cows, 0, sizeof cows);
         memset(bidx, 0, sizeof bidx);
+        memset(ans, 0, sizeof ans);
         for (ll i=0; i<N; ++i)
         {
-            scanf("%lld%lld", &cows[i].f.s, &cows[i].f.f);
-            ++cows[i].f.f; ++cows[i].f.s;
-            cows[i].f.s *= -1;
+            int s, e;
+            scanf("%d%d", &s, &e);
+            //scanf("%d%d", &cows[i].f.s, &cows[i].f.f);
+            cows[i].f.f = e+1;
+            cows[i].f.s = -(s+1);
             cows[i].s = i;
         }
-        sort(cows, cows+N, greater<pair<pair<ll, ll>, ll> >{});
-        ll laststr = 0, laststr_idx=0;
+        stable_sort(cows, cows+N, greater<pair<pair<ll, ll>, ll> >());
+        ll same_idx=0;
         for (ll i=0; i<N; ++i)
         {
             //printf("cow %d (%d..%d)\n", cows[i].s, -cows[i].f.s-1, cows[i].f.f-1);
-            if (cows[i].f.f+cows[i].f.s != laststr)
+            if (cows[same_idx].f != cows[i].f)
             {
-                for (ll j=laststr_idx; j<i; ++j)
-                {
-                    //printf("    adding cow %d (%d..%d)\n", cows[j].s, -cows[j].f.s-1, cows[j].f.f-1);
-                    update(-cows[j].f.s, 1);
-                }
-                laststr = cows[i].f.f+cows[i].f.s;
-                laststr_idx = i;
+                update(-cows[same_idx].f.s, i-same_idx);
+                same_idx = i;
             }
+            //if (cows[i].f.f+cows[i].f.s != laststr)
+            //{
+            //    //for (ll j=laststr_idx; j<i; ++j)
+            //    //{
+            //    //    //printf("    adding cow %d (%d..%d)\n", cows[j].s, -cows[j].f.s-1, cows[j].f.f-1);
+            //    //    update(-cows[j].f.s, 1);
+            //    //}
+            //    update(-cows[laststr_idx].f.s, i-laststr_idx);
+            //    laststr = cows[i].f.f+cows[i].f.s;
+            //    laststr_idx = i;
+            //}
             ans[cows[i].s] = prefix(-cows[i].f.s);
             //printf("weaker than %d\n", ans[cows[i].s]);
         }
         for (ll i=0; i<N; ++i)
-        {
-            if (i) printf(" ");
-            printf("%lld", ans[i]);
-        }
+            printf("%lld ", ans[i]);
         printf("\n");
     }
 
@@ -97,8 +94,6 @@ int main()
 1 6
 3 7
 3 5
--> 0 2 0 0 2
-
 6
 0 5
 2 9
@@ -106,5 +101,6 @@ int main()
 5 11
 6 8
 10 12
+-> 0 2 0 0 2
 -> 0 0 2 0 2 0
 */
