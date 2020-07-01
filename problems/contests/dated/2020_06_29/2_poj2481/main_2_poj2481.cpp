@@ -72,19 +72,19 @@ int main()
             cows[i].s = i;
         }
         sort(cows, cows+N);
-        ll lastend = 0, lastend_idx=0;
+        ll laststr = 0, laststr_idx=0;
         for (ll i=0; i<N; ++i)
         {
             printf("cow %d (%d..%d)\n", cows[i].s, -cows[i].f.s-1, cows[i].f.f-1);
-            if (cows[i].f.f != lastend)
+            if (cows[i].f.f+cows[i].f.s != laststr)
             {
-                for (ll j=lastend_idx; j<i; ++j)
+                for (ll j=laststr_idx; j<i; ++j)
                 {
                     printf("    adding cow %d (%d..%d)\n", cows[j].s, -cows[j].f.s-1, cows[j].f.f-1);
                     update(-cows[j].f.s, 1);
                 }
-                lastend = cows[i].f.f;
-                lastend_idx = i;
+                laststr = cows[i].f.f+cows[i].f.s;
+                laststr_idx = i;
             }
             ans[cows[i].s] = query(-cows[i].f.s, cows[i].f.f);
             printf("stronger than %d\n", ans[cows[i].s]);
