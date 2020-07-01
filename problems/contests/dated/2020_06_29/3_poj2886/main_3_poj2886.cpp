@@ -44,19 +44,19 @@ char names[MX][20]; // TODO: max name len
 
 void dump()
 {
-    return;
+    //return;
     ll d = D+1;
     for (ll i=1; i<1<<1+D; ++i)
     {
         if (__builtin_popcount(i) == 1) {--d; printf("\n");}
-        printf("%3d", tsum[i]);
-        for (ll i=1; i<1<<d; ++i) printf("   ");
+        printf("%3d: %2d  ", i, tsum[i]);
+        for (ll i=1; i<1<<d; ++i) printf("         ");
     }
     printf("\n");
 }
 void update(ll q, ll k=1, ll tl=0, ll tr=(1<<D)-1)
 {
-    //printf("update %d @ %d(%d..%d)\n", q, k, tl, tr);
+    //printf("update %lld @ %lld(%lld..%lld)\n", q, k, tl, tr);
     ll mid = tl + (tr-tl>>1);
     if (tl == tr) ++tsum[k];
     else
@@ -68,7 +68,7 @@ void update(ll q, ll k=1, ll tl=0, ll tr=(1<<D)-1)
 }
 ll query(ll ql, ll qr, ll k=1, ll tl=0, ll tr=(1<<D)-1)
 {
-    printf("    query %d..%d @ %d (%d..%d)\n", ql, qr, k, tl, tr);
+    printf("    query %lld..%lld @ %lld (%lld..%lld)\n", ql, qr, k, tl, tr);
     if (qr < tl || tr < ql) return 0;
     if (ql <= tl && tr <= qr) return tsum[k];
     ll mid = tl + (tr - tl>>1);
@@ -77,12 +77,14 @@ ll query(ll ql, ll qr, ll k=1, ll tl=0, ll tr=(1<<D)-1)
 }
 ll querykth(ll kth, ll k=1, ll tl=0, ll tr=(1<<D)-1)
 {
-    //printf("query %dth @ %d(%d..%d)\n", kth, k, tl, tr);
+    printf("query %lldth @ %lld(%lld..%lld)\n", kth, k, tl, tr);
     if (tl == tr) return tl;
     ll mid = tl + (tr-tl>>1);
-    ll lsize = mid-tl+1-tsum[k<<1];
+    ll lsize = (mid-tl+1)-tsum[k<<1];
+    printf("lsize = %lld - %lld = %lld\n", mid-tl+1, tsum[k<<1], lsize);
+    printf("%lld <= %lld ? %lld\n", kth, lsize, kth <= lsize);
     if (kth <= lsize) return querykth(kth, k<<1, tl, mid);
-    else return querykth(kth-lsize, k<<1, mid+1, tr);
+    else return querykth(kth-lsize, k<<1|1, mid+1, tr); // FIX: typo--k<<1|1 not just k<<1 for right child smah
 }
 
 int main()
@@ -100,16 +102,16 @@ int main()
         ll players=N, maxcandy = 0, winner, cur=K-1;
         for (ll i=1; i<N; ++i)
         {
-            printf("removing %d (%s)\n", cur, names[cur]);
+            printf("removing %lld (%s)\n", cur, names[cur]);
             --players;
             update(cur);
             dump();
 
-            //printf("    i %d players %d cur %d\n", i, players, cur);
+            //printf("    i %lld players %lld cur %lld\n", i, players, cur);
             ll factors = count_factors(i);
             if (factors > maxcandy)
             {
-                //printf("update: winner is %d with %d candy\n", cur, factors);
+                //printf("update: winner is %lld with %lld candy\n", cur, factors);
                 maxcandy = factors;
                 winner = cur;
             }
@@ -122,24 +124,25 @@ int main()
             ll nxt = modulo(cur_pos + card[cur], players);
             printf("next pos: (%lld)%%%lld = %lld\n", cur_pos+card[cur], players, nxt);
 
+            dump();
             cur = querykth(nxt+1);
-            printf("actual next: %d\n", cur);
+            printf("actual next: %lld\n", cur);
 
             //ll nxt = card[cur] > 0 ? cur+1 : cur-1;
-            //printf("stepped from %d to %d\n", cur, nxt);
+            //printf("stepped from %lld to %lld\n", cur, nxt);
             //
-            //printf("%d += %d => %d ", nxt, card[cur], nxt+card[cur]);
+            //printf("%lld += %lld => %lld ", nxt, card[cur], nxt+card[cur]);
             //nxt = modulo(nxt + card[cur], players);
-            //printf("-> %d\n", nxt);
+            //printf("-> %lld\n", nxt);
 
             //ll nxt = modulo(cur-1 + modulo(card[cur], players), players);
-            //printf("    next up: %d -1 + %d %% %d = %d + %d = %lld\n", cur, card[cur], players, cur-1, modulo(card[cur], players), nxt);
+            //printf("    next up: %lld -1 + %lld %% %lld = %lld + %lld = %lld\n", cur, card[cur], players, cur-1, modulo(card[cur], players), nxt);
             //printf("    ==> %lld\n", cur);
         }
         if (count_factors(N) > maxcandy)
-            printf("%s %d\n", names[cur], count_factors(N));
+            printf("%s %lld\n", names[cur], count_factors(N));
         else
-            printf("%s %d\n", names[winner], maxcandy);
+            printf("%s %lld\n", names[winner], maxcandy);
     }
 
 	return 0;
