@@ -6,7 +6,9 @@
  */
 
 #include <iostream>
+#include <cstdio>
 #include <cstring>
+#include <numeric>
 #include <cmath>
 
 #define ll long long
@@ -21,19 +23,6 @@
 using namespace std;
 const ll MX = 500111;   // TODO: several cases
 
-//int factors[MX], max_factors[MX];
-//void get_factors(int N)
-//{
-//    for (int i=2; i<MX; ++i)
-//    {
-//        printf("%lld\n", i);
-//        for (int j=i; j<MX; ++j)
-//            ++factors[j];
-//        max_factors[i] = max(max_factors[i-1], factors[i]);
-//    }
-//}
-
-
 ll count_factors(ll n)
 {
     ll i, tot = 0;
@@ -45,11 +34,11 @@ ll count_factors(ll n)
 
 ll modulo(ll n, ll m)
 {
-    if (n < 0) return (m - (abs(n)%m)) % m;
+    if (n < 0) return (m - ((-n)%m)) % m;
     else return n % m;
 }
 
-ll N, K, circle[MX], card[MX];
+ll N, K, card[MX];
 ll D, tsum[MX]; // 1 means gap
 char names[MX][20]; // TODO: max name len
 
@@ -89,37 +78,43 @@ ll querykth(ll kth, ll k=1, ll tl=0, ll tr=(1<<D)-1)
 
 int main()
 {
-    scanf("%lld%lld", &N, &K);
-    for (ll i=0; i<N; ++i)
-        scanf("%s%d", names[i], &card[i]);
-    D = log2(N)+1;
-
-    ll players=N, maxcandy = 0, winner, cur=K-1;
-    for (ll i=1; i<N; ++i)
+    while (scanf("%lld%lld", &N, &K) == 2)
     {
-        //printf("removing %d\n", cur);
-        --players;
-        update(cur);
-        dump();
+        memset(card, 0, sizeof card);
+        memset(tsum, 0, sizeof tsum);
+        memset(names, 0, sizeof names);
 
-        //printf("    i %d players %d cur %d\n", i, players, cur);
-        ll factors = count_factors(i);
-        if (factors > maxcandy)
+        for (ll i=0; i<N; ++i)
+            scanf("%s%d", names[i], &card[i]);
+        D = log2(N)+1;
+
+        ll players=N, maxcandy = 0, winner, cur=K-1;
+        for (ll i=1; i<N; ++i)
         {
-            //printf("update: winner is %d with %d candy\n", cur, factors);
-            maxcandy = factors;
-            winner = cur;
+            //printf("removing %d\n", cur);
+            --players;
+            update(cur);
+            dump();
+
+            //printf("    i %d players %d cur %d\n", i, players, cur);
+            ll factors = count_factors(i);
+            if (factors > maxcandy)
+            {
+                //printf("update: winner is %d with %d candy\n", cur, factors);
+                maxcandy = factors;
+                winner = cur;
+            }
+            ll nxt = modulo(cur-1 + modulo(card[cur], players), players);
+            //printf("    next up: (%d + %d) %% %d = %lld\n", cur, card[cur], players, nxt);
+            //printf("    next up: %d -1 + %d %% %d = %d + %d = %lld\n", cur, card[cur], players, cur-1, modulo(card[cur], players), nxt);
+            cur = querykth(nxt+1);
+            //printf("    ==> %lld\n", cur);
         }
-        ll nxt = modulo(cur-1 + modulo(card[cur], players), players);
-        //printf("    next up: (%d + %d) %% %d = %lld\n", cur, card[cur], players, nxt);
-        //printf("    next up: %d -1 + %d %% %d = %d + %d = %lld\n", cur, card[cur], players, cur-1, modulo(card[cur], players), nxt);
-        cur = querykth(nxt+1);
-        //printf("    ==> %lld\n", cur);
+        if (count_factors(N) > maxcandy)
+            printf("%s %d\n", names[cur], count_factors(N));
+        else
+            printf("%s %d\n", names[winner], maxcandy);
     }
-    if (count_factors(N) > maxcandy)
-        printf("%s %d\n", names[cur], count_factors(N));
-    else
-        printf("%s %d\n", names[winner], maxcandy);
 
 	return 0;
 }
