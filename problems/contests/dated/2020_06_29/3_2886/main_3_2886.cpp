@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <cstring>
+#include <cmath>
 
 #define ll long long
 #define dl double
@@ -32,6 +33,7 @@ const ll MX = 500111;   // TODO: several cases
 //    }
 //}
 
+
 int count_factors(int n)
 {
     int i, tot = 0;
@@ -47,38 +49,76 @@ int modulo(int n, int m)
     else return n % m;
 }
 
-ll N, tsum[MX];
-void update(ll q, ll k=1, ll tl=1, ll tr=1<<D)
+ll N, K, circle[MX], card[MX];
+ll D, tsum[MX]; // 1 means gap
+char names[MX][20]; // TODO: max name len
+
+void dump()
 {
-    if (q < tl || q > tr) return;
+    ll d = D+1;
+    for (ll i=1; i<1<<1+D; ++i)
+    {
+        if (__builtin_popcount(i) == 1) {--d; printf("\n");}
+        printf("%3d", tsum[i]);
+        for (ll i=1; i<1<<d; ++i) printf("   ");
+    }
+    printf("\n");
+}
+void update(ll q, ll k=1, ll tl=0, ll tr=(1<<D)-1)
+{
+    //printf("update %d @ %d(%d..%d)\n", q, k, tl, tr);
     ll mid = tl + (tr-tl>>1);
     if (tl == tr) ++tsum[k];
-    else if (q <= tl) update(q, k<<1, tl, mid);
-    else update(q, k<<1|1, mid+1, tr);
-    tsum[k] = tsum[k<<1] + tsum[k<<1|1];
+    else
+    {
+        if (q <= mid) update(q, k<<1, tl, mid);
+        else update(q, k<<1|1, mid+1, tr);
+        tsum[k] = tsum[k<<1] + tsum[k<<1|1];
+    }
 }
-ll querykth(ll kth, ll k=1, ll tl=1, ll tr=1<<D)
+ll querykth(ll kth, ll k=1, ll tl=0, ll tr=(1<<D)-1)
 {
+    printf("query %dth @ %d(%d..%d)\n", kth, k, tl, tr);
     if (tl == tr) return tl;
     ll mid = tl + (tr-tl>>1);
-    ll lsize = tsum[k<<1];
+    ll lsize = mid-tl+1-tsum[k<<1];
     if (kth <= lsize) return querykth(kth, k<<1, tl, mid);
     else return querykth(kth-lsize, k<<1, mid+1, tr);
 }
 
 int main()
 {
-    scanf("%lld", &N);
-    for (ll i=1; i<=N; ++i)
-        printf("%3d", count_factors(i));
+    scanf("%lld%lld", &N, &K);
+    for (ll i=0; i<N; ++i)
+        scanf("%s%d", names[i], &card[i]);
+    D = log2(N)+1;
 
-    for (;;)
+    ll players=N, maxcandy = 0, cur=K-1;
+    for (ll i=1; i<N; ++i)
     {
-        ll n, m;
-        scanf("%d%d", &n, &m);
-        printf("%d %% %d = %d\n", n, m, modulo(n, m));
+        printf("removing %d\n", cur);
+        --players;
+        update(cur);
+        dump();
+
+        printf("    i %d players %d cur %d\n", i, players, cur);
+        maxcandy = max(maxcandy, (ll)count_factors(i));
+        ll nxt = modulo(cur-1 + modulo(card[cur], players), players);
+        //printf("    next up: (%d + %d) %% %d = %lld\n", cur, card[cur], players, nxt);
+        printf("    next up: %d -1 + %d %% %d = %d + %d = %lld\n", cur, card[cur], players, cur-1, modulo(card[cur], players), nxt);
+        cur = querykth(nxt+1);
+        printf("    ==> %lld\n", cur);
     }
 
 	return 0;
 }
 
+/*
+
+3 2
+a 1
+b 1
+c 2
+-> b, c, a
+
+*/
