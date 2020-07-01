@@ -77,12 +77,12 @@ ll query(ll ql, ll qr, ll k=1, ll tl=0, ll tr=(1<<D)-1)
 }
 ll querykth(ll kth, ll k=1, ll tl=0, ll tr=(1<<D)-1)
 {
-    printf("query %lldth @ %lld(%lld..%lld)\n", kth, k, tl, tr);
+    printf("    query %lldth @ %lld(%lld..%lld)\n", kth, k, tl, tr);
     if (tl == tr) return tl;
     ll mid = tl + (tr-tl>>1);
     ll lsize = (mid-tl+1)-tsum[k<<1];
-    printf("lsize = %lld - %lld = %lld\n", mid-tl+1, tsum[k<<1], lsize);
-    printf("%lld <= %lld ? %lld\n", kth, lsize, kth <= lsize);
+    printf("        lsize = %lld - %lld = %lld\n", mid-tl+1, tsum[k<<1], lsize);
+    printf("        %lld <= %lld ? %lld\n", kth, lsize, kth <= lsize);
     if (kth <= lsize) return querykth(kth, k<<1, tl, mid);
     else return querykth(kth-lsize, k<<1|1, mid+1, tr); // FIX: typo--k<<1|1 not just k<<1 for right child smah
 }
@@ -153,5 +153,23 @@ c -1
 d 2
 -> c, b, d, a
 -> a 3
+
+6 1
+a -2
+b 4
+c -1
+d -3
+e 2
+f 3
+-> a, e, b, c, f, d; d 4
+
+6 2
+a -2
+b 4
+c -1
+d -3
+e 2
+f 3
+-> b, f, d, e, c, a; a 4
 
 */
