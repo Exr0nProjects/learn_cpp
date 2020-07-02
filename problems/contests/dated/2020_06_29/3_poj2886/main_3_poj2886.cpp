@@ -38,31 +38,28 @@ ll modulo(ll n, ll m)
 
 ll N, K, card[MX];
 ll D, tsum[MX<<1]; // 1 means gap, FIX: segtree is 2x memory
-char names[MX][20]; // TODO: max name len
+char names[MX][20];
 
-void dump()
-{
-    //return;
-    ll d = D+1;
-    for (ll i=1; i<1<<1+D; ++i)
-    {
-        if (__builtin_popcount(i) == 1) {--d; printf("\n");}
-        printf("%3d: %2d  ", i, tsum[i]);
-        for (ll i=1; i<1<<d; ++i) printf("         ");
-    }
-    printf("\n");
-}
+//void dump()
+//{
+//    return;
+//    ll d = D+1;
+//    for (ll i=1; i<1<<1+D; ++i)
+//    {
+//        if (__builtin_popcount(i) == 1) {--d; printf("\n");}
+//        printf("%3d: %2d  ", i, tsum[i]);
+//        for (ll i=1; i<1<<d; ++i) printf("         ");
+//    }
+//    printf("\n");
+//}
 void update(ll q, ll k=1, ll tl=0, ll tr=(1<<D)-1)
 {
     //printf("update %lld @ %lld(%lld..%lld)\n", q, k, tl, tr);
     ll mid = tl + (tr-tl>>1);
-    if (tl == tr) ++tsum[k];
-    else
-    {
-        if (q <= mid) update(q, k<<1, tl, mid);
-        else update(q, k<<1|1, mid+1, tr);
-        tsum[k] = tsum[k<<1] + tsum[k<<1|1];
-    }
+    if (tl == tr) { ++tsum[k]; return; }
+    if (q <= mid) update(q, k<<1, tl, mid);
+    else update(q, k<<1|1, mid+1, tr);
+    tsum[k] = tsum[k<<1] + tsum[k<<1|1];
 }
 ll query(ll ql, ll qr, ll k=1, ll tl=0, ll tr=(1<<D)-1)
 {
@@ -90,9 +87,9 @@ int main()
     init_factors();
     while (scanf("%lld%lld", &N, &K) == 2)
     {
-        memset(card, 0, sizeof card);
+        //memset(card, 0, sizeof card);
         memset(tsum, 0, sizeof tsum);
-        memset(names, 0, sizeof names);
+        //memset(names, 0, sizeof names);
 
         for (ll i=0; i<N; ++i)
             scanf("%s%lld", names[i], &card[i]);
@@ -101,50 +98,23 @@ int main()
         ll players=N, maxcandy = 0, winner, cur=K-1;
         for (ll i=1; i<N; ++i)
         {
-            //printf("removing %lld (%s)\n", cur, names[cur]);
             --players;
             update(cur);
-            //dump();
 
-            //printf("    i %lld players %lld cur %lld\n", i, players, cur);
-            //ll factors = count_factors(i);
             ll facts = factors[i];
             if (facts > maxcandy)
             {
-                //printf("update: winner is %lld with %lld candy\n", cur, factors);
                 maxcandy = facts;
                 winner = cur;
             }
 
             // remove this player
-            //if (card[cur] < 0) ++card[cur];
             ll cur_pos = cur - query(0, cur)+1;
             if (card[cur] > 0) --cur_pos;
             card[cur] = modulo(card[cur], players);
-            //printf("card cur = %d\n", card[cur]);
-            ll after_me = N-cur-query(cur, N);
-            //printf("after %d(%s) = %d\n", cur, names[cur], after_me);
-            //if (card[cur] >= after_me) card[cur] -= after_me;
-            //printf("stepping forward %d\n", card[cur]);
-
+            //ll after_me = N-cur-query(cur, N);
             ll nxt = modulo(cur_pos + card[cur], players);
-            //printf("after wrap, looking for %d + %d = %d\n", cur_pos, card[cur], nxt);
-
-            //dump();
             cur = querykth(nxt+1);
-            //printf("cur = %d\n\n", cur);
-
-            //card[cur] = modulo(card[cur] - after_me, players);
-            //ll cur_pos = cur - query(0, cur)+1;
-            //if (card[cur] > 0) --cur_pos;
-            ////printf("current pos: %lld, card[cur] = %lld\n", cur_pos, card[cur]);
-            //
-            //ll nxt = modulo(cur_pos + card[cur], players);
-            ////printf("next pos: (%lld)%%%lld = %lld\n", cur_pos+card[cur], players, nxt);
-            //
-            ////dump();
-            //cur = querykth(nxt+1);
-            ////printf("actual next: %lld\n", cur);
         }
         if (factors[N] > maxcandy)
             printf("%s %lld\n", names[cur], factors[N]+1);
