@@ -40,23 +40,23 @@ ll N, K, card[MX];
 ll D, tsum[MX<<1]; // 1 means gap, FIX: segtree is 2x memory
 char names[MX][20];
 
-//void dump()
-//{
-//    return;
-//    ll d = D+1;
-//    for (ll i=1; i<1<<1+D; ++i)
-//    {
-//        if (__builtin_popcount(i) == 1) {--d; printf("\n");}
-//        printf("%3d: %2d  ", i, tsum[i]);
-//        for (ll i=1; i<1<<d; ++i) printf("         ");
-//    }
-//    printf("\n");
-//}
+void dump()
+{
+    //return;
+    ll d = D+1;
+    for (ll i=1; i<1<<1+D; ++i)
+    {
+        if (__builtin_popcount(i) == 1) {--d; printf("\n");}
+        printf("%3d: %2d  ", i, tsum[i]);
+        for (ll i=1; i<1<<d; ++i) printf("         ");
+    }
+    printf("\n");
+}
 void update(ll q, ll k=1, ll tl=0, ll tr=(1<<D)-1)
 {
     //printf("update %lld @ %lld(%lld..%lld)\n", q, k, tl, tr);
     ll mid = tl + (tr-tl>>1);
-    if (tl == tr) { ++tsum[k]; return; }
+    if (tl == tr) { tsum[k] = 0; return; }
     if (q <= mid) update(q, k<<1, tl, mid);
     else update(q, k<<1|1, mid+1, tr);
     tsum[k] = tsum[k<<1] + tsum[k<<1|1];
@@ -72,12 +72,12 @@ ll query(ll ql, ll qr, ll k=1, ll tl=0, ll tr=(1<<D)-1)
 }
 ll querykth(ll kth, ll k=1, ll tl=0, ll tr=(1<<D)-1)
 {
-    //printf("    query %lldth @ %lld(%lld..%lld)\n", kth, k, tl, tr);
+    printf("    query %lldth @ %lld(%lld..%lld)\n", kth, k, tl, tr);
     if (tl == tr) return tl;
     ll mid = tl + (tr-tl>>1);
-    ll lsize = (mid-tl+1)-tsum[k<<1];
-    //printf("        lsize = %lld - %lld = %lld\n", mid-tl+1, tsum[k<<1], lsize);
-    //printf("        %lld <= %lld ? %lld\n", kth, lsize, kth <= lsize);
+    ll lsize = tsum[k<<1];
+    printf("        lsize = %lld\n", lsize);
+    printf("        %lld <= %lld ? %lld\n", kth, lsize, kth <= lsize);
     if (kth <= lsize) return querykth(kth, k<<1, tl, mid);
     else return querykth(kth-lsize, k<<1|1, mid+1, tr); // FIX: typo--k<<1|1 not just k<<1 for right child smah
 }
@@ -94,6 +94,11 @@ int main()
         for (ll i=0; i<N; ++i)
             scanf("%s%lld", names[i], &card[i]);
         D = log2(N)+1;
+        for (ll i=0; i<N; ++i)
+            tsum[i+(1<<D)] = 1;
+        for (ll i=(1<<D)-1; i>0; --i)
+            tsum[i] = tsum[i<<1] + tsum[i<<1|1];
+        dump();
 
         ll players=N, maxcandy = 0, winner, cur=K-1;
         for (ll i=1; i<N; ++i)
@@ -109,12 +114,17 @@ int main()
             }
 
             // remove this player
-            ll cur_pos = cur - query(0, cur)+1;
+            ll cur_pos = query(0, cur);
+            printf("pos of %d(%s) = %d\n", cur, names[cur], cur_pos);
             if (card[cur] > 0) --cur_pos;
+            printf("adjusted to %d\n", cur_pos);
             card[cur] = modulo(card[cur], players);
+            printf("stepping %d\n", card[cur]);
             //ll after_me = N-cur-query(cur, N);
             ll nxt = modulo(cur_pos + card[cur], players);
+            printf("expect to be at %d\n", nxt);
             cur = querykth(nxt+1);
+            printf("actual: %d\n\n", cur);
         }
         if (factors[N] > maxcandy)
             printf("%s %lld\n", names[cur], factors[N]+1);
