@@ -117,17 +117,22 @@ int main()
             }
 
             // remove this player
-            if (card[cur] < 0) ++card[cur];
+            //if (card[cur] < 0) ++card[cur];
             card[cur] = modulo(card[cur], players);
-            //printf("card cur = %d\n", card[cur]);
+            printf("card cur = %d\n", card[cur]);
             ll after_me = N-cur-query(cur, N);
-            //printf("after %s = %d\n", names[cur], after_me);
-            if (card[cur] > after_me) card[cur] -= after_me;
-            //printf("after wrap, looking for %d\n", card[cur]);
+            printf("after %d(%s) = %d\n", cur, names[cur], after_me);
+            if (card[cur] >= after_me) card[cur] -= after_me;
+            printf("stepping forward %d\n", card[cur]);
+
+            ll cur_pos = cur - query(0, cur)+1;
+            ll nxt = modulo(cur-query(0, cur)+1 + card[cur]+1, players);
+            printf("after wrap, looking for %d\n", nxt);
 
             //dump();
-            cur = querykth(card[cur]+1);
-            //printf("cur = %d\n\n", cur);
+            cur = querykth(nxt);
+            printf("cur = %d\n\n", cur);
+
             //card[cur] = modulo(card[cur] - after_me, players);
             //ll cur_pos = cur - query(0, cur)+1;
             //if (card[cur] > 0) --cur_pos;
