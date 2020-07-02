@@ -4,4 +4,5 @@ priv*/**
 problems/.template_state/last.txt
 **/auto
 **/answer
+**/casegen
 **/*.diff
