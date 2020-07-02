@@ -42,7 +42,7 @@ char names[MX][20]; // TODO: max name len
 
 void dump()
 {
-    return;
+    //return;
     ll d = D+1;
     for (ll i=1; i<1<<1+D; ++i)
     {
@@ -117,16 +117,28 @@ int main()
             }
 
             // remove this player
-            ll cur_pos = cur - query(0, cur)+1;
-            if (card[cur] > 0) --cur_pos;
-            //printf("current pos: %lld, card[cur] = %lld\n", cur_pos, card[cur]);
-
-            ll nxt = modulo(cur_pos + card[cur], players);
-            //printf("next pos: (%lld)%%%lld = %lld\n", cur_pos+card[cur], players, nxt);
+            if (card[cur] < 0) ++card[cur];
+            card[cur] = modulo(card[cur], players);
+            //printf("card cur = %d\n", card[cur]);
+            ll after_me = N-cur-query(cur, N);
+            //printf("after %s = %d\n", names[cur], after_me);
+            if (card[cur] > after_me) card[cur] -= after_me;
+            //printf("after wrap, looking for %d\n", card[cur]);
 
             //dump();
-            cur = querykth(nxt+1);
-            //printf("actual next: %lld\n", cur);
+            cur = querykth(card[cur]+1);
+            //printf("cur = %d\n\n", cur);
+            //card[cur] = modulo(card[cur] - after_me, players);
+            //ll cur_pos = cur - query(0, cur)+1;
+            //if (card[cur] > 0) --cur_pos;
+            ////printf("current pos: %lld, card[cur] = %lld\n", cur_pos, card[cur]);
+            //
+            //ll nxt = modulo(cur_pos + card[cur], players);
+            ////printf("next pos: (%lld)%%%lld = %lld\n", cur_pos+card[cur], players, nxt);
+            //
+            ////dump();
+            //cur = querykth(nxt+1);
+            ////printf("actual next: %lld\n", cur);
         }
         if (factors[N] > maxcandy)
             printf("%s %lld\n", names[cur], factors[N]+1);
