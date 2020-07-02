@@ -22,14 +22,12 @@
 
 using namespace std;
 const ll MX = 500111;   // TODO: several cases
-
-ll count_factors(ll n)
+ll factors[MX];
+void init_factors()
 {
-    ll i, tot = 0;
-    for (i=1; i*i < n; ++i)
-        if (n % i == 0) tot += 2;
-    if (i*i == n) ++tot;
-    return tot;
+    for (ll i=2; i<MX; ++i)
+        for (ll j=i; j<MX; j+=i)
+            ++factors[j];
 }
 
 ll modulo(ll n, ll m)
@@ -39,12 +37,12 @@ ll modulo(ll n, ll m)
 }
 
 ll N, K, card[MX];
-ll D, tsum[MX]; // 1 means gap
+ll D, tsum[MX<<2]; // 1 means gap, FIX: segtree is 2x memory
 char names[MX][20]; // TODO: max name len
 
 void dump()
 {
-    //return;
+    return;
     ll d = D+1;
     for (ll i=1; i<1<<1+D; ++i)
     {
@@ -68,7 +66,7 @@ void update(ll q, ll k=1, ll tl=0, ll tr=(1<<D)-1)
 }
 ll query(ll ql, ll qr, ll k=1, ll tl=0, ll tr=(1<<D)-1)
 {
-    printf("    query %lld..%lld @ %lld (%lld..%lld)\n", ql, qr, k, tl, tr);
+    //printf("    query %lld..%lld @ %lld (%lld..%lld)\n", ql, qr, k, tl, tr);
     if (qr < tl || tr < ql) return 0;
     if (ql <= tl && tr <= qr) return tsum[k];
     ll mid = tl + (tr - tl>>1);
@@ -77,18 +75,19 @@ ll query(ll ql, ll qr, ll k=1, ll tl=0, ll tr=(1<<D)-1)
 }
 ll querykth(ll kth, ll k=1, ll tl=0, ll tr=(1<<D)-1)
 {
-    printf("    query %lldth @ %lld(%lld..%lld)\n", kth, k, tl, tr);
+    //printf("    query %lldth @ %lld(%lld..%lld)\n", kth, k, tl, tr);
     if (tl == tr) return tl;
     ll mid = tl + (tr-tl>>1);
     ll lsize = (mid-tl+1)-tsum[k<<1];
-    printf("        lsize = %lld - %lld = %lld\n", mid-tl+1, tsum[k<<1], lsize);
-    printf("        %lld <= %lld ? %lld\n", kth, lsize, kth <= lsize);
+    //printf("        lsize = %lld - %lld = %lld\n", mid-tl+1, tsum[k<<1], lsize);
+    //printf("        %lld <= %lld ? %lld\n", kth, lsize, kth <= lsize);
     if (kth <= lsize) return querykth(kth, k<<1, tl, mid);
     else return querykth(kth-lsize, k<<1|1, mid+1, tr); // FIX: typo--k<<1|1 not just k<<1 for right child smah
 }
 
 int main()
 {
+    init_factors();
     while (scanf("%lld%lld", &N, &K) == 2)
     {
         memset(card, 0, sizeof card);
@@ -102,36 +101,37 @@ int main()
         ll players=N, maxcandy = 0, winner, cur=K-1;
         for (ll i=1; i<N; ++i)
         {
-            printf("removing %lld (%s)\n", cur, names[cur]);
+            //printf("removing %lld (%s)\n", cur, names[cur]);
             --players;
             update(cur);
-            dump();
+            //dump();
 
             //printf("    i %lld players %lld cur %lld\n", i, players, cur);
-            ll factors = count_factors(i);
-            if (factors > maxcandy)
+            //ll factors = count_factors(i);
+            ll facts = factors[i];
+            if (facts > maxcandy)
             {
                 //printf("update: winner is %lld with %lld candy\n", cur, factors);
-                maxcandy = factors;
+                maxcandy = facts;
                 winner = cur;
             }
 
             // remove this player
             ll cur_pos = cur - query(0, cur)+1;
             if (card[cur] > 0) --cur_pos;
-            printf("current pos: %lld, card[cur] = %lld\n", cur_pos, card[cur]);
+            //printf("current pos: %lld, card[cur] = %lld\n", cur_pos, card[cur]);
 
             ll nxt = modulo(cur_pos + card[cur], players);
-            printf("next pos: (%lld)%%%lld = %lld\n", cur_pos+card[cur], players, nxt);
+            //printf("next pos: (%lld)%%%lld = %lld\n", cur_pos+card[cur], players, nxt);
 
-            dump();
+            //dump();
             cur = querykth(nxt+1);
-            printf("actual next: %lld\n", cur);
+            //printf("actual next: %lld\n", cur);
         }
-        if (count_factors(N) > maxcandy)
-            printf("%s %lld\n", names[cur], count_factors(N));
+        if (factors[N] > maxcandy)
+            printf("%s %lld\n", names[cur], factors[N]+1);
         else
-            printf("%s %lld\n", names[winner], maxcandy);
+            printf("%s %lld\n", names[winner], maxcandy+1);
     }
 
 	return 0;

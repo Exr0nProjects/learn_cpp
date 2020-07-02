@@ -1,9 +1,9 @@
 T = 10
 N = 500000
-MXM = 10e8
+MXM = 1e8
 
-N = 5
-MXM = 10
+N = 500000
+MXM = 1e8
 
 from string import ascii_lowercase as letters
 from random import randint, choice

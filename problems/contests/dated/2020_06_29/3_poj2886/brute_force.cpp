@@ -31,15 +31,22 @@ int main()
         for (ll i=0; i<N; ++i)
             scanf("%s%lld", names[i], &card[i]);
 
+        for (ll i=0; i<N; ++i) printf("\n%s %d\n", names[i], card[i]);
+
         ll cur=K-1, maxcandy=0;
-        for (int i=0; i<N; ++i)
+        for (int i=0; i<N-1; ++i)
         {
+            printf("deleting %d\n", cur);
             gone[cur] = 1;
             ll start = cur;
-            card[start] = modulo(card[start], N-i-i);
+            card[start] = modulo(card[start], N-i-1);
             printf("steps: %d\n", card[start]);
-            for (int j=0; j<card[start]; ++j, ++cur)
-                if (gone[cur]) -- j;
+            for (int j=0, cur=0; j<=card[start]; ++cur)
+            {
+                printf("j %d cur %d gone[cur] %d\n", j, cur, gone[cur]);
+                if (!gone[cur]) ++j;
+            }
+            --cur;
             printf("now deleting %d (%s)\n", cur, names[cur]);
         }
     }
