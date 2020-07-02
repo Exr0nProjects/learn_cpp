@@ -37,7 +37,7 @@ ll modulo(ll n, ll m)
 }
 
 ll N, K, card[MX];
-ll D, tsum[MX<<2]; // 1 means gap, FIX: segtree is 2x memory
+ll D, tsum[MX<<1]; // 1 means gap, FIX: segtree is 2x memory
 char names[MX][20]; // TODO: max name len
 
 void dump()
@@ -118,20 +118,21 @@ int main()
 
             // remove this player
             //if (card[cur] < 0) ++card[cur];
-            card[cur] = modulo(card[cur], players);
-            printf("card cur = %d\n", card[cur]);
-            ll after_me = N-cur-query(cur, N);
-            printf("after %d(%s) = %d\n", cur, names[cur], after_me);
-            if (card[cur] >= after_me) card[cur] -= after_me;
-            printf("stepping forward %d\n", card[cur]);
-
             ll cur_pos = cur - query(0, cur)+1;
-            ll nxt = modulo(cur-query(0, cur)+1 + card[cur]+1, players);
-            printf("after wrap, looking for %d\n", nxt);
+            if (card[cur] > 0) --cur_pos;
+            card[cur] = modulo(card[cur], players);
+            //printf("card cur = %d\n", card[cur]);
+            ll after_me = N-cur-query(cur, N);
+            //printf("after %d(%s) = %d\n", cur, names[cur], after_me);
+            //if (card[cur] >= after_me) card[cur] -= after_me;
+            //printf("stepping forward %d\n", card[cur]);
+
+            ll nxt = modulo(cur_pos + card[cur], players);
+            //printf("after wrap, looking for %d + %d = %d\n", cur_pos, card[cur], nxt);
 
             //dump();
-            cur = querykth(nxt);
-            printf("cur = %d\n\n", cur);
+            cur = querykth(nxt+1);
+            //printf("cur = %d\n\n", cur);
 
             //card[cur] = modulo(card[cur] - after_me, players);
             //ll cur_pos = cur - query(0, cur)+1;
