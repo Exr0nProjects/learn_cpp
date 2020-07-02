@@ -14,5 +14,5 @@ def gen_str():
 for t in range(T):
     print(N, randint(1, N))
     for i in range(N):
-        print(gen_str(), (randint(0, 1)*2-1)*randint(1, MXM))
+        thing = (gen_str(), (randint(0, 1)*2-1)*randint(1, MXM))
 
