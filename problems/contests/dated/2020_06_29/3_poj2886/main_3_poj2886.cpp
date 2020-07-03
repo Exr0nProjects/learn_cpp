@@ -94,6 +94,7 @@ int main()
         for (ll i=0; i<N; ++i)
             scanf("%s%lld", names[i], &card[i]);
         D = log2(N)+1;
+        //D = 16;
         for (ll i=0; i<N; ++i)
             tsum[i+(1<<D)] = 1;
         for (ll i=(1<<D)-1; i>0; --i)
