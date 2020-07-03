@@ -7,27 +7,8 @@
 
 #include <iostream>
 #include <cstring>
-#include <sstream>
-#include <cstdio>
-#include <tuple>
-#include <vector>
-#include <string>
-#include <list>
-#include <array>
-#include <queue>
-#include <stack>
-#include <set>
-#include <map>
-#include <unordered_set>
-#include <unordered_map>
-#include <cmath>
-#include <random>
-#include <chrono>
-#include <utility>
-#include <iterator>
-#include <exception>
 #include <algorithm>
-#include <functional>
+#include <set>
 
 #define ll long long
 #define dl double
@@ -39,7 +20,7 @@
 #define s second
 
 using namespace std;
-const int MX = 100111;
+const int MX = 200111;
 int N, D, M, arr[MX];
 multiset<int> vals;
 struct Node
@@ -53,21 +34,21 @@ struct Node
         max = lmax = rmax = v;
         min = lmin = rmin = v;
     }
-} nd[MX];
+} nd[MX<<1];    // FIX: segtree needs 2*N nodes
 
-void dump()
-{
-    int d = D+1;
-    for (int k=1; k<2<<D; ++k)
-    {
-        if (__builtin_popcount(k) == 1) { --d; printf("\n"); }
-        printf("%2d (%2d %2d %2d) (%2d %2d %2d)   ", nd[k].tot,
-                nd[k].lmax, nd[k].max, nd[k].rmax,
-                nd[k].lmin, nd[k].min, nd[k].rmin);
-        for (int i=1; i<1<<d; ++i) printf("                           ");
-    }
-    printf("\n");
-}
+//void dump()
+//{
+//    int d = D+1;
+//    for (int k=1; k<2<<D; ++k)
+//    {
+//        if (__builtin_popcount(k) == 1) { --d; printf("\n"); }
+//        printf("%2d (%2d %2d %2d) (%2d %2d %2d)   ", nd[k].tot,
+//                nd[k].lmax, nd[k].max, nd[k].rmax,
+//                nd[k].lmin, nd[k].min, nd[k].rmin);
+//        for (int i=1; i<1<<d; ++i) printf("                           ");
+//    }
+//    printf("\n");
+//}
 
 void comb(int k)
 {
@@ -122,7 +103,8 @@ int main()
     {
         int q, v; scanf("%d%d", &q, &v);
 
-        auto it = vals.find(arr[q]);    // erase one from multiset
+        multiset<int>::iterator
+            it = vals.find(arr[q]);     // erase one from multiset
         if (it != vals.end())
             vals.erase(it);
 
