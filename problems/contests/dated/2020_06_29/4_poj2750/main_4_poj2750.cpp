@@ -83,7 +83,7 @@ void comb(int k)
 
 void update(int q, int v, int k=1, int tl=1, int tr=1<<D)
 {
-    printf("update %d to %d @ %d(%d..%d)\n", q, v, k, tl, tr);
+    //printf("update %d to %d @ %d(%d..%d)\n", q, v, k, tl, tr);
     if (tl == tr)
     { nd[k].set(v); return; }                   // FIX: return after applying
 
@@ -104,21 +104,18 @@ int getmax()
 
 int main()
 {
-    while (true)
+    scanf("%d", &N);
+    while (1<<D<N) ++D;
+    for (int i=1; i<=N; ++i)
     {
-        scanf("%d", &N);
-        while (1<<D<N) ++D;
-        for (int i=1; i<=N; ++i)
-        {
-            scanf("%d", &arr[i]);
-            update(i, arr[i]);
-            vals.insert(arr[i]);
-        }
-        dump();
-        memset(arr, 0, sizeof arr);
-        memset(nd, 0, sizeof nd);
-        vals.clear();
+        scanf("%d", &arr[i]);
+        update(i, arr[i]);
+        vals.insert(arr[i]);
     }
+        //dump();
+        //memset(arr, 0, sizeof arr);
+        //memset(nd, 0, sizeof nd);
+        //vals.clear();
 
     scanf("%d", &M);
     for (int i=0; i<M; ++i)
@@ -133,6 +130,7 @@ int main()
         vals.insert(arr[q]);            // add new value to multiset
         update(q, v);                   // update segtree
 
+        //dump();
         printf("%d\n", getmax());
     }
 
