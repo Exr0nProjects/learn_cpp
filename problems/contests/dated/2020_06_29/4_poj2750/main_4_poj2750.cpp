@@ -84,11 +84,15 @@ void comb(int k)
 void update(int q, int v, int k=1, int tl=1, int tr=1<<D)
 {
     printf("update %d to %d @ %d(%d..%d)\n", q, v, k, tl, tr);
-    if (tl == tr) nd[k].set(v);
+    if (tl == tr)
+    { nd[k].set(v); return; }                   // FIX: return after applying
+
     int mid = tl + (tr-tl>>1);
     if (q <= mid) update(q, v, k<<1, tl, mid);
     else update(q, v, k<<1|1, mid+1, tr);
-    comb(k);
+
+    if (mid+1 > N) nd[k] = nd[k<<1];            // FIX: don't combine with out of range
+    else comb(k);
 }
 
 int getmax()
@@ -100,14 +104,22 @@ int getmax()
 
 int main()
 {
-    scanf("%d", &N);
-    while (1<<D<N) ++D;
-    for (int i=1; i<=N; ++i)
+    while (true)
     {
-        scanf("%d", &arr[i]);
-        update(i, arr[i]);
-        vals.insert(arr[i]);
+        scanf("%d", &N);
+        while (1<<D<N) ++D;
+        for (int i=1; i<=N; ++i)
+        {
+            scanf("%d", &arr[i]);
+            update(i, arr[i]);
+            vals.insert(arr[i]);
+        }
+        dump();
+        memset(arr, 0, sizeof arr);
+        memset(nd, 0, sizeof nd);
+        vals.clear();
     }
+
     scanf("%d", &M);
     for (int i=0; i<M; ++i)
     {
