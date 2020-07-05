@@ -146,6 +146,8 @@
         - Recover by finding the preorder root (first element) in the inorder string and recurse.
 - Derived From
     - [Depth First Search](#depth-first-search)
+- Careful
+    - Don't infinite loop by jumping between two nodes forever
 
 ### Heap
 - Properties
@@ -236,6 +238,10 @@ void rotate(Node &cur, bool dir)        // 1 = left rotate, 0 = right rotate. Ro
     - previous/next in sorted array
     - running min/max of a set
     - rank of a number (counting inversions)
+- Careful
+    - Nodes should have default values for everything (including node pointers)
+    - Remember to setSize on rotate, insert, delete
+    - Always modify both `Node->s` and `Node->n` in insert/delete
 
 ## Range Tree
 - Properties
@@ -316,12 +322,15 @@ ll range_query(ll ql, ll qr, ll k=1, ll tl=1, ll tr=1<<D,   // standard stuff
     - Symmetrical: The structure is recursive and the left and right subtree are the same
     - Tags and lazy computation:
         - Uses tags to store updates that are combined during query when needed
+        - No need to check intermediate values or push_down with point update
 - Algorithms
 - Classic Problems/Uses
 - Derived From
     - [Lazy Computation](#lazy-computation)
     - [Range Tree](#range-tree)
 - Careful
+    - Need 2\*N space, since the tree itself is N-1 nodes
+    - Don't forget to initialize
 
 #### Segment Tree Tags
 <details><summary>Standard Code</summary>
@@ -370,7 +379,6 @@ void comb(ll k)                                 // combine accumulators
 - Classic Problems/Uses
 - Derived From
     - [Lazy Computation](#lazy-computation)
-- Careful
 
 #### Segment Tree Binary Search
 - Properties
@@ -441,11 +449,16 @@ TODO
     - [Precomputation](#precomputation)
 
 ## Lazy Computation
-TODO
 - Properties
+    - We can store something somewhere for now and use it later
+    - Order of things don't matter or will be dealt with 
+        - Mixing of update and query?
+        - A bunch of update then a bunch of query?
+        - One update/query before/after another update/query?
 - Algorithms
 - Classic Problems/Uses
 - Derived From
+    - [Precomputation](#precomputation)
 - Careful
 
 ## Tree Precomputaiton Binary Search
@@ -574,8 +587,49 @@ TODO
 TODO
 
 # Recursion
+- Properties
+    - Steps
+        - Represent the problem
+        - Wishful thinking
+            - How to use a solved subproblem to solve this?
+        - Base Case
+            - When do you stop recursing
+- Algorithms
+- Classic Problems/Uses
+- Derived From
+- Careful
+    - Base case in all dimensions
+    - Don't recurse too deep
 
-TODO
+## Tail Recursion
+<details><summary>Sample Code</summary>
+
+Examples of a program to sum the numbers from `1..N` using recursion:
+```cpp
+// without tail recursion, we need N stack frames
+void sum(int n)
+{
+    if (!n) return 0;
+    return sum(n-1) + n;    // new stack frame allocated, this one used to remember to add `n`
+}
+
+void sum(int n, int acc=0)
+{
+    if (!n) return acc;
+    return sum(n-1, acc+n); // returning recursive call directly, stack frame reused
+}
+```
+
+</details>
+
+- Properties
+    - Very deep recursion by reusing stack frames
+    - Sometimes you need more than one accumulator, depends on number of recursive calls?
+- Algorithms
+- Classic Problems/Uses
+- Derived From
+- Careful
+    - Make sure it's correct
 
 # Iteration
 
@@ -621,7 +675,58 @@ TODO
     - Can be left/right, or left/mid/right
 
 # Disjoint Set Union
+<details><summary>Sample Code</summary>
 
+```cpp
+int djs[MX], djf[MX];           // group size (only valid for leader) and father
+void init()
+{
+    for (int i=0; i<MX; ++i)
+    {
+        djs[i] = 1;             // size of each group starts as 1
+        djf[i] = i;             // each node is it's own parent
+    }
+}
+int find(int n)
+{
+    if (djf[n] != n)            // not leader of subtree
+        djf[n] = find(djf[n]);  // path compression, move self directly under leader
+    return djf[n];              // return leader, aka the group that self is in
+}
+void merge(int a, int b)
+{
+    a = find(a);                // work with leaders of subtrees
+    b = find(b);
+    if (a == b) return;         // if in same group, ignore
+    if (djs[a] < djs[b])        // enforce `a` has more nodes than `b`
+        swap(a, b);
+    djs[a] += djs[b];           // maintain subtree size of `a`, only valid for leader
+                                //  because others might get path compressed w/o size update
+    djf[b] = a;                 // put `b` directly under `a`, so all `find` calls under `b` get `a`
+}
+```
+
+</details>
+
+- Properties
+    - A tree stored by "parent" array, root of each tree is the "leader" of the group
+    - Merge by putting the leader of one group as a direct descendant of the leader of the other
+        - Merge by size, aka put smaller group under larger
+        - Lazy merge, the children of the smaller merged leader don't change
+    - Lazy Computation
+        - `find(n)` function that finds the leader of a group recursively
+        - compresses the path for future speed up
+    - Extensions
+        - Count groups: subtract a counter on each successful merge
+        - Merge conditions: only merge if another condition is also true
+        - Merge order: merge based on a different property (other than group size)
+            - This increases time complexity negligably
+- Algorithms
+- Classic Problems/Uses
+- Derived From
+    - [Lazy Computation](#lazy-computation)
+- Careful
+    - INIT DJS
 
 ## Minimum Spanning Tree
 
