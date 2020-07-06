@@ -55,6 +55,7 @@ Don't make names too similar, it's easy to make typos (`djs` vs `djf`)
 		- check all globals, memset pods only (not pairs!)
 	- Initialization
 		- INIT DJS
+	- See the [spreadsheet](https://docs.google.com/spreadsheets/d/108BTxTj_I0vphA3WWyaXxDSzDrEKQHLStBFrrKi03Ec/edit#gid=2108033227)
 3. Check edge cases
 	- All zeros
 	- All negatives
