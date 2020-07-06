@@ -40,10 +40,10 @@
 
 using namespace std;
 const ll MX = 600;
-int a[MX], b[MX], tab[MX][MX];
+int a[MX], b[MX], tab[MX][MX], alen, blen;
 map<string, int> desc;
 
-int input()
+int input(int arr[])
 {
     int tot = 0;
     string s;
@@ -58,19 +58,40 @@ int input()
             printf("got '%s' : %d\n", s.c_str(), desc[s]);
             s.clear();
             ++tot;
+            arr[tot] = desc[s];
             if (c == '\n') break;
         }
         else
             s.push_back(c);
     }
-    printf("line ended\n");
     return tot;
+}
+
+int solve()
+{
+    for (int i=1; i<=alen; ++i)
+    {
+        for (int j=1; j<=blen; ++j)
+        {
+            if (a[i] == b[j])
+                tab[i][j] = tab[i-1][j-1] + 1;
+            tab[i][j] = max(tab[i][j], max(tab[i-1][j], tab[i][j-1]));
+            printf("%3d", tab[i][j]);
+        }
+        printf("\n");
+    }
+    return tab[alen][blen];
 }
 
 int main()
 {
-    while (true)
-        printf("got %d words\n", input());
+    scanf("%d", &alen); for (int i=0; i<alen; ++i) scanf("%d", &a[i]);
+    scanf("%d", &blen); for (int i=0; i<blen; ++i) scanf("%d", &b[i]);
+
+    printf("lcs: %d\n", solve());
+
+    //while (true)
+    //    printf("got %d words\n", input());
 
 	return 0;
 }
