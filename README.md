@@ -29,7 +29,21 @@ My complexities graph can be found here: <https://www.desmos.com/calculator/bhq7
 
 Don't make names too similar, it's easy to make typos (`djs` vs `djf`)
 
-## Test Cases
+## Debugging
+
+1. Print everything, check "easy path" cases
+2. Check edge cases
+	- All zeros
+	- All negatives
+	- All positives 
+	- Maximum value
+	- Minimum value
+	- Decimals
+	- Multi-case in input?
+3. Case generator
+4. Compare codes
+
+### Test Cases
 
 1. Sample test cases
 2. Size edge cases
