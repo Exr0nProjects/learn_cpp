@@ -1,7 +1,7 @@
 /*
  * Problem 2_uva147 (contests/dated/2020_07_02/2_uva147)
  * Create time: Mon 06 Jul 2020 @ 11:37 (PDT)
- * Accept time: [!meta:end!]
+ * Accept time: Mon 06 Jul 2020 @ 12:29 (PDT)
  *
  */
 
@@ -65,7 +65,7 @@ int main()
 
     double target;
     while (scanf("%lf", &target) == 1 && target > 0)
-        printf("%6.2lf %17lld\n", target, waze_comb[(int)(target*20)]);
+        printf("%6.2lf%17lld\n", target, waze_comb[(int)(target*20)]);
 
 	return 0;
 }
