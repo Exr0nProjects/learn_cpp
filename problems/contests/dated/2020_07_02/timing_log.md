@@ -11,6 +11,10 @@
 11:50 | hold up, dp equation wrong (counts permutations instead of combos) | coding #2
 12:16 | finally works for sample | debugging #2
 12:19 | still wa | debugging #2
+12:28 | idk what i changed but it works now (AC #2) | analysing #3
+12:31 | looks like i need custom input | break
+12:35 | break | coding #3
+12:55 | input seems to work | coding #3
 
 ## Contest Reflection
 
