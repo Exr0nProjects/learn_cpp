@@ -17,6 +17,8 @@
 12:55 | input seems to work | coding #3
 13:10 | tle on input :/ | debugging #3
 13:18 | wa #3 | analysing #4
+13:28 | i think I have a plan | psudocoding #4
+13:32 | seems legit | coding #4
 
 ## Contest Reflection
 
