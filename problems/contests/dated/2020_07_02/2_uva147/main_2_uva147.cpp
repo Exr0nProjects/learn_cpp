@@ -46,21 +46,15 @@ ll waze_comb[MX]; // sum of waze[i]
 
 inline void equ(int i)
 {
-    //printf("%6d: ", i);
     for (int n=0, d=1; n<coins; d*=10)
         for (int p=1; n<coins && p<5; ++n, p<<=1)
         {   // d*p = each coin value in cents divided by 5
-            //printf("n = %3d d*p = %3d\n", n, d*p);
-            if (i < d*p) { /*printf("\n");*/ return; }
-            //int tot = 0;                // FIX: equ--tot resets every coin value
+            if (i < d*p) return;
+            // FIX: equ--tot resets every coin value
             for (int j=0; j<=n; ++j)    // every way to get to previous, ending in a smaller coin
-            {
-                //printf(" +=(%-2d %2d)", i-d*p, j);
                 waze[i][n] += waze[i-d*p][j];
-            }
             waze_comb[i] += waze[i][n];
         }
-    //printf("\n");
 }
 
 int main()
@@ -71,9 +65,7 @@ int main()
 
     double target;
     while (scanf("%lf", &target) == 1 && target > 0)
-    {
-        printf("%6.2lf%17lld\n", target, waze_comb[(int)(target*20)]);
-    }
+        printf("%6.2lf %17lld\n", target, waze_comb[(int)(target*20)]);
 
 	return 0;
 }
