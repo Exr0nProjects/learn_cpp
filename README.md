@@ -32,7 +32,30 @@ Don't make names too similar, it's easy to make typos (`djs` vs `djf`)
 ## Debugging
 
 1. Print everything, check "easy path" cases
-2. Check edge cases
+	- Iteration begin and end variables
+	- Recursive arguments
+	- Binary search variables
+	- Segtree node id and ranges
+	- Intermediate math
+	- Dump data structures
+		- Segtree
+		- Treap
+		- Sparse table
+		- DJS
+		- Edgelist
+2. Spot checking
+	- Array bounds
+		- Segment tree needs 2*N nodes
+		- Edge list needs N*N nodes
+		- Persistent Segtree and Sparse table need a logN factor
+	- Integer bounds
+		- long long causes weird bugs
+	- Clears
+		- map.empty() does not empty the map!
+		- check all globals, memset pods only (not pairs!)
+	- Initialization
+		- INIT DJS
+3. Check edge cases
 	- All zeros
 	- All negatives
 	- All positives 
@@ -40,8 +63,14 @@ Don't make names too similar, it's easy to make typos (`djs` vs `djf`)
 	- Minimum value
 	- Decimals
 	- Multi-case in input?
-3. Case generator
-4. Compare codes
+4. Case generator
+	- Range correct?
+	- Negatives and positives?
+5. Compare codes
+	1. Align general logic (algorithms and datastructures)
+	2. Align data types, representation
+	3. Align function semantics
+	4. Align variable names, transplant functions
 
 ### Test Cases
 
