@@ -50,6 +50,7 @@ int input(int arr[])
     char c = getchar();
     for (;; c = getchar())
     {
+        if (c == EOF) return -1;
         if (!(c >= 'a' && c <= 'z') && !(c >= 'A' && c <= 'Z'))
         {
             if (!s.size() && c == '\n') break;
@@ -95,12 +96,17 @@ int main()
 
     for (int T=1; ; ++T)
     {
-        alen = input(a);
-        blen = input(b);
+        memset(a, 0, sizeof a); // FIX: clears, even though the shouldn't be needed
+        memset(b, 0, sizeof b);
+        memset(tab, 0, sizeof tab);
+        desc = {};
+        alen = input(a); if (alen < 0) break;
+        blen = input(b); if (blen < 0) break;
         printf("%2d. ", T);
+        //printf("Blank!\n");
         if (!alen || !blen) printf("Blank!\n");
-        //else printf("Length of longest match: %d\n", solve());
-        else printf("Length of longest match: %d\n", 0);
+        else printf("Length of longest match: %d\n", solve());
+        //else printf("Length of longest match: %d\n", 0);
     }
 
 	return 0;
