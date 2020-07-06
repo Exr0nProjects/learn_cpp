@@ -7,6 +7,10 @@
 11:07 | start | reading problems
 11:19 | have plans for 1, 2; 3 scuffed, 4 needs analysis | coding #1
 11:27 | wa #1?? | debugging #1
+11:36 | still wa | coding #2
+11:50 | hold up, dp equation wrong (counts permutations instead of combos) | coding #2
+12:16 | finally works for sample | debugging #2
+12:19 | still wa | debugging #2
 
 ## Contest Reflection
 
