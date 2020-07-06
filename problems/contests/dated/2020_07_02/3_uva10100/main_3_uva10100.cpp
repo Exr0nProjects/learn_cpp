@@ -55,7 +55,7 @@ int input(int arr[])
             if (!s.size() && c == '\n') break;
             if (!s.size()) continue;
             if (!desc.count(s)) desc[s] = desc.size();
-            printf("got '%s' : %d\n", s.c_str(), desc[s]);
+            //printf("got '%s' : %d\n", s.c_str(), desc[s]);
             s.clear();
             ++tot;
             arr[tot] = desc[s];
@@ -76,22 +76,32 @@ int solve()
             if (a[i] == b[j])
                 tab[i][j] = tab[i-1][j-1] + 1;
             tab[i][j] = max(tab[i][j], max(tab[i-1][j], tab[i][j-1]));
-            printf("%3d", tab[i][j]);
+            //printf("%3d", tab[i][j]);
         }
-        printf("\n");
+        //printf("\n");
     }
     return tab[alen][blen];
 }
 
 int main()
 {
-    scanf("%d", &alen); for (int i=0; i<alen; ++i) scanf("%d", &a[i]);
-    scanf("%d", &blen); for (int i=0; i<blen; ++i) scanf("%d", &b[i]);
-
-    printf("lcs: %d\n", solve());
+    //scanf("%d", &alen); for (int i=0; i<alen; ++i) scanf("%d", &a[i]);
+    //scanf("%d", &blen); for (int i=0; i<blen; ++i) scanf("%d", &b[i]);
+    //
+    //printf("lcs: %d\n", solve());
 
     //while (true)
     //    printf("got %d words\n", input());
+
+    for (int T=1; ; ++T)
+    {
+        alen = input(a);
+        blen = input(b);
+        printf("%2d. ", T);
+        if (!alen || !blen) printf("Blank!\n");
+        //else printf("Length of longest match: %d\n", solve());
+        else printf("Length of longest match: %d\n", 0);
+    }
 
 	return 0;
 }

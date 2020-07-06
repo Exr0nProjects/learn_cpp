@@ -15,6 +15,7 @@
 12:31 | looks like i need custom input | break
 12:35 | break | coding #3
 12:55 | input seems to work | coding #3
+13:10 | tle on input :/ | debugging #3
 
 ## Contest Reflection
 
