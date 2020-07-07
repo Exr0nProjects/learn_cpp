@@ -5,7 +5,7 @@ modpath=$1
 shift 1
 message="$*"
 
-if [[ -z "$1" || "$1" == "_last" ]]; then
+if [[ -z "$modpath" || "$modpath" == "_" ]]; then
   modpath=$(< "$cache")
 fi
 
