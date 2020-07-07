@@ -21,11 +21,11 @@ using namespace std;
 const int MX = 31;
 int board[MX][MX];
 
-int is_match(int y, int x)
+pair<int, pair<int, int> > is_match(int y, int x)
 {
     //printf("ismatch %d %d\n", y, x);
     int src = board[y][x];
-    if (!src) return 0;
+    if (!src) return mp(0, mp(0, 0));
 
     if (board[y-1][x] != src)
     {
@@ -35,7 +35,7 @@ int is_match(int y, int x)
             if (board[y+i][x] != src)
                 legit = 0;
         if (legit && board[y+5][x] != src)  // FIX: cannot be more than 5 in a row
-            return src;
+            return mp(5, mp(y, x));
     }
 
     if (board[y][x-1] != src)
@@ -46,7 +46,7 @@ int is_match(int y, int x)
             if (board[y][x+i] != src)
                 legit = 0;
         if (legit && board[y][x+5] != src)
-            return src;
+            return mp(5, mp(y, x));
     }
 
     if (board[y-1][x-1] != src)
@@ -57,7 +57,7 @@ int is_match(int y, int x)
             if (board[y+i][x+i] != src)
                 legit = 0;
         if (legit && board[y+5][x+5] != src)
-            return src;
+            return mp(5, mp(y, x));
     }
     if (board[y+1][x-1] != src)
     {
@@ -67,9 +67,9 @@ int is_match(int y, int x)
             if (board[y-i][x+i] != src)
                 legit = 0;
         if (legit && board[y-5][x+5] != src)
-            return src;
+            return mp(5, mp(y, x));
     }
-    return 0;
+    return mp(0, mp(0, 0));
 }
 
 int main()
@@ -82,15 +82,18 @@ int main()
             for (int j=1; j<=19; ++j)
                 scanf("%d", &board[i][j]);
         bool gone=0;
-        for (int i=1; i<=15; ++i)   // FIX: only need to go up to 15, else no space
-            for (int j=1; j<=15; ++j)
-                if (is_match(i, j))
+        for (int i=1; i<=19; ++i)   // FIX: only need to go up to 15, else no space; FIXFIX: actually no there can be horizontals below 15 smah
+            for (int j=1; j<=19; ++j)
+            {
+                pair<int, pair<int, int> > match = is_match(i, j);
+                if (match.f == 5)
                 {
                     gone = 1;
-                    printf("%d\n%d %d\n", board[i][j], i, j);
+                    printf("%d\n%d %d\n", board[match.s.f][match.s.s], match.s.f, match.s.s);
                     i += 100;   // FIX: abort out of outer loop as well
                     break;
                 }
+            }
         if (!gone) printf("0\n");   // FIX: no win case
     }
 

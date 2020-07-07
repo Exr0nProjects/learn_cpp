@@ -18,11 +18,11 @@ int a[maxn][maxn];
 
 pair <int, pii> check_vert(int x, int y, int c) {
     pair <int, pii> ans;
-    //while (x > 0) {
-    //    if (a[x - 1][y] == c) x--;
-    //    else break;
-    //}
-    if (a[x-1][y] != c) return mp(0, mp(0, 0));
+    while (x > 0) {
+        if (a[x - 1][y] == c) x--;
+        else break;
+    }
+    //if (a[x-1][y] != c) return mp(0, mp(0, 0));
     ans.f = 0;
     ans.s.f = x;
     ans.s.s = y;
@@ -35,11 +35,11 @@ pair <int, pii> check_vert(int x, int y, int c) {
 
 pair <int, pii> check_hori(int x, int y, int c) {
     pair <int, pii> ans;
-    //while (y > 0) {
-    //    if (a[x][y - 1] == c) y--;
-    //    else break;
-    //}
-    if (a[x][y-1] != c) return mp(0, mp(0, 0));
+    while (y > 0) {
+        if (a[x][y - 1] == c) y--;
+        else break;
+    }
+    //if (a[x][y-1] != c) return mp(0, mp(0, 0));
     ans.f = 0;
     ans.s.f = x;
     ans.s.s = y;
@@ -52,14 +52,14 @@ pair <int, pii> check_hori(int x, int y, int c) {
 
 pair <int, pii> check_d1(int x, int y, int c) {
     pair <int, pii> ans;
-    //while (x > 0 && y > 0) {
-    //    if (a[x - 1][y - 1] == c) {
-    //        x--;
-    //        y--;
-    //    }
-    //    else break;
-    //}
-    if (a[x-1][y-1] != c) return mp(0, mp(0, 0));
+    while (x > 0 && y > 0) {
+        if (a[x - 1][y - 1] == c) {
+            x--;
+            y--;
+        }
+        else break;
+    }
+    //if (a[x-1][y-1] != c) return mp(0, mp(0, 0));
     ans.f = 0;
     ans.s.f = x;
     ans.s.s = y;
@@ -73,14 +73,14 @@ pair <int, pii> check_d1(int x, int y, int c) {
 
 pair <int, pii> check_d2(int x, int y, int c) {
     pair <int, pii> ans;
-    //while (x < n - 1 && y > 0) {
-    //    if (a[x + 1][y - 1] == c) {
-    //        x++;
-    //        y--;
-    //    }
-    //    else break;
-    //}
-    if (a[x+1][y-1] != c) return mp(0, mp(0, 0));
+    while (x < n - 1 && y > 0) {
+        if (a[x + 1][y - 1] == c) {
+            x++;
+            y--;
+        }
+        else break;
+    }
+    //if (a[x+1][y-1] != c) return mp(0, mp(0, 0));
     ans.f = 0;
     ans.s.f = x;
     ans.s.s = y;

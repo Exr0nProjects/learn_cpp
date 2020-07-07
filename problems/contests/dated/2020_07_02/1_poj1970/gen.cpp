@@ -12,7 +12,7 @@ int main()
         for (int i=0; i<sz; ++i)
         {
             for (int j=0; j<sz; ++j)
-                printf("%d ", rand()%3);
+                printf("%d ", std::max(rand()%10-7, 0));
             printf("\n");
         }
         printf("\n");
