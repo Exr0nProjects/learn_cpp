@@ -70,12 +70,8 @@ void dump()
     broke = 0;
 }
 
-bool input()
+bool insert(int v, char path[])
 {
-    int v;
-    char path[MX];
-    scanf("%*c%d%*c%s", &v, path);
-    printf("got %d '%s'\n", v, path);
     int cur = 1;
     for (int i=0; i<MX && (path[i] == 'L' || path[i] == 'R'); ++i)
     {
@@ -87,6 +83,27 @@ bool input()
     }
     if (tree[cur]) broke = 1;
     tree[cur] = v;
+    return broke;
+}
+
+bool input()
+{
+    int v, scanned;
+    char path[MX];
+    string line;
+    getline(cin, line);
+
+    while (true)
+    {
+        if (line[0] == ')' || line[1] == ')') return true;
+        sscanf(line.c_str(), "%*c%d%*c%s", &v, path, &scanned);
+        insert(v, path);
+        printf("got %d '%s'\n", v, path);
+        //if (scanned <= 0 || scanned > 1000) break;
+        scanf("%*c%*c");
+        line.erase(0, scanned);
+        printf("scanned %d chars, now str is '%s'\n", scanned, line.c_str());
+    }
     return false;
 }
 
