@@ -48,7 +48,7 @@ bool input()
 {
     memset(buf, 0, sizeof buf);
     memset(del, 0, sizeof del);
-    return ~scanf("%s%n%lld", buf, &N, &M);
+    return ~scanf("%1010s%lld", buf, &M);
     //for (N=0; ; ++N)
     //{
     //    //char c = getchar();
@@ -67,19 +67,25 @@ bool input()
 
 int main()
 {
+    bool isfirst = 1;
     while (input())
     {
+        N = strlen(buf);
+        //if (isfirst) isfirst=0;
+        //else --N;
+        //printf("N %d M %d\n", N, M);
+
         for (ll i=0; i<N; ++i)
         {
             if (buf[i+1] < buf[i])
             {
-                for (ll j=i; j>=0 && M && !del[j]; --j)
+                for (ll j=i; j>=0 && M; --j)    // FIX: equ--don't stop if del[j], since might be at very end and have extra to delete
                 {
-                    if (buf[j] < buf[i+1])
+                    if (buf[j] <= buf[i+1])     // FIX: equ--break backtracking even if le not lt, cuz multiple of same num is ok
                         break;
                     //printf("del %d\n", j);
+                    if (!del[j]) --M;
                     del[j] = 1;
-                    --M;
                 }
             }
         }
