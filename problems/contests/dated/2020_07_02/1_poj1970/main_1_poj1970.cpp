@@ -23,11 +23,13 @@ int board[MX][MX];
 
 int is_match(int y, int x)
 {
+    //printf("ismatch %d %d\n", y, x);
     int src = board[y][x];
     if (!src) return 0;
 
     if (board[y-1][x] != src)
     {
+        //if (y == 1 && x == 15) printf("vertical!\n");
         bool legit = 1;
         for (int i=0; i<5; ++i)
             if (board[y+i][x] != src)
@@ -38,6 +40,7 @@ int is_match(int y, int x)
 
     if (board[y][x-1] != src)
     {
+        //if (y == 1 && x == 15) printf("horizontal!\n");
         bool legit = 1;
         for (int i=0; i<5; ++i)
             if (board[y][x+i] != src)
@@ -48,6 +51,7 @@ int is_match(int y, int x)
 
     if (board[y-1][x-1] != src)
     {
+        //if (y == 1 && x == 15) printf("diagonal down!\n");
         bool legit = 1;
         for (int i=0; i<5; ++i)
             if (board[y+i][x+i] != src)
@@ -57,6 +61,7 @@ int is_match(int y, int x)
     }
     if (board[y+1][x-1] != src)
     {
+        //if (y == 1 && x == 15) printf("diagonal up!\n");
         bool legit = 1;
         for (int i=0; i<5; ++i)
             if (board[y-i][x+i] != src)
@@ -83,6 +88,7 @@ int main()
                 {
                     gone = 1;
                     printf("%d\n%d %d\n", board[i][j], i, j);
+                    i += 100;   // FIX: abort out of outer loop as well
                     break;
                 }
         if (!gone) printf("0\n");   // FIX: no win case
