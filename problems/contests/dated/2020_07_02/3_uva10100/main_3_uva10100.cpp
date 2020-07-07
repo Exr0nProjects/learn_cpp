@@ -54,12 +54,13 @@ int input(int arr[])
         if (!(c >= 'a' && c <= 'z') && !(c >= 'A' && c <= 'Z'))
         {
             if (!s.size() && c == '\n') break;
-            if (!s.size()) continue;
+            //if (!s.size()) continue;
             if (!desc.count(s)) desc[s] = desc.size();
-            //printf("got '%s' : %d\n", s.c_str(), desc[s]);
+            //printf("got '%s' (%d): %d\n", s.c_str(), s.size(), desc[s]);
             s.clear();
             ++tot;
-            arr[tot] = desc[s];
+            if (!s.size()) arr[tot] = -1;
+            else arr[tot] = desc[s];
             if (c == '\n') break;
         }
         else
@@ -74,7 +75,7 @@ int solve()
     {
         for (int j=1; j<=blen; ++j)
         {
-            if (a[i] == b[j])
+            if (a[i] == b[j] && a[i] > 0)
                 tab[i][j] = tab[i-1][j-1] + 1;
             tab[i][j] = max(tab[i][j], max(tab[i-1][j], tab[i][j-1]));
             //printf("%3d", tab[i][j]);
