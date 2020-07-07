@@ -25,7 +25,8 @@ using namespace std;
 const int MX = 50010;
 const int MXM = 10010;
 //const ll MXTN = 2*MX + MX*16 + MXM*4*16*16;
-const int MXTN = MX*48;
+//const int MXTN = MX*180;
+const int MXTN = 7000000;
 
 int N, D, M, arr[MX];
 
@@ -76,6 +77,7 @@ void dupe(int &k)
     rc[alc] = rc[k];
     tsum[alc] = tsum[k];
     k = alc++;
+    if (!(alc % 100)) printf("alc = %d\n", alc);
 }
 
 void raw_update(int q, int addv, int &k, int tl=1, int tr=1<<D, bool dupeall=1)
@@ -84,8 +86,8 @@ void raw_update(int q, int addv, int &k, int tl=1, int tr=1<<D, bool dupeall=1)
 
     if (tl == q && tr == q) { tsum[k] += addv; return; }
     int mid = tl + (tr-tl>>1);
-    if (q <= mid) raw_update(q, addv, lc[k], tl, mid);
-    else raw_update(q, addv, rc[k], mid+1, tr);
+    if (q <= mid) raw_update(q, addv, lc[k], tl, mid, dupeall);
+    else raw_update(q, addv, rc[k], mid+1, tr, dupeall);
     tsum[k] = tsum[lc[k]] + tsum[rc[k]];
 }
 
@@ -232,6 +234,7 @@ int main()
             pair<pair<int, int>, int> top = query[i];
             if (top.s)
                 printf("%d\n", reflect[querykth(top.f.f-1, top.f.s, top.s, rt_org[top.f.f-1], rt_org[top.f.s])]);
+                //i += 0;
             else
                 update(top.f.f, desc[top.f.s]);
         }

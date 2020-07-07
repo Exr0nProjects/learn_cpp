@@ -1,17 +1,21 @@
 #include <cstdio>
 #include <cstdlib>
+#include <ctime>
+#define ll long long
 //const int T = 4
-//const int N = 500000
-//const int M = 100000
+//const int N = 50000
+//const int M = 10000
 //const int MX = 1e9
 
 const int T = 4;
 const int N = 50000;
 const int M = 10000;
-const int MX = 1000;
+//const int MX = 100;
+const int MX = 1e9;
 
 int main()
 {
+    srand(time(NULL));
     printf("%d\n", T);
     for (int t=0; t<T; ++t)
     {
@@ -25,8 +29,8 @@ int main()
             printf("%c ", cmd);
             if (cmd == 'Q')
             {
-                int l = rand()%N +1;
-                int r = rand()%(N-l)+l+1;
+                ll l = rand()%(N-1) +1;
+                ll r = rand()%(N-l)+l+1;
                 printf("%d %d %d\n", l, r, rand()%(r-l)+1);
             }
             else
