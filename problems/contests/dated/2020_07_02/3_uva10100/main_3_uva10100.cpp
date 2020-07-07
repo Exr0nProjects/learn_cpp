@@ -77,7 +77,8 @@ int solve()
         {
             if (a[i] == b[j] && a[i] > 0)
                 tab[i][j] = tab[i-1][j-1] + 1;
-            tab[i][j] = max(tab[i][j], max(tab[i-1][j], tab[i][j-1]));
+            else
+                tab[i][j] = max(tab[i-1][j], tab[i][j-1]);
             //printf("%3d", tab[i][j]);
         }
         //printf("\n");
