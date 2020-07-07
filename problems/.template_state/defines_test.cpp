@@ -37,6 +37,8 @@
 #define mp make_pair
 #define f first
 #define s second
+#define lr tl, (tl+((tr-tl)>>1))
+#define rr (tl+((tr-tl)>>1)+1), tr
 
 using namespace std;
 const ll MX = -1;
