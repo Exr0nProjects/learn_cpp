@@ -33,6 +33,8 @@ simple brute force.
 
 I forgot about the other diagonal at first, but after adding it in with a minute to spare it still WA'd. Not sure why.
 
+Update: I was "optimizing" by only checking the top left 15x15 square, except I forgot that the answer can be lower than that (lower than row 15 if its horizontal and righter than column 15 if its vertical). Rip.
+
 #### Problem 2: [uva147](https://onlinejudge.org/index.php?option=onlinejudge&page=show_problem&problem=83)
 
 I thought it was the classic coin dp so I wrote it like that until i realized that that was counting permutations of coins that sum to the target instead of combinations.
@@ -43,6 +45,8 @@ However, I quickly realized that I could just count the sequences but sorted, wi
 
 Basic LCS with string descretization.
 Still wrong though, I'm not sure why. I think my LCS is correct...
+
+Update: input was wrong.
 
 #### Problem 4: [uva146](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=82)
 Just next permutation, but I had never written it before. After doing some samples by hand I came up with an induction method that used permute(3) = permute(2) or select next largest and sort. Easy enough to code, I collapsed it down to a pair of for loops.
