@@ -70,12 +70,13 @@ void dump()
     broke = 0;
 }
 
-bool insert(int v, char path[])
+//bool insert(int v, char path[])
+bool insert(int v, string &path)
 {
     int cur = 1;
     for (int i=0; i<MX && (path[i] == 'L' || path[i] == 'R'); ++i)
     {
-        printf("at %d path[%d] = '%c'\n", cur, i, path[i]);
+        //printf("at %d path[%d] = '%c'\n", cur, i, path[i]);
         shouldve.insert(cur);
         cur <<=1;
         if (path[i] == 'R')
@@ -89,17 +90,21 @@ bool insert(int v, char path[])
 bool input()
 {
     int v, scanned;
-    char path[MX];
+    //char path[MX];
+    char dumb;
+    string path;
     string line;
     getline(cin, line);
-    while (line.size())
+    stringstream ss(line);
+    while (ss >> dumb)
     {
-        if (line[2] == ')' || line[1] == ')') return true;
-        sscanf(line.c_str(), "%*c%d%*c%s%n", &v, path, &scanned);
+        if (ss.peek() == ')') return true;
+        ss >> v >> dumb >> path;
+        //sscanf(line.c_str(), "%*c%d%*c%s%n", &v, path, &scanned);
 
-        printf("got %d '%s'\n", v, path);
-        line.erase(0, scanned);
-        printf("scanned %d chars, now str is '%s'\n", scanned, line.c_str());
+        //printf("got %d '%s'\n", v, path.c_str());
+        //line.erase(0, scanned);
+        //printf("scanned %d chars, now str is '%s'\n", scanned, line.c_str());
         insert(v, path);
     }
     return false;
