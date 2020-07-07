@@ -57,10 +57,10 @@ int input(int arr[])
             //if (!s.size()) continue;
             if (!desc.count(s)) desc[s] = desc.size();
             //printf("got '%s' (%d): %d\n", s.c_str(), s.size(), desc[s]);
-            s.clear();
             ++tot;
-            if (!s.size()) arr[tot] = -1;
+            if (!s.size()) arr[tot] = -1;   // FIX: order matters--increment tot before using, clear `s` after using
             else arr[tot] = desc[s];
+            s.clear();
             if (c == '\n') break;
         }
         else
@@ -75,10 +75,12 @@ int solve()
     {
         for (int j=1; j<=blen; ++j)
         {
+            //if (a[i] == 0) printf("a[i] = 0! i=%d j=%d\n", i, j);
             if (a[i] == b[j] && a[i] > 0)
                 tab[i][j] = tab[i-1][j-1] + 1;
-            else
-                tab[i][j] = max(tab[i-1][j], tab[i][j-1]);
+            tab[i][j] = max(tab[i][j], max(tab[i-1][j], tab[i][j-1]));
+            //else
+            //    tab[i][j] = max(tab[i-1][j], tab[i][j-1]);
             //printf("%3d", tab[i][j]);
         }
         //printf("\n");
@@ -88,22 +90,24 @@ int solve()
 
 int main()
 {
-    //scanf("%d", &alen); for (int i=0; i<alen; ++i) scanf("%d", &a[i]);
-    //scanf("%d", &blen); for (int i=0; i<blen; ++i) scanf("%d", &b[i]);
-    //
+    //scanf("%d", &alen); for (int i=1; i<=alen; ++i) scanf("%d", &a[i]);
+    //scanf("%d", &blen); for (int i=1; i<=blen; ++i) scanf("%d", &b[i]);
     //printf("lcs: %d\n", solve());
+    //return 0;
 
     //while (true)
     //    printf("got %d words\n", input());
 
     for (int T=1; ; ++T)
     {
-        memset(a, 0, sizeof a); // FIX: clears, even though the shouldn't be needed
-        memset(b, 0, sizeof b);
+        //memset(a, 0, sizeof a); // FIX: clears, even though the shouldn't be needed
+        //memset(b, 0, sizeof b);
         memset(tab, 0, sizeof tab);
         desc = {};
         alen = input(a); if (alen < 0) break;
         blen = input(b); if (blen < 0) break;
+        //for (int i=0; i<alen; ++i) printf("%3d", a[i]); printf("\n");
+        //for (int i=0; i<blen; ++i) printf("%3d", b[i]); printf("\n");
         printf("%2d. ", T);
         //printf("Blank!\n");
         if (!alen || !blen) printf("Blank!\n");
