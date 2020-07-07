@@ -92,17 +92,15 @@ bool input()
     char path[MX];
     string line;
     getline(cin, line);
-
-    while (true)
+    while (line.size())
     {
-        if (line[0] == ')' || line[1] == ')') return true;
-        sscanf(line.c_str(), "%*c%d%*c%s", &v, path, &scanned);
-        insert(v, path);
+        if (line[2] == ')' || line[1] == ')') return true;
+        sscanf(line.c_str(), "%*c%d%*c%s%n", &v, path, &scanned);
+
         printf("got %d '%s'\n", v, path);
-        //if (scanned <= 0 || scanned > 1000) break;
-        scanf("%*c%*c");
         line.erase(0, scanned);
         printf("scanned %d chars, now str is '%s'\n", scanned, line.c_str());
+        insert(v, path);
     }
     return false;
 }
