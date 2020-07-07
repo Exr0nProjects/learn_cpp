@@ -74,106 +74,75 @@ int tab[MX][MX], alen, blen;
 //    return tot;
 //}
 
-//int solve()
-//{
-//    //printf("alen %d blen %d\n", alen, blen);
-//    for (int i=1; i<alen; ++i)
-//    {
-//        for (int j=1; j<blen; ++j)
-//        {
-//            //printf("%d %d: %s %s\n", i, j, a[i].c_str(), b[j].c_str());
-//            //if (a[i] == 0) printf("a[i] = 0! i=%d j=%d\n", i, j);
-//            //if (i == 1 && j == 25) printf("a[1] %d b[25] %d\n", a[i], b[j]);
-//            //if (a[i] == b[j] && a[i] >= 0)  // FIX: >= 0 not > 0 cuz first element gets descretized to 0 not 1
-//            if (a[i] == b[j])
-//            {
-//                //printf("%3d %3d same!\n\n", i, j);
-//                tab[i][j] = tab[i-1][j-1] + 1;
-//            }
-//            //tab[i][j] = max(tab[i][j], max(tab[i-1][j], tab[i][j-1]));
-//            else
-//                tab[i][j] = max(tab[i-1][j], tab[i][j-1]);
-//            //printf("%3d", tab[i][j]);
-//        }
-//        //printf("\n");
-//    }
-//    //printf("\n");
-//    //for (int i=1; i<=alen; ++i)
-//    //{
-//    //    for (int j=1; j<=blen; ++j)
-//    //        printf("%3d", tab[i][j]);
-//    //    printf("\n");
-//    //}
-//    return tab[alen-1][blen-1];
-//}
+int solve()
+{
+    for (int i=1; i<alen; ++i)
+    {
+        for (int j=1; j<blen; ++j)
+        {
+            if (a[i] == b[j])
+                tab[i][j] = tab[i-1][j-1] + 1;
+            else
+                tab[i][j] = max(tab[i-1][j], tab[i][j-1]);
+        }
+    }
+    return tab[alen-1][blen-1];
+}
 
-//void process(string arr[], int &len)
-//{   // TODO: yoinked from answer_ad
-//    string inp;
-//    getline(cin, inp);
-//
-//    if (!inp.size())
-//    { len = 0; return; }
-//
-//    for (int i=0; i<inp.size(); ++i)
-//        if (!isalpha(inp[i]) && !isdigit(inp[i]))
-//            inp[i] = ' ';
-//
-//    inp += " !\n";
-//    stringstream ss1(inp);
-//    len = 0;
-//    while (ss1 >> arr[++len]) {
-//        if (arr[len][0] == '!') break;
-//    }
-//}
+bool process(string arr[], int &len)
+{   // TODO: yoinked from answer_ad
+    string inp;
+    getline(cin, inp);
+
+    if (!inp.size()) return false;
+
+    for (int i=0; i<inp.size(); ++i)
+        if (!isalpha(inp[i]) && !isdigit(inp[i]))
+            inp[i] = ' ';
+
+    inp += " !\n";
+    stringstream ss1(inp);
+    len = 0;
+    while (ss1 >> arr[++len]) {
+        if (arr[len][0] == '!') break;
+    }
+    return true;
+}
 
 int main()
 {
     int T=0;
     for (; !cin.eof();)
     {
-        //process(a, alen);
-        //process(b, blen);
-        getline(cin, s1);
-        getline(cin, s2);
-        if (!s1.size() || !s2.size()) {
+        if (!process(a, alen) || !process(b, blen))
             printf("%2d. Blank!\n", ++T);
-            continue;
-        }
-        for (int i = 0; i < s1.size(); i++) {
-            if (!isalpha(s1[i]) && !isdigit(s1[i])) s1[i] = ' ';
-        }
-        for (int i = 0; i < s2.size(); i++) {
-            if (!isalpha(s2[i]) && !isdigit(s2[i])) s2[i] = ' ';
-        }
-        s1 += " !\n";
-        stringstream ss1(s1);
-        alen = 0;
-        while (ss1 >> a[++alen]) {
-            if (a[alen][0] == '!') break;
-        }
-        s2 += " !\n";
-        stringstream ss2(s2);
-        blen = 0;
-        while (ss2 >> b[++blen]) {
-            if (b[blen][0] == '!') break;
-        }
 
-        for (int i=1; i<alen; ++i)
-        {
-            for (int j=1; j<blen; ++j)
-            {
-                if (a[i] == b[j])
-                {
-                    tab[i][j] = tab[i-1][j-1] + 1;
-                }
-                else
-                    tab[i][j] = max(tab[i-1][j], tab[i][j-1]);
-                //printf("%3d", tab[i][j]);
-            }
-            //printf("\n");
-        }
-        printf("%2d. Length of longest match: %d\n", ++T, tab[alen-1][blen-1]);
+        //getline(cin, s1);
+        //getline(cin, s2);
+        //if (!s1.size() || !s2.size()) {
+        //    printf("%2d. Blank!\n", ++T);
+        //    continue;
+        //}
+        //for (int i = 0; i < s1.size(); i++) {
+        //    if (!isalpha(s1[i]) && !isdigit(s1[i])) s1[i] = ' ';
+        //}
+        //for (int i = 0; i < s2.size(); i++) {
+        //    if (!isalpha(s2[i]) && !isdigit(s2[i])) s2[i] = ' ';
+        //}
+        //s1 += " !\n";
+        //stringstream ss1(s1);
+        //alen = 0;
+        //while (ss1 >> a[++alen]) {
+        //    if (a[alen][0] == '!') break;
+        //}
+        //s2 += " !\n";
+        //stringstream ss2(s2);
+        //blen = 0;
+        //while (ss2 >> b[++blen]) {
+        //    if (b[blen][0] == '!') break;
+        //}
+
+        printf("%2d. Length of longest match: %d\n", ++T, solve());
     }
 
 	return 0;
