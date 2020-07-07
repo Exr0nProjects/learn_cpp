@@ -107,25 +107,25 @@ int tab[MX][MX], alen, blen;
 //    return tab[alen-1][blen-1];
 //}
 
-//void process(string arr[], int &len)
-//{   // TODO: yoinked from answer_ad
-//    string inp;
-//    getline(cin, inp);
-//
-//    if (!inp.size())
-//    { len = 0; return; }
-//
-//    for (int i=0; i<inp.size(); ++i)
-//        if (!isalpha(inp[i]) && !isdigit(inp[i]))
-//            inp[i] = ' ';
-//
-//    inp += " !\n";
-//    stringstream ss1(inp);
-//    len = 0;
-//    while (ss1 >> arr[++len]) {
-//        if (arr[len][0] == '!') break;
-//    }
-//}
+void process(string arr[], int &len)
+{   // TODO: yoinked from answer_ad
+    string inp;
+    getline(cin, inp);
+
+    if (!inp.size())
+    { len = 0; return; }
+
+    for (int i=0; i<inp.size(); ++i)
+        if (!isalpha(inp[i]) && !isdigit(inp[i]))
+            inp[i] = ' ';
+
+    inp += " !\n";
+    stringstream ss1(inp);
+    len = 0;
+    while (ss1 >> arr[++len]) {
+        if (arr[len][0] == '!') break;
+    }
+}
 
 int main()
 {
@@ -140,32 +140,32 @@ int main()
     //for (; !cin.eof(); ++T)
     for (; !cin.eof();)
     {
-        //process(a, alen);
-        //process(b, blen);
-        getline(cin, s1);
-        getline(cin, s2);
-        if (!s1.size() || !s2.size()) {
-            printf("%2d. Blank!\n", ++T);
-            continue;
-        }
-        for (int i = 0; i < s1.size(); i++) {
-            if (!isalpha(s1[i]) && !isdigit(s1[i])) s1[i] = ' ';
-        }
-        for (int i = 0; i < s2.size(); i++) {
-            if (!isalpha(s2[i]) && !isdigit(s2[i])) s2[i] = ' ';
-        }
-        s1 += " !\n";
-        stringstream ss1(s1);
-        alen = 0;
-        while (ss1 >> a[++alen]) {
-            if (a[alen][0] == '!') break;
-        }
-        s2 += " !\n";
-        stringstream ss2(s2);
-        blen = 0;
-        while (ss2 >> b[++blen]) {
-            if (b[blen][0] == '!') break;
-        }
+        process(a, alen);
+        process(b, blen);
+        //getline(cin, s1);
+        //getline(cin, s2);
+        //if (!s1.size() || !s2.size()) {
+        //    printf("%2d. Blank!\n", ++T);
+        //    continue;
+        //}
+        //for (int i = 0; i < s1.size(); i++) {
+        //    if (!isalpha(s1[i]) && !isdigit(s1[i])) s1[i] = ' ';
+        //}
+        //for (int i = 0; i < s2.size(); i++) {
+        //    if (!isalpha(s2[i]) && !isdigit(s2[i])) s2[i] = ' ';
+        //}
+        //s1 += " !\n";
+        //stringstream ss1(s1);
+        //alen = 0;
+        //while (ss1 >> a[++alen]) {
+        //    if (a[alen][0] == '!') break;
+        //}
+        //s2 += " !\n";
+        //stringstream ss2(s2);
+        //blen = 0;
+        //while (ss2 >> b[++blen]) {
+        //    if (b[blen][0] == '!') break;
+        //}
 
         ////memset(a, 0, sizeof a); // FIX: clears, even though the shouldn't be needed
         ////memset(b, 0, sizeof b);
