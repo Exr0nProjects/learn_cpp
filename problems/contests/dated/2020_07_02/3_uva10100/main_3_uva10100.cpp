@@ -39,7 +39,7 @@
 #define s second
 
 using namespace std;
-const ll MX = 600;
+const ll MX = 6000;
 int a[MX], b[MX], tab[MX][MX], alen, blen;
 map<string, int> desc;
 
@@ -56,10 +56,10 @@ int input(int arr[])
             if (!s.size() && c == '\n') break;
             //if (!s.size()) continue;
             if (!desc.count(s)) desc[s] = desc.size();
-            //printf("got '%s' (%d): %d\n", s.c_str(), s.size(), desc[s]);
             ++tot;
             if (!s.size()) arr[tot] = -1;   // FIX: order matters--increment tot before using, clear `s` after using
             else arr[tot] = desc[s];
+            //printf("got '%s' (%d): %2d at %2d           arr[%2d] = %d\n", s.c_str(), s.size(), desc[s], tot, tot, arr[tot]);
             s.clear();
             if (c == '\n') break;
         }
@@ -76,15 +76,26 @@ int solve()
         for (int j=1; j<=blen; ++j)
         {
             //if (a[i] == 0) printf("a[i] = 0! i=%d j=%d\n", i, j);
-            if (a[i] == b[j] && a[i] > 0)
+            //if (i == 1 && j == 25) printf("a[1] %d b[25] %d\n", a[i], b[j]);
+            if (a[i] == b[j] && a[i] >= 0)  // FIX: >= 0 not > 0 cuz first element gets descretized to 0 not 1
+            {
+                //printf("%3d %3d same!\n\n", i, j);
                 tab[i][j] = tab[i-1][j-1] + 1;
+            }
             tab[i][j] = max(tab[i][j], max(tab[i-1][j], tab[i][j-1]));
             //else
-            //    tab[i][j] = max(tab[i-1][j], tab[i][j-1]);
+                //tab[i][j] = max(tab[i-1][j], tab[i][j-1]);
             //printf("%3d", tab[i][j]);
         }
         //printf("\n");
     }
+    //printf("\n");
+    //for (int i=1; i<=alen; ++i)
+    //{
+    //    for (int j=1; j<=blen; ++j)
+    //        printf("%3d", tab[i][j]);
+    //    printf("\n");
+    //}
     return tab[alen][blen];
 }
 
@@ -100,14 +111,14 @@ int main()
 
     for (int T=1; ; ++T)
     {
-        //memset(a, 0, sizeof a); // FIX: clears, even though the shouldn't be needed
-        //memset(b, 0, sizeof b);
+        memset(a, 0, sizeof a); // FIX: clears, even though the shouldn't be needed
+        memset(b, 0, sizeof b);
         memset(tab, 0, sizeof tab);
         desc = {};
         alen = input(a); if (alen < 0) break;
         blen = input(b); if (blen < 0) break;
-        //for (int i=0; i<alen; ++i) printf("%3d", a[i]); printf("\n");
-        //for (int i=0; i<blen; ++i) printf("%3d", b[i]); printf("\n");
+        //printf("\na: "); for (int i=1; i<=alen; ++i) printf("%3d", a[i]); printf("\n");
+        //printf("b: "); for (int i=1; i<=blen; ++i) printf("%3d", b[i]); printf("\n");
         printf("%2d. ", T);
         //printf("Blank!\n");
         if (!alen || !blen) printf("Blank!\n");
