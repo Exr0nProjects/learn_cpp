@@ -76,6 +76,7 @@ int tab[MX][MX], alen, blen;
 
 int solve()
 {
+    //printf("alen %d blen %d\n", alen, blen);
     for (int i=1; i<alen; ++i)
     {
         for (int j=1; j<blen; ++j)
@@ -89,9 +90,9 @@ int solve()
                 //printf("%3d %3d same!\n\n", i, j);
                 tab[i][j] = tab[i-1][j-1] + 1;
             }
-            tab[i][j] = max(tab[i][j], max(tab[i-1][j], tab[i][j-1]));
-            //else
-                //tab[i][j] = max(tab[i-1][j], tab[i][j-1]);
+            //tab[i][j] = max(tab[i][j], max(tab[i-1][j], tab[i][j-1]));
+            else
+                tab[i][j] = max(tab[i-1][j], tab[i][j-1]);
             //printf("%3d", tab[i][j]);
         }
         //printf("\n");
@@ -106,25 +107,25 @@ int solve()
     return tab[alen-1][blen-1];
 }
 
-void process(string arr[], int &len)
-{   // TODO: yoinked from answer_ad
-    string inp;
-    getline(cin, inp);
-
-    if (!inp.size())
-    { len = 0; return; }
-
-    for (int i=0; i<inp.size(); ++i)
-        if (!isalpha(inp[i]) && !isdigit(inp[i]))
-            inp[i] = ' ';
-
-    inp += " !\n";
-    stringstream ss1(inp);
-    len = 0;
-    while (ss1 >> arr[++len]) {
-        if (arr[len][0] == '!') break;
-    }
-}
+//void process(string arr[], int &len)
+//{   // TODO: yoinked from answer_ad
+//    string inp;
+//    getline(cin, inp);
+//
+//    if (!inp.size())
+//    { len = 0; return; }
+//
+//    for (int i=0; i<inp.size(); ++i)
+//        if (!isalpha(inp[i]) && !isdigit(inp[i]))
+//            inp[i] = ' ';
+//
+//    inp += " !\n";
+//    stringstream ss1(inp);
+//    len = 0;
+//    while (ss1 >> arr[++len]) {
+//        if (arr[len][0] == '!') break;
+//    }
+//}
 
 int main()
 {
@@ -138,8 +139,33 @@ int main()
     int T=1;
     for (; !cin.eof(); ++T)
     {
-        process(a, alen);
-        process(b, blen);
+        //process(a, alen);
+        //process(b, blen);
+        getline(cin, s1);
+        getline(cin, s2);
+        if (!s1.size() || !s2.size()) {
+            printf("%2d. Blank!\n", ++T);
+            continue;
+        }
+        for (int i = 0; i < s1.size(); i++) {
+            if (!isalpha(s1[i]) && !isdigit(s1[i])) s1[i] = ' ';
+        }
+        for (int i = 0; i < s2.size(); i++) {
+            if (!isalpha(s2[i]) && !isdigit(s2[i])) s2[i] = ' ';
+        }
+        s1 += " !\n";
+        stringstream ss1(s1);
+        alen = 0;
+        while (ss1 >> a[++alen]) {
+            if (a[alen][0] == '!') break;
+        }
+        s2 += " !\n";
+        stringstream ss2(s2);
+        blen = 0;
+        while (ss2 >> b[++blen]) {
+            if (b[blen][0] == '!') break;
+        }
+
         //
         //memset(a, 0, sizeof a); // FIX: clears, even though the shouldn't be needed
         //memset(b, 0, sizeof b);
@@ -151,8 +177,9 @@ int main()
         ////printf("b: "); for (int i=1; i<=blen; ++i) printf("%3d", b[i]); printf("\n");
         printf("%2d. ", T);
         //printf("Blank!\n");
-        if (!alen || !blen) printf("Blank!\n");
-        else printf("Length of longest match: %d\n", solve());
+        //if (!alen || !blen) printf("Blank!\n");
+        //else printf("Length of longest match: %d\n", solve());
+        printf("Length of longest match: %d\n", solve());
         //else printf("Length of longest match: %d\n", 0);
     }
     printf("%2d. Blank!\n", T);

@@ -46,43 +46,43 @@ void process(string arr[], int &len)
 int main() {
     int cs = 0;
     while (!cin.eof()) {
-        //getline(cin, s1);
-        //getline(cin, s2);
-        //if (!s1.size() || !s2.size()) {
-        //    printf("%2d. Blank!\n", ++cs);
-        //    continue;
-        //}
-        //for (int i = 0; i < s1.size(); i++) {
-        //    if (!isalpha(s1[i]) && !isdigit(s1[i])) s1[i] = ' ';
-        //}
-        //for (int i = 0; i < s2.size(); i++) {
-        //    if (!isalpha(s2[i]) && !isdigit(s2[i])) s2[i] = ' ';
-        //}
-        //s1 += " !\n";
-        //stringstream ss1(s1);
-        //int cnt1 = 0;
-        //while (ss1 >> a[++cnt1]) {
-        //    if (a[cnt1][0] == '!') break;
-        //}
-        //s2 += " !\n";
-        //stringstream ss2(s2);
-        //int cnt2 = 0;
-        //while (ss2 >> b[++cnt2]) {
-        //    if (b[cnt2][0] == '!') break;
-        //}
+        getline(cin, s1);
+        getline(cin, s2);
+        if (!s1.size() || !s2.size()) {
+            printf("%2d. Blank!\n", ++cs);
+            continue;
+        }
+        for (int i = 0; i < s1.size(); i++) {
+            if (!isalpha(s1[i]) && !isdigit(s1[i])) s1[i] = ' ';
+        }
+        for (int i = 0; i < s2.size(); i++) {
+            if (!isalpha(s2[i]) && !isdigit(s2[i])) s2[i] = ' ';
+        }
+        s1 += " !\n";
+        stringstream ss1(s1);
+        int alen = 0;
+        while (ss1 >> a[++alen]) {
+            if (a[alen][0] == '!') break;
+        }
+        s2 += " !\n";
+        stringstream ss2(s2);
+        int blen = 0;
+        while (ss2 >> b[++blen]) {
+            if (b[blen][0] == '!') break;
+        }
 
-        //printf("%d %d\n", cnt1, cnt2);
-        //for (int i = 1; i < cnt1; i++) {
+        //printf("%d %d\n", alen, blen);
+        //for (int i = 1; i < alen; i++) {
         //    cout << a[i] << endl;
         //}
-        //for (int i = 1; i < cnt2; i++) {
+        //for (int i = 1; i < blen; i++) {
         //    cout << b[i] << endl;
         //}
 
-        int alen = 0;
-        int blen = 0;
-        process(a, alen);
-        process(b, blen);
+        //int alen = 0;
+        //int blen = 0;
+        //process(a, alen);
+        //process(b, blen);
 
         for (int i = 1; i < alen; i++) {
             for (int j = 1; j < blen; j++) {
