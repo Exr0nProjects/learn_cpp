@@ -40,44 +40,51 @@
 
 using namespace std;
 const ll MX = 6000;
-int a[MX], b[MX], tab[MX][MX], alen, blen;
-map<string, int> desc;
+const ll MXL = 1100;
+//int a[MX], b[MX];
+//map<string, int> desc;
+string s1, s2;
+string a[1000], b[1000];
+int tab[MX][MX], alen, blen;
 
-int input(int arr[])
-{
-    int tot = 0;
-    string s;
-    char c = getchar();
-    for (;; c = getchar())
-    {
-        if (c == EOF) return -1;
-        if (!(c >= 'a' && c <= 'z') && !(c >= 'A' && c <= 'Z'))
-        {
-            if (!s.size() && c == '\n') break;
-            //if (!s.size()) continue;
-            if (!desc.count(s)) desc[s] = desc.size();
-            ++tot;
-            if (!s.size()) arr[tot] = -1;   // FIX: order matters--increment tot before using, clear `s` after using
-            else arr[tot] = desc[s];
-            //printf("got '%s' (%d): %2d at %2d           arr[%2d] = %d\n", s.c_str(), s.size(), desc[s], tot, tot, arr[tot]);
-            s.clear();
-            if (c == '\n') break;
-        }
-        else
-            s.push_back(c);
-    }
-    return tot;
-}
+//int input(int arr[])
+//{
+//    int tot = 0;
+//    string s;
+//    char c = getchar();
+//    for (;; c = getchar())
+//    {
+//        if (c == EOF) return -1;
+//        //if (!(c >= 'a' && c <= 'z') && !(c >= 'A' && c <= 'Z') && !(c >= '0' && c <= '9'))
+//        if (!isalpha(c) && !isdigit(c))
+//        {
+//            if (!s.size() && c == '\n') break;
+//            //if (!s.size()) continue;
+//            if (!desc.count(s)) desc[s] = desc.size();
+//            ++tot;
+//            if (!s.size()) arr[tot] = -1;   // FIX: order matters--increment tot before using, clear `s` after using
+//            else arr[tot] = desc[s];
+//            //printf("got '%s' (%d): %2d at %2d           arr[%2d] = %d\n", s.c_str(), s.size(), desc[s], tot, tot, arr[tot]);
+//            s.clear();
+//            if (c == '\n') break;
+//        }
+//        else
+//            s.push_back(c);
+//    }
+//    return tot;
+//}
 
 int solve()
 {
-    for (int i=1; i<=alen; ++i)
+    for (int i=1; i<alen; ++i)
     {
-        for (int j=1; j<=blen; ++j)
+        for (int j=1; j<blen; ++j)
         {
+            //printf("%d %d: %s %s\n", i, j, a[i].c_str(), b[j].c_str());
             //if (a[i] == 0) printf("a[i] = 0! i=%d j=%d\n", i, j);
             //if (i == 1 && j == 25) printf("a[1] %d b[25] %d\n", a[i], b[j]);
-            if (a[i] == b[j] && a[i] >= 0)  // FIX: >= 0 not > 0 cuz first element gets descretized to 0 not 1
+            //if (a[i] == b[j] && a[i] >= 0)  // FIX: >= 0 not > 0 cuz first element gets descretized to 0 not 1
+            if (a[i] == b[j])
             {
                 //printf("%3d %3d same!\n\n", i, j);
                 tab[i][j] = tab[i-1][j-1] + 1;
@@ -96,7 +103,27 @@ int solve()
     //        printf("%3d", tab[i][j]);
     //    printf("\n");
     //}
-    return tab[alen][blen];
+    return tab[alen-1][blen-1];
+}
+
+void process(string arr[], int &len)
+{   // TODO: yoinked from answer_ad
+    string inp;
+    getline(cin, inp);
+
+    if (!inp.size())
+    { len = 0; return; }
+
+    for (int i=0; i<inp.size(); ++i)
+        if (!isalpha(inp[i]) && !isdigit(inp[i]))
+            inp[i] = ' ';
+
+    inp += " !\n";
+    stringstream ss1(inp);
+    len = 0;
+    while (ss1 >> arr[++len]) {
+        if (arr[len][0] == '!') break;
+    }
 }
 
 int main()
@@ -109,16 +136,19 @@ int main()
     //while (true)
     //    printf("got %d words\n", input());
     int T=1;
-    for (; ; ++T)
+    for (; !cin.eof(); ++T)
     {
-        memset(a, 0, sizeof a); // FIX: clears, even though the shouldn't be needed
-        memset(b, 0, sizeof b);
-        memset(tab, 0, sizeof tab);
-        desc = {};
-        alen = input(a); if (alen < 0) break;
-        blen = input(b); if (blen < 0) break;
-        //printf("\na: "); for (int i=1; i<=alen; ++i) printf("%3d", a[i]); printf("\n");
-        //printf("b: "); for (int i=1; i<=blen; ++i) printf("%3d", b[i]); printf("\n");
+        process(a, alen);
+        process(b, blen);
+        //
+        //memset(a, 0, sizeof a); // FIX: clears, even though the shouldn't be needed
+        //memset(b, 0, sizeof b);
+        //memset(tab, 0, sizeof tab);
+        //desc = {};
+        //alen = input(a); if (alen < 0) break;
+        //blen = input(b); if (blen < 0) break;
+        ////printf("\na: "); for (int i=1; i<=alen; ++i) printf("%3d", a[i]); printf("\n");
+        ////printf("b: "); for (int i=1; i<=blen; ++i) printf("%3d", b[i]); printf("\n");
         printf("%2d. ", T);
         //printf("Blank!\n");
         if (!alen || !blen) printf("Blank!\n");

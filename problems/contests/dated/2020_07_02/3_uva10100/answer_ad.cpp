@@ -51,13 +51,15 @@ int main() {
         while (ss2 >> b[++cnt2]) {
             if (b[cnt2][0] == '!') break;
         }
-        /*printf("%d %d\n", cnt1, cnt2);
-        for (int i = 1; i < cnt1; i++) {
-            cout << a[i] << endl;
-        }
-        for (int i = 1; i < cnt2; i++) {
-            cout << b[i] << endl;
-        }*/
+
+        //printf("%d %d\n", cnt1, cnt2);
+        //for (int i = 1; i < cnt1; i++) {
+        //    cout << a[i] << endl;
+        //}
+        //for (int i = 1; i < cnt2; i++) {
+        //    cout << b[i] << endl;
+        //}
+
         for (int i = 1; i < cnt1; i++) {
             for (int j = 1; j < cnt2; j++) {
                 if (cmp(a[i], b[j]))

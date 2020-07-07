@@ -6,7 +6,7 @@ char a[20];
 char* generate(char buf[])
 {
     for (int i=0; i<3; ++i)
-        buf[i] = rand()%26 + 'a';
+        buf[i] = rand()%(126-32)+32;
     buf[3] = 0;
     return buf;
 }
