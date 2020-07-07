@@ -1,6 +1,6 @@
 #include <iostream>
 
-const int T = 11;
+const int T = 11000;
 const int sz = 19;
 
 int main()

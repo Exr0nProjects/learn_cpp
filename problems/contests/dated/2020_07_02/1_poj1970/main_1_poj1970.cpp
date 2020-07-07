@@ -21,11 +21,25 @@ using namespace std;
 const int MX = 31;
 int board[MX][MX];
 
-pair<int, pair<int, int> > is_match(int y, int x)
+int is_match(int y, int x)
 {
     //printf("ismatch %d %d\n", y, x);
     int src = board[y][x];
-    if (!src) return mp(0, mp(0, 0));
+    if (!src) return 0;
+    int dy[] = {1, 0, 1, -1};
+    int dx[] = {0, 1, 1,  1};
+    for (int d=0; d<4; ++d)
+    {
+        if (board[y-dy[d]][x-dx[d]] != src)
+        {
+            bool legit = 1;
+            for (int i=0; i<5; ++i)
+                if (board[y+dy[d]*i][x+dx[d]*i] != src)
+                    legit = 0;
+            if (legit && board[y+dy[d]*5][x+dx[d]*5] != src)
+                return src;
+        }
+    }
 
     if (board[y-1][x] != src)
     {
@@ -35,7 +49,7 @@ pair<int, pair<int, int> > is_match(int y, int x)
             if (board[y+i][x] != src)
                 legit = 0;
         if (legit && board[y+5][x] != src)  // FIX: cannot be more than 5 in a row
-            return mp(5, mp(y, x));
+            return src;
     }
 
     if (board[y][x-1] != src)
@@ -46,7 +60,7 @@ pair<int, pair<int, int> > is_match(int y, int x)
             if (board[y][x+i] != src)
                 legit = 0;
         if (legit && board[y][x+5] != src)
-            return mp(5, mp(y, x));
+            return src;
     }
 
     if (board[y-1][x-1] != src)
@@ -57,7 +71,7 @@ pair<int, pair<int, int> > is_match(int y, int x)
             if (board[y+i][x+i] != src)
                 legit = 0;
         if (legit && board[y+5][x+5] != src)
-            return mp(5, mp(y, x));
+            return src;
     }
     if (board[y+1][x-1] != src)
     {
@@ -67,9 +81,9 @@ pair<int, pair<int, int> > is_match(int y, int x)
             if (board[y-i][x+i] != src)
                 legit = 0;
         if (legit && board[y-5][x+5] != src)
-            return mp(5, mp(y, x));
+            return src;
     }
-    return mp(0, mp(0, 0));
+    return 0;
 }
 
 int main()
@@ -85,11 +99,10 @@ int main()
         for (int i=1; i<=19; ++i)   // FIX: only need to go up to 15, else no space; FIXFIX: actually no there can be horizontals below 15 smah
             for (int j=1; j<=19; ++j)
             {
-                pair<int, pair<int, int> > match = is_match(i, j);
-                if (match.f == 5)
+                if (is_match(i, j))
                 {
                     gone = 1;
-                    printf("%d\n%d %d\n", board[match.s.f][match.s.s], match.s.f, match.s.s);
+                    printf("%d\n%d %d\n", board[i][j], i, j);
                     i += 100;   // FIX: abort out of outer loop as well
                     break;
                 }
