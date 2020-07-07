@@ -108,8 +108,8 @@ int main()
 
     //while (true)
     //    printf("got %d words\n", input());
-
-    for (int T=1; ; ++T)
+    int T=1;
+    for (; ; ++T)
     {
         memset(a, 0, sizeof a); // FIX: clears, even though the shouldn't be needed
         memset(b, 0, sizeof b);
@@ -125,6 +125,7 @@ int main()
         else printf("Length of longest match: %d\n", solve());
         //else printf("Length of longest match: %d\n", 0);
     }
+    printf("%2d. Blank!\n", T);
 
 	return 0;
 }

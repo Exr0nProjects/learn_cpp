@@ -1,19 +1,20 @@
 #include <iostream>
 
-const int words = 40;
+const int words = 200;
 char a[20];
 
 char* generate(char buf[])
 {
-    buf[0] = rand()%26 + 'a';
-    buf[1] = rand()%26 + 'a';
-    buf[2] = 0;
+    for (int i=0; i<3; ++i)
+        buf[i] = rand()%26 + 'a';
+    buf[3] = 0;
     return buf;
 }
 
 int main()
 {
-    for (int i=0; i<1000; ++i)
+    srand(time(NULL));
+    for (int i=0; i<50; ++i)
     {
         for (int w=0; w<words; ++w)
         {
