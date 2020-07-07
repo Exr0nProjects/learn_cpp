@@ -42,7 +42,8 @@
 
 using namespace std;
 const ll MX = 286;
-set<int> shouldve;
+//set<int> shouldve;
+deque<int> shouldve;
 int tree[MX*MX];
 bool broke = 0;
 
@@ -64,6 +65,7 @@ void dump()
             if (tree[cur<<1]) bfs.push(cur<<1);
             if (tree[cur<<1|1]) bfs.push(cur<<1|1);
         }
+        printf("\n");
     }
     shouldve.clear();
     memset(tree, 0, sizeof tree);
@@ -77,7 +79,8 @@ bool insert(int v, string &path)
     for (int i=0; i<MX && (path[i] == 'L' || path[i] == 'R'); ++i)
     {
         //printf("at %d path[%d] = '%c'\n", cur, i, path[i]);
-        shouldve.insert(cur);
+        //shouldve.insert(cur);
+        shouldve.pb(cur);
         cur <<=1;
         if (path[i] == 'R')
             cur |= 1;
@@ -100,11 +103,6 @@ bool input()
     {
         if (ss.peek() == ')') return true;
         ss >> v >> dumb >> path;
-        //sscanf(line.c_str(), "%*c%d%*c%s%n", &v, path, &scanned);
-
-        //printf("got %d '%s'\n", v, path.c_str());
-        //line.erase(0, scanned);
-        //printf("scanned %d chars, now str is '%s'\n", scanned, line.c_str());
         insert(v, path);
     }
     return false;
