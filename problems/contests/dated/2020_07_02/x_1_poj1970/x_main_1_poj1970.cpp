@@ -1,7 +1,7 @@
 /*
  * Problem 1_poj1970 (contests/dated/2020_07_02/1_poj1970)
  * Create time: Mon 06 Jul 2020 @ 11:20 (PDT)
- * Accept time: [!meta:end!]
+ * Accept time: Mon 06 Jul 2020 @ 20:54 (PDT)
  *
  */
 
@@ -40,49 +40,6 @@ int is_match(int y, int x)
                 return src;
         }
     }
-
-    if (board[y-1][x] != src)
-    {
-        //if (y == 1 && x == 15) printf("vertical!\n");
-        bool legit = 1;
-        for (int i=0; i<5; ++i)
-            if (board[y+i][x] != src)
-                legit = 0;
-        if (legit && board[y+5][x] != src)  // FIX: cannot be more than 5 in a row
-            return src;
-    }
-
-    if (board[y][x-1] != src)
-    {
-        //if (y == 1 && x == 15) printf("horizontal!\n");
-        bool legit = 1;
-        for (int i=0; i<5; ++i)
-            if (board[y][x+i] != src)
-                legit = 0;
-        if (legit && board[y][x+5] != src)
-            return src;
-    }
-
-    if (board[y-1][x-1] != src)
-    {
-        //if (y == 1 && x == 15) printf("diagonal down!\n");
-        bool legit = 1;
-        for (int i=0; i<5; ++i)
-            if (board[y+i][x+i] != src)
-                legit = 0;
-        if (legit && board[y+5][x+5] != src)
-            return src;
-    }
-    if (board[y+1][x-1] != src)
-    {
-        //if (y == 1 && x == 15) printf("diagonal up!\n");
-        bool legit = 1;
-        for (int i=0; i<5; ++i)
-            if (board[y-i][x+i] != src)
-                legit = 0;
-        if (legit && board[y-5][x+5] != src)
-            return src;
-    }
     return 0;
 }
 
@@ -98,7 +55,6 @@ int main()
         bool gone=0;
         for (int i=1; i<=19; ++i)   // FIX: only need to go up to 15, else no space; FIXFIX: actually no there can be horizontals below 15 smah
             for (int j=1; j<=19; ++j)
-            {
                 if (is_match(i, j))
                 {
                     gone = 1;
@@ -106,7 +62,6 @@ int main()
                     i += 100;   // FIX: abort out of outer loop as well
                     break;
                 }
-            }
         if (!gone) printf("0\n");   // FIX: no win case
     }
 
