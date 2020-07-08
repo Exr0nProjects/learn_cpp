@@ -76,6 +76,8 @@ Don't make names too similar, it's easy to make typos (`djs` vs `djf`)
 	4. Align variable names, transplant functions
 
 ### Time Limit Exceeded (correct algorithm, optimizations)
+
+#### What to Optimize
 1. Symmetries
 	- Does the problem have more properties that can be used to calculate only part of it?
 2. Optimize Structures
@@ -89,6 +91,9 @@ Don't make names too similar, it's easy to make typos (`djs` vs `djf`)
 	- Bitshift instead of multiplying by 2
 6. Cache usage?
 	- Not sure if there's a good way to take advantage of this reliably...
+#### Methods
+1. Find what's wrong
+	- Starting with the input, comment things out until you get WA
 
 ### Test Cases
 
