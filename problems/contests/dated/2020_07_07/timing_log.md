@@ -43,7 +43,9 @@ There were many fenceposts but it wasn't too hard to do, and it ended up working
 #### Problem 3: [uva122](https://onlinejudge.org/index.php?option=onlinejudge&Itemid=8&page=show_problem&problem=58)
 The problem itself should be simple, just remember the path that you went down and check if all nodes were given on all paths. The input to this problem was kind of toxic for scanf, and I spent a good amount of time trying to figure it out during the beginning of the competition. So, I left it behind to work on other things.
 
-Later, I came back and decided to use stringstream which was really easy to get working. I didn't expect that and I will probably use stringstream more in the future for this kind of dynamic or weirdly shaped input. Anyways, it TLE'd so I need **TODO: fix this problem.**
+Later, I came back and decided to use stringstream which was really easy to get working. I didn't expect that and I will probably use stringstream more in the future for this kind of dynamic or weirdly shaped input. Anyways, it TLE'd so I need to fix this problem.
+
+UPDATE: my input was TLE because it was trying to getline all the time. I switched it out for a while cin on blobs, so that I could process each node one at a time but forgot to move that into main. It worked after doing so, so it was just an input TLE.
 
 #### Problem 4: [uva839](https://onlinejudge.org/index.php?option=onlinejudge&Itemid=8&page=show_problem&problem=780)
 A simple dfs, not much more to say here. Didn't take long to come up with a plan or implement it.
@@ -58,5 +60,5 @@ This was one of the DP questions so I generally remembered how to do it. I wasn'
 I think the test taking strategy during this test was decent, although I wish I was able to spend less time on reading the problems at the beginning. I probably should've switched to stringstream earlier for #3, and I would've if I had known how much easier it would be. Otherwise, I just did problems in order of difficulty to get as many points as possible. I didn't run out of time, instead I couldn't figure out how to debug 3 and solve 5 at the end.
 
 ### Action item
-Look into triangulation, practice using stringstream. Fix problems 3 and 5.
+Look into triangulation, practice using stringstream. Fix problem 5.
 
