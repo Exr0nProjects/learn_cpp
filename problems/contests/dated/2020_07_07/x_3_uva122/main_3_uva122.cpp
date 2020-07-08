@@ -42,7 +42,6 @@
 
 using namespace std;
 const ll MX = 286;
-//set<int> shouldve;
 deque<int> shouldve;
 int tree[MX*MX];
 bool broke = 0;
@@ -61,7 +60,8 @@ void dump()
         while (!bfs.empty())
         {
             int cur = bfs.front(); bfs.pop();
-            printf("%d ", tree[cur]);
+            if (cur > 1) printf(" ");
+            printf("%d", tree[cur]);
             if (tree[cur<<1]) bfs.push(cur<<1);
             if (tree[cur<<1|1]) bfs.push(cur<<1|1);
         }
@@ -72,14 +72,11 @@ void dump()
     broke = 0;
 }
 
-//bool insert(int v, char path[])
 bool insert(int v, string &path)
 {
     int cur = 1;
     for (int i=0; i<MX && (path[i] == 'L' || path[i] == 'R'); ++i)
     {
-        //printf("at %d path[%d] = '%c'\n", cur, i, path[i]);
-        //shouldve.insert(cur);
         shouldve.pb(cur);
         cur <<=1;
         if (path[i] == 'R')
@@ -89,32 +86,6 @@ bool insert(int v, string &path)
     tree[cur] = v;
     return broke;
 }
-
-//bool input()
-//{
-//    //char path[MX];
-//    int v, scanned;
-//    char dumb;
-//    string path;
-//    string group;
-//    while (cin >> group)
-//    {
-//        if (group.size() == 2) return true;
-//        stringstream ss(group);
-//        ss >> dumb >> v >> dumb >> path;
-//        //printf("got '%s' => %d '%s'\n", group.c_str(), v, path.c_str());
-//        insert(v, path);
-//    }
-//    //getline(cin, line);
-//    //stringstream ss(line);
-//    //while (ss >> dumb)
-//    //{
-//    //    if (ss.peek() == ')') return true;
-//    //    ss >> v >> dumb >> path;
-//    //    //insert(v, path);
-//    //}
-//    return false;
-//}
 
 int main()
 {
@@ -128,9 +99,6 @@ int main()
         stringstream ss(group);
         ss >> dumb >> v >> dumb >> path;
         insert(v, path);
-        //printf("not complete\n"); continue;
-
-        //if (isend) dump();
     }
 
 	return 0;
