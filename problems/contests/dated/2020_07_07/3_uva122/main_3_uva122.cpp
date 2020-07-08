@@ -90,30 +90,47 @@ bool insert(int v, string &path)
     return broke;
 }
 
-bool input()
-{
-    int v, scanned;
-    //char path[MX];
-    char dumb;
-    string path;
-    string line;
-    getline(cin, line);
-    stringstream ss(line);
-    while (ss >> dumb)
-    {
-        if (ss.peek() == ')') return true;
-        ss >> v >> dumb >> path;
-        insert(v, path);
-    }
-    return false;
-}
+//bool input()
+//{
+//    //char path[MX];
+//    int v, scanned;
+//    char dumb;
+//    string path;
+//    string group;
+//    while (cin >> group)
+//    {
+//        if (group.size() == 2) return true;
+//        stringstream ss(group);
+//        ss >> dumb >> v >> dumb >> path;
+//        //printf("got '%s' => %d '%s'\n", group.c_str(), v, path.c_str());
+//        insert(v, path);
+//    }
+//    //getline(cin, line);
+//    //stringstream ss(line);
+//    //while (ss >> dumb)
+//    //{
+//    //    if (ss.peek() == ')') return true;
+//    //    ss >> v >> dumb >> path;
+//    //    //insert(v, path);
+//    //}
+//    return false;
+//}
 
 int main()
 {
-    while (true)
+    int v, scanned;
+    char dumb;
+    string path;
+    string group;
+    while (cin >> group)
     {
-        bool isend = input();
-        if (isend) dump();
+        if (group.size() == 2) { dump(); continue; }
+        stringstream ss(group);
+        ss >> dumb >> v >> dumb >> path;
+        insert(v, path);
+        //printf("not complete\n"); continue;
+
+        //if (isend) dump();
     }
 
 	return 0;
