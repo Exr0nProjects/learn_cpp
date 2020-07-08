@@ -31,6 +31,8 @@ Don't make names too similar, it's easy to make typos (`djs` vs `djf`)
 
 ## Debugging
 
+### Wrong Answer (correct algorithm, edge cases)
+
 1. Print everything, check "easy path" cases
 	- Iteration begin and end variables
 	- Recursive arguments
@@ -72,6 +74,21 @@ Don't make names too similar, it's easy to make typos (`djs` vs `djf`)
 	2. Align data types, representation
 	3. Align function semantics
 	4. Align variable names, transplant functions
+
+### Time Limit Exceeded (correct algorithm, optimizations)
+1. Symmetries
+	- Does the problem have more properties that can be used to calculate only part of it?
+2. Optimize Structures
+	- Replace sets with hashsets, etc
+3. Recursion to Iteration
+	- Collapse recursive calls to iteration when possible
+	- Not always though, constant factors of advanced structures might be too slow
+4. Collapse functions
+	- Replace function calls with their source code, or use macros
+5. Optimize operations
+	- Bitshift instead of multiplying by 2
+6. Cache usage?
+	- Not sure if there's a good way to take advantage of this reliably...
 
 ### Test Cases
 
