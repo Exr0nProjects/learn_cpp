@@ -15,7 +15,7 @@ void set_nxt()
         if (pat[cur] == pat[pre])
             nxt[cur] = ++pre;   // FIX: ++pre not pre++ because we want to jump to the one after the match
         else
-            pre = 0;
+            pre = pat[cur] == pat[0];   // FIX: set to 1 if its equal to the beginning
     }
 }
 
