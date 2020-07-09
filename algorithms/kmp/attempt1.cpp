@@ -47,20 +47,53 @@ void set_nxt()
         //}
     }
 }
+
+
+//void set_nxt()
+//{
+//    memset(nxt, -1, sizeof nxt);
+//    for (int i=1; i<P; ++i)
+//    {
+//        //printf("i = %d\n", i);
+//        int j=nxt[i-1];
+//        do {
+//            //printf("    j = %d\n", j);
+//            if (pat[j+1] == pat[i])
+//            {
+//                nxt[i] = j+1;
+//                break;
+//            }
+//            j = nxt[j];
+//        } while (j >= 0);
+//        //for (; ; j=nxt[j])
+//        //{
+//        //    printf("    j = %d\n", j);
+//        //    if (pat[j+1] == pat[i])
+//        //    {
+//        //        nxt[i] = j+1;
+//        //        break;
+//        //    }
+//        //}
+//    }
+//}
 int count()
 {
     int tot=0, j=0;
     for (int i=0; i<N; ++i)
     {
-        //printf("i %d j %d\n", i, j);
+        printf("i %d j %d\n", i, j);
         if (pat[j] != str[i])
         {
             //j = nxt[j] +1; --i;
-            j = nxt[j-1] +1;
-            //printf("messed up! now i=%d j=%d\n", i, j);
+            j = nxt[j-1];
+            printf("messed up! now i=%d j=%d\n", i, j);
         }
         ++j;
-        if (j == P) ++tot, j=nxt[j-1]+1;    // FIX: logic--check correct after checking last in pattern
+        if (j == P)
+        {
+            ++tot, j=nxt[j-1]+1;    // FIX: logic--check correct after checking last in pattern
+            printf("epic bro! tot = %d\n", tot);
+        }
     }
     return tot;
 }
@@ -74,9 +107,7 @@ int main()
         P = strlen(pat);
         N = strlen(str);
         set_nxt();
-        //for (int i=0; i<P; ++i)
-        //    printf("%d ", nxt[i]);
-        //printf("\n");
+        for (int i=0; i<P; ++i) printf("%d ", nxt[i]); printf("\n");
         printf("%d\n", count());
     }
 }
