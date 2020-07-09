@@ -54,20 +54,24 @@ int count()
 
 int main()
 {
-    //scanf("%s", pat);
-    //P = strlen(pat);
-    //set_nxt();
-    //for (int i=0; i<P; ++i) printf("%3d", nxt[i]); printf("\n");
-
     int cs; scanf("%d", &cs);
     while (cs--)
     {
-        scanf("%s%s", pat, str);
+        scanf("%s", pat);
         P = strlen(pat);
-        N = strlen(str);
         set_nxt();
-        //for (int i=0; i<P; ++i) printf("%3d", nxt[i]); printf("\n");
-        printf("%d\n", count());
+        for (int i=0; i<P; ++i) printf("%3d", nxt[i]); printf("\n");
     }
+
+    //int cs; scanf("%d", &cs);
+    //while (cs--)
+    //{
+    //    scanf("%s%s", pat, str);
+    //    P = strlen(pat);
+    //    N = strlen(str);
+    //    set_nxt();
+    //    //for (int i=0; i<P; ++i) printf("%3d", nxt[i]); printf("\n");
+    //    printf("%d\n", count());
+    //}
 }
 
