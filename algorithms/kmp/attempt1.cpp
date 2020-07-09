@@ -26,15 +26,15 @@ void set_nxt()
     {
         printf("i = %d\n", i);
         int j=nxt[i-1];
-        for (; ; j=nxt[j])
-        {
+        do {
             printf("    j = %d\n", j);
             if (pat[j+1] == pat[i])
             {
                 nxt[i] = j+1;
                 break;
             }
-        }
+            j = nxt[j];
+        } while (j >= 0);
     }
 }
 
