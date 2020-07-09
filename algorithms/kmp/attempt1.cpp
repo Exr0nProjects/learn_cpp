@@ -46,19 +46,24 @@ void set_nxt()
         //}
     }
 }
-
+int panic = -1;
 int count()
 {
     int tot=0, j=0;
     for (int i=0; i<N; ++i)
     {
+        if (!--panic) break;
         printf("i %d j %d\n", i, j);
-        if (j+1 == P) ++tot, j=nxt[j];
         if (pat[j] == str[i])
             ++j;
-        else    // TODO: autofail trying to match null byte when end of pattern reached
-            //j = nxt[j] +1;
-            j = nxt[j] +1, --i;
+        else
+        {
+            j = nxt[j-1] +1;
+            //j = nxt[j] +1; --i;
+            panic = 10;
+            printf("messed up! now i=%d j=%d\n", i, j);
+        }
+        if (j == P) ++tot, j=nxt[j-1]+1;    // FIX: logic--check correct after checking last in pattern
     }
     return tot;
 }
