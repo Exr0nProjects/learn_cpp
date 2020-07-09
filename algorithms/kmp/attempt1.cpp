@@ -100,6 +100,12 @@ int count()
 
 int main()
 {
+    //scanf("%s", pat);
+    //P = strlen(pat);
+    //set_nxt();
+    //for (int i=0; i<P; ++i) printf("%d ", nxt[i]); printf("\n");
+    //return 0;
+
     int cs; scanf("%d", &cs);
     while (cs--)
     {
