@@ -33,11 +33,14 @@ int count()
     for (int i=0; i<N; ++i)
     {
         printf("i %d j %d", i, j);
-        if (str[i] != pat[j])
-        {
-            printf(" x");
-            j = nxt[j-1], --i;
-        }
+        for (; str[i]!=pat[j] && j>0; j=nxt[j-1])
+            //printf(" x");
+            printf("\nfail i %2d j %2d", i, j);
+        //if (str[i] != pat[j])
+        //{
+        //    printf(" x");
+        //    j = nxt[j-1], --i;
+        //}
         if (j+1 == P)
         {
             printf(" !");
