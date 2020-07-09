@@ -56,11 +56,15 @@ int main()
     //set_nxt();
     //for (int i=0; i<P; ++i) printf("%3d", nxt[i]); printf("\n");
 
-    scanf("%s%s", pat, str);
-    P = strlen(pat);
-    N = strlen(str);
-    set_nxt();
-    //for (int i=0; i<P; ++i) printf("%3d", nxt[i]); printf("\n");
-    printf("%d\n", count());
+    int cs; scanf("%d", &cs);
+    while (cs--)
+    {
+        scanf("%s%s", pat, str);
+        P = strlen(pat);
+        N = strlen(str);
+        set_nxt();
+        //for (int i=0; i<P; ++i) printf("%3d", nxt[i]); printf("\n");
+        printf("%d\n", count());
+    }
 }
 
