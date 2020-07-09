@@ -74,6 +74,7 @@ Don't make names too similar, it's easy to make typos (`djs` vs `djf`)
 	2. Align data types, representation
 	3. Align function semantics
 	4. Align variable names, transplant functions
+6. Just rewrite it
 
 ### Time Limit Exceeded (correct algorithm, optimizations)
 
@@ -94,6 +95,8 @@ Don't make names too similar, it's easy to make typos (`djs` vs `djf`)
 #### Methods
 1. Find what's wrong
 	- Starting with the input, comment things out until you get WA
+		- remember to `while input` correctly
+		- stringstream (37369bf6161219145bca640c8dcf41ec7c5828e5)
 
 ### Test Cases
 
@@ -269,3 +272,22 @@ convex hull						|
 - USACO Silver 2019dec milkvisits:
 	- N * M must be too slow, so maybe we know to solve each in N or N log N, aka query must be constant or log
 	- an NxN lookup table takes N^2 to fill
+
+#### Training
+- 5 hour practice test in the morning starting at 7:30-12:50
+- discussion in the afternoons
+- Recode wrong problems
+- [poj list](https://blog.csdn.net/pyub153/article/details/50480333)
+- Debugging
+	1. WA: Output everything after each "algorithm"
+		- sometimes array size wrong, even tho its wa not re
+		- long longs
+		- modulo is negative?
+		- scanf/printf %lld
+		- clears
+	2. RE: output after functions to see where it RE'd
+		- Array size
+		- infinite recursion
+		- Array indexing (too big or too small (negative?))
+		- nullptr
+
