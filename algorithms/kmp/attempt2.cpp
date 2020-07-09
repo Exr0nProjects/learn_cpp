@@ -3,7 +3,7 @@
 #include <cstdio>
 #include <cstring>
 
-const int MX = 100111;
+const int MX = 1000111;
 int N, P, nxt[MX];
 char str[MX], pat[MX];
 
@@ -32,46 +32,51 @@ int count()
     //for (int i=0; i<N; ++i, ++j)
     for (int i=0; i<N; ++i)
     {
-        printf("i %d j %d", i, j);
-        for (; str[i]!=pat[j] && j>0; j=nxt[j-1])
+        //printf("str[%d] %c; pat[%d] %c\n", i, str[i], j, pat[j]);
+        //if (str[i] != pat[j]) printf("should fail:\n");
+        int f=j-1;
+        for (; str[i]!=pat[f+1] && ~f; f=nxt[f])
+        {
+            //printf("faild i %-2d j %-2d f %-2d\n", i, j, f);
             //printf(" x");
-            printf("\nfail i %2d j %2d", i, j);
+        }
+        j = f+1;
         //if (str[i] != pat[j])
         //{
         //    printf(" x");
         //    j = nxt[j-1], --i;
         //}
-        if (j+1 == P)
+        if (j+1 == P && str[i] == pat[j])
         {
-            printf(" !");
+            //printf(" !");
             ++tot, j=nxt[j];
         }
-        printf("\n");
-        ++j;
+        //printf("\n");
+        j += str[i] == pat[j];
     }
     return tot;
 }
 
 int main()
 {
-    int cs; scanf("%d", &cs);
-    while (cs--)
-    {
-        scanf("%s", pat);
-        P = strlen(pat);
-        set_nxt();
-        for (int i=0; i<P; ++i) printf("%3d", nxt[i]); printf("\n");
-    }
-
     //int cs; scanf("%d", &cs);
     //while (cs--)
     //{
-    //    scanf("%s%s", pat, str);
+    //    scanf("%s", pat);
     //    P = strlen(pat);
-    //    N = strlen(str);
     //    set_nxt();
-    //    //for (int i=0; i<P; ++i) printf("%3d", nxt[i]); printf("\n");
-    //    printf("%d\n", count());
+    //    for (int i=0; i<P; ++i) printf("%3d", nxt[i]); printf("\n");
     //}
+
+    int cs; scanf("%d", &cs);
+    while (cs--)
+    {
+        scanf("%s%s", pat, str);
+        P = strlen(pat);
+        N = strlen(str);
+        set_nxt();
+        //for (int i=0; i<P; ++i) printf("%3d", nxt[i]); printf("\n");
+        printf("%d\n", count());
+    }
 }
 
