@@ -66,12 +66,14 @@ int count()
     int tot=0, j=0;
     for (int i=0; i<N; ++i)
     {
-        if (str[i] != pat[j])
-        {
-            int f = j-1;
-            while (str[i] != pat[f+1] && ~f)
-                j = nxt[j];
-        }
+        //if (str[i] != pat[j])
+        //{
+        //    int f = j-1;
+        //    while (str[i] != pat[f+1] && ~f)
+        //        j = nxt[j];
+        //}
+        while (str[i] != pat[j+1] && ~j)
+            j = nxt[j];
         ++j;
         if (j+1 == P)
             ++tot, j=nxt[j];
@@ -85,21 +87,21 @@ int main()
     //int cs; scanf("%d", &cs);
     //while (cs--)
     //{
-        scanf("%s", pat+1);
-        P = strlen(pat);
-        set_nxt();
-        for (int i=1; i<P; ++i) printf("%3d", nxt[i]); printf("\n");
-    //}
-//
-    //int cs; scanf("%d", &cs);
-    //while (cs--)
-    //{
-        //scanf("%s%s", pat+1, str+1);
-        //P = strlen(pat+1);
-        //N = strlen(str);
+        //scanf("%s", pat+1);
+        //P = strlen(pat+1)+1;
         //set_nxt();
-        //for (int i=0; i<P; ++i) printf("%3d", nxt[i]); printf("\n");
-        //printf("%d\n", count());
+        //for (int i=1; i<P; ++i) printf("%3d", nxt[i]); printf("\n");
     //}
+
+    int cs; scanf("%d", &cs);
+    while (cs--)
+    {
+        scanf("%s%s", pat+1, str+1);
+        P = strlen(pat+1)+1;
+        N = strlen(str+1)+1;
+        set_nxt();
+        //for (int i=0; i<P; ++i) printf("%3d", nxt[i]); printf("\n");
+        printf("%d\n", count());
+    }
 }
 
