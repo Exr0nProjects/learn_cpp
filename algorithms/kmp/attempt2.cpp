@@ -9,20 +9,24 @@ char str[MX], pat[MX];
 
 void set_nxt()
 {
-    memset(nxt, -1, sizeof pat);
+    //memset(nxt, -1, sizeof pat);
+    nxt[0] = -1; // setry
     for (int i=1; i<P; ++i)
     {
         //printf("i = %d, nxt[i-1] = %d\n", i, nxt[i-1]);
-        int j = i-1;
-        do {
+        int j = nxt[i-1];
+        while (~j && pat[j+1] != pat[i])
             j = nxt[j];
-            //printf("j = %d\n", j);
-            if (pat[j+1] == pat[i])
-            {
-                nxt[i] = j+1;
-                break;
-            }
-        } while (j >= 0);
+        nxt[i] = j+1;
+        //do {
+        //    j = nxt[j];
+        //    //printf("j = %d\n", j);
+        //    if (pat[j+1] == pat[i])
+        //    {
+        //        nxt[i] = j+1;
+        //        break;
+        //    }
+        //} while (j >= 0);
     }
 }
 
@@ -62,11 +66,15 @@ int count()
     int tot=0, j=0;
     for (int i=0; i<N; ++i)
     {
-        if (str[i] != pat[j] && ~j)
-            j = nxt[j-1], --i;
+        if (str[i] != pat[j])
+        {
+            int f = j-1;
+            while (str[i] != pat[f+1] && ~f)
+                j = nxt[j];
+        }
+        ++j;
         if (j+1 == P)
             ++tot, j=nxt[j];
-        ++j;
     }
     return tot;
 }
@@ -77,21 +85,21 @@ int main()
     //int cs; scanf("%d", &cs);
     //while (cs--)
     //{
-    //    scanf("%s", pat);
-    //    P = strlen(pat);
-    //    set_nxt();
-    //    for (int i=0; i<P; ++i) printf("%3d", nxt[i]); printf("\n");
-    //}
-
-    int cs; scanf("%d", &cs);
-    while (cs--)
-    {
-        scanf("%s%s", pat, str);
+        scanf("%s", pat+1);
         P = strlen(pat);
-        N = strlen(str);
         set_nxt();
+        for (int i=1; i<P; ++i) printf("%3d", nxt[i]); printf("\n");
+    //}
+//
+    //int cs; scanf("%d", &cs);
+    //while (cs--)
+    //{
+        //scanf("%s%s", pat+1, str+1);
+        //P = strlen(pat+1);
+        //N = strlen(str);
+        //set_nxt();
         //for (int i=0; i<P; ++i) printf("%3d", nxt[i]); printf("\n");
-        printf("%d\n", count());
-    }
+        //printf("%d\n", count());
+    //}
 }
 
