@@ -26,36 +26,51 @@ void set_nxt()
     }
 }
 
+//int count()
+//{
+//    int tot=0, j=0;
+//    //for (int i=0; i<N; ++i, ++j)
+//    for (int i=0; i<N; ++i)
+//    {
+//        //printf("str[%d] %c; pat[%d] %c\n", i, str[i], j, pat[j]);
+//        //if (str[i] != pat[j]) printf("should fail:\n");
+//        int f=j-1;
+//        for (; str[i]!=pat[f+1] && ~f; f=nxt[f])
+//        {
+//            //printf("faild i %-2d j %-2d f %-2d\n", i, j, f);
+//            //printf(" x");
+//        }
+//        j = f+1;
+//        //if (str[i] != pat[j])
+//        //{
+//        //    printf(" x");
+//        //    j = nxt[j-1], --i;
+//        //}
+//        if (j+1 == P && str[i] == pat[j])
+//        {
+//            //printf(" !");
+//            ++tot, j=nxt[j];
+//        }
+//        //printf("\n");
+//        j += str[i] == pat[j];
+//    }
+//    return tot;
+//}
+
 int count()
 {
     int tot=0, j=0;
-    //for (int i=0; i<N; ++i, ++j)
     for (int i=0; i<N; ++i)
     {
-        //printf("str[%d] %c; pat[%d] %c\n", i, str[i], j, pat[j]);
-        //if (str[i] != pat[j]) printf("should fail:\n");
-        int f=j-1;
-        for (; str[i]!=pat[f+1] && ~f; f=nxt[f])
-        {
-            //printf("faild i %-2d j %-2d f %-2d\n", i, j, f);
-            //printf(" x");
-        }
-        j = f+1;
-        //if (str[i] != pat[j])
-        //{
-        //    printf(" x");
-        //    j = nxt[j-1], --i;
-        //}
-        if (j+1 == P && str[i] == pat[j])
-        {
-            //printf(" !");
+        if (str[i] != pat[j] && ~j)
+            j = nxt[j-1], --i;
+        if (j+1 == P)
             ++tot, j=nxt[j];
-        }
-        //printf("\n");
-        j += str[i] == pat[j];
+        ++j;
     }
     return tot;
 }
+
 
 int main()
 {
