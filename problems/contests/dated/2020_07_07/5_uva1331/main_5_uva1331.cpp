@@ -48,18 +48,19 @@ pair<int, int> pts[MX];
 
 inline dl dist(int i, int j)
 {
+    //printf("%d^2 + %d^2\n", pts[i].f-pts[j].f, pts[i].s-pts[j].s);
     return sqrt(pow(pts[i].f-pts[j].f, 2) + pow(pts[i].s-pts[j].s, 2));
 }
 
 inline dl size(int i, int j, int k)
 {
-    printf("i(%d) = %d, %d\n", i, pts[i].f, pts[i].s);
-    printf("j(%d) = %d, %d\n", j, pts[j].f, pts[j].s);
-    printf("k(%d) = %d, %d\n", k, pts[k].f, pts[k].s);
+    //printf("i(%d) = %d, %d\n", i, pts[i].f, pts[i].s);
+    //printf("j(%d) = %d, %d\n", j, pts[j].f, pts[j].s);
+    //printf("k(%d) = %d, %d\n", k, pts[k].f, pts[k].s);
     dl a = dist(i, j);
     dl b = dist(j, k);
     dl c = dist(i, k);
-    printf("ij %7lf jk %7lf ik %7lf\n", a, b, c);
+    //printf("ij %7lf jk %7lf ik %7lf\n", a, b, c);
     dl s = (a+b+c)/2;
     return sqrt(s*(s-a)*(s-b)*(s-c));
 }
