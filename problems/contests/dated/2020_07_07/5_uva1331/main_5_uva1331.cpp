@@ -51,7 +51,6 @@ inline dl dist(int i, int j)
     //printf("%d^2 + %d^2\n", pts[i].f-pts[j].f, pts[i].s-pts[j].s);
     return sqrt(pow(pts[i].f-pts[j].f, 2) + pow(pts[i].s-pts[j].s, 2));
 }
-
 inline dl size(int i, int j, int k)
 {
     //printf("i(%d) = %d, %d\n", i, pts[i].f, pts[i].s);
@@ -63,6 +62,26 @@ inline dl size(int i, int j, int k)
     //printf("ij %7lf jk %7lf ik %7lf\n", a, b, c);
     dl s = (a+b+c)/2;
     return sqrt(s*(s-a)*(s-b)*(s-c));
+}
+
+inline bool isleft(int i, int j, int k)
+{
+    if (pts[i].f == pts[j].f) return pts[k].f <= pts[i].f;
+    if (pts[i].f > pts[j].f) swap(i, j);
+    //if (pts[j].f == pts[k].f) return pts[k].s >= pts[j].s;
+    dl m = (dl)(pts[i].s-pts[j].s)/(pts[i].f-pts[j].f);
+    dl pos = m*(pts[k].f-pts[i].f)+pts[i].s;
+    printf("pos at %lf = %lf\n", pts[k].f, pos);
+    if (pts[i].f < pts[j].f) return pts[k].s >= pos;
+    else return pts[k].s <= pos;
+}
+inline bool contains(int i, int j, int k)
+{
+    for (int p=0; p<N; ++p)
+        if (p!=i && p!=j && p!=k)
+        {
+        }
+    return true;
 }
 
 dl dp(int i, int j)
@@ -85,7 +104,10 @@ int main()
         N = 3;
         for (int i=0; i<N; ++i)
             scanf("%d%d", &pts[i].f, &pts[i].s);
-        printf("area: %lf\n", size(0, 1, 2));
+        printf("is %2d %2d left of %2d %2d -> %2d %2d ?      %d\n", pts[2].f, pts[2].s,
+                pts[0].f, pts[0].s, pts[1].f, pts[1].s, isleft(0, 1, 2));
+        //printf("best: %lf\n", dp(0, N-1));
+        //printf("area: %lf\n", size(0, 1, 2));
     }
 
 	return 0;
