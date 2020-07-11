@@ -66,7 +66,8 @@ inline dl size(int i, int j, int k)
 
 inline bool isleft(int i, int j, int k)
 {
-    if (pts[i].f == pts[j].f) return pts[k].f <= pts[i].f;
+    if (pts[i].f == pts[j].f) return pts[k].f == pts[i].f   // when i->j vertical, yes if on the line
+        || (pts[k].f < pts[i].f) == (pts[i].s < pts[j].s);  // FIX: else depends on direction
     //if (pts[i].f > pts[j].f) swap(i, j);  // FIX: forgot to comment this out smah
     //if (pts[j].f == pts[k].f) return pts[k].s >= pts[j].s;
     dl m = (dl)(pts[i].s-pts[j].s)/(pts[i].f-pts[j].f);
@@ -79,11 +80,11 @@ inline bool isleft(int i, int j, int k)
 }
 inline bool contains(int i, int j, int k)
 {
-    printf("i %d j %d k %d\n", i, j, k);
+    //printf("i %d j %d k %d\n", i, j, k);
     for (int p=0; p<N; ++p)
         if (p!=i && p!=j && p!=k)
         {
-            printf("p = %d: %d %d %d\n", p, isleft(i, j, p), isleft(j, k, p), isleft(k, i, p));
+            //printf("p = %d: %d %d %d\n", p, isleft(i, j, p), isleft(j, k, p), isleft(k, i, p));
             bool ij = isleft(i, j, p);
             if (ij == isleft(k, i, p) && ij == isleft(j, k, p))
                 return true;
@@ -91,13 +92,22 @@ inline bool contains(int i, int j, int k)
     return false;
 }
 
-dl dp(int i, int j)
+dl dp(int i, int j, int lay=1)
 {
     if (i+1 == j) return 0;
     if (tab[i][j]) return tab[i][j];
+    for (int i=0; i<lay; ++i) printf("|   "); printf("welcome to dp %d..%d\n", i, j);
     dl mn = 1<<30;
     for (int k=i+1; k<j; ++k)
-        mn = min(mn, max(size(i, k, j), max(dp(i, k), dp(k, j))));
+        if (!contains(i, j, k))
+        {
+            for (int i=0; i<lay; ++i) printf("|   "); printf("creating chords %d %d and %d %d\n", i, k, j, k);
+            dl ik = dp(i, k, lay+1);
+            dl kj = dp(k, j, lay+1);
+            for (int i=0; i<lay; ++i) printf("|   "); printf("(%d %d %d) %lf, %d..%d %lf, %d..%d %lf\n",
+                    i, j, k, size(i, j, k), i, k, ik, kj);
+            mn = min(mn, max(size(i, k, j), max(ik, kj)));
+        }
     tab[i][j] = mn;
     return mn;
 }
@@ -111,11 +121,15 @@ int main()
         scanf("%d", &N);
         for (int i=0; i<N; ++i)
             scanf("%lf%lf", &pts[i].f, &pts[i].s);
-        while (true)
-        {
-            int i, j, k; scanf("%d%d%d", &i, &j, &k);
-            printf("does it contain? %d\n", contains(i, j, k));
-        }
+
+        printf("minimax: %lf\n", dp(0, N-1));
+
+        //while (true)
+        //{
+        //    int i, j, k; scanf("%d%d%d", &i, &j, &k);
+        //    printf("does it contain? %d\n", contains(i, j, k));
+        //}
+
         //N = 3;
         //for (int i=0; i<N; ++i)
         //    scanf("%lf%lf", &pts[i].f, &pts[i].s);
