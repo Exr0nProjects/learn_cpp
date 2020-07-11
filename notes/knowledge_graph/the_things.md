@@ -16,7 +16,7 @@
         - [Depth First Search](#depth-first-search)
         - [Breadth First Search](#breadth-first-search)
     - Singe Source Shortest Path
-        - Greedy: [Djikstra](#djikstra)
+        - Greedy: [Dijkstra](#dijkstra)
         - Negative Edges: [Bellman Ford](#bellman-ford)
     - All Pairs Shortest Path
         - [Floyd Warshall](#floyd)
@@ -163,7 +163,7 @@
         - Given a stream of numbers, output the current median of the set
         - Solution: use a min heap and a max heap, pushing to one or the other as numbers come in based on their sizes
         - The number on top of the larger heap is the median, or the average of the two
-    - [Djikstra](#djikstra)
+    - [Dijkstra](#dijkstra)
     - [Prim](#prim)
 - Derived From
     - [Full Binary Tree](#full-binary-tree)
@@ -398,6 +398,16 @@ void comb(ll k)                                 // combine accumulators
 - Careful
     - The tags must be prefix-sumable to be able to subtract one side from the other/root
 
+#### Segment Tree Storage
+TODO
+- Properties
+    - Heap-like (full binary tree, stored in array)
+    - Dynamic Allocation (for PST, BIT-SegT)
+- Algorithms
+- Classic Problems/Uses
+- Derived From
+- Careful
+
 #### Persistent Segment Tree
 TODO
 - Properties
@@ -539,7 +549,9 @@ int query(int l, int r)                             // include left exclude righ
 </details>
 
 - Uses
-    - Range query in log n time after being built
+    - Range query in constant time after being built
+    - Good for min/max, not so good for sum (overlap allowed)
+    - Constant time LCA
 - Properties
     - a log N by N array that stores the collapsation of ranges (min/max, sum)
     - Each layer stores progressively larger ranges, in lengths of powers of 2
@@ -547,6 +559,7 @@ int query(int l, int r)                             // include left exclude righ
     - Easiest query includes overlap, so it's better suited for an operation that replaces (min/max) instead of sum
 - Derived from
     - [Range Precomputation](#range-precomputation)
+    - [Dynamic Programming](#dynamic-programming)
 
 
 # Array
@@ -744,7 +757,7 @@ TODO
 
 TODO
 
-## Djikstra
+## dijkstra
 
 TODO
 
@@ -755,6 +768,47 @@ TODO
 # Things TODO
 String Matching
 - KMP
+<details><summary>Standard Code</summary>
+
+```cpp
+int N, P, nxt[MX];                          // len of string and pattern, pi array
+char str[MX], pat[MX];                      // 1 indexed
+void set_nxt()                              // initializes the pi arary
+{
+    nxt[0] = -1;                            // sentry, so we can stop if we are at zero (j == -1)
+    for (int i=1; i<=P; ++i)                // for each character in pattern
+    {
+        int j = nxt[i-1];                   // start at failpointer of parent
+        while (~j && pat[j+1] != pat[i])    // while that fail pointer doesn't work (ac auto noises)
+            j = nxt[j];                     // continue to next failpointer
+        nxt[i] = j+1;                       // remember in `nxt` array
+    }
+}
+void count()
+{
+    int tot=0, j=0;                         // total matches, cur pos (`q`) in pattern
+    for (int i=1; i<=N; ++i)                // for each char in `str`
+    {
+        while (~j && pat[j+1] != pat[i])    // while not at sentry and doesn't match
+            j = nxt[j];                     // continue to next failpointer (same as in `set_nxt`)
+        ++j;                                // increment `j` to match next char
+        if (j == N)                         // if this is the end of the pattern
+            ++tot, j=nxt[j];                // successful match found, shift pattern for next match
+    }
+}
+
+int main()
+{
+    scanf("%s%s", str+1, pat+1);            // 1 indexed
+    N = strlen(str+1);                      // get length of strings cuz `scanf("%n")` is glitchy
+    P = strlen(pat+1);
+    set_nxt();                              // init `nxt` array, can be reused if pattern stays the same
+    printf("%d\n", count());                // and count occurances
+}
+```
+
+</details>
+
 - Trie
 - AC Automaton
     - Fail pointers
@@ -830,6 +884,18 @@ For Loops
 - no cycles
 - directed edges
 - all dp problems can be represented as DAGs
+
+# Dynamic Programming
+1. Frame the Question!
+1. Write down the Equation
+- Don't start coding right away
+    - Make sure to write down the equation
+- Choose or merge from smaller subproblems
+- Find the recursive solution, then look for computational overlap
+    - Draw a recursive tree?
+- If you don't have to try the subproblems, you might have a greedy problem
+- Must have overlapping subproblems
+
 ## Algorithmic Paradighms
 
 - Brute Force
@@ -855,15 +921,6 @@ For Loops
         - Base case!
     - If there are overlapping subproblems, try DP
     - Dynamic Programming - Decrement problem size
-        1. Frame the Question!
-        1. Write down the Equation
-        - Don't start coding right away
-            - Make sure to write down the equation
-        - Choose or merge from smaller subproblems
-        - Find the recursive solution, then look for computational overlap
-            - Draw a recursive tree?
-        - If you don't have to try the subproblems, you might have a greedy problem
-        - Must have overlapping subproblems
 - Greedy Algorithm
     - Local optimal = global optimal
 - Divide and Conquer
@@ -876,7 +933,7 @@ For Loops
     1. What to do at each event?
     1. How to persist state through events with some structure?
 - Graphs
-    - Djikstra
+    - Dijkstra
         - Single source shortest path
         - Greedy
         - No negative edges
