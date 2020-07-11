@@ -79,11 +79,16 @@ inline bool isleft(int i, int j, int k)
 }
 inline bool contains(int i, int j, int k)
 {
+    printf("i %d j %d k %d\n", i, j, k);
     for (int p=0; p<N; ++p)
         if (p!=i && p!=j && p!=k)
         {
+            printf("p = %d: %d %d %d\n", p, isleft(i, j, p), isleft(j, k, p), isleft(k, i, p));
+            bool ij = isleft(i, j, p);
+            if (ij == isleft(k, i, p) && ij == isleft(j, k, p))
+                return true;
         }
-    return true;
+    return false;
 }
 
 dl dp(int i, int j)
@@ -103,11 +108,19 @@ int main()
     {
         memset(tab, 0, sizeof tab);
         for (int i=0; i<MX; ++i) pts[i] = {};
-        N = 3;
+        scanf("%d", &N);
         for (int i=0; i<N; ++i)
             scanf("%lf%lf", &pts[i].f, &pts[i].s);
-        printf("is %2lf %2lf left of %2lf %2lf -> %2lf %2lf ?      %d\n", pts[2].f, pts[2].s,
-                pts[0].f, pts[0].s, pts[1].f, pts[1].s, isleft(0, 1, 2));
+        while (true)
+        {
+            int i, j, k; scanf("%d%d%d", &i, &j, &k);
+            printf("does it contain? %d\n", contains(i, j, k));
+        }
+        //N = 3;
+        //for (int i=0; i<N; ++i)
+        //    scanf("%lf%lf", &pts[i].f, &pts[i].s);
+        //printf("is %2lf %2lf left of %2lf %2lf -> %2lf %2lf ?      %d\n", pts[2].f, pts[2].s,
+        //        pts[0].f, pts[0].s, pts[1].f, pts[1].s, isleft(0, 1, 2));
         //printf("best: %lf\n", dp(0, N-1));
         //printf("area: %lf\n", size(0, 1, 2));
     }
