@@ -43,7 +43,8 @@
 
 using namespace std;
 const ll MX = 61;
-int N, tab[MX][MX];
+int N;
+dl tab[MX][MX]; // FIX: this should be dl smah
 pair<dl, dl> pts[MX];
 
 inline dl dist(int i, int j)
@@ -94,27 +95,30 @@ inline bool contains(int i, int j, int k)
 
 dl dp(int i, int j, int lay=1)
 {
+    //for (int i=0; i<lay; ++i) printf("|   "); printf("welcome to dp %d..%d\n", i, j);
     if (i+1 == j) return 0;
     if (tab[i][j]) return tab[i][j];
-    for (int i=0; i<lay; ++i) printf("|   "); printf("welcome to dp %d..%d\n", i, j);
     dl mn = 1<<30;
     for (int k=i+1; k<j; ++k)
         if (!contains(i, j, k))
         {
-            for (int i=0; i<lay; ++i) printf("|   "); printf("creating chords %d %d and %d %d\n", i, k, j, k);
+            //for (int i=0; i<lay; ++i) printf("|   "); printf("creating chords %d %d and %d %d\n", i, k, k, j);
             dl ik = dp(i, k, lay+1);
             dl kj = dp(k, j, lay+1);
-            for (int i=0; i<lay; ++i) printf("|   "); printf("(%d %d %d) %lf, %d..%d %lf, %d..%d %lf\n",
-                    i, j, k, size(i, j, k), i, k, ik, kj);
+            //for (int i=0; i<lay; ++i) printf("|   "); printf("(%d %d %d) %lf, %d..%d %lf, %d..%d %lf\n",
+                    //i, j, k, size(i, j, k), i, k, ik, k, j, kj);
             mn = min(mn, max(size(i, k, j), max(ik, kj)));
         }
     tab[i][j] = mn;
+    //for (int i=0; i<lay; ++i) printf("|   "); printf("=> %d..%d = %lf\n", i, j, tab[i][j]);
     return mn;
 }
 
 int main()
 {
-    while (true)
+    int cs; scanf("%d", &cs);
+    //while (true)
+    while (cs--)
     {
         memset(tab, 0, sizeof tab);
         for (int i=0; i<MX; ++i) pts[i] = {};
@@ -122,7 +126,7 @@ int main()
         for (int i=0; i<N; ++i)
             scanf("%lf%lf", &pts[i].f, &pts[i].s);
 
-        printf("minimax: %lf\n", dp(0, N-1));
+        printf("%.1lf\n", dp(0, N-1));
 
         //while (true)
         //{
