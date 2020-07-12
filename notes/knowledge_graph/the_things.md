@@ -809,6 +809,11 @@ int main()
 
 </details>
 
+- Fail Pointers/nxt/pi array
+    - longest suffix to `i` that is also a prefix
+    - can be used to find shortest repeating block
+        - repetition of len `i-nxt[i]` if `i % (i-nxt[i]) == 0`
+
 - Trie
 - AC Automaton
     - Fail pointers
@@ -826,12 +831,12 @@ For Loops
 - swap array values for indicies
 - basically counting sort
 - watch out for MLE
-- may have to do descretization
+- may have to do discretization
 - usages
     - counting inversions
     - transform the problem/limits
 
-# descretization
+# discretization
 - compress big range of numbers, preserve relative size
 - create array of pairs with value and index, sort by value
 - flip the pair, sort by index while storing sorted index for each value
@@ -880,7 +885,7 @@ For Loops
 - only possible in directed acyclic graphs
 - use to check cycles in O(N)
 
-# directed acyclic graphs (DAG)
+# directed acyclic graph
 - no cycles
 - directed edges
 - all dp problems can be represented as DAGs
