@@ -30,6 +30,11 @@ bool cmp(int lhs, int rhs)
          < slopes[rhs]*(sweep-segs[rhs].x.x)+segs[rhs].x.y;
 }
 
+pair<bool, pair<dl, dl> > intersect(int a, int b)
+{
+    // TODO: find intersection of ids a and b
+}
+
 struct Node
 {
     int id, w, s;
@@ -41,7 +46,7 @@ struct Node
 #define BLACK "\x1b[38;5;239m"
 void dump(Node *cur, int lay=1, long long lbar=0, long long rbar=0)
 {
-	if (lay == 1) printf("dump:\n");
+	//if (lay == 1) printf("dump:\n");
 	if (!cur) return;
 	dump(cur->c[1], lay+1);
 	for (int i=0; i<lay; ++i)
@@ -66,10 +71,10 @@ void rotate(Node *&cur, bool dir)
     setSize(thn);
     cur = thn;
 }
-Node *bound(Node *cur, int id, bool dir)
+Node *bound(Node *cur, int id, bool dir, bool take) // take = whether or not to count an exact match
 {
-    if (!cur || cur->id == id) return cur;
-    Node *got = bound(cur->c[cmp(cur->id, id)], id, dir);
+    if (!cur || cur->id == id) return take ? cur : nullptr;
+    Node *got = bound(cur->c[cmp(cur->id, id)], id, dir, take);
     if (got) return got;
     return cmp(cur->id, id) != dir ? cur : 0;
 }
@@ -123,25 +128,38 @@ int main()
     {
         slopes[i] = (segs[i].x.y-segs[i].y.y)/(segs[i].x.x-segs[i].y.x);
         printf("line %d: %lf,%lf .. %lf,%lf with slope %lf\n", i, segs[i].x.x, segs[i].x.y, segs[i].y.x, segs[i].y.y, slopes[i]);
-        events.push(mp(mp(segs[i].x.x, 0), mp(i, i)));
+        events.push(mp(mp(segs[i].x.x, 0), mp(i, i)));  // push insertion event
+        events.push(mp(mp(segs[i].y.x, 2), mp(i, i)));  // push deletion event
     }
+    // TODO: automate crossing checks!
+    events.push(mp(mp(5, 1), mp(0, 1)));
+    events.push(mp(mp(6.2, 1), mp(1, 2)));
     while (!events.empty())
     {
         Event cur = events.top(); events.pop();
-        sweep = cur.x.x;
+        sweep = cur.x.x - 0.0000001; // FIX: do crossing math right before crossing so order is preserved before swap
         if (cur.x.y == 0)
         {
+            printf("sweep %lf: inserting line %d\n", sweep, cur.id1);
             insert(root, cur.id1);
+            // TODO: check neighbors
         }
         if (cur.x.y == 1)
         {
-            // TODO: swap and check neighbors
+            printf("sweep %lf: crossing between lines %d and %d\n", sweep, cur.id1, cur.id2);
+            Node *lo = bound(root, cur.id1, 0, 1);
+            Node *hi = bound(root, cur.id2, 0, 1);
+            //printf("got %x and %x\n", lo, hi);
+            if (lo && hi) swap(lo->id, hi->id);
+            // TODO: check neighbors
         }
         if (cur.x.y == 2)
         {
-            // TODO: remove and check neighbors
+            printf("sweep %lf: deleting line %d\n", sweep, cur.id1);
+            remove(root, cur.id1);
+            // TODO: check neighbors
         }
-        dump(root);
+        dump(root); printf("\n");
     }
 }
 
