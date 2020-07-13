@@ -11,12 +11,13 @@
 #include <algorithm>
 #define ll long long
 using namespace std;
+const ll mod = 10e9 + 7;
 
 inline ll choose(ll n, ll k)
 {
     ll tot = 1;
-    for (ll i=max(k, n-k)+1; i<=n; ++i) { tot *= i; }
-    for (ll i=2; i<=min(k, n-k); ++i) { tot /= i; }
+    for (ll i=max(k, n-k)+1; i<=n; ++i) { tot = i*tot % mod; }
+    for (ll i=2; i<=min(k, n-k); ++i) { tot = tot/i % mod; }
     return tot;
 }
 
@@ -27,7 +28,7 @@ int main()
     {
         int N; scanf("%d", &N);
         ll n = N;
-        printf("%lld\n", n*choose(n-1, 2)*2);
+        printf("%lld\n", ((n*choose(n-1, 2))%mod)*2 % mod);
     }
 
 	return 0;

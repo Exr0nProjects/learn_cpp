@@ -1,11 +1,10 @@
 // miles
 #include <iostream>
 #include <string>
-#include <list>
-#include <vector>
+#include <set>
 using namespace std;
 const int MX = 1e5 + 100;
-int arr[MX][MX];
+set<int> head[MX];
 int main()
 {
     int n, m;
@@ -15,16 +14,25 @@ int main()
     for(int i = 0; i < m; i++){
         cin >> a >> b >> c;
         if(a == 1){
-            arr[b-1][c-1] = 1;
-            arr[c-1][b-1] = 1;
+            head[b-1].insert(c-1);
+            head[c-1].insert(b-1);
         }else if(a == 2){
             bool works = false;
-            for(int j = 0; j < n; j++){
-                if (arr[b-1][j] == 1 and arr[c-1][j] == 1){
+            for (int thru : head[c-1])
+                if (head[b-1].count(thru))
+                {
+                    //printf("thru %d\n", thru);
                     works = true;
+                    break;
                 }
-            }
-            if(arr[b-1][c-1] == 0 && works == true){
+            //printf("works? %d\n", works);
+
+            //for(int j = 0; j < n; j++){
+            //    if (arr[b-1][j] == 1 and arr[c-1][j] == 1){
+            //        works = true;
+            //    }
+            //}
+            if(!head[c-1].count(b-1) && works == true){
                 cout << "Yes" << endl;
             }else{
                 cout << "No" << endl;
