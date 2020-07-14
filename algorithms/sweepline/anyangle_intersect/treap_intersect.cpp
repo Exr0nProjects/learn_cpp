@@ -21,7 +21,7 @@ typedef pair<pair<dl, dl>, pair<dl, dl> > Seg;
 typedef pair<pair<dl, int>, pair<int, int> > Event; // x-pos, type{0: new, 1: cross, 2: remove}, {id, 0 for event 0,2; id, id}
 const int MX = 1000111;
 const dl tiny = 0.0000000001;
-const bool DEBUG = 0;
+const bool DEBUG = 1;
 int N;
 Seg segs[MX];
 dl slopes[MX];
