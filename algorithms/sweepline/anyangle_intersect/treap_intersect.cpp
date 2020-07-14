@@ -31,11 +31,6 @@ bool cmp(int lhs, int rhs)
          < slopes[rhs]*(sweep-segs[rhs].x.x)+segs[rhs].x.y;
 }
 
-pair<bool, pair<dl, dl> > intersect(int a, int b)
-{
-    // TODO: find intersection of ids a and b
-}
-
 struct Node
 {
     int id, w, s;
@@ -134,6 +129,20 @@ void remove(Node *&cur, int id)
     }
 }
 
+void intersect(Node *_a, Node *_b)
+{
+    if (!_a || !_b) return;
+    int a = _a->id, b = _b->id;
+    dl x = (slopes[a]*segs[a].x.x - slopes[b]*segs[b].x.x + segs[b].x.y-segs[a].x.y)/(slopes[a]-slopes[b]);
+    if (x >= sweep
+        && segs[a].x.x <= x && x <= segs[a].y.x
+        && segs[b].x.x <= x && x <= segs[b].y.x)
+    {
+        printf("\n\n##################\n\nINTERSECTION BETWEEN %d AND %d AT %lf\n\n##################\n\n", a, b, x);
+        events.push(mp(mp(x, 1), mp(a, b)));
+    }
+}
+
 int main()
 {
     scanf("%d", &N);
@@ -154,8 +163,8 @@ int main()
     //events.push(mp(mp(5, 1), mp(0, 1)));
     //events.push(mp(mp(6.2, 1), mp(1, 2)));
 
-    events.push(mp(mp(4.4, 1), mp(1, 2)));
-    events.push(mp(mp(4.8, 1), mp(1, 3)));
+    //events.push(mp(mp(4.4, 1), mp(1, 2)));
+    //events.push(mp(mp(4.8, 1), mp(1, 3)));
     while (!events.empty())
     {
         Event cur = events.top(); events.pop();
@@ -166,7 +175,8 @@ int main()
             Node *ins = insert(root, cur.id1);
             //printf("    would check %dx%x, %dx%x\n", cur.id1, bound(root, cur.id1, 0, 0), cur.id1, bound(root, cur.id1, 1, 0));
             printf("    would check %dx%x, %dx%x\n", cur.id1, ins->r[0], cur.id1, ins->r[1]);
-            // TODO: check neighbors
+            intersect(ins->r[0], ins);  // FIX: order matters on intersect, lowest should be first
+            intersect(ins, ins->r[1]);
         }
         if (cur.x.y == 1)
         {
@@ -178,8 +188,9 @@ int main()
             {
                 swap(lo->id, hi->id);
                 sweep += tiny*2;
-                printf("    would check %dx%x, %dx%x\n", cur.id1, hi->r[1], cur.id2, lo->r[0]);
-                // TODO: check neighbors
+                printf("    would check %dx%x, %dx%x\n", hi->id, hi->r[1], lo->id, lo->r[0]);
+                intersect(lo->r[0], lo);
+                intersect(hi, hi->r[1]);
             }
             //printf("    would check %dx%x, %dx%x\n", cur.id1, bound(root, cur.id1, 1, 0), cur.id2, bound(root, cur.id2, 0, 0));
         }
@@ -189,8 +200,8 @@ int main()
             Node *rem = locate(root, cur.id1);
             remove(root, cur.id1);
             printf("    would check %xx%x\n", rem->r[0], rem->r[1]);
+            intersect(rem->r[0], rem->r[1]);
             //printf("    would check %dx%x, %dx%x\n", cur.id1, bound(root, cur.id1, 0, 0), cur.id1, bound(root, cur.id1, 1, 0));
-            // TODO: check neighbors
         }
         dump(root); printf("\n");
     }
