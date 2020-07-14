@@ -151,15 +151,18 @@ int main()
         events.push(mp(mp(segs[i].y.x, 2), mp(i, i)));  // push deletion event
     }
     // TODO: automate crossing checks!
-    events.push(mp(mp(5, 1), mp(0, 1)));
+    //events.push(mp(mp(5, 1), mp(0, 1)));
     //events.push(mp(mp(6.2, 1), mp(1, 2)));
+
+    events.push(mp(mp(4.4, 1), mp(1, 2)));
+    events.push(mp(mp(4.8, 1), mp(1, 3)));
     while (!events.empty())
     {
         Event cur = events.top(); events.pop();
         sweep = cur.x.x - tiny; // FIX: do crossing math right before crossing so order is preserved before swap
         if (cur.x.y == 0)
         {
-            printf("sweep %.20lf: inserting line %d\n", sweep, cur.id1);
+            printf("sweep %lf: inserting line %d\n", sweep, cur.id1);
             Node *ins = insert(root, cur.id1);
             //printf("    would check %dx%x, %dx%x\n", cur.id1, bound(root, cur.id1, 0, 0), cur.id1, bound(root, cur.id1, 1, 0));
             printf("    would check %dx%x, %dx%x\n", cur.id1, ins->r[0], cur.id1, ins->r[1]);
@@ -167,7 +170,7 @@ int main()
         }
         if (cur.x.y == 1)
         {
-            printf("sweep %.20lf: crossing between lines %d and %d\n", sweep, cur.id1, cur.id2);
+            printf("sweep %lf: crossing between lines %d and %d\n", sweep, cur.id1, cur.id2);
             Node *lo = locate(root, cur.id1);
             Node *hi = locate(root, cur.id2);
             //printf("got %x and %x\n", lo, hi);
@@ -182,8 +185,10 @@ int main()
         }
         if (cur.x.y == 2)
         {
-            printf("sweep %.20lf: deleting line %d\n", sweep, cur.id1);
+            printf("sweep %lf: deleting line %d\n", sweep, cur.id1);
+            Node *rem = locate(root, cur.id1);
             remove(root, cur.id1);
+            printf("    would check %xx%x\n", rem->r[0], rem->r[1]);
             //printf("    would check %dx%x, %dx%x\n", cur.id1, bound(root, cur.id1, 0, 0), cur.id1, bound(root, cur.id1, 1, 0));
             // TODO: check neighbors
         }
