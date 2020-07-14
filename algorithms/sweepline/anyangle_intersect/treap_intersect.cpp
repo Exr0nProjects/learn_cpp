@@ -71,10 +71,12 @@ void rotate(Node *&cur, bool dir)
     setSize(thn);
     cur = thn;
 }
-Node *bound(Node *cur, int id, bool dir, bool take) // take = whether or not to count an exact match
+Node *bound(Node *cur, int id, bool dir, bool take, int lay=1) // take = whether or not to count an exact match
 {
     if (!cur || cur->id == id) return take ? cur : nullptr;
-    Node *got = bound(cur->c[cmp(cur->id, id)], id, dir, take);
+    for (int i=0; i<lay; ++i) printf("|   "); printf("bound at %x for %d , %d\n", cur, id, dir);
+    Node *got = bound(cur->c[cmp(cur->id, id)], id, dir, take, lay+1);
+    for (int i=0; i<lay; ++i) printf("|   "); printf("went %d got %x\n", cmp(cur->id, id), got);
     if (got) return got;
     return cmp(cur->id, id) != dir ? cur : 0;
 }
@@ -142,6 +144,7 @@ int main()
         {
             printf("sweep %lf: inserting line %d\n", sweep, cur.id1);
             insert(root, cur.id1);
+            printf("    would check %dx%x, %dx%x\n", cur.id1, bound(root, cur.id1, 0, 0), cur.id1, bound(root, cur.id1, 1, 0));
             // TODO: check neighbors
         }
         if (cur.x.y == 1)
@@ -151,12 +154,15 @@ int main()
             Node *hi = bound(root, cur.id2, 0, 1);
             //printf("got %x and %x\n", lo, hi);
             if (lo && hi) swap(lo->id, hi->id);
+            sweep += 0.0000002;
+            printf("    would check %dx%x, %dx%x\n", cur.id1, bound(root, cur.id1, 1, 0), cur.id2, bound(root, cur.id2, 0, 0));
             // TODO: check neighbors
         }
         if (cur.x.y == 2)
         {
             printf("sweep %lf: deleting line %d\n", sweep, cur.id1);
             remove(root, cur.id1);
+            printf("    would check %dx%x, %dx%x\n", cur.id1, bound(root, cur.id1, 0, 0), cur.id1, bound(root, cur.id1, 1, 0));
             // TODO: check neighbors
         }
         dump(root); printf("\n");
