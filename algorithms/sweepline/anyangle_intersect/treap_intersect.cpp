@@ -18,6 +18,7 @@ using namespace std;
 typedef pair<pair<dl, dl>, pair<dl, dl> > Seg;
 typedef pair<pair<dl, int>, pair<int, int> > Event; // x-pos, type{0: new, 1: cross, 2: remove}, {id, 0 for event 0,2; id, id}
 const int MX = 1000111;
+const dl tiny = 0.0000000001;
 int N;
 Seg segs[MX];
 dl slopes[MX];
@@ -39,6 +40,7 @@ struct Node
 {
     int id, w, s;
     Node *c[2] = {};
+    Node *r[2] = {};
     Node (int d): id(d), w(rand() % 10000), s(1) {};
 } *root = nullptr;
 
@@ -51,7 +53,7 @@ void dump(Node *cur, int lay=1, long long lbar=0, long long rbar=0)
 	dump(cur->c[1], lay+1);
 	for (int i=0; i<lay; ++i)
 		printf("%c   ", (lbar|rbar)&(1<<i) ? '|' : ' ');
-	printf("%d %s(%4d @ %x)%s\n", cur->id, BLACK, cur->w, cur, RESET);
+	printf("%d %s%x %x (%4d @ %x)%s\n", cur->id, BLACK, cur->r[0], cur->r[1], cur->w, cur, RESET);
 	dump(cur->c[0], lay+1);
 }
 
@@ -71,14 +73,19 @@ void rotate(Node *&cur, bool dir)
     setSize(thn);
     cur = thn;
 }
-Node *bound(Node *cur, int id, bool dir, bool take, int lay=1) // take = whether or not to count an exact match
+//Node *bound(Node *cur, int id, bool dir, bool take, int lay=1) // take = whether or not to count an exact match
+//{
+//    if (!cur || cur->id == id) return take ? cur : nullptr;
+//    for (int i=0; i<lay; ++i) printf("|   "); printf("bound at %x for %d , %d\n", cur, id, dir);
+//    Node *got = bound(cur->c[cmp(cur->id, id)], id, dir, take, lay+1);
+//    for (int i=0; i<lay; ++i) printf("|   "); printf("went %d got %x\n", cmp(cur->id, id), got);
+//    if (got) return got;
+//    return cmp(cur->id, id) != dir ? cur : 0;
+//}
+Node *locate(Node *cur, int id)
 {
-    if (!cur || cur->id == id) return take ? cur : nullptr;
-    for (int i=0; i<lay; ++i) printf("|   "); printf("bound at %x for %d , %d\n", cur, id, dir);
-    Node *got = bound(cur->c[cmp(cur->id, id)], id, dir, take, lay+1);
-    for (int i=0; i<lay; ++i) printf("|   "); printf("went %d got %x\n", cmp(cur->id, id), got);
-    if (got) return got;
-    return cmp(cur->id, id) != dir ? cur : 0;
+    if (!cur || cur->id == id) return cur;
+    return locate(cur->c[cmp(cur->id, id)], id);
 }
 Node *insert(Node *&cur, int id)
 {
@@ -87,6 +94,14 @@ Node *insert(Node *&cur, int id)
     const bool dir = cmp(cur->id, id);
     Node *&stp = cur->c[dir];
     Node *ins = insert(stp, id);
+    if (stp == ins && !ins->r[!dir])
+    {
+        ins->r[dir] = cur->r[dir];
+        ins->r[!dir] = cur;
+        cur->r[dir] = ins;
+        if (ins->r[dir])
+            ins->r[dir]->r[!dir] = ins;
+    }
     if (cur->w < stp->w)
         rotate(cur, dir);
     setSize(cur);
@@ -106,6 +121,8 @@ void remove(Node *&cur, int id)
         else
         {
             Node *thn = cur;
+            if (cur->r[0]) cur->r[0]->r[1] = cur->r[1];
+            if (cur->r[1]) cur->r[1]->r[0] = cur->r[0];
             cur = cur->c[0] ? cur->c[0] : cur->c[1];
             delete thn;
         }
@@ -135,34 +152,39 @@ int main()
     }
     // TODO: automate crossing checks!
     events.push(mp(mp(5, 1), mp(0, 1)));
-    events.push(mp(mp(6.2, 1), mp(1, 2)));
+    //events.push(mp(mp(6.2, 1), mp(1, 2)));
     while (!events.empty())
     {
         Event cur = events.top(); events.pop();
-        sweep = cur.x.x - 0.0000001; // FIX: do crossing math right before crossing so order is preserved before swap
+        sweep = cur.x.x - tiny; // FIX: do crossing math right before crossing so order is preserved before swap
         if (cur.x.y == 0)
         {
-            printf("sweep %lf: inserting line %d\n", sweep, cur.id1);
-            insert(root, cur.id1);
-            printf("    would check %dx%x, %dx%x\n", cur.id1, bound(root, cur.id1, 0, 0), cur.id1, bound(root, cur.id1, 1, 0));
+            printf("sweep %.20lf: inserting line %d\n", sweep, cur.id1);
+            Node *ins = insert(root, cur.id1);
+            //printf("    would check %dx%x, %dx%x\n", cur.id1, bound(root, cur.id1, 0, 0), cur.id1, bound(root, cur.id1, 1, 0));
+            printf("    would check %dx%x, %dx%x\n", cur.id1, ins->r[0], cur.id1, ins->r[1]);
             // TODO: check neighbors
         }
         if (cur.x.y == 1)
         {
-            printf("sweep %lf: crossing between lines %d and %d\n", sweep, cur.id1, cur.id2);
-            Node *lo = bound(root, cur.id1, 0, 1);
-            Node *hi = bound(root, cur.id2, 0, 1);
+            printf("sweep %.20lf: crossing between lines %d and %d\n", sweep, cur.id1, cur.id2);
+            Node *lo = locate(root, cur.id1);
+            Node *hi = locate(root, cur.id2);
             //printf("got %x and %x\n", lo, hi);
-            if (lo && hi) swap(lo->id, hi->id);
-            sweep += 0.0000002;
-            printf("    would check %dx%x, %dx%x\n", cur.id1, bound(root, cur.id1, 1, 0), cur.id2, bound(root, cur.id2, 0, 0));
-            // TODO: check neighbors
+            if (lo && hi)
+            {
+                swap(lo->id, hi->id);
+                sweep += tiny*2;
+                printf("    would check %dx%x, %dx%x\n", cur.id1, hi->r[1], cur.id2, lo->r[0]);
+                // TODO: check neighbors
+            }
+            //printf("    would check %dx%x, %dx%x\n", cur.id1, bound(root, cur.id1, 1, 0), cur.id2, bound(root, cur.id2, 0, 0));
         }
         if (cur.x.y == 2)
         {
-            printf("sweep %lf: deleting line %d\n", sweep, cur.id1);
+            printf("sweep %.20lf: deleting line %d\n", sweep, cur.id1);
             remove(root, cur.id1);
-            printf("    would check %dx%x, %dx%x\n", cur.id1, bound(root, cur.id1, 0, 0), cur.id1, bound(root, cur.id1, 1, 0));
+            //printf("    would check %dx%x, %dx%x\n", cur.id1, bound(root, cur.id1, 0, 0), cur.id1, bound(root, cur.id1, 1, 0));
             // TODO: check neighbors
         }
         dump(root); printf("\n");
