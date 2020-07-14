@@ -1,5 +1,6 @@
-// 13 July 2020
-// don't allow concurrent lines or vertical lines
+// Created Mon 13 July 2020
+// don't allow concurrent lines or coords larger than 1e6
+// TODO: how to deal with lines that intersect at start point?
 
 #include <set>
 #include <queue>
@@ -30,11 +31,11 @@ set<Event> events;
 
 bool cmp(int lhs, int rhs)
 {
-    if (DEBUG) printf("cmd %d (%lf) vs %d (%lf)\n",
-            lhs, slopes[lhs]*(sweep-segs[lhs].x.x)+segs[lhs].x.y,
-            rhs, slopes[rhs]*(sweep-segs[rhs].x.x)+segs[rhs].x.y);
-    return slopes[lhs]*(sweep-segs[lhs].x.x)+segs[lhs].x.y
-         < slopes[rhs]*(sweep-segs[rhs].x.x)+segs[rhs].x.y;
+    const dl ls = slopes[lhs]*(sweep-segs[lhs].x.x)+segs[lhs].x.y;
+    const dl rs = slopes[rhs]*(sweep-segs[rhs].x.x)+segs[rhs].x.y;
+    if (DEBUG) printf("cmp %d (%.20lf, %lf) vs %d (%.20lf, %lf) -> %d ? %d : %d\n", lhs, ls, slopes[lhs], rhs, rs, slopes[rhs],
+            fabs(ls-rs) < tiny/2, slopes[lhs] < slopes[rhs], ls < rs);
+    return fabs(ls-rs) < tiny/2 ? slopes[lhs] < slopes[rhs] : ls < rs;
 }
 
 struct Node
@@ -150,7 +151,8 @@ int main()
     {
         scanf("%lf%lf%lf%lf", &segs[i].x.x, &segs[i].x.y, &segs[i].y.x, &segs[i].y.y);
         if (segs[i].y < segs[i].x) swap(segs[i].x, segs[i].y);
-        segs[i].y.x += tiny*10; // TODO: hacky way of dealing w/ vertical lines
+        segs[i].y.x += tiny/10; // FIX: tiny/10 not tiny*10 cuz tiny should ignore this
+        // TODO: ^^^^^^^^^^^^^ is a hacky way of dealing w/ vertical lines
     }
     sort(segs, segs+N);
     for (int i=0; i<N; ++i)
@@ -180,7 +182,7 @@ int main()
             if (DEBUG) printf("sweep %lf: crossing between lines %d and %d\n", sweep, cur.id1, cur.id2);
             Node *lo = locate(root, cur.id1);
             Node *hi = locate(root, cur.id2);
-            //printf("got %x and %x\n", lo, hi);
+            if (DEBUG) printf("got %x and %x\n", lo, hi);
             if (lo && hi)
             {
                 swap(lo->id, hi->id);
