@@ -2,6 +2,7 @@
 // don't allow concurrent lines or vertical lines
 
 #include <queue>
+#include <cmath>
 #include <cstdio>
 #include <cstdlib>
 #include <utility>
@@ -123,6 +124,7 @@ void intersect(Node *_a, Node *_b)
 {
     if (!_a || !_b) return;
     int a = _a->id, b = _b->id;
+    if (fabs(slopes[a]-slopes[b]) < tiny) return; // parallel
     dl x = (slopes[a]*segs[a].x.x - slopes[b]*segs[b].x.x + segs[b].x.y-segs[a].x.y)/(slopes[a]-slopes[b]);
     if (x >= sweep
         && segs[a].x.x <= x && x <= segs[a].y.x
@@ -140,6 +142,7 @@ int main()
     {
         scanf("%lf%lf%lf%lf", &segs[i].x.x, &segs[i].x.y, &segs[i].y.x, &segs[i].y.y);
         if (segs[i].y < segs[i].x) swap(segs[i].x, segs[i].y);
+        segs[i].y.x += tiny*10; // TODO: hacky way of dealing w/ vertical lines
     }
     sort(segs, segs+N);
     for (int i=0; i<N; ++i)
