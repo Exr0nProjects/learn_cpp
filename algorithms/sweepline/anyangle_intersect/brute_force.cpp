@@ -66,7 +66,7 @@ int main()
     {
 	float a, b, c, d;
 	scanf("%f%f%f%f", &a, &b, &c, &d);
-	segs.emplace_back(make_pair(a, b), make_pair(c, d));
+	segs.push_back(make_pair(make_pair(a, b), make_pair(c, d)));
     }
 
     for (int i=0; i<N; ++i)

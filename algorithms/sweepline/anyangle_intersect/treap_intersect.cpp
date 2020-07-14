@@ -1,6 +1,5 @@
 // 13 July 2020
 // don't allow concurrent lines or vertical lines
-// optimiztion: use next/prev pointers instead of bound function to check neighbors in constant time
 
 #include <queue>
 #include <cstdio>
@@ -39,18 +38,18 @@ struct Node
     Node (int d): id(d), w(rand() % 10000), s(1) {};
 } *root = nullptr;
 
-#define RESET "\033[0m"
-#define BLACK "\x1b[38;5;239m"
-void dump(Node *cur, int lay=1, long long lbar=0, long long rbar=0)
-{
-	//if (lay == 1) printf("dump:\n");
-	if (!cur) return;
-	dump(cur->c[1], lay+1);
-	for (int i=0; i<lay; ++i)
-		printf("%c   ", (lbar|rbar)&(1<<i) ? '|' : ' ');
-	printf("%d %s%x %x (%4d @ %x)%s\n", cur->id, BLACK, cur->r[0], cur->r[1], cur->w, cur, RESET);
-	dump(cur->c[0], lay+1);
-}
+//#define RESET "\033[0m"
+//#define BLACK "\x1b[38;5;239m"
+//void dump(Node *cur, int lay=1, long long lbar=0, long long rbar=0)
+//{
+//    //if (lay == 1) printf("dump:\n");
+//    if (!cur) return;
+//    dump(cur->c[1], lay+1);
+//    for (int i=0; i<lay; ++i)
+//        printf("%c   ", (lbar|rbar)&(1<<i) ? '|' : ' ');
+//    printf("%d %s%x %x (%4d @ %x)%s\n", cur->id, BLACK, cur->r[0], cur->r[1], cur->w, cur, RESET);
+//    dump(cur->c[0], lay+1);
+//}
 
 void setSize(Node *cur)
 {
@@ -68,15 +67,6 @@ void rotate(Node *&cur, bool dir)
     setSize(thn);
     cur = thn;
 }
-//Node *bound(Node *cur, int id, bool dir, bool take, int lay=1) // take = whether or not to count an exact match
-//{
-//    if (!cur || cur->id == id) return take ? cur : nullptr;
-//    for (int i=0; i<lay; ++i) printf("|   "); printf("bound at %x for %d , %d\n", cur, id, dir);
-//    Node *got = bound(cur->c[cmp(cur->id, id)], id, dir, take, lay+1);
-//    for (int i=0; i<lay; ++i) printf("|   "); printf("went %d got %x\n", cmp(cur->id, id), got);
-//    if (got) return got;
-//    return cmp(cur->id, id) != dir ? cur : 0;
-//}
 Node *locate(Node *cur, int id)
 {
     if (!cur || cur->id == id) return cur;
@@ -138,7 +128,7 @@ void intersect(Node *_a, Node *_b)
         && segs[a].x.x <= x && x <= segs[a].y.x
         && segs[b].x.x <= x && x <= segs[b].y.x)
     {
-        printf("\n\n##################\n\nINTERSECTION BETWEEN %d AND %d AT %lf\n\n##################\n\n", a, b, x);
+        //printf("\n\n##################\n\nINTERSECTION BETWEEN %d AND %d AT %lf\n\n##################\n\n", a, b, x);
         events.push(mp(mp(x, 1), mp(a, b)));
     }
 }
@@ -155,32 +145,26 @@ int main()
     for (int i=0; i<N; ++i)
     {
         slopes[i] = (segs[i].x.y-segs[i].y.y)/(segs[i].x.x-segs[i].y.x);
-        printf("line %d: %lf,%lf .. %lf,%lf with slope %lf\n", i, segs[i].x.x, segs[i].x.y, segs[i].y.x, segs[i].y.y, slopes[i]);
+        //printf("line %d: %lf,%lf .. %lf,%lf with slope %lf\n", i, segs[i].x.x, segs[i].x.y, segs[i].y.x, segs[i].y.y, slopes[i]);
         events.push(mp(mp(segs[i].x.x, 0), mp(i, i)));  // push insertion event
         events.push(mp(mp(segs[i].y.x, 2), mp(i, i)));  // push deletion event
     }
-    // TODO: automate crossing checks!
-    //events.push(mp(mp(5, 1), mp(0, 1)));
-    //events.push(mp(mp(6.2, 1), mp(1, 2)));
-
-    //events.push(mp(mp(4.4, 1), mp(1, 2)));
-    //events.push(mp(mp(4.8, 1), mp(1, 3)));
     while (!events.empty())
     {
         Event cur = events.top(); events.pop();
         sweep = cur.x.x - tiny; // FIX: do crossing math right before crossing so order is preserved before swap
         if (cur.x.y == 0)
         {
-            printf("sweep %lf: inserting line %d\n", sweep, cur.id1);
+            //printf("sweep %lf: inserting line %d\n", sweep, cur.id1);
             Node *ins = insert(root, cur.id1);
-            //printf("    would check %dx%x, %dx%x\n", cur.id1, bound(root, cur.id1, 0, 0), cur.id1, bound(root, cur.id1, 1, 0));
-            printf("    would check %dx%x, %dx%x\n", cur.id1, ins->r[0], cur.id1, ins->r[1]);
+            //printf("    would check %dx%x, %dx%x\n", cur.id1, ins->r[0], cur.id1, ins->r[1]);
             intersect(ins->r[0], ins);  // FIX: order matters on intersect, lowest should be first
             intersect(ins, ins->r[1]);
         }
         if (cur.x.y == 1)
         {
-            printf("sweep %lf: crossing between lines %d and %d\n", sweep, cur.id1, cur.id2);
+            printf("%lf %lf\n", cur.x.x, slopes[cur.y.x]*(cur.x.x-segs[cur.y.x].x.x)+segs[cur.y.x].x.y);
+            //printf("sweep %lf: crossing between lines %d and %d\n", sweep, cur.id1, cur.id2);
             Node *lo = locate(root, cur.id1);
             Node *hi = locate(root, cur.id2);
             //printf("got %x and %x\n", lo, hi);
@@ -188,22 +172,20 @@ int main()
             {
                 swap(lo->id, hi->id);
                 sweep += tiny*2;
-                printf("    would check %dx%x, %dx%x\n", hi->id, hi->r[1], lo->id, lo->r[0]);
+                //printf("    would check %dx%x, %dx%x\n", hi->id, hi->r[1], lo->id, lo->r[0]);
                 intersect(lo->r[0], lo);
                 intersect(hi, hi->r[1]);
             }
-            //printf("    would check %dx%x, %dx%x\n", cur.id1, bound(root, cur.id1, 1, 0), cur.id2, bound(root, cur.id2, 0, 0));
         }
         if (cur.x.y == 2)
         {
-            printf("sweep %lf: deleting line %d\n", sweep, cur.id1);
+            //printf("sweep %lf: deleting line %d\n", sweep, cur.id1);
             Node *rem = locate(root, cur.id1);
             remove(root, cur.id1);
-            printf("    would check %xx%x\n", rem->r[0], rem->r[1]);
+            //printf("    would check %xx%x\n", rem->r[0], rem->r[1]);
             intersect(rem->r[0], rem->r[1]);
-            //printf("    would check %dx%x, %dx%x\n", cur.id1, bound(root, cur.id1, 0, 0), cur.id1, bound(root, cur.id1, 1, 0));
         }
-        dump(root); printf("\n");
+        //dump(root); printf("\n");
     }
 }
 
