@@ -2,7 +2,7 @@
 #include <cstdio>
 #include <cstdlib>
 
-const int MXN = 50;
+const int MXN = 10;
 const int MXM = 10;
 
 int main()

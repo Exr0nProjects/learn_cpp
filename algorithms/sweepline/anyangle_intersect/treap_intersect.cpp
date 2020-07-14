@@ -19,6 +19,7 @@ typedef pair<pair<dl, dl>, pair<dl, dl> > Seg;
 typedef pair<pair<dl, int>, pair<int, int> > Event; // x-pos, type{0: new, 1: cross, 2: remove}, {id, 0 for event 0,2; id, id}
 const int MX = 1000111;
 const dl tiny = 0.0000000001;
+const bool DEBUG = 0;
 int N;
 Seg segs[MX];
 dl slopes[MX];
@@ -27,6 +28,9 @@ priority_queue<Event, deque<Event>, greater<Event> > events;
 
 bool cmp(int lhs, int rhs)
 {
+    if (DEBUG) printf("cmd %d (%lf) vs %d (%lf)\n",
+            lhs, slopes[lhs]*(sweep-segs[lhs].x.x)+segs[lhs].x.y,
+            rhs, slopes[rhs]*(sweep-segs[rhs].x.x)+segs[rhs].x.y);
     return slopes[lhs]*(sweep-segs[lhs].x.x)+segs[lhs].x.y
          < slopes[rhs]*(sweep-segs[rhs].x.x)+segs[rhs].x.y;
 }
@@ -43,6 +47,7 @@ struct Node
 #define BLACK "\x1b[38;5;239m"
 void dump(Node *cur, int lay=1, long long lbar=0, long long rbar=0)
 {
+    if (!DEBUG) return;
     //if (lay == 1) printf("dump:\n");
     if (!cur) return;
     dump(cur->c[1], lay+1);
@@ -70,6 +75,7 @@ void rotate(Node *&cur, bool dir)
 }
 Node *locate(Node *cur, int id)
 {
+    if (DEBUG) printf("        locate %d at %x\n", id, cur);
     if (!cur || cur->id == id) return cur;
     return locate(cur->c[cmp(cur->id, id)], id);
 }
@@ -159,7 +165,7 @@ int main()
         sweep = max(sweep, cur.x.x - tiny); // FIX: don't step back after a crossing changes tree?
         if (cur.x.y == 0)
         {
-            printf("sweep %lf: inserting line %d\n", sweep, cur.id1);
+            if (DEBUG) printf("sweep %lf: inserting line %d\n", sweep, cur.id1);
             Node *ins = insert(root, cur.id1);
             //printf("    would check %dx%x, %dx%x\n", cur.id1, ins->r[0], cur.id1, ins->r[1]);
             intersect(ins->r[0], ins);  // FIX: order matters on intersect, lowest should be first
@@ -167,8 +173,8 @@ int main()
         }
         if (cur.x.y == 1)
         {
-            printf("%lf %lf\n", cur.x.x, slopes[cur.y.x]*(cur.x.x-segs[cur.y.x].x.x)+segs[cur.y.x].x.y);
-            printf("sweep %lf: crossing between lines %d and %d\n", sweep, cur.id1, cur.id2);
+            if (DEBUG) printf("%lf %lf\n", cur.x.x, slopes[cur.y.x]*(cur.x.x-segs[cur.y.x].x.x)+segs[cur.y.x].x.y);
+            if (DEBUG) printf("sweep %lf: crossing between lines %d and %d\n", sweep, cur.id1, cur.id2);
             Node *lo = locate(root, cur.id1);
             Node *hi = locate(root, cur.id2);
             //printf("got %x and %x\n", lo, hi);
@@ -183,18 +189,16 @@ int main()
         }
         if (cur.x.y == 2)
         {
-            printf("sweep %lf: deleting line %d\n", sweep, cur.id1);
+            if (DEBUG) printf("sweep %lf: deleting line %d\n", sweep, cur.id1);
             Node *rem = locate(root, cur.id1);
-            printf("gotten %x\n", rem); fflush(stdout);
             Node *lo = rem->r[0], *hi = rem->r[1];
-            printf("gotten2\n"); fflush(stdout);
             remove(root, cur.id1);
-            printf("deleted, about to intersect %x %x\n", lo, hi); fflush(stdout);
+            //printf("deleted, about to intersect %x %x\n", lo, hi); fflush(stdout);
             //printf("    would check %xx%x\n", rem->r[0], rem->r[1]);
             intersect(lo, hi);
-            printf("intersected\n"); fflush(stdout);
+            //printf("intersected\n"); fflush(stdout);
         }
-        dump(root); printf("\n");
+        dump(root); if (DEBUG) printf("\n");
     }
 }
 
