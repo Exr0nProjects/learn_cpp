@@ -1,6 +1,7 @@
 // 13 July 2020
 // don't allow concurrent lines or vertical lines
 
+#include <set>
 #include <queue>
 #include <cmath>
 #include <cstdio>
@@ -19,12 +20,13 @@ typedef pair<pair<dl, dl>, pair<dl, dl> > Seg;
 typedef pair<pair<dl, int>, pair<int, int> > Event; // x-pos, type{0: new, 1: cross, 2: remove}, {id, 0 for event 0,2; id, id}
 const int MX = 1000111;
 const dl tiny = 0.0000000001;
-const bool DEBUG = 1;
+const bool DEBUG = 0;
 int N;
 Seg segs[MX];
 dl slopes[MX];
 dl sweep = 0;   // x pos of the sweep line
-priority_queue<Event, deque<Event>, greater<Event> > events;
+//priority_queue<Event, deque<Event>, greater<Event> > events;
+set<Event> events;
 
 bool cmp(int lhs, int rhs)
 {
@@ -137,7 +139,7 @@ void intersect(Node *_a, Node *_b)
         && segs[b].x.x <= x && x <= segs[b].y.x)
     {
         if (DEBUG) printf("\n\n##################\n\nINTERSECTION BETWEEN %d AND %d AT %lf\n\n##################\n\n", a, b, x);
-        events.push(mp(mp(x, 1), mp(a, b)));
+        events.insert(mp(mp(x, 1), mp(a, b)));
     }
 }
 
@@ -155,12 +157,13 @@ int main()
     {
         slopes[i] = (segs[i].x.y-segs[i].y.y)/(segs[i].x.x-segs[i].y.x);
         //printf("line %d: %lf,%lf .. %lf,%lf with slope %lf\n", i, segs[i].x.x, segs[i].x.y, segs[i].y.x, segs[i].y.y, slopes[i]);
-        events.push(mp(mp(segs[i].x.x, 0), mp(i, i)));  // push insertion event
-        events.push(mp(mp(segs[i].y.x, 2), mp(i, i)));  // push deletion event
+        events.insert(mp(mp(segs[i].x.x, 0), mp(i, i)));  // push insertion event
+        events.insert(mp(mp(segs[i].y.x, 2), mp(i, i)));  // push deletion event
     }
     while (!events.empty())
     {
-        Event cur = events.top(); events.pop();
+        //Event cur = events.top(); events.pop();
+        Event cur = *events.begin(); events.erase(events.begin());
         //sweep = cur.x.x - tiny; // FIX: do crossing math right before crossing so order is preserved before swap
         sweep = max(sweep, cur.x.x - tiny); // FIX: don't step back after a crossing changes tree?
         if (cur.x.y == 0)
