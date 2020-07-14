@@ -39,9 +39,9 @@ pair<bool, Point> intersect(Seg s1, Seg s2)
     if (s2.first > s2.second) swap(s2.first, s2.second);
 
     if (s1.first.first == s1.second.first) 		// first line vertical
-        return verticalIntersect(s2, s1.first.first);
+        return verticalIntersect(s2, s1.first.first, s1.first.second, s1.second.second);
     else if (s2.first.first == s2.second.first)		// second line vertical
-        return verticalIntersect(s1, s2.first.first);
+        return verticalIntersect(s1, s2.first.first, s2.first.second, s2.second.second);
 
     dl m1 = (s1.first.second - s1.second.second) / (s1.first.first - s1.second.first);
     dl m2 = (s2.first.second - s2.second.second) / (s2.first.first - s2.second.first);
