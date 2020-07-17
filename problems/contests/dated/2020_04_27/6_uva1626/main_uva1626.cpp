@@ -75,7 +75,7 @@ char op(char c)
 
 int main()
 {
-	scanf("%d", &kase);
+	scanf("%d\n", &kase);
 	kase *= 2;
 	while (kase --)
 	{
@@ -84,12 +84,13 @@ int main()
 		char c;
 		while (scanf("%c", &c))
 		{
+            //printf("hrm '%c'\n", c); fflush(stdout);
 			if (c == '\n') break;
 			if (c == '(' || c == '[')
 				opened.push(c);
 			else
 			{
-				printf("char: %c, top: %c\n", c, opened.top());
+				//printf("char: %c, top: %c\n", c, opened.empty() ? 0 : opened.top()); fflush(stdout);
 				if (!opened.empty())
 				{
 					while (op(c) != opened.top())
