@@ -7,7 +7,7 @@ LANG: C++14
  * Problem uva1626 (contests/dated/2020_04_27/uva1626)
  * Create time: Wed 29 Apr 2020 @ 12:42 (PDT)
  * Accept time: [!meta:end!]
- *
+ *  RE on test case `))`
  */
 
 #include <iostream>
@@ -56,10 +56,8 @@ LANG: C++14
 #define FORR(i, e) FORR_(i, 0, e)
 #define TRAV(a, x) for (auto &a : x)
 
-void setIO(const std::string &name = "uva1626");
-
 using namespace std;
-const int MX = 211;
+const int MX = 2011;
 stack<char> opened;
 char out[MX];
 int kase;
@@ -71,6 +69,8 @@ char op(char c)
 		for (int j=0; j<2; ++j)
 			if (c == pairs[i][j])
 				return pairs[i][1-j];
+    printf("uh oh spaghetio\n");
+    return 0;
 }
 
 int main()
@@ -87,7 +87,7 @@ int main()
 			if (c == '\n') break;
 			if (c == '(' || c == '[')
 				opened.push(c);
-			else 
+			else
 			{
 				printf("char: %c, top: %c\n", c, opened.top());
 				if (!opened.empty())
@@ -115,13 +115,3 @@ int main()
     return 0;
 }
 
-void setIO(const string &name)
-{
-    ios_base::sync_with_stdio(0);
-    cin.tie(0); // fast cin/cout
-    if (fopen((name + ".in").c_str(), "r") != nullptr)
-    {
-        freopen((name + ".in").c_str(), "r", stdin);
-        freopen((name + ".out").c_str(), "w+", stdout);
-    }
-}

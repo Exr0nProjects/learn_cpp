@@ -21,9 +21,9 @@ AC | 6 | uni directional tsp | [116](https://onlinejudge.org/index.php?option=co
 AC | 7 | jin ge jin qu hao | [12563](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=4008)
 . | 8 | lighting system design | [11400](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=2395)
 AC | 9 | partition by palendromes | [11584](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=2631)
-. | 10 | color length | [1625](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=4500)
-. | 11 | bracket sequence | [1626](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=4501)
-. | 12 | minmax triangluation | [1331](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=4077)
+equ? | 10 | color length | [1625](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=4500)
+WA | 11 | bracket sequence | [1626](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=4501)
+AC | 12 | minmax triangluation | [1331](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=4077)
 AC | 13 | another crisis | [12186](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=3338)
 AC | 14 | party at hali-bula | [1220](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=3661)
   | unknown
