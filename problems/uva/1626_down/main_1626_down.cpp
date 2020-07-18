@@ -43,6 +43,7 @@
 
 using namespace std;
 const ll MX = -1;
+string inp;
 
 char ope(char c) // oposite
 {
@@ -56,21 +57,28 @@ char ope(char c) // oposite
     return 'x';
 }
 
-map<string, string> dps;
-string dp(string s, int lay=1)
+string MIN(const string &lhs, const string &rhs)
 {
-    //for (int i=0; i<lay; ++i) printf("|   "); printf("%s\n", s.c_str());
-    if (s.size() == 0) return s;
-    if (s.size() == 1) return s[0] == '(' || s[0] == '[' ? s + ope(s[0]) : string(1, ope(s[0])) + s;
-    if (dps.count(s)) return dps[s];
-    dps[s] = dp(s.substr(0, 1), lay+1) + dp(s.substr(1), lay+1);
-    for (int k=2; k<s.size(); ++k)
-        dps[s] = min(dps[s], dp(s.substr(0, k), lay+1) + dp(s.substr(k), lay+1));
-    //for (int i=0; i<lay; ++i) printf("|   "); printf("%c == %c ?\n", s[0], *s.rbegin());
-    if (ope(s[0]) == *s.rbegin()) dps[s] = min(dps[s],
-            string(1, s[0]) + dp(s.substr(1, s.size()-2), lay+1) + string(1, ope(s[0])));
-    //for (int i=0; i<lay; ++i) printf("|   "); printf("=> %s\n", dps[s].c_str());
-    return dps[s];
+    return lhs.size() < rhs.size() ? lhs : rhs;
+}
+
+map<pair<int, int>, string> dps;
+string dp(int l, int r, int lay=1)
+{
+    //for (int i=0; i<lay; ++i) printf("|   "); printf("%d..%d\n", l, r);
+    if (l > r) return "";
+    if (l == r) return min(string({inp[l], ope(inp[l])}), string({ope(inp[l]), inp[l]}));
+    if (dps.count(mp(l, r))) return dps[mp(l, r)];
+    string ret = dp(l, l, lay+1) + dp(l+1, r, lay+1);
+    for (int k=l+2; k<r; ++k)
+        ret = MIN(ret, dp(l, k, lay+1) + dp(k+1, r, lay+1));
+    //for (int i=0; i<lay; ++i) printf("|   "); printf("%c == %c ?\n", inp[l], inp[r]);
+    //if (ope(s[0]) == *s.rbegin())
+    if (inp[l] == ope(inp[r])) ret = MIN(ret,
+            string(1, inp[l]) + dp(l+1, r-1, lay+1) + inp[r]);
+    //printf("MIN{ %s , %s } = %s\n", ret.c_str(), (string(1, inp[l]) + dp(l+1, r-1, lay+1) + inp[r]).c_str(), min(ret, string(1, inp[l]) + dp(l+1, r-1, lay+1) + inp[r]).c_str());
+    //for (int i=0; i<lay; ++i) printf("|   "); printf("=> %s\n", ret.c_str());
+    return dps[mp(l, r)] = ret;
 }
 
 int main()
@@ -78,9 +86,9 @@ int main()
     int cs; scanf("%d", &cs);
     while (cs--)
     {
-        string s;
-        cin >> s;
-        cout << dp(s) << endl;
+        dps.clear();
+        cin >> inp;
+        cout << dp(0, inp.size()-1) << endl;
         if (cs-1) cout << endl;
     }
 
