@@ -74,7 +74,7 @@ int dp(int l, int r, int lay=1)
     if (dps.count(mp(l, r))) return dps[mp(l, r)];
 
     int ret = dp(l, l, lay+1) + dp(l+1, r, lay+1);
-    int split = 1;
+    int split = 0;
     for (int k=l+2; k<r; ++k)
         if (dp(l, k) + dp(k+1, r) < ret)
             ret = dp(l, k) + dp(k+1, r),
@@ -93,18 +93,20 @@ int dp(int l, int r, int lay=1)
 
 void print(int l, int r, int lay=1)
 {
+    //for (int i=0; i<lay; ++i) printf("|   "); printf("%d..%d\n", l, r);
     if (l > r) return;
     if (l == r) cout << min(string({inp[l], ope(inp[l])}), string({ope(inp[l]), inp[l]}));
     else if (inp[l] == ope(inp[r]))
     {
         printf("%c", inp[l]);
-        print(l+1, r-1);
+        print(l+1, r-1, lay+1);
         printf("%c", inp[r]);
     }
     else
     {
-        print(l, from[l][r]);
-        print(from[l][r]+1, r);
+        //printf("from[%d][%d] = %d\n", l, r, from[l][r]);
+        print(l, l+from[l][r], lay+1);
+        print(l+from[l][r]+1, r, lay+1);
     }
 }
 
@@ -116,8 +118,9 @@ int main()
         dps.clear();
         memset(from, 0, sizeof from);
         cin >> inp;
-        cout << "min len = " << dp(0, inp.size()-1) << endl;
+        //cout << "min len = " << dp(0, inp.size()-1) << endl;
         print(0, inp.size()-1);
+        printf("\n");
         if (cs-1) cout << endl;
     }
 
