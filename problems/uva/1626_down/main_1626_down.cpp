@@ -42,7 +42,7 @@
 #define rr (tl+((tr-tl)>>1)+1), tr
 
 using namespace std;
-const ll MX = -1;
+const ll MX = 111;
 string inp;
 
 char ope(char c) // oposite
@@ -62,23 +62,50 @@ string MIN(const string &lhs, const string &rhs)
     return lhs.size() < rhs.size() ? lhs : rhs;
 }
 
-map<pair<int, int>, string> dps;
-string dp(int l, int r, int lay=1)
+map<pair<int, int>, int> dps;
+int from[MX][MX];
+//map<pair<int, int>, pair<int, int> > from;
+int dp(int l, int r, int lay=1)
 {
     //for (int i=0; i<lay; ++i) printf("|   "); printf("%d..%d\n", l, r);
-    if (l > r) return "";
-    if (l == r) return min(string({inp[l], ope(inp[l])}), string({ope(inp[l]), inp[l]}));
+    if (l > r) return 0;
+    //if (l == r) return min(string({inp[l], ope(inp[l])}), string({ope(inp[l]), inp[l]}));
+    if (l == r) return 2;
     if (dps.count(mp(l, r))) return dps[mp(l, r)];
-    string ret = dp(l, l, lay+1) + dp(l+1, r, lay+1);
+
+    int ret = dp(l, l, lay+1) + dp(l+1, r, lay+1);
+    int split = 1;
     for (int k=l+2; k<r; ++k)
-        ret = MIN(ret, dp(l, k, lay+1) + dp(k+1, r, lay+1));
+        if (dp(l, k) + dp(k+1, r) < ret)
+            ret = dp(l, k) + dp(k+1, r),
+            split = k;
+        //ret = min(ret, dp(l, k, lay+1) + dp(k+1, r, lay+1));
+
     //for (int i=0; i<lay; ++i) printf("|   "); printf("%c == %c ?\n", inp[l], inp[r]);
     //if (ope(s[0]) == *s.rbegin())
-    if (inp[l] == ope(inp[r])) ret = MIN(ret,
-            string(1, inp[l]) + dp(l+1, r-1, lay+1) + inp[r]);
+
+    if (inp[l] == ope(inp[r]) && dp(l+1, r-1) +2 < ret) ret = dp(l+1, r-1)+2, split=0;
     //printf("MIN{ %s , %s } = %s\n", ret.c_str(), (string(1, inp[l]) + dp(l+1, r-1, lay+1) + inp[r]).c_str(), min(ret, string(1, inp[l]) + dp(l+1, r-1, lay+1) + inp[r]).c_str());
     //for (int i=0; i<lay; ++i) printf("|   "); printf("=> %s\n", ret.c_str());
+    from[l][r] = split;
     return dps[mp(l, r)] = ret;
+}
+
+void print(int l, int r, int lay=1)
+{
+    if (l > r) return;
+    if (l == r) cout << min(string({inp[l], ope(inp[l])}), string({ope(inp[l]), inp[l]}));
+    else if (inp[l] == ope(inp[r]))
+    {
+        printf("%c", inp[l]);
+        print(l+1, r-1);
+        printf("%c", inp[r]);
+    }
+    else
+    {
+        print(l, from[l][r]);
+        print(from[l][r]+1, r);
+    }
 }
 
 int main()
@@ -87,8 +114,10 @@ int main()
     while (cs--)
     {
         dps.clear();
+        memset(from, 0, sizeof from);
         cin >> inp;
-        cout << dp(0, inp.size()-1) << endl;
+        cout << "min len = " << dp(0, inp.size()-1) << endl;
+        print(0, inp.size()-1);
         if (cs-1) cout << endl;
     }
 
