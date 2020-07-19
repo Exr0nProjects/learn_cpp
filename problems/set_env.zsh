@@ -11,7 +11,7 @@ alias ans='g++ -std=c++11 answer*.cpp -o answer && ./answer && cat *.out'
 check () {
 	setopt LOCAL_OPTIONS NO_NOTIFY NO_MONITOR
 
-	GEN_CMD="py gen.py"
+	GEN_CMD="python gen.py"
 	if [[ -f "gen.cpp" ]]; then
 		g++ --std=c++11 gen.cpp -o casegen
 		GEN_CMD="./casegen"
