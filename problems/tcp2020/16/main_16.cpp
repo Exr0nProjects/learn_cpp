@@ -2,7 +2,7 @@
 #include <algorithm>
 using namespace std;
 
-const int MX = 1e8 + 100;
+const int MX = 1e7 + 100;
 int N, bit[MX], ans[MX];
 pair<int, int> stars[MX];
 
@@ -10,7 +10,7 @@ void update(int n)
 {
     for (; n<=MX; n += n&-n)
     {
-        printf("updating %d\n", n);
+        //printf("updating %d\n", n);
         ++bit[n];
     }
 }
@@ -27,10 +27,11 @@ int main()
     scanf("%d", &N);
     for (int i=0; i<N; ++i)
         scanf("%d%d", &stars[i].first, &stars[i].second);
-    printf("how segfalut\n");
+    //printf("how segfalut\n");
     sort(stars, stars+N);
     for (int i=0; i<N; ++i)
     {
+        //printf("%d, %d\n", stars[i].first, stars[i].second);
         ++ans[query(stars[i].second)];
         update(stars[i].second);
     }
