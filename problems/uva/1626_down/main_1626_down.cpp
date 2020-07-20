@@ -57,19 +57,12 @@ char ope(char c) // oposite
     return 'x';
 }
 
-string MIN(const string &lhs, const string &rhs)
-{
-    return lhs.size() < rhs.size() ? lhs : rhs;
-}
-
 map<pair<int, int>, int> dps;
 int from[MX][MX];
-//map<pair<int, int>, pair<int, int> > from;
 int dp(int l, int r, int lay=1)
 {
     //for (int i=0; i<lay; ++i) printf("|   "); printf("%d..%d: ", l, r); for (int i=l; i<=r; ++i) printf("%c", inp[i]); printf("\n");
     if (l > r) return 0;
-    //if (l == r) return min(string({inp[l], ope(inp[l])}), string({ope(inp[l]), inp[l]}));
     if (l == r) return 2;
     if (dps.count(mp(l, r))) return dps[mp(l, r)];
 
@@ -83,20 +76,15 @@ int dp(int l, int r, int lay=1)
         if (cost < ret)
         {
             //for (int i=0; i<lay; ++i) printf("|   "); printf("min ^^^\n");
-            //ret = dp(l, k, lay+1) + dp(k+1, r, lay+1),
             ret = cost,
             split = k;
         }
     }
-        //ret = min(ret, dp(l, k, lay+1) + dp(k+1, r, lay+1));
 
     //for (int i=0; i<lay; ++i) printf("|   "); printf("%c == %c ?\n", inp[l], inp[r]);
-    //if (ope(s[0]) == *s.rbegin())
 
     // FIX: need to check if inp[l] < inp[r] for across bracket match, else it will match )( as a pair
     if (inp[l] == ope(inp[r]) && inp[l] < inp[r] && dp(l+1, r-1, lay+1) +2 < ret) ret = dp(l+1, r-1, lay+1)+2, split=-1;
-    //printf("MIN{ %s , %s } = %s\n", ret.c_str(), (string(1, inp[l]) + dp(l+1, r-1, lay+1) + inp[r]).c_str(), min(ret, string(1, inp[l]) + dp(l+1, r-1, lay+1) + inp[r]).c_str());
-    //for (int i=0; i<lay; ++i) printf("|   "); printf("=> %s\n", ret.c_str());
     //for (int i=0; i<lay; ++i) printf("|   "); printf("=> %d\n", ret);
     from[l][r] = split;
     return dps[mp(l, r)] = ret;
@@ -108,7 +96,7 @@ void print(int l, int r, int lay=1)
     if (l > r) return;
     //for (int i=0; i<lay; ++i) printf("|   "); printf("%d..%d: %d\n", l, r, from[l][r]);
     if (l == r) cout << min(string({inp[l], ope(inp[l])}), string({ope(inp[l]), inp[l]}));
-    //else if (inp[l] == ope(inp[r]) && inp[l] < inp[r])
+    //if (l == r) cout << "()";
     else if (from[l][r] < 0)
     {
         printf("%c", inp[l]);
