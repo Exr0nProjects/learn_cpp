@@ -5,30 +5,11 @@
  *
  */
 
+#include <string>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
-#include <sstream>
 #include <iostream>
-#include <tuple>
-#include <vector>
-#include <string>
-#include <list>
-#include <array>
-#include <queue>
-#include <stack>
-#include <set>
-#include <map>
-#include <unordered_set>
-#include <unordered_map>
-#include <cmath>
-#include <random>
-#include <chrono>
-#include <utility>
-#include <iterator>
-#include <exception>
-#include <algorithm>
-#include <functional>
 
 #define ll long long
 #define dl double
@@ -42,7 +23,7 @@
 #define rr (tl+((tr-tl)>>1)+1), tr
 
 using namespace std;
-const ll MX = 111;
+const ll MX = 10011;
 string inp;
 
 char ope(char c) // oposite
@@ -114,7 +95,7 @@ void print(int l, int r, int lay=1)
 
 int main()
 {
-    int cs; scanf("%d", &cs);
+    int cs, g=0; scanf("%d", &cs);
     while (cs--)
     {
         memset(from, 0, sizeof from);
@@ -122,9 +103,9 @@ int main()
         cin >> inp;
         dp(0, inp.size()-1);
         //cout << "min len = " << dp(0, inp.size()-1) << endl;
+        if (g) printf("\n"); g=1;
         print(0, inp.size()-1);
         printf("\n");
-        //if (cs-1) cout << endl;
     }
 
 	return 0;
