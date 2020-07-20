@@ -57,14 +57,15 @@ char ope(char c) // oposite
     return 'x';
 }
 
-map<pair<int, int>, int> dps;
+//map<pair<int, int>, int> dps;
+int dps[MX][MX];
 int from[MX][MX];
 int dp(int l, int r, int lay=1)
 {
     //for (int i=0; i<lay; ++i) printf("|   "); printf("%d..%d: ", l, r); for (int i=l; i<=r; ++i) printf("%c", inp[i]); printf("\n");
     if (l > r) return 0;
     if (l == r) return 2;
-    if (dps.count(mp(l, r))) return dps[mp(l, r)];
+    if (dps[l][r]) return dps[l][r];
 
     int ret = dp(l, l, lay+1) + dp(l+1, r, lay+1);
     //for (int i=0; i<lay; ++i) printf("|   "); printf("start %d\n", ret);
@@ -87,7 +88,7 @@ int dp(int l, int r, int lay=1)
     if (inp[l] == ope(inp[r]) && inp[l] < inp[r] && dp(l+1, r-1, lay+1) +2 < ret) ret = dp(l+1, r-1, lay+1)+2, split=-1;
     //for (int i=0; i<lay; ++i) printf("|   "); printf("=> %d\n", ret);
     from[l][r] = split;
-    return dps[mp(l, r)] = ret;
+    return dps[l][r] = ret;
 }
 
 void print(int l, int r, int lay=1)
@@ -116,8 +117,8 @@ int main()
     int cs; scanf("%d", &cs);
     while (cs--)
     {
-        dps.clear();
         memset(from, 0, sizeof from);
+        memset(dps, 0, sizeof from);
         cin >> inp;
         dp(0, inp.size()-1);
         //cout << "min len = " << dp(0, inp.size()-1) << endl;
