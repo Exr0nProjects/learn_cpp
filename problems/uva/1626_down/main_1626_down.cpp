@@ -67,26 +67,37 @@ int from[MX][MX];
 //map<pair<int, int>, pair<int, int> > from;
 int dp(int l, int r, int lay=1)
 {
-    //for (int i=0; i<lay; ++i) printf("|   "); printf("%d..%d\n", l, r);
+    //for (int i=0; i<lay; ++i) printf("|   "); printf("%d..%d: ", l, r); for (int i=l; i<=r; ++i) printf("%c", inp[i]); printf("\n");
     if (l > r) return 0;
     //if (l == r) return min(string({inp[l], ope(inp[l])}), string({ope(inp[l]), inp[l]}));
     if (l == r) return 2;
     if (dps.count(mp(l, r))) return dps[mp(l, r)];
 
     int ret = dp(l, l, lay+1) + dp(l+1, r, lay+1);
-    int split = 0;
-    for (int k=l+2; k<r; ++k)
-        if (dp(l, k) + dp(k+1, r) < ret)
-            ret = dp(l, k) + dp(k+1, r),
+    //for (int i=0; i<lay; ++i) printf("|   "); printf("start %d\n", ret);
+    int split = l;
+    for (int k=l+1; k<r; ++k)
+    {
+        //for (int i=0; i<lay; ++i) printf("|   "); printf("--\n");
+        int cost = dp(l, k, lay+1) + dp(k+1, r, lay+1);
+        if (cost < ret)
+        {
+            //for (int i=0; i<lay; ++i) printf("|   "); printf("min ^^^\n");
+            //ret = dp(l, k, lay+1) + dp(k+1, r, lay+1),
+            ret = cost,
             split = k;
+        }
+    }
         //ret = min(ret, dp(l, k, lay+1) + dp(k+1, r, lay+1));
 
     //for (int i=0; i<lay; ++i) printf("|   "); printf("%c == %c ?\n", inp[l], inp[r]);
     //if (ope(s[0]) == *s.rbegin())
 
-    if (inp[l] == ope(inp[r]) && dp(l+1, r-1) +2 < ret) ret = dp(l+1, r-1)+2, split=0;
+    // FIX: need to check if inp[l] < inp[r] for across bracket match, else it will match )( as a pair
+    if (inp[l] == ope(inp[r]) && inp[l] < inp[r] && dp(l+1, r-1, lay+1) +2 < ret) ret = dp(l+1, r-1, lay+1)+2, split=-1;
     //printf("MIN{ %s , %s } = %s\n", ret.c_str(), (string(1, inp[l]) + dp(l+1, r-1, lay+1) + inp[r]).c_str(), min(ret, string(1, inp[l]) + dp(l+1, r-1, lay+1) + inp[r]).c_str());
     //for (int i=0; i<lay; ++i) printf("|   "); printf("=> %s\n", ret.c_str());
+    //for (int i=0; i<lay; ++i) printf("|   "); printf("=> %d\n", ret);
     from[l][r] = split;
     return dps[mp(l, r)] = ret;
 }
@@ -95,8 +106,10 @@ void print(int l, int r, int lay=1)
 {
     //for (int i=0; i<lay; ++i) printf("|   "); printf("%d..%d\n", l, r);
     if (l > r) return;
+    //for (int i=0; i<lay; ++i) printf("|   "); printf("%d..%d: %d\n", l, r, from[l][r]);
     if (l == r) cout << min(string({inp[l], ope(inp[l])}), string({ope(inp[l]), inp[l]}));
-    else if (inp[l] == ope(inp[r]))
+    //else if (inp[l] == ope(inp[r]) && inp[l] < inp[r])
+    else if (from[l][r] < 0)
     {
         printf("%c", inp[l]);
         print(l+1, r-1, lay+1);
@@ -104,9 +117,9 @@ void print(int l, int r, int lay=1)
     }
     else
     {
-        //printf("from[%d][%d] = %d\n", l, r, from[l][r]);
-        print(l, l+from[l][r], lay+1);
-        print(l+from[l][r]+1, r, lay+1);
+        //for (int i=0; i<lay; ++i) printf("|   "); printf("from[%d][%d] = %d\n", l, r, from[l][r]);
+        print(l, from[l][r], lay+1);
+        print(from[l][r]+1, r, lay+1);
     }
 }
 
@@ -118,10 +131,11 @@ int main()
         dps.clear();
         memset(from, 0, sizeof from);
         cin >> inp;
+        dp(0, inp.size()-1);
         //cout << "min len = " << dp(0, inp.size()-1) << endl;
         print(0, inp.size()-1);
         printf("\n");
-        if (cs-1) cout << endl;
+        //if (cs-1) cout << endl;
     }
 
 	return 0;
