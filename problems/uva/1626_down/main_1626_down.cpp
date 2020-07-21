@@ -13,8 +13,8 @@
 
 using namespace std;
 const int MX = 1011;
-//string inp;
-char inp[MX];
+string inp;
+//char inp[MX];
 
 bool ismatch(int i, int j)
 {
@@ -46,8 +46,8 @@ int dp(int l, int r, int lay=1)
     if (dps[l][r]) return dps[l][r];
 
     int ret = dp(l, l, lay+1) + dp(l+1, r, lay+1);
-    //for (int i=0; i<lay; ++i) printf("|   "); printf("start %d\n", ret);
     int split = l;
+    //for (int i=0; i<lay; ++i) printf("|   "); printf("start %d\n", ret);
     for (int k=l+1; k<r; ++k)
     {
         //for (int i=0; i<lay; ++i) printf("|   "); printf("--\n");
@@ -103,26 +103,28 @@ int main()
     {
         memset(from, 0, sizeof from);
         memset(dps, 0, sizeof dps); // FIX: typo--sizeof dps not sizeof from
-        memset(inp, 0, sizeof inp);
-        //cin >> inp;
-        //dp(0, inp.size()-1);
-        scanf("\n");
-        int len;
-        for (len=0;; ++len)
-        {
-            inp[len] = getchar();
-            if (inp[len] == '\n') {
-                inp[len] = 0;
-                break;
-            }
-            //printf("%d : %c\n", len, inp[len]);
-        }
-        //printf("len %d\n", len);
-        dp(0, len-1);
+        //memset(inp, 0, sizeof inp);
+        inp.clear();
+        cin >> inp;
+        dp(0, inp.size()-1);
+        //scanf("\n");
+        //int len;
+        //for (len=0;; ++len)
+        //{
+        //    inp[len] = getchar();
+        //    if (inp[len] == '\n') {
+        //        inp[len] = 0;
+        //        break;
+        //    }
+        //    //printf("%d : %c\n", len, inp[len]);
+        //}
+        ////printf("len %d\n", len);
+        //dp(0, len-1);
+
         //cout << "min len = " << dp(0, inp.size()-1) << endl;
         //if (g) printf("\n"); g=1;
-        //print(0, inp.size()-1);
-        print(0, len-1);
+        print(0, inp.size()-1);
+        //print(0, len-1);
         printf("\n");
         if (cs) printf("\n");
     }
