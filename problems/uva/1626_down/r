@@ -1,0 +1,16 @@
+total 184
+drwxr-xr-x  15 exr0n  staff   480B Jul 21 12:18 .
+drwxr-xr-x   6 exr0n  staff   192B Jul 18 09:01 ..
+-rw-r--r--   1 exr0n  staff   153B Jul 18 09:01 Makefile
+-rwxr-xr-x   1 exr0n  staff    13K Jul 20 13:25 answer
+lrwxr-xr-x   1 exr0n  staff    60B Jul 20 12:06 answer_ad.cpp -> ../../../notes/resources/answer_ad/USACO/bracketsequence.cpp
+-rw-r--r--   1 exr0n  staff   2.0K Jul 21 11:29 answer_internet.cpp
+-rwxr-xr-x   1 exr0n  staff    19K Jul 21 12:18 auto
+-rwxr-xr-x   1 exr0n  staff    12K Jul 21 12:17 casegen
+-rw-r--r--   1 exr0n  staff   587B Jul 20 13:08 checker.sh
+-rw-r--r--   1 exr0n  staff   940B Jul 21 12:17 correct.diff
+-rw-r--r--   1 exr0n  staff   1.3K Jul 21 12:17 debug.diff
+-rw-r--r--   1 exr0n  staff   393B Jul 20 13:21 gen.cpp
+-rw-r--r--   1 exr0n  staff   2.9K Jul 21 12:18 main_1626_down.cpp
+-rw-r--r--   1 exr0n  staff     0B Jul 21 12:18 r
+-rw-r--r--   1 exr0n  staff   9.4K Jul 21 12:17 test.in
