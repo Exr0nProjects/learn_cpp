@@ -19,57 +19,59 @@ bool match(int i, int j)
     return false;
 }
 
-void print(int i,int j)
+void print(int l, int r)
 {
-    //printf("\n%d %d\n",i,j);
-    if(i>j) return;
-    if(i==j)
+    //printf("\n%d %d\n",l,r);
+    if (l > r) return;
+    if (l == r)
     {
-        if(S[i] == '(' || S[i]==')') printf("()");
+        if (S[l] == '(' || S[l] == ')') printf("()");
         else printf("[]");
-    }
-    if (match(i, j) && dp[i][j]==dp[i+1][j-1])
-    {
-        printf("%c",S[i]);
-        print(i+1,j-1);
-        printf("%c",S[j]);
         return;
     }
-    for(int k = i; k<j; k++)
+    else if (match(l, r) && dp[l][r] == dp[l+1][r-1])
     {
-        if(dp[i][j] == (dp[i][k] + dp[k+1][j]))
+        printf("%c", S[l]);
+        print(l+1, r-1);
+        printf("%c", S[r]);
+        return;
+    }
+    for (int k=l; k<r; ++k)
+    {
+        if (dp[l][r] == dp[l][k] + dp[k+1][r])
         {
-            print(i,k);
-            print(k+1,j);
-            return;
+            print(l, k);
+            print(k+1, r);
+            break;
         }
     }
 }
 
 int main ()
 {
-    int N;
-    scanf("%d",&N);
+    int cs;
+    scanf("%d", &cs);
     getchar();
     //freopen("out.txt","w",stdout);
-    while(N--)
+    while (cs--)
     {
         //scanf("%s",S+1);
         getchar();
-        for(int i = 1;; i++)
+        for (int i=1;; ++i)
         {
             S[i] = getchar();
-            if(S[i] == '\n')
+            if (S[i] == '\n')
             {
-                S[i]='\0';
+                S[i] = '\0';
                 break;
             }
         }
         int len = strlen(S+1);
 
-        for(int i = 1; i<=len; i++) dp[i][i] = 1,dp[i][i+1] = 0;
+        for (int i=1; i<=len; ++i) dp[i][i] = 1;
 
-        for(int i = len-1; i>=1; i--)
+        for (int i=len-1; i>=1; i--)
+        //for (int i=1; i<len; ++i)
         {
             for(int j = i+1; j<=len; j++)
             {
@@ -87,7 +89,7 @@ int main ()
 
         print(1,len);
         printf("\n");
-        if(N!=0) printf("\n");
+        if(cs!=0) printf("\n");
     }
     //fclose(stdin);
 }

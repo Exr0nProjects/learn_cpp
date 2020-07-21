@@ -15,6 +15,8 @@
 using namespace std;
 //string S;
 char S[maxn];
+int dp[maxn][maxn];
+int from[maxn][maxn];
 
 bool match(int i, int j)
 {
@@ -23,11 +25,7 @@ bool match(int i, int j)
     return false;
 }
 
-//map<pair<int, int>, int> dps;
-int dp[maxn][maxn];
-int from[maxn][maxn];
-
-void print(int l, int r, int lay=1)
+void print(int l, int r)
 {
     //for (int i=0; i<lay; ++i) printf("|   "); printf("%d..%d\n", l, r);
     if (l > r) return;
@@ -36,35 +34,40 @@ void print(int l, int r, int lay=1)
     {
         if (S[l] == '(' || S[l] == ')') printf("()");
         else printf("[]");
+        return;
     }
-    //else if (match(l, r) && dp(l, r) == dp(l+1, r-1))
-    else if (from[l][r] < 0)
+    else if (match(l, r) && dp[l][r] == dp[l+1][r-1])
+    //else if (from[l][r] < 0)
     {
         printf("%c", S[l]);
-        print(l+1, r-1, lay+1);
+        print(l+1, r-1);
         printf("%c", S[r]);
+        return;
     }
-    else
+    for (int k=l; k<r; ++k)
     {
-        //for (int k=l; k<r; ++k)
-        //    if (dp(l, r) == dp(l, k) + dp(k+1, r))
-        int k = from[l][r];
-        if (k < l) { printf("uh %d %d, %d\n", l, r, k); return; }
-            {
-                print(l, k, lay+1);
-                print(k+1, r, lay+1);
-                //break;
-            }
+        if (dp[l][r] == dp[l][k] + dp[k+1][r])
+        {
+            //int k = from[l][r];
+            //if (k < l) { printf("uh %d %d, %d\n", l, r, k); return; }
+            //{
+            print(l, k);
+            print(k+1, r);
+            break;
+            //}
+        }
     }
 }
 
 int main()
 {
-    int cs, g=0; scanf("%d\n", &cs);
+    int cs;
+    scanf("%d", &cs);
+    getchar();
     while (cs--)
     {
-        memset(from, 0, sizeof from);
-        memset(dp, 0, sizeof dp); // FIX: typo--sizeof dp not sizeof from
+        //memset(from, 0, sizeof from);
+        //memset(dp, 0, sizeof dp); // FIX: typo--sizeof dp not sizeof from
         //memset(s, 0, sizeof s);
 
         scanf("\n");
@@ -72,8 +75,9 @@ int main()
         for (N=0;; ++N)
         {
             S[N] = getchar();
-            if (S[N] == '\n') {
-                S[N] = 0;
+            if (S[N] == '\n')
+            {
+                S[N] = '\0';
                 break;
             }
             //printf("%d : %c\n", len, s[len]);
@@ -82,11 +86,12 @@ int main()
         //cin >> S;
         //int N = S.size();
 
-        for (int i=0; i<=maxn; ++i) dp[i][i] = 1;
+        for (int i=0; i<=N; ++i) dp[i][i] = 1;
 
         for (int ln=1; ln<N; ++ln)
             for (int l=0, r=l+ln; r<N; ++l, ++r)
             {
+                //printf("%d..%d\n", l, r);
                 int ret=dp[l][l]+dp[l+1][r], split = l;
                 for (int k=l+1; k<r; ++k)
                     if (ret > dp[l][k] + dp[k+1][r])
