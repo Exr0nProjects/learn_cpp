@@ -25,10 +25,10 @@ bool match(int i, int j)
 
 //map<pair<int, int>, int> dps;
 int dps[maxn][maxn];
-int from[maxn][maxn];
+//int from[maxn][maxn];
 int dp(int l, int r, int lay=1)
 {
-    for (int i=0; i<lay; ++i) printf("|   "); printf("%d..%d: ", l, r); for (int i=l; i<=r; ++i) printf("%c", S[i]); printf("\n");
+    //for (int i=0; i<lay; ++i) printf("|   "); printf("%d..%d: ", l, r); for (int i=l; i<=r; ++i) printf("%c", S[i]); printf("\n");
     if (l > r) return 0;
     if (l == r) return 1;
     if (dps[l][r]) return dps[l][r];
@@ -83,8 +83,10 @@ void print(int l, int r, int lay=1)
             if (dp(l, r) == dp(l, k) + dp(k+1, r))
             {
     //    //for (int i=0; i<lay; ++i) printf("|   "); printf("from[%d][%d] = %d\n", l, r, from[l][r]);
-        print(l, from[l][r], lay+1);
-        print(from[l][r]+1, r, lay+1);
+        //print(l, from[l][r], lay+1);
+        //print(from[l][r]+1, r, lay+1);
+                print(l, k, lay+1);
+                print(k+1, r, lay+1);
                 break;
             }
     }
@@ -95,7 +97,7 @@ int main()
     int cs, g=0; scanf("%d\n", &cs);
     while (cs--)
     {
-        memset(from, 0, sizeof from);
+        //memset(from, 0, sizeof from);
         memset(dps, 0, sizeof dps); // fix: typo--sizeof dps not sizeof from
         //memset(s, 0, sizeof s);
         S.clear();
@@ -124,7 +126,7 @@ int main()
 
         //cout << "min len = " << dp(0, s.size()-1) << endl;
         //if (g) printf("\n"); g=1;
-        //print(0, S.size()-1);
+        print(0, S.size()-1);
         //print(0, len-1);
         printf("\n");
         if (cs) printf("\n");
