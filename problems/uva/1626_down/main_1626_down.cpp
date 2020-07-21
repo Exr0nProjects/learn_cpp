@@ -11,20 +11,10 @@
 #include <cstring>
 #include <iostream>
 
-#define ll long long
-#define dl double
-
-#define pb push_back
-#define eb emplace_back
-#define mp make_pair
-#define f first
-#define s second
-#define lr tl, (tl+((tr-tl)>>1))
-#define rr (tl+((tr-tl)>>1)+1), tr
-
 using namespace std;
-const ll MX = 10011;
-string inp;
+const int MX = 1011;
+//string inp;
+char inp[MX];
 
 char ope(char c) // oposite
 {
@@ -95,17 +85,32 @@ void print(int l, int r, int lay=1)
 
 int main()
 {
-    int cs, g=0; scanf("%d", &cs);
+    int cs, g=0; scanf("%d\n", &cs);
     while (cs--)
     {
         memset(from, 0, sizeof from);
         memset(dps, 0, sizeof from);
-        cin >> inp;
-        dp(0, inp.size()-1);
+        //cin >> inp;
+        //dp(0, inp.size()-1);
+        scanf("\n");
+        int len;
+        for (len=0;; ++len)
+        {
+            inp[len] = getchar();
+            if (inp[len] == '\n') {
+                inp[len] = 0;
+                break;
+            }
+            //printf("%d : %c\n", len, inp[len]);
+        }
+        //printf("len %d\n", len);
+        dp(0, len-1);
         //cout << "min len = " << dp(0, inp.size()-1) << endl;
-        if (g) printf("\n"); g=1;
-        print(0, inp.size()-1);
+        //if (g) printf("\n"); g=1;
+        //print(0, inp.size()-1);
+        print(0, len-1);
         printf("\n");
+        if (cs) printf("\n");
     }
 
 	return 0;
