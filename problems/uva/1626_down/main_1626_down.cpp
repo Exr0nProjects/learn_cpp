@@ -16,17 +16,24 @@ const int MX = 1011;
 //string inp;
 char inp[MX];
 
-char ope(char c) // oposite
+bool ismatch(int i, int j)
 {
-    switch (c)
-    {
-        case '(': return ')';
-        case ')': return '(';
-        case '[': return ']';
-        case ']': return '[';
-    }
-    return 'x';
+    if (inp[i] == '(' && inp[j] == ')' ||
+        inp[i] == '[' && inp[j] == ']')
+        return true;
+    return false;
 }
+//char ope(char c) // oposite
+//{
+//    switch (c)
+//    {
+//        case '(': return ')';
+//        case ')': return '(';
+//        case '[': return ']';
+//        case ']': return '[';
+//    }
+//    return 'x';
+//}
 
 //map<pair<int, int>, int> dps;
 int dps[MX][MX];
@@ -56,7 +63,8 @@ int dp(int l, int r, int lay=1)
     //for (int i=0; i<lay; ++i) printf("|   "); printf("%c == %c ?\n", inp[l], inp[r]);
 
     // FIX: need to check if inp[l] < inp[r] for across bracket match, else it will match )( as a pair
-    if (inp[l] == ope(inp[r]) && inp[l] < inp[r] && dp(l+1, r-1, lay+1) +2 < ret) ret = dp(l+1, r-1, lay+1)+2, split=-1;
+    //if (inp[l] == ope(inp[r]) && inp[l] < inp[r] && dp(l+1, r-1, lay+1) +2 < ret) ret = dp(l+1, r-1, lay+1)+2, split=-1;
+    if (ismatch(l, r) && dp(l+1, r-1, lay+1) +2 < ret) ret = dp(l+1, r-1, lay+1)+2, split=-1;
     //for (int i=0; i<lay; ++i) printf("|   "); printf("=> %d\n", ret);
     from[l][r] = split;
     return dps[l][r] = ret;
@@ -67,7 +75,12 @@ void print(int l, int r, int lay=1)
     //for (int i=0; i<lay; ++i) printf("|   "); printf("%d..%d\n", l, r);
     if (l > r) return;
     //for (int i=0; i<lay; ++i) printf("|   "); printf("%d..%d: %d\n", l, r, from[l][r]);
-    if (l == r) cout << min(string({inp[l], ope(inp[l])}), string({ope(inp[l]), inp[l]}));
+    //if (l == r) cout << min(string({inp[l], ope(inp[l])}), string({ope(inp[l]), inp[l]}));
+    if (l == r)
+    {
+        if (inp[l] == '(' || inp[l] == ')') printf("()");
+        else printf("[]");
+    }
     //if (l == r) cout << "()";
     else if (from[l][r] < 0)
     {
@@ -89,7 +102,8 @@ int main()
     while (cs--)
     {
         memset(from, 0, sizeof from);
-        memset(dps, 0, sizeof from);
+        memset(dps, 0, sizeof dps); // FIX: typo--sizeof dps not sizeof from
+        memset(inp, 0, sizeof inp);
         //cin >> inp;
         //dp(0, inp.size()-1);
         scanf("\n");
