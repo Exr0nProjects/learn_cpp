@@ -56,24 +56,27 @@ int main ()
     while (cs--)
     {
         //scanf("%s",S+1);
-        getchar();
-        for (int i=1;; ++i)
+        //getchar();
+        //scanf("\n");
+        int N;
+        for (N=1;; ++N)
         {
-            S[i] = getchar();
-            if (S[i] == '\n')
+            S[N] = getchar();
+            if (S[N] == '\n')
             {
-                S[i] = '\0';
+                S[N] = '\0';
                 break;
             }
         }
-        int len = strlen(S+1);
+        --N;
+        //int N = strlen(S+1);
 
-        for (int i=1; i<=len; ++i) dp[i][i] = 1;
+        for (int i=1; i<=N; ++i) dp[i][i] = 1;
 
-        for (int i=len-1; i>=1; i--)
-        //for (int i=1; i<len; ++i)
+        for (int i=N-1; i>=1; i--)
+        //for (int i=1; i<N; ++i)
         {
-            for(int j = i+1; j<=len; j++)
+            for(int j = i+1; j<=N; j++)
             {
                 dp[i][j] = INF;
                 if(match(i,j)) dp[i][j] = min(dp[i][j],dp[i+1][j-1]);
@@ -85,9 +88,9 @@ int main ()
                 dp[i][j] = min(dp[i][j],tmp);
             }
         }
-        //printf("%d\n",dp[1][len]);
+        //printf("%d\n",dp[1][N]);
 
-        print(1,len);
+        print(1, N);
         printf("\n");
         if(cs!=0) printf("\n");
     }

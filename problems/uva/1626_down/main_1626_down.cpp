@@ -70,9 +70,10 @@ int main()
         //memset(dp, 0, sizeof dp); // FIX: typo--sizeof dp not sizeof from
         //memset(s, 0, sizeof s);
 
-        scanf("\n");
+        //scanf("\n");
+        getchar();  // FIX: getchar() not scanf("\n");
         int N;
-        for (N=0;; ++N)
+        for (N=1;; ++N)
         {
             S[N] = getchar();
             if (S[N] == '\n')
@@ -82,14 +83,15 @@ int main()
             }
             //printf("%d : %c\n", len, s[len]);
         }
+        --N;
         //printf("len %d\n", N);
         //cin >> S;
         //int N = S.size();
 
         for (int i=0; i<=N; ++i) dp[i][i] = 1;
 
-        for (int ln=1; ln<N; ++ln)
-            for (int l=0, r=l+ln; r<N; ++l, ++r)
+        for (int ln=1; ln<=N; ++ln)
+            for (int l=0, r=l+ln; r<=N; ++l, ++r)
             {
                 //printf("%d..%d\n", l, r);
                 int ret=dp[l][l]+dp[l+1][r], split = l;
@@ -105,8 +107,7 @@ int main()
         //for (int i=0; i<20; ++i) { for (int j=0; j<20; ++j) dps[i][j] ? printf("%3d", dps[i][j]) : printf("  ."); printf("\n"); } printf("\n");
         //for (int i=0; i<20; ++i) { for (int j=0; j<20; ++j) dp[i][j] ? printf("%3d", dp[i][j]) : printf("  ."); printf("\n"); }
 
-        //print(0, S.size()-1);
-        print(0, N-1);
+        print(1, N);
 
         printf("\n");
         if (cs) printf("\n");
