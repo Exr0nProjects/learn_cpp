@@ -12,10 +12,10 @@ using namespace std;
 char S[maxn];
 int dp[maxn][maxn];
 
-bool match(int i,int j)
+bool match(int i, int j)
 {
-    if(S[i] == '(' && S[j] == ')') return true;
-    if(S[i] == '[' && S[j] == ']') return true;
+    if (S[i] == '(' && S[j] == ')') return true;
+    if (S[i] == '[' && S[j] == ']') return true;
     return false;
 }
 
@@ -28,7 +28,7 @@ void print(int i,int j)
         if(S[i] == '(' || S[i]==')') printf("()");
         else printf("[]");
     }
-    if(match(i,j) && dp[i][j]==dp[i+1][j-1])
+    if (match(i, j) && dp[i][j]==dp[i+1][j-1])
     {
         printf("%c",S[i]);
         print(i+1,j-1);
