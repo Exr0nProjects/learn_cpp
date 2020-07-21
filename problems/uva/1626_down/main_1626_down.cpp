@@ -10,7 +10,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
-#define maxn 105
+#define maxn 1005
 
 using namespace std;
 //string S;
