@@ -67,9 +67,28 @@ Don't make names too similar, it's easy to make typos (`djs` vs `djf`)
 	- Decimals
 	- Multi-case in input?
 4. Case generator
-	- Range correct?
-	- Negatives and positives?
-5. Compare codes
+	- Make sure casegen has full range of inputs
+		- Full min/max?
+		- Negatives?
+		- Decimals?
+		- `l` always less than `r`?
+		- Multi cases?
+		- All negative/zero/positive?
+			- Don't assume `max(0, a[i])` will get `a[i]`, if all are negative
+5. Check casegen common mistakes
+	- Reread problem carefully
+	- Input
+		- Needs to be exactly the same
+		- Wrong input can cause RE, WA, and TLE
+		- Don't `scanf("\n");` on UVA, use `getchar()`
+		- Use stringstream if needed
+	- Array sizes
+		- Some arrays need to be special
+			- MX*MX for edgelist
+			- MX<<1 for segtree
+			- MX by log(MX) for sparse table, pst; sometimes multiply by 2
+			- Sometimes the problem is N*K array size or something
+6. Compare codes
 	1. Align general logic (algorithms and datastructures)
 	2. Align data types, representation
 	3. Align function semantics
