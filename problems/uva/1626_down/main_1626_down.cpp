@@ -13,8 +13,8 @@
 #define maxn 105
 
 using namespace std;
-string S;
-//char S[MX];
+//string S;
+char S[maxn];
 
 bool match(int i, int j)
 {
@@ -100,11 +100,9 @@ int main()
         //for (int i=0; i<20; ++i) { for (int j=0; j<20; ++j) dps[i][j] ? printf("%3d", dps[i][j]) : printf("  ."); printf("\n"); } printf("\n");
         //for (int i=0; i<20; ++i) { for (int j=0; j<20; ++j) dp[i][j] ? printf("%3d", dp[i][j]) : printf("  ."); printf("\n"); }
 
-
-        //cout << "min len = " << dp(0, s.size()-1) << endl;
-        //if (g) printf("\n"); g=1;
         //print(0, S.size()-1);
         print(0, N-1);
+
         printf("\n");
         if (cs) printf("\n");
     }

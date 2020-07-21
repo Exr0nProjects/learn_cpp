@@ -3,6 +3,8 @@
 #include <cstdlib>
 const int MXT = 1000;
 const int MXN = 100;
+//const int MXT = 10;
+//const int MXN = 10;
 const char chars[] = "()[]";
 
 int main()
