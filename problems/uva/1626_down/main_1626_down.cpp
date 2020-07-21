@@ -25,21 +25,22 @@ bool match(int i, int j)
 
 //map<pair<int, int>, int> dps;
 int dps[maxn][maxn];
+int dp[maxn][maxn];
 int from[maxn][maxn];
-int dp(int l, int r, int lay=1)
+int dpp(int l, int r, int lay=1)
 {
     //for (int i=0; i<lay; ++i) printf("|   "); printf("%d..%d: ", l, r); for (int i=l; i<=r; ++i) printf("%c", S[i]); printf("\n");
     if (l > r) return 0;
     if (l == r) return 1;
     if (dps[l][r]) return dps[l][r];
 
-    int ret = dp(l, l, lay+1) + dp(l+1, r, lay+1);
+    int ret = dpp(l, l, lay+1) + dpp(l+1, r, lay+1);
     int split = l;
     //for (int i=0; i<lay; ++i) printf("|   "); printf("start %d\n", ret);
     for (int k=l+1; k<r; ++k)
     {
         //for (int i=0; i<lay; ++i) printf("|   "); printf("--\n");
-        int cost = dp(l, k, lay+1) + dp(k+1, r, lay+1);
+        int cost = dpp(l, k, lay+1) + dpp(k+1, r, lay+1);
         if (cost < ret)
         {
             //for (int i=0; i<lay; ++i) printf("|   "); printf("min ^^^\n");
@@ -51,7 +52,7 @@ int dp(int l, int r, int lay=1)
     //for (int i=0; i<lay; ++i) printf("|   "); printf("%c == %c ?\n", S[l], S[r]);
 
     // FIX: need to check if S[l] < S[r] for across bracket match, else it will match )( as a pair
-    if (match(l, r) && dp(l+1, r-1, lay+1) < ret) ret = dp(l+1, r-1, lay+1), split=-1;
+    if (match(l, r) && dpp(l+1, r-1, lay+1) < ret) ret = dpp(l+1, r-1, lay+1), split=-1;
     //for (int i=0; i<lay; ++i) printf("|   "); printf("=> %d\n", ret);
     from[l][r] = split;
     return dps[l][r] = ret;
@@ -79,6 +80,7 @@ void print(int l, int r, int lay=1)
         //for (int k=l; k<r; ++k)
         //    if (dp(l, r) == dp(l, k) + dp(k+1, r))
         int k = from[l][r];
+        if (k < l) { printf("uh %d %d, %d\n", l, r, k); return; }
             {
                 print(l, k, lay+1);
                 print(k+1, r, lay+1);
@@ -97,13 +99,25 @@ int main()
         //memset(s, 0, sizeof s);
         //S.clear();
         cin >> S;
-        dp(0, S.size()-1);
+        //dpp(0, S.size()-1);
+        int N = S.size();
 
-        //for (int len=0; len<N; ++len)
-        //    for (int l=0, r=l+len; r<N; ++l, ++r)
-        //    {
-        //        if (l == r)
-        //    }
+        for (int i=0; i<=maxn; ++i) dp[i][i] = 1;
+        for (int len=1; len<N; ++len)
+            for (int l=0, r=l+len; r<N; ++l, ++r)
+            {
+                int ret=dp[l][l]+dp[l+1][r], split = l;
+                for (int k=l+1; k<r; ++k)
+                    if (ret > dp[l][k] + dp[k+1][r])
+                        ret = dp[l][k] + dp[k+1][r], split = k;
+                if (match(l, r) && ret > dp[l+1][r-1])
+                    split = -1,    ret = dp[l+1][r-1];
+                dp[l][r] = ret;
+                from[l][r] = split;
+            }
+
+        //for (int i=0; i<20; ++i) { for (int j=0; j<20; ++j) dps[i][j] ? printf("%3d", dps[i][j]) : printf("  ."); printf("\n"); } printf("\n");
+        //for (int i=0; i<20; ++i) { for (int j=0; j<20; ++j) dp[i][j] ? printf("%3d", dp[i][j]) : printf("  ."); printf("\n"); }
 
         //scanf("\n");
         //int len;
@@ -121,7 +135,7 @@ int main()
 
         //cout << "min len = " << dp(0, s.size()-1) << endl;
         //if (g) printf("\n"); g=1;
-        //print(0, S.size()-1);
+        print(0, S.size()-1);
         //print(0, len-1);
         printf("\n");
         if (cs) printf("\n");
