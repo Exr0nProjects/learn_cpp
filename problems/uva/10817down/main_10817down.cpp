@@ -54,20 +54,24 @@ string print(int x)
 }
 
 int S, M, N, cost[MX], sub[MX], dp[MX][1<<MXS][1<<MXS];
-int op(int cur, array<int, 3> stat)
+int op(int cur, const array<int, 3> &stat)
 {
-    if (dp[cur][stat[1]][stat[2]]) return dp[cur][stat[1]][stat[2]];
-    if (cur > N+M) return stat[2] == (1<<MXS)-1 ? 0 : 1<<25;
-    int ret = 1<<25;
+    if (cur > N+M) return stat[2] == (1<<S)-1 ? 0 : 1<<25;
+    int &ret = dp[cur][stat[1]][stat[2]];
+    if (ret) return ret;
+    ret = 1<<25;
     if (cur > M) ret = op(cur+1, stat);     // don't hire this teacher
-    int flip=0;
+    int flip=0; array<int, 3> nxt = stat;
     for (int i=0; i<3; ++i) printf("%s\n", print(stat[i]).c_str());
     for (int i=0; i<3; ++i)
     {
-        if (i < 2) flip ^= stat[i] & sub[cur];
-        stat[i] ^= flip;
+        flip ^= stat[i] & sub[cur];
+        printf("i %d: %s\n", i, print(flip).c_str());
+        nxt[i] ^= flip;
         if (i) flip ^= stat[i-1] & sub[cur];
     }
+    for (int i=0; i<3; ++i) printf("%s\n", print(nxt[i]).c_str()); printf("\n");
+    return ret = min(ret, cost[cur] + op(cur+1, nxt));
 }
 
 int main()
@@ -75,6 +79,8 @@ int main()
     while (~scanf("%d%d%d", &S, &M, &N) && S)
     {
         memset(dp, 0, sizeof dp);
+        memset(sub, 0, sizeof sub);
+        memset(cost, 0, sizeof cost);
         getchar();
         for (int i=1; i<=M+N; ++i)
         {
@@ -85,6 +91,7 @@ int main()
             for (int x; ss >> x;) sub[i] |= 1<<x-1;
             printf("%d: %s\n", i, print(sub[i]).c_str());
         }
+        printf("%d\n", op(1, {(1<<S)-1, 0, 0}));
     }
 
 	return 0;
