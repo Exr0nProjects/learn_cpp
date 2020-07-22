@@ -31,5 +31,5 @@ check () {
 		#echo "compared"
 	done
 }
-alias clean='setopt +o nomatch && rm -f auto *.in *.out answer *.diff'
+alias clean='setopt +o nomatch && rm -f auto answer casegen *.in *.out *.diff'
 
