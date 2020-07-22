@@ -26,7 +26,8 @@ void op(int cur, int pre=0)
     dp[cur][0] = 1;
     dp[cur][1] = 1e6;
     dp[cur][2] = 0;
-    //if (head[cur].size() == 1 && *head[cur].begin() == pre) return ;
+    if (head[cur].size() == 1 && pre) return ;
+    //if (head[cur].size() == 1 && pre) return;
 
     int minm = 1e6;
     //for (int i = 0; i < head[cur].size(); i++)
