@@ -26,7 +26,7 @@ AC | 11 | bracket sequence | [1626](https://onlinejudge.org/index.php?option=com
 AC | 12 | minmax triangluation | [1331](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=4077)
 AC | 13 | another crisis | [12186](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=3338)
 AC | 14 | party at hali-bula | [1220](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=3661)
-  | unknown
+WA | 15 | perfect service | [1218](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=3659)
 . | 16 | headmaster's headache | [10817](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=1758)
 . | 17 | twenty questions | [1252](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=3693)
 . | 18 | fund managment | [1412](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=4158)
