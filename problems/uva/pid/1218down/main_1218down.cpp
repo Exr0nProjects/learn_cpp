@@ -44,6 +44,7 @@ void op(int cur, int pre=0)
     dp[cur][0] = 1;
     dp[cur][1] = 1e6;
     dp[cur][2] = 0;
+    if (head[cur].size() == 1 && pre) return;
     //if (head[cur].size() == 1 && *head[cur].begin() == pre) return ;
      //FIX: ^^^^^ above ifstatement is new
     int minm = 1e6;
@@ -60,7 +61,6 @@ void op(int cur, int pre=0)
     dp[cur][0] = min((int)2e6, dp[cur][0]);
     //dp[cur][1] = sum1-max0;
     dp[cur][1] = dp[cur][2] + minm;
-    //if (head[cur].size() == 1 && pre) dp[cur][1] = 2e6;
     dp[cur][2] = min((int)2e6, dp[cur][2]);
     //for (int i=0; i<lay; ++i) printf("|   "); printf("sum %d sub %d\n", sum1, max0);
     //for (int i=0; i<lay; ++i) printf("|   "); printf("=> %d %d %d\n", dp[cur][0], dp[cur][1], dp[cur][2]);
