@@ -42,7 +42,6 @@ void op(int cur, int pre=0)
     dp[cur][0] = min((int)2e6, dp[cur][0]);
 
     dp[cur][1] = dp[cur][2] + minm;
-    if (head[cur].size() == 1 && pre) dp[cur][1] = 2e6;
     dp[cur][2] = min((int)2e6, dp[cur][2]);
 }
 
