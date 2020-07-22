@@ -30,19 +30,8 @@
 #include <algorithm>
 #include <functional>
 
-#define ll long long
-#define dl double
-
-#define pb push_back
-#define eb emplace_back
-#define mp make_pair
-#define f first
-#define s second
-#define lr tl, (tl+((tr-tl)>>1))
-#define rr (tl+((tr-tl)>>1)+1), tr
-
 using namespace std;
-const ll MX = 10111;
+const int MX = 10111;
 
 list<int> head[MX];
 int N, dp[MX][5];   // 0 = server, 1 = served, 2 = not served
