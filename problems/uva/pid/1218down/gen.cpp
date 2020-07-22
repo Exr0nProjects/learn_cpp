@@ -4,7 +4,7 @@
 #include <cstdlib>
 
 const int MXT = 10;
-const int MXN = 10000;
+const int MXN = 100;
 
 int main()
 {

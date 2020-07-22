@@ -42,7 +42,7 @@
 #define rr (tl+((tr-tl)>>1)+1), tr
 
 using namespace std;
-const ll MX = 50111;
+const ll MX = 10111;
 
 list<int> head[MX];
 int N, dp[MX][5];   // 0 = server, 1 = served, 2 = not served
@@ -56,7 +56,8 @@ void op(int cur, int pre=0, int lay=1)
         op(nxt, cur, lay+1);
         sum1 += dp[nxt][1];
         max0 = max(max0, dp[nxt][1]-dp[nxt][0]);
-        sum2 += min(dp[nxt][2], dp[nxt][0]);
+        //sum2 += min(dp[nxt][2], dp[nxt][0]);
+        sum2 += dp[nxt][2];
     }
     dp[cur][0] = min((int)2e6, sum2);
     //for (int i=0; i<lay; ++i) printf("|   "); printf("sum %d sub %d\n", sum1, max0);
@@ -86,7 +87,8 @@ int main()
             //printf("dp 1,0 %d  ;  1,1 %d\n", dp[1][0], dp[1][1]);
             printf("%d\n", min(dp[1][0], dp[1][1]));
         }
-        int t; scanf("%d", &t); if (!~t) break;
+        //int t; scanf("%d", &t); if (t == -1) break;
+        int t; cin >> t; if (t == -1) break;
     }
 
 	return 0;
