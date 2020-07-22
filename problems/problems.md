@@ -27,7 +27,7 @@ AC | 12 | minmax triangluation | [1331](https://onlinejudge.org/index.php?option
 AC | 13 | another crisis | [12186](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=3338)
 AC | 14 | party at hali-bula | [1220](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=3661)
 AC | 15 | perfect service | [1218](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=3659)
-. | 16 | headmaster's headache | [10817](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=1758)
+AC | 16 | headmaster's headache | [10817](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=1758)
 . | 17 | twenty questions | [1252](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=3693)
 . | 18 | fund managment | [1412](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=4158)
 . | 19 | tango tango insurrection | [10618](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=847&page=show_problem&problem=1559)
