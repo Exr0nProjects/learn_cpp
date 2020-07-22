@@ -36,14 +36,14 @@ const int MX = 10111;
 list<int> head[MX];
 int N, dp[MX][5];   // 0 = server, 1 = served, 2 = not served
 
-void op(int cur, int pre=0, int lay=1)
+void op(int cur, int pre=0)
 {
     //for (int i=0; i<lay; ++i) printf("|   "); printf("%d from %d\n", cur, pre);
     //int sum1=0, max0=-1e6, sum2=1;  // FIX: max0 = 0 doesn't work, max might be negative
     int sum1=0, max0=1e6, sum2=1;  // FIX: max0 = 0 doesn't work, max might be negative
     for (int nxt : head[cur]) if (nxt != pre)
     {
-        op(nxt, cur, lay+1);
+        op(nxt, cur);
         sum1 += dp[nxt][1];
         //max0 = max(max0, dp[nxt][1]-dp[nxt][0]);
         max0 = min(max0, dp[nxt][0]-dp[nxt][1]);

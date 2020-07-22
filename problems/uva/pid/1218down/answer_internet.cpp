@@ -15,34 +15,30 @@
 using namespace std;
 const int MX = 10111;
 const int INF_ = 0x3f3f3f3f;
-list<int> edge[MX+1]; // adjacency list
+list<int> head[MX+1]; // adjacency list
 int dp[MX+1][3]; // 0 is the server, 1 is connected, 2 is not connected
 
-void init()
-{
-    for (int i = 0; i <= MX; i++) edge[i].clear();
-}
 
  // deep search
  // Parameters: current node and father node
-void dfs(int v, int fa)
+void op(int cur, int pre)
 {
-    dp[v][0] = 1;
-    dp[v][1] = MX; // means unreachable, if set to infinity, the following dp[v][2] overflow occurs.
-    dp[v][2] = 0;
-    if (edge[v].size() == 1 && *edge[v].begin() == fa) return ;
+    dp[cur][0] = 1;
+    dp[cur][1] = MX; // means unreachable, if set to infinity, the following dp[cur][2] overflow occurs.
+    dp[cur][2] = 0;
+    if (head[cur].size() == 1 && *head[cur].begin() == pre) return ;
     int minm = INF_;
-    //for (int i = 0; i < edge[v].size(); i++)
-    for (int son : edge[v])
+    //for (int i = 0; i < head[cur].size(); i++)
+    for (int nxt : head[cur])
     {
-        //int son = edge[v][i];
-        if (son == fa) continue;
-        dfs(son, v);
-        dp[v][0] += min(dp[son][0], dp[son][2]);
-        dp[v][2] += dp[son][1]; // If the son has an unreachable connected state, the father's unconnected is also unreachable.
-        minm = min(minm, dp[son][0]-dp[son][1]);
+        //int nxt = head[cur][i];
+        if (nxt == pre) continue;
+        op(nxt, cur);
+        dp[cur][0] += min(dp[nxt][0], dp[nxt][2]);
+        dp[cur][2] += dp[nxt][1]; // If the nxt has an unreachable connected state, the father's unconnected is also unreachable.
+        minm = min(minm, dp[nxt][0]-dp[nxt][1]);
     }
-    dp[v][1] = dp[v][2] + minm; // The son has more than two unreachable connected states, and the father's connection is not reachable.
+    dp[cur][1] = dp[cur][2] + minm; // The son has more than two unreachable connected states, and the father's connection is not reachable.
 }
 
 int main()
@@ -51,16 +47,16 @@ int main()
     {
         int n;
         scanf("%d", &n);
-        init();
+        for (int i = 0; i <= MX; i++) head[i].clear();
         for (int i = 1; i < n; i++)
         {
             int a, b;
             scanf("%d%d", &a, &b);
-            edge[a].push_back(b);
-            edge[b].push_back(a);
+            head[a].push_back(b);
+            head[b].push_back(a);
         }
         //printf("%d\n", dfsSolve());
-        dfs(1, -1);
+        op(1, -1);
         printf("%d\n", min(dp[1][0], dp[1][1]));
         int end;
         scanf("%d", &end);
