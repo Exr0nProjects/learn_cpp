@@ -29,16 +29,19 @@ void op(int cur, int pre)
     if (head[cur].size() == 1 && *head[cur].begin() == pre) return ;
     int minm = INF_;
     //for (int i = 0; i < head[cur].size(); i++)
-    for (int nxt : head[cur])
+    for (int nxt : head[cur]) if (nxt != pre)
     {
         //int nxt = head[cur][i];
-        if (nxt == pre) continue;
         op(nxt, cur);
-        dp[cur][0] += min(dp[nxt][0], dp[nxt][2]);
-        dp[cur][2] += dp[nxt][1]; // If the nxt has an unreachable connected state, the father's unconnected is also unreachable.
+        dp[cur][0] += min(dp[nxt][2], dp[nxt][0]);
+        // If the nxt has an unreachable connected state, the father's unconnected is also unreachable.
+        dp[cur][2] += dp[nxt][1];
         minm = min(minm, dp[nxt][0]-dp[nxt][1]);
     }
-    dp[cur][1] = dp[cur][2] + minm; // The son has more than two unreachable connected states, and the father's connection is not reachable.
+    dp[cur][0] = min((int)2e6, dp[cur][0]);
+
+    dp[cur][1] = dp[cur][2] + minm;
+    dp[cur][2] = min((int)2e6, dp[cur][2]);
 }
 
 int main()
