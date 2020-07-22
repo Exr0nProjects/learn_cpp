@@ -58,11 +58,11 @@ void op(int cur, int pre=0, int lay=1)
         max0 = max(max0, dp[nxt][1]-dp[nxt][0]);
         sum2 += min(dp[nxt][2], dp[nxt][0]);
     }
-    dp[cur][0] = min((int)2e6, sum2);
+    dp[cur][0] = min((int)1e6, sum2);   // FIX: i guess these need to be 1e6 cuz 2e6 overflows
     //for (int i=0; i<lay; ++i) printf("|   "); printf("sum %d sub %d\n", sum1, max0);
     dp[cur][1] = sum1-max0;
-    if (head[cur].size() == 1 && pre) dp[cur][1] = 2e6;
-    dp[cur][2] = min((int)2e6, sum1);
+    if (head[cur].size() == 1 && pre) dp[cur][1] = 1e6;
+    dp[cur][2] = min((int)1e6, sum1);
     //for (int i=0; i<lay; ++i) printf("|   "); printf("=> %d %d %d\n", dp[cur][0], dp[cur][1], dp[cur][2]);
 }
 
