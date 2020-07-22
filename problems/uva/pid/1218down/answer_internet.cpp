@@ -21,13 +21,15 @@ int dp[MX+1][3]; // 0 is the server, 1 is connected, 2 is not connected
 
  // deep search
  // Parameters: current node and father node
-void op(int cur, int pre)
+void op(int cur, int pre=0)
 {
     dp[cur][0] = 1;
-    dp[cur][1] = MX; // means unreachable, if set to infinity, the following dp[cur][2] overflow occurs.
+    dp[cur][1] = 1e6;
     dp[cur][2] = 0;
-    if (head[cur].size() == 1 && *head[cur].begin() == pre) return ;
-    int minm = INF_;
+    //if (head[cur].size() == 1 && *head[cur].begin() == pre) return ;
+    if (head[cur].size() == 1 && pre) return ;
+
+    int minm = 1e6;
     //for (int i = 0; i < head[cur].size(); i++)
     for (int nxt : head[cur]) if (nxt != pre)
     {
@@ -59,7 +61,7 @@ int main()
             head[b].push_back(a);
         }
         //printf("%d\n", dfsSolve());
-        op(1, -1);
+        op(1);
         printf("%d\n", min(dp[1][0], dp[1][1]));
         int end;
         scanf("%d", &end);
