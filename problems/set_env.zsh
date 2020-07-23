@@ -11,7 +11,7 @@ alias ans='g++ -std=c++11 answer*.cpp -o answer && ./answer && cat *.out'
 check () {
 	setopt LOCAL_OPTIONS NO_NOTIFY NO_MONITOR
 
-	GEN_CMD="python gen.py"
+	GEN_CMD="python3 gen.py"
 	if [[ -f "gen.cpp" ]]; then
 		g++ --std=c++11 gen.cpp -o casegen
 		GEN_CMD="./casegen"
@@ -19,7 +19,7 @@ check () {
 
 	for (( i=1; ; i++)); do
 		echo -en "\rtest case $i"
-		$GEN_CMD > test.in							# TODO: generate in parallel with checking
+		eval ${GEN_CMD} > test.in							# TODO: generate in parallel with checking
 		#echo "generated"
 		#./auto < test.in > debug.diff && echo "    debug tested" &
 		#./answer < test.in > correct.diff && echo "    correct tested" &
