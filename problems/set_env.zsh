@@ -7,6 +7,7 @@ tmux setenv ENVROOT $ENVROOT
 #export IDEMODE=0
 alias crt='cd $ENVROOT && source ./create.sh'
 alias ans='g++ -std=c++11 answer*.cpp -o answer && ./answer && cat *.out'
+alias mkgen='cp $ENVROOT/.template_state/template_gen.cpp gen.cpp && v gen.cpp'
 #alias check='for (( i=1; ; i++ )); do py gen.py > test.in && ./auto < test.in > test.diff && ./answer < test.in > correct.diff && echo -en "\rtest case $i" && [[ -z "$(diff --brief *.diff)" ]] || break; done'
 check () {
 	setopt LOCAL_OPTIONS NO_NOTIFY NO_MONITOR
