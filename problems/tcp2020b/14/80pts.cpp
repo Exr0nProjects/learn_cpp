@@ -1,6 +1,6 @@
 /*
 
-   william, 20 pts
+   william, 80 pts
 NUMBER 14
 
 */
@@ -9,15 +9,15 @@ NUMBER 14
 
 using namespace std;
 
-#define MAXN 120000
+#define MAXN 100000
 
 
 struct Node
 {
-	int val, cmin, cmax;
+	long long val, cmin, cmax;
 	Node *l, *r;
 
-	Node(int v, int lo, int hi) {
+	Node(long long v, long long lo, long long hi) {
 		val = v;
 		cmin = lo;
 		cmax = hi;
@@ -26,17 +26,17 @@ struct Node
 	}
 };
 
-int n, m;
-
-int inds[MAXN], arr[MAXN];
-Node* pst[MAXN];
-Node* bit[MAXN];
+long long n, m;
+long long bstart = 1;
+long long inds[MAXN], arr[MAXN];
+Node* pst[MAXN + 1];
+Node* bit[MAXN + 1];
 
 // builds the first pst, all nodes are 0
 void buildz(Node* curr) {
 	if (curr->cmin == curr->cmax) return;
 
-	int mid = (curr->cmin + curr->cmax) / 2;
+	long long mid = (curr->cmin + curr->cmax) / 2;
 
 	curr->l = new Node(0, curr->cmin, mid);
 	curr->r = new Node(0, mid+1,      curr->cmax);
@@ -46,9 +46,9 @@ void buildz(Node* curr) {
 }
 
 // builds other pst nodes
-void build(Node* curr, Node* corresp, int ind) {
+void build(Node* curr, Node* corresp, long long ind) {
 	if (curr->cmin == curr->cmax) return;
-	int mid = (curr->cmin + curr->cmax) / 2;
+	long long mid = (curr->cmin + curr->cmax) / 2;
 
 	if (ind <= mid) {
 		curr->l = new Node(corresp->l->val + 1, curr->cmin, mid);
@@ -64,17 +64,17 @@ void build(Node* curr, Node* corresp, int ind) {
 }
 
 // query functoin for pst and bit of pst nodes
-int query(Node* curr, int minb, int maxb) {
+long long query(Node* curr, long long minb, long long maxb) {
 	if (!curr || curr->cmin > maxb || curr->cmax < minb) return 0;
 	if (curr->cmin >= minb && curr->cmax <= maxb) return curr->val;
 	return query(curr->l, minb, maxb) + query(curr->r, minb, maxb);
 }
 
 // builds a node for a st in the bit
-void buildBITST(Node* curr, int ind) {
+void buildBITST(Node* curr, long long ind) {
 	if (curr->cmin == curr->cmax) return;
 	curr->val++;
-	int mid = (curr->cmin + curr->cmax) / 2;
+	long long mid = (curr->cmin + curr->cmax) / 2;
 	if (ind <= mid) {
 		if (!curr->l)
 			curr->l = new Node(0, curr->cmin, mid);
@@ -88,18 +88,18 @@ void buildBITST(Node* curr, int ind) {
 }
 
 // updates the bit using the buildBITST function
-void updateBIT(int num) {
-	int curr = inds[num];
-	while (curr <= MAXN) {
+void updateBIT(long long num) {
+	long long curr = inds[num];
+	while (curr < MAXN) {
 		if (!bit[curr])
-			bit[curr] = new Node(0, 0, MAXN);
+			bit[curr] = new Node(0, 1, bstart);
 		buildBITST(bit[curr], num);
 		curr += (curr & -curr);
 	}
 }
 
-int bitQuery(int curr, int minb, int maxb) {
-	int res = 0;
+long long bitQuery(long long curr, long long minb, long long maxb) {
+	long long res = 0;
 	while (curr > 0) {
 		res += query(bit[curr], minb, maxb);
 		curr -= (curr & -curr);
@@ -110,48 +110,49 @@ int bitQuery(int curr, int minb, int maxb) {
 int main() {
 	cin >> n >> m;
 
-	pst[0] = new Node(0, 0, MAXN);
+	while (bstart <= n) bstart *= 2;
+	bstart = bstart - 1;
+
+	pst[0] = new Node(0, 1, bstart);
 	buildz(pst[0]);
 
-	for (int i = 0; i < n; i++) {
-		int elem; cin >> elem;
+	for (long long i = 0; i < n; i++) {
+		long long elem; cin >> elem;
 		arr[i] = elem;
 		inds[elem] = i + 1;
 
-		pst[i + 1] = new Node(i + 1, 0, MAXN);
+		pst[i + 1] = new Node(i + 1, 1, bstart);
 
 		build(pst[i + 1], pst[i], elem);
 	}
 
 	long long inv = 0;
-	for (int i = 0; i < n; i++) {
-		inv += query(pst[i], arr[i], MAXN);
+	for (long long i = 0; i < n; i++) {
+		inv += query(pst[i], arr[i], bstart);
 	}
 
 	//cout << inv << endl;
 
 
-	for (int i = 0; i < m; i++) {
-		int elem; cin >> elem;
+	for (long long i = 0; i < m; i++) {
+		long long elem; cin >> elem;
 
 		cout << (inv) << endl;
 
 		// nums that come before this elem in the array that cause inversions
-		int invCaused = query(pst[inds[elem] - 1], elem, MAXN);
-		invCaused -= bitQuery(inds[elem] - 1, elem, MAXN);
+		long long invCaused = query(pst[inds[elem] - 1], elem, bstart);
+		invCaused -= bitQuery(inds[elem] - 1, elem, bstart);
 		//cout << " " << invCaused << endl;
 		// nums that come after
-		invCaused +=  query(pst[n], 0, elem - 1) - query(pst[inds[elem]], 0, elem - 1);
-		invCaused -= (bitQuery(n, 0, elem - 1) - bitQuery(inds[elem], 0, elem - 1));
+		invCaused +=  query(pst[n], 1, elem) - query(pst[inds[elem]], 1, elem);
+		invCaused -= (bitQuery(n, 1, elem) - bitQuery(inds[elem], 1, elem));
 		//cout << " " << invCaused << endl;
 
 		inv -= invCaused;
 
 		updateBIT(elem);
 
-
 	}
-
 
 }
 
