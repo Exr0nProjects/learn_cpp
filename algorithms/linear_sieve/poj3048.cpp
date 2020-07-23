@@ -12,18 +12,33 @@ int main()
                 sieve[i*j] = i;
         //printf("%3d: %3d\n", i, sieve[i]);
     }
-    scanf("%d", &N);
-    for (int i=0; i<N; ++i) printf("%3d\n", sieve[i]); return 0;
-    //printf("n = %d\n", N);
-    int ret=0;  // FIX: can't assume 2 is the smallest, maybe its just one cow labeled 1
-    for (int i=0; i<N; ++i)
-    {
-        int d; scanf("%d", &d);
-        //printf("%d->%d better than %d->%d\n", d, sieve[d], ret, sieve[ret]);
-        if (sieve[d] > sieve[ret])
-            ret = d;
+    //scanf("%d", &N);
+    //for (int i=0; i<N; ++i) printf("%3d\n", sieve[i]); return 0;
+    ////printf("n = %d\n", N);
+    //int ret=0;  // FIX: can't assume 2 is the smallest, maybe its just one cow labeled 1
+    //for (int i=0; i<N; ++i)
+    //{
+    //    int d; scanf("%d", &d);
+    //    //printf("%d->%d better than %d->%d\n", d, sieve[d], ret, sieve[ret]);
+    //    if (sieve[d] > sieve[ret])
+    //        ret = d;
+    //}
+    //printf("%d\n", ret);
+
+    int n;
+    scanf("%d", &n);
+    //for (int i=0; i<n; ++i) printf("%3d\n", vis[i]); return 0;
+    int mx = 0, ans;
+    for (int i = 0; i < n; ++i) {
+        int x;
+        scanf("%d", &x);
+        if (sieve[x] > mx) {
+            mx = sieve[x];
+            ans = x;
+        }
     }
-    printf("%d\n", ret);
+    printf("%d", ans);
+
     return 0;
 }
 
