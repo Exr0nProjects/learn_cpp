@@ -31,7 +31,8 @@ int main()
 {
     sieve();
     //for (int i=0; i<1e6; ++i) printf("%d\n", nums[i]); return 0;
-    for (int d; cin >> d && d;)
+    for (int d; ~scanf("%d", &d) && d;)
+    //for (int d; cin >> d && d;)
     {
         ll sum=0;
         for (int i=0; i<=d; ++i) sum += (ll) nums[i];
