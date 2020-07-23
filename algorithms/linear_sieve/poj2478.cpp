@@ -19,7 +19,7 @@
 #define rr (tl+((tr-tl)>>1)+1), tr
 
 const int MX = 10e6 + 100;
-int prime[(int)8e4], pcnt=0;
+int prime[(int)9e4], pcnt=0;
 int nums[MX];
 
 void sieve()
@@ -44,12 +44,13 @@ void sieve()
 int main()
 {
     sieve();
+    for (int i=0; i<1e6; ++i) printf("%d\n", nums[i]); return 0;
     for (int d; ~scanf("%d", &d) && d;)
     {
         ll sum=0;
         for (int i=0; i<=d; ++i) sum += (ll) nums[i];
         //printf("%lld\n", nums[d]);
-        printf("%lld\n", sum+2);
+        printf("%lld\n", sum);
     }
 }
 
