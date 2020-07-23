@@ -13,8 +13,9 @@ int main()
         //printf("%3d: %3d\n", i, sieve[i]);
     }
     scanf("%d", &N);
+    for (int i=0; i<N; ++i) printf("%3d\n", sieve[i]); return 0;
     //printf("n = %d\n", N);
-    int ret=2;
+    int ret=0;  // FIX: can't assume 2 is the smallest, maybe its just one cow labeled 1
     for (int i=0; i<N; ++i)
     {
         int d; scanf("%d", &d);
@@ -22,7 +23,7 @@ int main()
         if (sieve[d] > sieve[ret])
             ret = d;
     }
-    printf("%d", ret);
+    printf("%d\n", ret);
     return 0;
 }
 
