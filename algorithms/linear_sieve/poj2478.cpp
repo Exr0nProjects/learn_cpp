@@ -1,17 +1,15 @@
 /*
  * Problem 2478 (poj/2478)
  * Create time: Mon 20 Jul 2020 @ 11:28 (PDT)
- * Accept time: [!meta:end!]
+ * Accept time: Thu 23 Jul 2020 @ 12:06 (PDT)
  *
  * copied from attempt1.cpp
  */
 
-#include <iostream>
 #include <cstdio>
 #define ll long long
-using namespace std;
 
-const int MX = 1e6 + 100;
+const int MX = 1e6 + 100;   // FIX: bounds too high, 1e6 not 10e6 (it said wa..?)
 int prime[(int)9e4], pcnt=0;
 int nums[MX];
 
