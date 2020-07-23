@@ -1,10 +1,12 @@
 // 16 July 2020
 
 #include <cstdio>
+#include <vector>
 #include <algorithm>
 using namespace std;
 const int MX = 2e4 + 100;
-int N, sieve[MX], pri[MX], pcnt=0;
+int N, sieve[MX]; //pri[MX], pcnt=0;
+vector<int> pri;
 int main()
 {
     //for (int i=2; i<MX; ++i)
@@ -14,8 +16,13 @@ int main()
     for (int i=2; i<MX; ++i)
     {
         if (!sieve[i])
-            pri[pcnt++] = sieve[i] = i;
-        for (int j=0; j<pcnt && i*pri[j]<MX; ++j)
+        {
+            //pri[pcnt++] = sieve[i] = i;
+            pri.push_back(i);
+            sieve[i] = i;
+        }
+        //for (int j=0; j<pcnt && i*pri[j]<MX; ++j)
+        for (int j=0; j<pri.size() && i*pri[j]<MX; ++j)
         {
             //printf("%d: max(%d %d) = %d\n", i*pri[j], pri[j], sieve[i], max(pri[j], sieve[i]));
             sieve[i*pri[j]] = max(pri[j], sieve[i]);
@@ -37,7 +44,7 @@ int main()
 
     int n;
     scanf("%d", &n);
-    //for (int i=0; i<n; ++i) printf("%3d\n", vis[i]); return 0;
+    //for (int i=0; i<n; ++i) printf("%3d\n", sieve[i]); return 0;
     int mx = 0, ans;
     for (int i = 0; i < n; ++i) {
         int x;
