@@ -70,6 +70,7 @@ void solve(int tl, int tr)  // dnq inversions counter, inc l exc r
     int mid = tl+(tr-tl>>1);
     solve(tl, mid); solve(mid, tr);
     int l=tl, r=mid;
+    // TODO: below might tle, maybe only clear used parts or use segtree?
     memset(bitL, 0, sizeof bitL);
     memset(bitR, 0, sizeof bitR);
     for (int i=tl; i<tr; ++i)
