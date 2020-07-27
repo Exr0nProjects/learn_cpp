@@ -120,6 +120,7 @@
         - One Indexed:
             - Root is at `1`
             - `lc[k] = 2*k = k<<1`, `rc[k] = 2*k+1 = k<<1|1`
+            - even `k` is left child, odd `k` is right child (except root)
         - Zero Indexed:
             - Root is at `0`
             - `lc[k] = 2*k+1 = k<<1|1`, `rc[k] = 2*k+2 = k+1<<1`
