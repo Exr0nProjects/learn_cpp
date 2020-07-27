@@ -1,0 +1,1 @@
+../../../notes/resources/answer_ad/Contests/TeamsCode/Mock2/14.cpp

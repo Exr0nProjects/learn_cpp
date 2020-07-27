@@ -49,7 +49,8 @@ pair<int, int> cinv[MX], aux[MX];    // <insert order, og value>
 
 void bu(int b[], int x)     // bit update
 {
-    for (; x<=N; x+=x&-x)
+    printf("x %d\n", x);
+    for (; x<=MX; x+=x&-x)
         ++b[x];
 }
 int bq(int b[], int x)     // bit query
@@ -66,7 +67,7 @@ int bqs(int b[], int x)    // bit query suffix
 void solve(int tl, int tr)  // dnq inversions counter, inc l exc r
 {
     if (tl+1 == tr) return;
-    //printf("    solve %d:%d    ", tl, tr); for (int i=tl; i<tr; ++i) printf("(%3d, %3d)  ", cinv[i].f, cinv[i].s); printf("\n");
+    printf("    solve %d:%d    ", tl, tr); for (int i=tl; i<tr; ++i) printf("(%3d, %3d)  ", cinv[i].f, cinv[i].s); printf("\n");
     int mid = tl+(tr-tl>>1);
     solve(tl, mid); solve(mid, tr);
     int l=tl, r=mid;
@@ -77,21 +78,21 @@ void solve(int tl, int tr)  // dnq inversions counter, inc l exc r
     {
         //printf("        %2d v %-2d ", l, r);
         if (l == mid || (r < tr && cinv[r] < cinv[l])) {    // take from right
-            //printf("take from right\n");
+            printf("take from right\n");
             aux[i] = cinv[r];
-            ans[aux[i].f] += bqs(bitL, aux[i].s);
-            bu(bitR, aux[i].s);
+            ans[aux[i].s] += bqs(bitL, aux[i].s+1);
+            bu(bitR, aux[i].s+1);
             ++r;
         } else {                                // take from left
-            //printf("take from left\n");
+            printf("take from left\n");
             aux[i] = cinv[l];
-            ans[aux[i].f] += bq(bitR, aux[i].s);
-            bu(bitL, aux[i].s);
+            ans[aux[i].s] += bq(bitR, aux[i].s+1);
+            bu(bitL, aux[i].s+1);
             ++l;
         }
     }
     memcpy(cinv+tl, aux+tl, tr-tl);
-    //printf("    %2d, %-2d: ", tl, tr); for (int i=0; i<N; ++i) printf("%3d", ans[i]); printf("\n");
+    printf("    %2d, %-2d: ", tl, tr); for (int i=0; i<N; ++i) printf("%3d", ans[i]); printf("\n");
 }
 
 int main()
@@ -102,7 +103,8 @@ int main()
         int d; scanf("%d", &d);
         ins[d] = i;
     }
-    for (int i=1; i<=N; ++i) cinv[i] = { ins[arr[i]], arr[i] };
+    //for (int i=1; i<=N; ++i) cinv[i] = { ins[arr[i]], arr[i] };
+    for (int i=1; i<=N; ++i) cinv[i] = { arr[i], ins[arr[i]] };
 
     //for (int i=1; i<=N; ++i) printf("%3d", cinv[i].f); printf("\n");
     //for (int i=1; i<=N; ++i) printf("%3d", cinv[i].s); printf("\n");
