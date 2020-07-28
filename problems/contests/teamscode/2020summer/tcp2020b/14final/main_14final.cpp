@@ -49,7 +49,7 @@ pair<int, int> cinv[MX], aux[MX];    // <insert order, og value>
 
 void bu(int b[], int x)     // bit update
 {
-    for (; x<=MX; x+=x&-x)
+    for (; x<=N; x+=x&-x)
         ++b[x];
 }
 int bq(int b[], int x)     // bit query
@@ -61,42 +61,37 @@ int bq(int b[], int x)     // bit query
 }
 int bqs(int b[], int x)    // bit query suffix
 {
-    return bq(b, N) - bq(b, x-1);   // FIX: thought that it needed to be +1 elsewhere, forgot to N+1 here
+    return bq(b, N) - bq(b, x-1);
 }
-void solve(int tl, int tr, int lay=0)  // dnq inversions counter, inc l exc r
+void solve(int tl, int tr)  // dnq inversions counter, inc l exc r
 {
     if (tl+1 == tr) return;
-    //for (int i=0; i<lay; ++i) printf("|       "); printf("solve %d:%d    ", tl, tr); for (int i=tl; i<tr; ++i) printf("(%3d, %3d)  ", cinv[i].f, cinv[i].s); printf("\n");
+    //printf("    solve %d:%d    ", tl, tr); for (int i=tl; i<tr; ++i) printf("(%3d, %3d)  ", cinv[i].f, cinv[i].s); printf("\n");
     int mid = tl+(tr-tl>>1);
-    solve(tl, mid, lay+1); solve(mid, tr, lay+1);
+    solve(tl, mid); solve(mid, tr);
     int l=tl, r=mid;
-    // TODO: below might tle, maybe only clear used parts or use segtree?
     memset(bitL, 0, sizeof bitL);
     memset(bitR, 0, sizeof bitR);
     for (int i=tl; i<tr; ++i)
     {
-        //for (int i=0; i<lay; ++i) printf("|       "); printf("    %2d (%-2d %2d) v %-2d (%-2d %2d)  ", l, cinv[l].f, cinv[l].s, r, cinv[r].f, cinv[r].s);
+        //printf("        %2d v %-2d ", l, r);
         if (l == mid || (r < tr && cinv[r] < cinv[l])) {    // take from right
             //printf("take from right\n");
             aux[i] = cinv[r];
-            ans[aux[i].f] += bqs(bitL, aux[i].s); // FIX: aux[i].s aka time can be zero
-            //ans[aux[i].f] += bqs(bitL, aux[i].f+1);
+            ans[aux[i].f] += bqs(bitL, aux[i].s);
             bu(bitR, aux[i].s);
             ++r;
         } else {                                // take from left
             //printf("take from left\n");
             aux[i] = cinv[l];
             ans[aux[i].f] += bq(bitR, aux[i].s);
-            //ans[aux[i].f] += bq(bitR, aux[i].f+1);
             bu(bitL, aux[i].s);
             ++l;
         }
     }
-    //for (int i=0; i<lay; ++i) printf("|       "); printf("solved %d:%d   ", tl, tr); for (int i=tl; i<tr; ++i) printf("(%3d, %3d)  ", aux[i].f, aux[i].s); printf("\n");
     //memcpy(cinv+tl, aux+tl, tr-tl);
-    for (int i=tl; i<tr; ++i) cinv[i] = aux[i]; // FIX: can't memset pairs
-    //for (int i=0; i<lay; ++i) printf("|       "); printf("solved %d:%d   ", tl, tr); for (int i=tl; i<tr; ++i) printf("(%3d, %3d)  ", cinv[i].f, cinv[i].s); printf("\n");
-    //for (int i=0; i<lay; ++i) printf("|       "); printf("%2d, %-2d: ", tl, tr); for (int i=0; i<=M; ++i) printf("%3d", ans[i]); printf("\n");
+    for (int i=tl; i<tr; ++i) cinv[i] = aux[i];
+    //printf("    %2d, %-2d: ", tl, tr); for (int i=0; i<N; ++i) printf("%3d", ans[i]); printf("\n");
 }
 
 int main()
@@ -108,7 +103,6 @@ int main()
         ins[d] = i;
     }
     for (int i=1; i<=N; ++i) cinv[i] = { ins[arr[i]], arr[i] };
-    //for (int i=1; i<=N; ++i) cinv[i] = { arr[i], ins[arr[i]] };
 
     //for (int i=1; i<=N; ++i) printf("%3d", cinv[i].f); printf("\n");
     //for (int i=1; i<=N; ++i) printf("%3d", cinv[i].s); printf("\n");
