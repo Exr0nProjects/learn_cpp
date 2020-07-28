@@ -76,7 +76,7 @@ void solve(int tl, int tr)  // dnq inversions counter, inc l exc r
     memset(bitR, 0, sizeof bitR);
     for (int i=tl; i<tr; ++i)
     {
-        //printf("        %2d v %-2d ", l, r);
+        printf("        %2d (%-2d %2d) v %-2d (%-2d %2d)  ", l, cinv[l].f, cinv[l].s, r, cinv[r].f, cinv[r].s);
         if (l == mid || (r < tr && cinv[r] < cinv[l])) {    // take from right
             printf("take from right\n");
             aux[i] = cinv[r];
