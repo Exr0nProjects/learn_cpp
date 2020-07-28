@@ -77,9 +77,26 @@ int main()
         }
     }
 
-    for (int i=0; i<=1+N; ++i) { for (int j=0; j<=1+N; ++j) printf("%c", grid[i][j]); printf("\n"); }
-    dfs(si, sj);
-    for (int i=0; i<=1+N; ++i) { for (int j=0; j<=1+N; ++j) printf("%c", grid[i][j]); printf("\n"); }
+    //for (int i=0; i<=1+N; ++i) { for (int j=0; j<=1+N; ++j) printf("%c", grid[i][j]); printf("\n"); }
+    queue<pair<int, pair<int, int>> > q;
+    q.push(mp(T+1, mp(si, sj)));
+    while (!q.empty())
+    {
+        auto cur = q.front(); q.pop();
+        //printf("    i %d j %d -> '%c'  r %d\n", cur.s.f, cur.s.s, grid[cur.s.f][cur.s.s], cur.f);
+        if (grid[cur.s.f][cur.s.s] != '*') continue;
+        grid[cur.s.f][cur.s.s] = '#';
+        if (cur.f == 0) ++tot;
+        else
+        {
+            int dx[] = {1, 0, -1, 0};
+            int dy[] = {0, 1, 0, -1};
+            for (int d=0; d<4; ++d)
+                q.push(mp(cur.f - 1, mp(cur.s.f + dy[d], cur.s.s + dx[d])));
+        }
+    }
+
+    //for (int i=0; i<=1+N; ++i) { for (int j=0; j<=1+N; ++j) printf("%c", grid[i][j]); printf("\n"); }
     printf("%d\n", tot);
 
 	return 0;
