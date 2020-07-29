@@ -60,9 +60,15 @@ unsigned long long elapsed(bool print=true)
 
 using namespace std;
 const ll MX = 100010;
-int N, M, ins[MX], ans[MX];
+int N, M, ins[MX];
+ll ans[MX];
 int bitL[MX], bitR[MX];
 int invt[MX], invv[MX], auxt[MX], auxv[MX];
+
+int die(int k=0)
+{
+    printf("%d\n", die(k+1));
+}
 
 void solve(int tl, int tr)  // dnq inversions counter, inc l exc r
 {
@@ -73,8 +79,6 @@ void solve(int tl, int tr)  // dnq inversions counter, inc l exc r
     int l=tl, r=mid;
 
     //printf("memset start: "); elapsed();
-    memset(bitL, 0, sizeof bitL);
-    memset(bitR, 0, sizeof bitR);
     //printf("memset end: %lf\n", (double)elapsed(0)*1e3/(tr-tl));
     for (int i=tl; i<tr; ++i)
     {
@@ -101,9 +105,14 @@ void solve(int tl, int tr)  // dnq inversions counter, inc l exc r
     }
     //printf("merge end: %lf per num\n", (double)elapsed(0)*1e3/(tr-tl));
     //printf("merge end: %lf per num\n", (double)elapsed(0)*1e3);
+        for (int i=tl; i<mid; ++i)
+            for (int x=N+1-invv[i]; x<=N; x+=x&-x)
+                bitL[x] = 0;
+        for (int i=mid; i<tr; ++i)
+            for (int x=invv[i]; x<=N; x+=x&-x)
+                bitR[x] = 0;
     memcpy(invt+tl, auxt+tl, sizeof(int)*(tr-tl));
     memcpy(invv+tl, auxv+tl, sizeof(int)*(tr-tl));
-    //for (int i=tl; i<tr; ++i) invt[i] = auxt[i], invv[i] = auxv[i];
     //printf("copy end: %lf per num\n", (double)elapsed(0)*1e3/(tr-tl));
     //printf("    %2d, %-2d: ", tl, tr); for (int i=0; i<N; ++i) printf("%3d", ans[i]); printf("\n");
 }
@@ -128,7 +137,7 @@ int main()
     //printf("solved: "); elapsed();
     for (int i=0; i<M; ++i) ans[i+1] += ans[i];
     //printf("postprocess: "); elapsed();
-    for (int i=M; i>0; --i) printf("%d\n", ans[i]);
+    for (int i=M; i>0; --i) printf("%lld\n", ans[i]);
     //printf("output: "); elapsed();
 
 	return 0;
