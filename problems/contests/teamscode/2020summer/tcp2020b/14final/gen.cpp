@@ -7,8 +7,8 @@ using namespace std;
 
 //const int MX = 1e5;
 //const int MXM = 5e4;
-const int MX = 1e4;
-const int MXM = 5e3;
+const int MX = 5e4;
+const int MXM = 5e4;
 int arr[MX+10];
 
 int main()
