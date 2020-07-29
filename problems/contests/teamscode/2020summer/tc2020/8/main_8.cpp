@@ -60,7 +60,7 @@ int main()
         for (int j=0; j<len[i]; ++j) cin >> you[j]; // FIX: use alexc input, not cin.getline()
         you[len[i]] = 0;
         int mx=0;
-        for (int s=-26; s<=26; ++s)
+        for (int s=-26; s<=26; ++s) // negative max(len[i], len[0])
         {   // -11 vs -12
             int cnt=0;
             for (int j=0; j<len[i]; ++j)
@@ -69,9 +69,10 @@ int main()
             mx = max(mx, cnt);
             //printf("shift for %d, %d: %d\n", i, s, cnt);
         }
+        printf("%d\n", mx);
         tot += mx;
     }
-    printf("%d\n", tot);
+    //printf("%d\n", tot);
 
 	return 0;
 }

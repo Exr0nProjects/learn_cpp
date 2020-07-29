@@ -37,9 +37,9 @@ public class europeEscapade {
                     curCountries;
                 offset += 1;
             }
-            count += maxCountries;
+            System.out.println(maxCountries);
+            //count += maxCountries;
         }
-        System.out.println(count);
     }
 }
 
