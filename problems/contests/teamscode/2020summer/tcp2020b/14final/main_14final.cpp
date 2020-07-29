@@ -59,24 +59,11 @@ unsigned long long elapsed(bool print=true)
 #define rr (tl+((tr-tl)>>1)+1), tr
 
 using namespace std;
-const ll MX = 100111;
+const ll MX = 100010;
 int N, M, ins[MX], ans[MX];
 int bitL[MX], bitR[MX];
 int invt[MX], invv[MX], auxt[MX], auxv[MX];
-//pair<int, int> cinv[MX], aux[MX];    // <insert order, og value>
 
-inline void bu(int b[], int x)     // bit update
-{
-    for (; x<=N; x+=x&-x)
-        ++b[x];
-}
-inline int bq(int b[], int x)     // bit query
-{
-    int sum=0;
-    for (; x; x-=x&-x)
-        sum += b[x];
-    return sum;
-}
 void solve(int tl, int tr)  // dnq inversions counter, inc l exc r
 {
     if (tl+1 == tr) return;
@@ -96,15 +83,19 @@ void solve(int tl, int tr)  // dnq inversions counter, inc l exc r
             //printf("take from right\n");
             auxt[i] = invt[r];
             auxv[i] = invv[r];
-            ans[auxt[i]] += bq(bitL, N+1-auxv[i]);
-            bu(bitR, auxv[i]);
+            for (int x=N+1-auxv[i]; x; x-=x&-x)
+                ans[auxt[i]] += bitL[x];
+            for (int x=auxv[i]; x<=N; x+=x&-x)
+                ++bitR[x];
             ++r;
         } else {                                // take from left
             //printf("take from left\n");
             auxt[i] = invt[l];
             auxv[i] = invv[l];
-            ans[auxt[i]] += bq(bitR, auxv[i]);
-            bu(bitL, N+1-auxv[i]);
+            for (int x=auxv[i]; x; x-=x&-x)
+                ans[auxt[i]] += bitR[x];
+            for (int x=N+1-auxv[i]; x<=N; x+=x&-x)
+                ++bitL[x];
             ++l;
         }
     }
