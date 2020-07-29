@@ -46,31 +46,26 @@ const int MX = 10111;
 const int MXL = 30<<1;
 
 int N, len[MX];
-char sched[MX][MXL];
+char me[MXL], you[MXL];
 
 int main()
 {
     scanf("%d", &N);
     for (int i=0; i<=N; ++i) scanf("%d", &len[i]); getchar();
-    for (int i=0; i<=N; ++i) cin.getline(sched[i], MXL);
-    for (int i=0; i<=N; ++i)
-        for (int j=1; j<len[i]; ++j)
-            sched[i][j] = sched[i][j<<1];
+    for (int i=0; i<len[0]; ++i) cin >> me[i];
 
     int tot=0;
     for (int i=1; i<=N; ++i)
     {
+        for (int j=0; j<len[i]; ++j) cin >> you[j]; // FIX: use alexc input, not cin.getline()
+        you[len[i]] = 0;
         int mx=0;
         for (int s=-26; s<=26; ++s)
         {
             int cnt=0;
             for (int j=0; j<len[i]; ++j)
-                if (j+s >= 0 && j+s < len[0] && sched[0][j+s] == sched[i][j])
+                if (j+s >= 0 && j+s < len[0] && me[j+s] == you[j])
                     ++cnt;
-                //if (j+s+1 >= 0 && j+s+1 < len[i]
-                //        && sched[0][j] == sched[i][j+s]
-                //        && sched[0][j+1] == sched[i][j+s+1])
-                //    cnt += 1 + (j != pre), pre = j+1;
             mx = max(mx, cnt);
             //printf("shift for %d, %d: %d\n", i, s, cnt);
         }

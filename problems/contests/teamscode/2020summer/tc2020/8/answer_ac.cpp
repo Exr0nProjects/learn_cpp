@@ -12,13 +12,11 @@ int main() {
     for(int i = 0; i <= n; i++){
         cin >> lol[i];
     }
-    char c [lol[0]];
     for(int i = 0; i < lol[0]; i++){
         cin >> c[i];
     }
     int totmax = 0;
     for(int i = 1; i <= n; i++){
-        char d [lol[i]];
         for(int j = 0; j < lol[i]; j++){
             cin >> d[j];
         }
@@ -26,8 +24,8 @@ int main() {
         //we shift d. so we match the jth in d with the j+kth in c.
         for(int k = -26; k <= 26; k++){
             int curmax = 0;
-            for(int j = 0; j < 26; j++){
-                if(inbound(j,lol[i]) && inbound(j+k,lol[0]) && d[j] == c[j+k]){
+            for(int j = 0; j <lol[i]; j++){
+                if(j+k >= 0 && j+k < lol[0] && d[j] == c[j+k]){
                     curmax++;
                 }
             }
