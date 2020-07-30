@@ -42,9 +42,9 @@
 #define rr (tl+((tr-tl)>>1)+1), tr
 
 using namespace std;
-const ll MX = 100111;
-int N, M;
-vector<pair<int, int> > zeros, ones;
+const int MX = 100111;
+int N, M, fib[MX];
+vector<pair<int, int> > ones, zeros;
 
 int djs[MX], djf[MX];
 int find(int n)
@@ -52,20 +52,21 @@ int find(int n)
     if (djf[n] != n) djf[n] = find(djf[n]);
     return djf[n];
 }
-bool merge(int a, int b)
+int merge(int a, int b)
 {
     a = find(a);
     b = find(b);
-    if (a == b) return false;
+    if (a == b) return 0;
     if (djs[a] < djs[b]) swap(a, b);
     djs[a] += djs[b];
     djf[b] = a;
-    return true;
+    return 1;
 }
 
 int main()
 {
     scanf("%d%d", &N, &M);
+    if (!M) { printf("No\n"); return 0; }
     for (int i=0; i<M; ++i)
     {
         int u, v, w;
@@ -73,21 +74,26 @@ int main()
         if (w) ones.pb(mp(u, v));
         else zeros.pb(mp(u, v));
     }
-    int lo=0, hi=0;
+    int zs=0, lo=0, hi=0;
     for (int i=0; i<MX; ++i) djf[i] = i, djs[i] = 0;
-    for (auto p : zeros) merge(p.f, p.s);
+    for (auto p : zeros) zs += merge(p.f, p.s);
     for (auto p : ones) lo += merge(p.f, p.s);
     for (int i=0; i<MX; ++i) djf[i] = i, djs[i] = 0;
     for (auto p : ones) hi += merge(p.f, p.s);
-    int a=0, b=1;
-    while (a <= hi)
+    if (zs + lo + 1 != N) { printf("No\n"); return 0; }
+
+    int a=1, b=1;
+    bool ans = false;
+    while (a <= hi<<1)
     {
-        (a = b) += a;
-        swap(a, b);
+        int c = b;
+        b += a;
+        a = c;
+        //(a = b) += a; swap(a, b);  // FIX: don't do this to calculate fibonacci. it's undefined behavior (works locally but not on codeforces)
         if (lo <= a && a <= hi)
-        { a = -1; break; }
+        { ans = 1; break; }
     }
-    if (a < 0) printf("Yes\n");
+    if (ans) printf("Yes\n");
     else printf("No\n");
 
 	return 0;
