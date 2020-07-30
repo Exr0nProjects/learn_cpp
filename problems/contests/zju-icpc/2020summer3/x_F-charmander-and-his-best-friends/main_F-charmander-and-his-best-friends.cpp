@@ -43,10 +43,9 @@
 
 using namespace std;
 const ll MX = 50111;
-//int N, arr[MX], aux[MX];
 int N;
 
-// do weird dnq where you skip progressive powers of two, taking every other and compressing into the first half
+// do weird dnq thing where you split even and odd indicies and put them next to eachother
 void swippity_swaap(vector<int> v)
 {
     //for (int i=0; i<v.size(); ++i) printf("%3d", v[i]); printf("\n");
@@ -70,7 +69,6 @@ int main()
     iota(arr.begin(), arr.end(), 1);
     swippity_swaap(arr);
     //for (int i=1; i<=N; ++i) printf("%d ", arr[i]);
-    printf("\n");
 
 	return 0;
 }
