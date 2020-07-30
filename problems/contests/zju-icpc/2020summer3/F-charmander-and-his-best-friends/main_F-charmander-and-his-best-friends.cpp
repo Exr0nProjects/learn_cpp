@@ -46,31 +46,31 @@ const ll MX = 50111;
 int N, arr[MX], aux[MX];
 
 // do weird dnq where you skip progressive powers of two, taking every other and compressing into the first half
-void swippity_swaap(int k=1)
+void swippity_swaap(int k=2)
 {
     //printf("k = %d:    ", k); for (int i=1; i<=N; ++i) printf("%3d", arr[i]); printf("\n");
-    if (1<<k > N) return;
-    for (int s=0; s<1<<k-1; ++s)
+    if (k > N) return;
+    for (int s=0; s<k/2; ++s)
     {
         int cnt = s+1;
-        for (int i=1; i+s<=N; i+=1<<k)
+        for (int i=1; i+s<=N; i+=k)
         {
             //printf("%3d <- %-2d", cnt, i+s);
             aux[cnt] = arr[i+s];
-            cnt += 1<<(k-1);
+            cnt += k/2;
         }
         //printf("  |  ");
         //printf("start at %d  ", 1<<(k-1));
-        for (int i=1+(1<<k-1); i+s<=N; i+=1<<k)
+        for (int i=1 +k/2; i+s<=N; i+=k)
         {
             //printf("%3d <- %-2d", cnt, i+s);
             aux[cnt] = arr[i+s];
-            cnt += 1<<k-1;
+            cnt += k/2;
         }
         //printf("\n");
     }
     swap(arr, aux);
-    swippity_swaap(k+1);
+    swippity_swaap(k*2);
 }
 
 int main()
