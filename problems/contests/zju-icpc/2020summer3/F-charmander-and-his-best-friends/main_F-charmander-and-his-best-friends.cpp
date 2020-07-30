@@ -43,42 +43,33 @@
 
 using namespace std;
 const ll MX = 50111;
-int N, arr[MX], aux[MX];
+//int N, arr[MX], aux[MX];
+int N;
 
 // do weird dnq where you skip progressive powers of two, taking every other and compressing into the first half
-void swippity_swaap(int k=2)
+void swippity_swaap(vector<int> v)
 {
-    //printf("k = %d:    ", k); for (int i=1; i<=N; ++i) printf("%3d", arr[i]); printf("\n");
-    if (k > N) return;
-    for (int s=0; s<k/2; ++s)
+    //for (int i=0; i<v.size(); ++i) printf("%3d", v[i]); printf("\n");
+    if (v.size() <= 1)
     {
-        int cnt = s+1;
-        for (int i=1; i+s<=N; i+=k)
-        {
-            //printf("%3d <- %-2d", cnt, i+s);
-            aux[cnt] = arr[i+s];
-            cnt += k/2;
-        }
-        //printf("  |  ");
-        //printf("start at %d  ", 1<<(k-1));
-        for (int i=1 +k/2; i+s<=N; i+=k)
-        {
-            //printf("%3d <- %-2d", cnt, i+s);
-            aux[cnt] = arr[i+s];
-            cnt += k/2;
-        }
-        //printf("\n");
+        printf("%d ", v[0]);
+        return;
     }
-    swap(arr, aux);
-    swippity_swaap(k*2);
+    vector<int> even, odd;
+    for (int i=0; i<v.size(); ++i)
+        if (i % 2) odd.pb(v[i]);
+        else even.pb(v[i]);
+    swippity_swaap(odd);
+    swippity_swaap(even);
 }
 
 int main()
 {
     scanf("%d", &N);
-    iota(arr, arr+N+1, 0);
-    swippity_swaap();
-    for (int i=1; i<=N; ++i) printf("%d ", arr[i]);
+    vector<int> arr(N);
+    iota(arr.begin(), arr.end(), 1);
+    swippity_swaap(arr);
+    //for (int i=1; i<=N; ++i) printf("%d ", arr[i]);
     printf("\n");
 
 	return 0;
