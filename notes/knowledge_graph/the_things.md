@@ -892,8 +892,10 @@ For Loops
 - all dp problems can be represented as DAGs
 
 # Dynamic Programming
-1. Frame the Question!
-1. Write down the Equation
+1. Paperwork to observe stages
+2. Frame the Question!
+3. Write down the Equation
+4. Base case
 - Don't start coding right away
     - Make sure to write down the equation
 - Choose or merge from smaller subproblems
