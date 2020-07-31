@@ -10,7 +10,6 @@
 #include <cstring>
 #include <sstream>
 #include <iostream>
-#include <tuple>
 #include <vector>
 #include <string>
 #include <list>
@@ -25,21 +24,17 @@
 #include <random>
 #include <chrono>
 #include <utility>
-#include <iterator>
-#include <exception>
 #include <algorithm>
 #include <functional>
 
 #define ll long long
 #define dl double
 
+#define pii pair<int, int>
 #define pb push_back
-#define eb emplace_back
 #define mp make_pair
 #define f first
 #define s second
-#define lr tl, (tl+((tr-tl)>>1))
-#define rr (tl+((tr-tl)>>1)+1), tr
 
 using namespace std;
 const ll MX = -1;
