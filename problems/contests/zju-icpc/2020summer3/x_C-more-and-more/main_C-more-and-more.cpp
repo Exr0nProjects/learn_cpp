@@ -37,17 +37,15 @@
 #define s second
 
 using namespace std;
-const ll MX = 1e5+1;
-const ll MXM = 50;
-ll N, M, K, val[MX], dp[MXM][4];    // dp[i][j][k] = max sum from 1..i but you must take i, j muliplies used, k = whether we are taking this? or not.. rolling array on i
-// FIX: hold up, M <= 30? not 1e4??
+const ll MX = 3e5+10;   // FIX: array bounds are 3e5 not 1e5
+ll N, M, K, val[MX], dp[50][2];    // dp[i][j][k] = max sum from 1..i but you must take i, j muliplies used, k = whether we are taking this? or not.. rolling array on i
 
 int main()
 {
     scanf("%lld%lld%lld", &N, &M, &K);
     for (int i=1; i<=N; ++i) scanf("%lld", &val[i]);
 
-    for (int i=0; i<=MXM; ++i) dp[i][1] = -1e8;
+    for (int i=0; i<=M; ++i) dp[i][1] = -1e8;
 
     ll ret = -1e8;
     for (int i=1; i<=N; ++i)
@@ -58,7 +56,7 @@ int main()
             if (j) dp[j][1] = max(max(dp[j][1], dp[j-1][0]), 0ll) + val[i]*K;
             else dp[j][1] = -1e8;
             ret = max(ret, max(dp[j][0], dp[j][1]));
-            //printf("(%-2d %2d)  ", dp[i][j][0], dp[i][j][1]);
+            //printf("(%-2d %2d)  ", dp[j][0], dp[j][1]);
         }
         //printf("\n");
     }
