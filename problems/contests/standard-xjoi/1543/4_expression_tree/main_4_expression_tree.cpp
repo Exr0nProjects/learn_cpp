@@ -41,13 +41,13 @@ using namespace std;
 const ll MX = -1;
 string inp;
 
-int apply(int i, int a, int b)
+int apply(int i, int a, int b, int lay)
 {
     int ret = 0;
     if (inp[i] == '*') ret = a * b;
     if (inp[i] == '+') ret = a + b;
     if (inp[i] == '-') ret = a - b;
-    //printf("=> %d\n", ret);
+    //for (int i=0; i<lay; ++i) printf("|   "); printf("=> %d\n", ret);
     return ret;
 }
 bool valid_loc(int l, int i)
@@ -57,7 +57,7 @@ bool valid_loc(int l, int i)
 
 int parse(int l, int r, int lay=0)
 {
-    //for (int i=0; i<lay; ++i) printf("|   "); printf("%d..%d\n", l, r);
+    //for (int i=0; i<lay; ++i) printf("|   "); printf("%d..%d:  '", l, r); for (int i=l; i<=r; ++i) printf("%c", inp[i]); printf("'\n");
     if (l > r) return 0;
     if (inp[l] == '(' && inp[r] == ')')
     {
@@ -67,25 +67,24 @@ int parse(int l, int r, int lay=0)
             if (inp[i] == ')') break;
         }
     }
-    //while (inp[l] == '(' && inp[r] == ')') ++l, --r;
     int pcnt = 0;//, zcnt=0;
     for (int i=r; i>=l; --i)
     {
         if (inp[i] == ')') ++pcnt;
         if (inp[i] == '(') --pcnt;
+        //for (int i=0; i<lay; ++i) printf("|   "); printf("add @ %d pcnt %d\n", i, pcnt);
         //if (!pcnt) ++zcnt;
-        if (!pcnt && inp[i] == '+' || inp[i] == '-' && valid_loc(l, i))
-            return apply(i, parse(l, i-1, lay+1), parse(i+1, r, lay+1));
+        if (!pcnt && (inp[i] == '+' || inp[i] == '-') && valid_loc(l, i))   // FIX: order of ops, parens around the ||
+            return apply(i, parse(l, i-1, lay+1), parse(i+1, r, lay+1), lay);
     }
-    //if (zcnt == 0) assert(0);
-    //if (r!=l && zcnt == 1) return parse(l+1, r-1, lay+1);
     pcnt = 0;
     for (int i=r; i>=l; --i)
     {
         if (inp[i] == ')') ++pcnt;
         if (inp[i] == '(') --pcnt;
+        //for (int i=0; i<lay; ++i) printf("|   "); printf("mul @ %d pcnt %d\n", i, pcnt);
         if (!pcnt && inp[i] == '*' && valid_loc(l, i))
-            return apply(i, parse(l, i-1, lay+1), parse(i+1, r, lay+1));
+            return apply(i, parse(l, i-1, lay+1), parse(i+1, r, lay+1), lay);
     }
     // just a number
     int tot=0;
