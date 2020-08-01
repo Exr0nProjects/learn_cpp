@@ -56,10 +56,13 @@ void merge(int a, int b)
 
 int dfs(int cur, int tar, int pre=0, int sum=0)
 {
+    //printf("%d from %d tar %d sum %d\n", cur, pre, tar, sum);
     if (cur == tar) return sum;
+    int ret=-1;
     for (auto e : adj[cur])
         if (e.s != pre)
-            dfs(e.s, tar, cur, sum+e.f);
+            ret = max(ret, dfs(e.s, tar, cur, sum+e.f));
+    return ret;
 }
 
 int main()
@@ -87,8 +90,12 @@ int main()
             adj[u].pb(mp(w, v));
             adj[v].pb(mp(w, u));
         }
-        else if (dfs(u, v)%2 != w)
-            break;
+        else
+        {
+            int res = dfs(u, v)%2;
+            if (res != w)
+                break;
+        }
     }
     printf("%d\n", i);
 
