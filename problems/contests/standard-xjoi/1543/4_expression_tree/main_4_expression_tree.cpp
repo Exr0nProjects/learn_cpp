@@ -47,7 +47,7 @@ int apply(int i, int a, int b)
     if (inp[i] == '*') ret = a * b;
     if (inp[i] == '+') ret = a + b;
     if (inp[i] == '-') ret = a - b;
-    printf("=> %d\n", ret);
+    //printf("=> %d\n", ret);
     return ret;
 }
 bool valid_loc(int l, int i)
@@ -57,7 +57,7 @@ bool valid_loc(int l, int i)
 
 int parse(int l, int r, int lay=0)
 {
-    for (int i=0; i<lay; ++i) printf("|   "); printf("%d..%d\n", l, r);
+    //for (int i=0; i<lay; ++i) printf("|   "); printf("%d..%d\n", l, r);
     if (l > r) return 0;
     if (inp[l] == '(' && inp[r] == ')')
     {
@@ -69,10 +69,10 @@ int parse(int l, int r, int lay=0)
     }
     //while (inp[l] == '(' && inp[r] == ')') ++l, --r;
     int pcnt = 0;//, zcnt=0;
-    for (int i=l; i<=r; ++i)
+    for (int i=r; i>=l; --i)
     {
-        if (inp[i] == '(') ++pcnt;
-        if (inp[i] == ')') --pcnt;
+        if (inp[i] == ')') ++pcnt;
+        if (inp[i] == '(') --pcnt;
         //if (!pcnt) ++zcnt;
         if (!pcnt && inp[i] == '+' || inp[i] == '-' && valid_loc(l, i))
             return apply(i, parse(l, i-1, lay+1), parse(i+1, r, lay+1));
@@ -80,10 +80,10 @@ int parse(int l, int r, int lay=0)
     //if (zcnt == 0) assert(0);
     //if (r!=l && zcnt == 1) return parse(l+1, r-1, lay+1);
     pcnt = 0;
-    for (int i=l; i<=r; ++i)
+    for (int i=r; i>=l; --i)
     {
-        if (inp[i] == '(') ++pcnt;
-        if (inp[i] == ')') --pcnt;
+        if (inp[i] == ')') ++pcnt;
+        if (inp[i] == '(') --pcnt;
         if (!pcnt && inp[i] == '*' && valid_loc(l, i))
             return apply(i, parse(l, i-1, lay+1), parse(i+1, r, lay+1));
     }
@@ -91,7 +91,7 @@ int parse(int l, int r, int lay=0)
     int tot=0;
     for (int i=l; i<=r; ++i)
         tot = tot * 10 + inp[i]-'0';
-    for (int i=0; i<lay; ++i) printf("|   "); printf("=> %d\n", tot);
+    //for (int i=0; i<lay; ++i) printf("|   "); printf("=> %d\n", tot);
     return tot;
 }
 
