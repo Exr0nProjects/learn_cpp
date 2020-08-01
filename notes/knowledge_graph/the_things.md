@@ -904,6 +904,20 @@ For Loops
 - If you don't have to try the subproblems, you might have a greedy problem
 - Must have overlapping subproblems
 
+# Manacher
+- Find palendromes
+- Reuse knoweledge, similar to KMP
+
+# Linear Sieve
+- Sieve for primes in linear time
+- Do that by only marking each number once
+- Mark each number with its lowest prime factor
+
+# Suffix Array
+- Sort all suffixes of a string
+- Can do N log N with doubling method and pairs
+- DC3 algorithm for linear time
+
 ## Algorithmic Paradighms
 
 - Brute Force
