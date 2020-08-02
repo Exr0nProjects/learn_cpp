@@ -8,24 +8,6 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
-#include <sstream>
-#include <iostream>
-#include <vector>
-#include <string>
-#include <list>
-#include <array>
-#include <queue>
-#include <stack>
-#include <set>
-#include <map>
-#include <unordered_set>
-#include <unordered_map>
-#include <cmath>
-#include <random>
-#include <chrono>
-#include <utility>
-#include <algorithm>
-#include <functional>
 
 #define ll long long
 #define dl double
@@ -55,20 +37,20 @@ void suffsort()
         for (int i=1; i<=k; ++i) tmp[i] = N-i +1;   // set first k nums to max; +1 is fencepost cuz one indexed
         //for (int i=1; i<=N; ++i) if (sa[i] > k) tmp[p++] = sa[i];
         for (int i=1; i<=N; ++i) if (sa[i] > k) tmp[++p] = sa[i]-k;   // put other elements into tmp but shifted (since they alre already sorted by second keyword from previous step); FIX: ++p not p++; FIX: sa[i]-k not sa[i], cuz u need to shift it over
-        printf("tmp_%d: ", k); for (int i=1; i<=N; ++i) printf("%3d", tmp[i]); printf("\n");
+        //printf("tmp_%d: ", k); for (int i=1; i<=N; ++i) printf("%3d", tmp[i]); printf("\n");
         // radix sort by first keyword
         memset(pos, 0, sizeof(int)*mx);
         for (int i=1; i<=N; ++i) ++pos[rk[i]];          // radix sort by rk[tmp[i]] is equiv to sorting by rk[i]
         for (int i=1; i<=mx; ++i) pos[i] += pos[i-1];    // prefix sum on pos to get end positions of each group; FIX: up to mx not N because mx can be larger, on first iteration when its characters up to 127
         for (int i=N; i; --i) sa[pos[ rk[tmp[i]] ]--] = tmp[i];  // stable sort by first keyword, write tmp
-        printf("sa_%d:  ", k); for (int i=1; i<=N; ++i) printf("%3d", tmp[i]); printf("\n");
+        //printf("sa_%d:  ", k); for (int i=1; i<=N; ++i) printf("%3d", sa[i]); printf("\n");
         // re-rank
         //for (int i=1; i<=N; ++i) tmp[sa[i]] = r += (rk[sa[i]] != rk[sa[i-1]] || rk[sa[i]+k] != rk[sa[i-1]+k]);
         for (int i=1; i<=N; ++i) tmp[sa[i]] = tmp[sa[i-1]] + (rk[sa[i]] != rk[sa[i-1]] || rk[sa[i]+k] != rk[sa[i-1]+k]);
         //for (int i=1; i<=N; ++i) rk[i] = tmp[i];
         memcpy(rk, tmp, (N+1)*sizeof(int)); // FIX: memcpy N+1 not mx
-        printf("rk_%d:  ", k); for (int i=1; i<=N; ++i) printf("%3d", tmp[i]); printf("\n");
-        printf("\n");
+        //printf("rk_%d:  ", k); for (int i=1; i<=N; ++i) printf("%3d", rk[i]); printf("\n");
+        //printf("\n");
         mx = rk[sa[N]];
     }
 }
@@ -78,6 +60,7 @@ int main()
     scanf("%s", inp+1);
     N = strlen(inp+1);
     suffsort();
+    for (int i=1; i<=N; ++i) printf("%d ", sa[i]); printf("\n");
 
 	return 0;
 }
