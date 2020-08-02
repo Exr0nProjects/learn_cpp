@@ -47,7 +47,7 @@ int apply(int i, int a, int b, int lay)
     if (inp[i] == '*') ret = a * b;
     if (inp[i] == '+') ret = a + b;
     if (inp[i] == '-') ret = a - b;
-    //for (int i=0; i<lay; ++i) printf("|   "); printf("=> %d\n", ret);
+    for (int i=0; i<lay; ++i) printf("|   "); printf("=> %d\n", ret);
     return ret;
 }
 bool valid_loc(int l, int i)
@@ -57,7 +57,7 @@ bool valid_loc(int l, int i)
 
 int parse(int l, int r, int lay=0)
 {
-    //for (int i=0; i<lay; ++i) printf("|   "); printf("%d..%d:  '", l, r); for (int i=l; i<=r; ++i) printf("%c", inp[i]); printf("'\n");
+    for (int i=0; i<lay; ++i) printf("|   "); printf("%d..%d:  '", l, r); for (int i=l; i<=r; ++i) printf("%c", inp[i]); printf("'\n");
     if (l > r) return 0;
     if (inp[l] == '(' && inp[r] == ')')
     {
@@ -90,7 +90,7 @@ int parse(int l, int r, int lay=0)
     int tot=0;
     for (int i=l; i<=r; ++i)
         tot = tot * 10 + inp[i]-'0';
-    //for (int i=0; i<lay; ++i) printf("|   "); printf("=> %d\n", tot);
+    for (int i=0; i<lay; ++i) printf("|   "); printf("=> %d\n", tot);
     return tot;
 }
 
