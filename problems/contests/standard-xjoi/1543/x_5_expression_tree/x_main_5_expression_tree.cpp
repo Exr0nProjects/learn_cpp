@@ -1,7 +1,7 @@
 /*
- * Problem 4_expression_tree (contests/standard-xjoi/1543/4_expression_tree)
+ * Problem 5_expression_tree (contests/standard-xjoi/1543/5_expression_tree)
  * Create time: Sat 01 Aug 2020 @ 15:35 (PDT)
- * Accept time: [!meta:end!]
+ * Accept time: Sat 01 Aug 2020 @ 17:19 (PDT)
  *
  */
 
@@ -60,7 +60,7 @@ int parse(int l, int r, int lay=0)
     //for (int i=0; i<lay; ++i) printf("|   "); printf("%d..%d:  '", l, r); for (int i=l; i<=r; ++i) printf("%c", inp[i]); printf("'\n");
     if (l > r) return 0;
     if (inp[l] == '(' && inp[r] == ')')
-    {
+    {   // FIX: logic/equ--paren checking is hard. can't just test left and right, might be weird stuff in middle
         int pcnt = 0, mn=0;
         for (int i=l+1; i<r; ++i)
         {
