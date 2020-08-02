@@ -46,6 +46,7 @@ Don't make names too similar, it's easy to make typos (`djs` vs `djf`)
 
 ### Wrong Answer (correct algorithm, edge cases)
 
+0. Always write down buggy test cases and re-test them later
 1. Print everything, check "easy path" cases
 	- Iteration begin and end variables
 	- Recursive arguments
