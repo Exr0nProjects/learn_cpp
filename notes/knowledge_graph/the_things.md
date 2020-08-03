@@ -917,6 +917,12 @@ For Loops
 - Sort all suffixes of a string
 - Can do N log N with doubling method and pairs
 - DC3 algorithm for linear time
+- Fenceposts are toxic
+    - The string, `sa`, `rk`, `tmp`, and `pos` are 1-indexed. `tmp` is always a permutation of 1..N, and `sa`, `rk` become so after sorting
+        - The first iteration of radix sort should have `k == 0` but we rely on multiplying `i` by `2` in the main loop, so we have to do `int k = i>>1;`
+        - The second keyword sort pointer `p` starts at `k` but needs to be incremented before usage, so we do `tmp[++p] =` instead of `tmp[p++]`
+    - The `lcp` array rmq between `i` and `j` requires rmq between `lcp[i+1]` and `lcp[j]` inclusive.
+    - Sparse table is include left exclude right
 
 ## Algorithmic Paradighms
 
