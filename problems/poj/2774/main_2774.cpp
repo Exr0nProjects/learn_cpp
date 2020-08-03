@@ -8,24 +8,8 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
-#include <sstream>
-#include <iostream>
-#include <vector>
-#include <string>
-#include <list>
-#include <array>
-#include <queue>
-#include <stack>
-#include <set>
-#include <map>
-#include <unordered_set>
-#include <unordered_map>
-#include <cmath>
-#include <random>
-#include <chrono>
 #include <utility>
 #include <algorithm>
-#include <functional>
 
 #define ll long long
 #define dl double
@@ -61,10 +45,12 @@ void ksa()
         for (int i=1; i<=N; ++i) ++pos[rk[i]];
         for (int i=1; i<=mx; ++i) pos[i] += pos[i-1];    // FIX: mx not MX, altho both work; FIX: <=mx not <mx, causes whack bus error?
         for (int i=N; i; --i) sa[pos[ rk[tmp[i]] ]--] = tmp[i];
+        //for (int i=1; i<=N; ++i) printf("%3d", sa[i]); printf("\n");
         // re-rank
         for (int i=1; i<=N; ++i)
             tmp[sa[i]] = tmp[sa[i-1]] + (rk[sa[i]] != rk[sa[i-1]] || rk[sa[i]+k] != rk[sa[i-1]+k]);
         memcpy(rk, tmp, 1+N<<2);
+        //for (int i=1; i<=N; ++i) printf("%3d", rk[i]); printf("\n");
         // prep
         mx = rk[sa[N]];
         if (mx == N) break;
@@ -106,11 +92,13 @@ void klcp()
 int main()
 {
     scanf("%s", inp+1);
-    N = strlen(inp+1);
-    inp[N+1] = '#';
-    scanf("%s", inp+2+N);
+    int N1 = strlen(inp+1);
+    //N = strlen(inp+1);
+    inp[N1+1] = '#';
+    scanf("%s", inp+2+N1);      // FIX: rename-- +N1 not +N because N == 0 here!
     //printf("'%s'\n", inp+1);
-    N += strlen(inp+1+N);
+    N = N1 + strlen(inp+1+N1);
+    //N += strlen(inp+1+N);
     ksa();
     klcp();
 
@@ -128,7 +116,11 @@ int main()
     //}
     int mx=0;
     for (int i=1; i<=N; ++i)
-        mx = max(mx, lcp[i]);
+    {
+        //printf("%d and %d: %d\n", sa[i], sa[i+1], lcp[i+1]);
+        if (sa[i-1] <= N1 && sa[i] > N1)
+            mx = max(mx, lcp[i]);
+    }
     printf("%d\n", mx);
 
 	return 0;
