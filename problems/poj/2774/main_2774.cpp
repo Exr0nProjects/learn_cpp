@@ -38,8 +38,11 @@
 
 using namespace std;
 const int MX = 200111;
+const int LGMX = 19;
 char inp[MX];
-int N, sa[MX], rk[MX], tmp[MX], pos[MX], lcp[MX];
+int N, sa[MX], rk[MX], tmp[MX], pos[MX];
+int lcp[MX];
+int st[MX][LGMX];
 
 void ksa()
 {
@@ -72,10 +75,32 @@ void klcp()
 {
     for (int i=1; i<N; ++i)
     {
-        lcp[rk[i]] = max(lcp[rk[i-1]], 0);
-        while (inp[lcp[rk[i]]+i] == inp[sa[rk[i-1]] + lcp[rk[i]]])
-            ++lcp[rk[i]];
+        lcp[rk[i]] = max(lcp[rk[i-1]]-1, 0);    // re 2 lines down: whereas here we actually want the prefix before
+        if (rk[i] > 1)
+            while (inp[i +lcp[rk[i]]] == inp[sa[rk[i]-1] + lcp[rk[i]]]) // FIX: rk[i]-1 not rk[i-1] cuz we want the rank before, not the prefix before
+                ++lcp[rk[i]];
     }
+}
+
+void kst()
+{
+    memcpy(st, lcp, 1+N<<2);
+    for (int i=1; 1<<i <= N; ++i)
+        for (int j=1; j+(1<<i)<=N+1; ++j)   // FIX: fencepost hell because sparsetable is inc exc
+        st[i][j] = min(st[i-1][j], st[i-1][j+(1<<i-1)]);
+    for (int i=0; 1<<i <= N; ++i)
+    {
+        for (int j=1; j+(1<<i)<=N+1; ++j)
+            printf("%3d", st[i][j]);
+        printf("\n");
+    }
+}
+int rmq(int l, int r)   // inc exc
+{
+    if (l > r) swap(l, r);
+    int d;
+    while (1<<d < r-l) ++d;
+    return min(st[d][l], st[d][r-(1<<d)]);
 }
 
 int main()
@@ -85,10 +110,18 @@ int main()
     ksa();
     klcp();
 
-    for (int i=1; i<=N; ++i) printf("%3d", i); printf("\n");
-    for (int i=1; i<=N; ++i) printf("%3c", inp[i]); printf("\n");
-    for (int i=1; i<=N; ++i) printf("%3d", rk[i]); printf("\n");
-    for (int i=1; i<=N; ++i) printf("%3d", lcp[rk[i]]); printf("\n");
+    printf("i:          "); for (int i=1; i<=N; ++i) printf("%3d", sa[i]); printf("\n");
+    printf("inp[i]:     "); for (int i=1; i<=N; ++i) printf("%3c", inp[sa[i]]); printf("\n");
+    printf("rk[i]:      "); for (int i=1; i<=N; ++i) printf("%3d", i); printf("\n");
+    printf("lcp[rk[i]]: "); for (int i=1; i<=N; ++i) printf("%3d", lcp[i]); printf("\n");
+
+    kst();
+
+    while (true)
+    {
+        int i, j; scanf("%d%d", &i, &j);
+        printf("lcp of %d and %d: %d\n", rk[i], rk[j], rmq(rk[i]+1, rk[j]+1));
+    }
 
 	return 0;
 }
