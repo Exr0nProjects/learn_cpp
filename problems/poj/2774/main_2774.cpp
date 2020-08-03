@@ -21,7 +21,7 @@
 #define s second
 
 using namespace std;
-const int MX = 200111;
+const int MX = 4000111;
 const int LGMX = 19;
 char inp[MX];
 int N, sa[MX], rk[MX], tmp[MX], pos[MX];
@@ -95,7 +95,7 @@ int main()
     int N1 = strlen(inp+1);
     //N = strlen(inp+1);
     inp[N1+1] = '#';
-    scanf("%s", inp+2+N1);      // FIX: rename-- +N1 not +N because N == 0 here!
+    scanf("%s", inp+2+N1);          // FIX: rename-- +N1 not +N because N == 0 here!
     //printf("'%s'\n", inp+1);
     N = N1 + strlen(inp+1+N1);
     //N += strlen(inp+1+N);
@@ -115,11 +115,13 @@ int main()
     //    printf("lcp of %d and %d: %d\n", rk[i], rk[j], rmq(rk[i]+1, rk[j]+1));
     //}
     int mx=0;
-    for (int i=1; i<=N; ++i)
+    for (int i=2; i<=N; ++i)
     {
-        //printf("%d and %d: %d\n", sa[i], sa[i+1], lcp[i+1]);
-        if (sa[i-1] <= N1 && sa[i] > N1)
-            mx = max(mx, lcp[i]);
+        int l = sa[i], r = sa[i-1];
+        if (l > r) swap(l, r);      // FIX: checking across needs to account for which side is larger
+        //printf("%d,   %d and %d: %d        but %d && %d -> %d\n", N1, l, r, lcp[i], l <= N1, r > N1, l <= N1 && r > N1);
+        if (l <= N1 && r > N1)      // FIX: only take from across strings
+            mx = max(mx, lcp[i]);   // FIX: indexing--lcp[i+1] not lcp[i]
     }
     printf("%d\n", mx);
 
