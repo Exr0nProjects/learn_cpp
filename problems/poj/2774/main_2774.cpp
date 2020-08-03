@@ -37,7 +37,7 @@
 #define s second
 
 using namespace std;
-const ll MX = 200111;
+const int MX = 200111;
 char inp[MX];
 int N, sa[MX], rk[MX], tmp[MX], pos[MX], lcp[MX];
 
@@ -48,6 +48,7 @@ void ksa()
         rk[i] = inp[i], sa[i] = i;
     for (int i=1; i<<1<N; i<<=1)
     {
+        printf("%d\n", N);
         int k = i>>1, p=k;
         // second keyword
         for (int i=1; i<=k; ++i) tmp[i] = N-i+1;
@@ -61,11 +62,14 @@ void ksa()
         // re-rank
         for (int i=1; i<=N; ++i)
             tmp[sa[i]] = tmp[sa[i-1]] + (rk[sa[i]] != rk[sa[i-1]] || rk[sa[i]+k] != rk[sa[i-1]+k]);
-        //memcpy(rk, tmp, 1+mx<<2);
-        for (int i=1; i<=N; ++i) rk[i] = tmp[i];
+        //printf("%d %d\n", sizeof rk, sizeof tmp);
+        for (int i=1; i<=N; ++i) rk[i] = tmp[i];    // TODO: bus error
+        for (int i=1; i<=3; ++i) rk[i] = tmp[i];    // works
         for (int i=1; i<=N; ++i) printf("%3d", rk[i]); printf("\n\n");
         // prep
+        printf(" n = %d\n", N);
         mx = rk[sa[N]];
+        printf("mx = %d, n = %d, eq? %d\n", mx, N, mx == N);
         if (mx == N) break;
     }
 }
