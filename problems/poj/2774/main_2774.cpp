@@ -82,46 +82,54 @@ void klcp()
     }
 }
 
-void kst()
-{
-    memcpy(st, lcp, 1+N<<2);
-    for (int i=1; 1<<i <= N; ++i)
-        for (int j=1; j+(1<<i)<=N+1; ++j)   // FIX: fencepost hell because sparsetable is inc exc
-        st[i][j] = min(st[i-1][j], st[i-1][j+(1<<i-1)]);
-    for (int i=0; 1<<i <= N; ++i)
-    {
-        for (int j=1; j+(1<<i)<=N+1; ++j)
-            printf("%3d", st[i][j]);
-        printf("\n");
-    }
-}
-int rmq(int l, int r)   // inc exc
-{
-    if (l > r) swap(l, r);
-    int d;
-    while (1<<d < r-l) ++d;
-    return min(st[d][l], st[d][r-(1<<d)]);
-}
+//void kst()
+//{
+//    memcpy(st, lcp, 1+N<<2);
+//    for (int i=1; 1<<i <= N; ++i)
+//        for (int j=1; j+(1<<i)<=N+1; ++j)   // FIX: fencepost hell because sparsetable is inc exc
+//        st[i][j] = min(st[i-1][j], st[i-1][j+(1<<i-1)]);
+//    for (int i=0; 1<<i <= N; ++i)
+//    {
+//        for (int j=1; j+(1<<i)<=N+1; ++j)
+//            printf("%3d", st[i][j]);
+//        printf("\n");
+//    }
+//}
+//int rmq(int l, int r)   // inc exc
+//{
+//    if (l > r) swap(l, r);
+//    int d;
+//    while (1<<d < r-l) ++d;
+//    return min(st[d][l], st[d][r-(1<<d)]);
+//}
 
 int main()
 {
     scanf("%s", inp+1);
     N = strlen(inp+1);
+    inp[N+1] = '#';
+    scanf("%s", inp+2+N);
+    //printf("'%s'\n", inp+1);
+    N += strlen(inp+1+N);
     ksa();
     klcp();
 
-    printf("i:          "); for (int i=1; i<=N; ++i) printf("%3d", sa[i]); printf("\n");
-    printf("inp[i]:     "); for (int i=1; i<=N; ++i) printf("%3c", inp[sa[i]]); printf("\n");
-    printf("rk[i]:      "); for (int i=1; i<=N; ++i) printf("%3d", i); printf("\n");
-    printf("lcp[rk[i]]: "); for (int i=1; i<=N; ++i) printf("%3d", lcp[i]); printf("\n");
+    //printf("i:          "); for (int i=1; i<=N; ++i) printf("%3d", sa[i]); printf("\n");
+    //printf("inp[i]:     "); for (int i=1; i<=N; ++i) printf("%3c", inp[sa[i]]); printf("\n");
+    //printf("rk[i]:      "); for (int i=1; i<=N; ++i) printf("%3d", i); printf("\n");
+    //printf("lcp[rk[i]]: "); for (int i=1; i<=N; ++i) printf("%3d", lcp[i]); printf("\n");
 
-    kst();
+    //kst();
 
-    while (true)
-    {
-        int i, j; scanf("%d%d", &i, &j);
-        printf("lcp of %d and %d: %d\n", rk[i], rk[j], rmq(rk[i]+1, rk[j]+1));
-    }
+    //while (true)
+    //{
+    //    int i, j; scanf("%d%d", &i, &j);
+    //    printf("lcp of %d and %d: %d\n", rk[i], rk[j], rmq(rk[i]+1, rk[j]+1));
+    //}
+    int mx=0;
+    for (int i=1; i<=N; ++i)
+        mx = max(mx, lcp[i]);
+    printf("%d\n", mx);
 
 	return 0;
 }
