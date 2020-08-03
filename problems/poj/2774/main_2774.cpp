@@ -10,6 +10,7 @@
 #include <cstring>
 #include <utility>
 #include <algorithm>
+#include <string>
 #include <iostream>
 
 #define ll long long
@@ -61,7 +62,8 @@ void ksa()
 
 void klcp()
 {
-    for (int i=1; i<N; ++i)
+    lcp[rk[1]] = 0;
+    for (int i=1; i<=N; ++i)    // FIX: iterbounds--<=N not <N
     {
         lcp[rk[i]] = max(lcp[rk[i-1]]-1, 0);    // re 2 lines down: whereas here we actually want the prefix before
         if (rk[i] > 1)
@@ -109,11 +111,12 @@ int main()
     //N = strlen(inp+1);
     inp[N1+1] = '#';
     scanf("%s", inp+2+N1);          // FIX: rename-- +N1 not +N because N == 0 here!
-    printf("'%s'\n", inp+1);
+    //printf("'%s'\n", inp+1);
     N = N1 + strlen(inp+1+N1);
-    N += strlen(inp+1+N);
     ksa();
     klcp();
+
+    //for (int i=1; i<=N; ++i) printf("%3d ", lcp[i]); printf("\n");
 
     //printf("i:          "); for (int i=1; i<=N; ++i) printf("%3d", sa[i]); printf("\n");
     //printf("inp[i]:     "); for (int i=1; i<=N; ++i) printf("%3c", inp[sa[i]]); printf("\n");
