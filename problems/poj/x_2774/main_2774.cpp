@@ -112,7 +112,7 @@ int main()
     inp[N1+1] = '#';
     scanf("%s", inp+2+N1);          // FIX: rename-- +N1 not +N because N == 0 here!
     //printf("'%s'\n", inp+1);
-    N = N1 + strlen(inp+1+N1);
+    N = N1 + strlen(inp+1+N1);      // FIX: uncomment--don't double add length of second string
     ksa();
     klcp();
 
