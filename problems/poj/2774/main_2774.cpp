@@ -10,6 +10,7 @@
 #include <cstring>
 #include <utility>
 #include <algorithm>
+#include <iostream>
 
 #define ll long long
 #define dl double
@@ -22,11 +23,12 @@
 
 using namespace std;
 const int MX = 4000111;
-const int LGMX = 19;
+const int LGMX = 25;
 char inp[MX];
+//string inp;
 int N, sa[MX], rk[MX], tmp[MX], pos[MX];
 int lcp[MX];
-int st[MX][LGMX];
+//int st[MX][LGMX];
 
 void ksa()
 {
@@ -91,14 +93,25 @@ void klcp()
 
 int main()
 {
+    //int N1;
+    //string b;
+    //cin >> inp;
+    //N1 = inp.size();
+    //inp += '#';
+    //cin >> b;
+    //inp += b;
+    //N = inp.size();
+    ////cout << inp << " " << N1 << " " << N << endl;
+
+
     scanf("%s", inp+1);
     int N1 = strlen(inp+1);
     //N = strlen(inp+1);
     inp[N1+1] = '#';
     scanf("%s", inp+2+N1);          // FIX: rename-- +N1 not +N because N == 0 here!
-    //printf("'%s'\n", inp+1);
+    printf("'%s'\n", inp+1);
     N = N1 + strlen(inp+1+N1);
-    //N += strlen(inp+1+N);
+    N += strlen(inp+1+N);
     ksa();
     klcp();
 
