@@ -51,16 +51,16 @@ void ksa()
     {
         int k = i>>1, p = k;
         for (int i=1; i<=k; ++i) tmp[i] = N-i+1;
-        for (int i=1; i<=N; ++i) if (sa[i] > k) tmp[++p] = sa[i];
+        for (int i=1; i<=N; ++i) if (sa[i] > k) tmp[++p] = sa[i]-k; // FIX: typo-- sa[i]-k not just sa[i] smah
         memset(pos, 0, 1+mx<<2);
         for (int i=1; i<=N; ++i) ++pos[rk[i]];
         for (int i=1; i<=mx; ++i) pos[i] += pos[i-1];
         for (int i=N; i; --i) sa[pos[ rk[tmp[i]] ]--] = tmp[i];
         for (int i=1; i<=N; ++i)
-            tmp[sa[i]] = tmp[sa[i-1]] + (rk[sa[i]] == rk[sa[i-1]] && rk[sa[i]+k] == rk[sa[i-1]+k]);
+            tmp[sa[i]] = tmp[sa[i-1]] + (rk[sa[i]] != rk[sa[i-1]] || rk[sa[i]+k] != rk[sa[i-1]+k]); // FIX: logic typo--!= and ||, not == and && smah
         memcpy(rk, tmp, 1+N<<2);
         mx = rk[sa[N]];
-        if (mx==N) break;
+        if (mx == N) break;
     }
     for (int i=1; i<=N; ++i)
     {
@@ -69,7 +69,6 @@ void ksa()
             while (inp[i+lcp[rk[i]]] == inp[sa[rk[i]-1]+lcp[rk[i]]])
                 ++lcp[rk[i]];
     }
-    for (int i=1; i<=N; ++i) printf("%3d", lcp[i]); printf("\n");
 }
 
 int main()
