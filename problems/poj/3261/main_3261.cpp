@@ -8,24 +8,8 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
-#include <sstream>
-#include <iostream>
-#include <vector>
-#include <string>
-#include <list>
-#include <array>
-#include <queue>
-#include <stack>
-#include <set>
-#include <map>
-#include <unordered_set>
-#include <unordered_map>
-#include <cmath>
-#include <random>
-#include <chrono>
 #include <utility>
 #include <algorithm>
-#include <functional>
 
 #define ll long long
 #define dl double
@@ -75,18 +59,18 @@ void ksa()
             while (inp[  i  +lcp[rk[i]]] == inp[  sa[rk[i]-1]  +lcp[rk[i]]])    // FIX: sa[rk[i]-1] not lcp[rk[i]-1] for start pos of rank-prev suffix
                 ++lcp[rk[i]];
     }
-    for (int i=1; i<=N; ++i) printf("%3d", lcp[i]); printf("\n");
+    //for (int i=1; i<=N; ++i) printf("%3d", lcp[i]); printf("\n");
 }
 
 bool check(int mn)
 {
-    printf("checking mn = %d\n", mn);
+    //printf("checking mn = %d\n", mn);
     int maxsz = 0, start = 1;
     for (int i=2; i<=N; ++i)
     {
         if (lcp[i] < mn)
         {
-            printf("    group of size %d from %d->%d\n", i-start, start, i);
+            //printf("    group of size %d from %d->%d\n", i-start, start, i);
             maxsz = max(maxsz, i-start);
             start = i;
         }
@@ -109,23 +93,26 @@ int main()
     for (int i=1; i<=N; ++i) scanf("%d", &inp[i]);
     ksa();
 
-    printf("\ni:            "); for (int i=1; i<=N; ++i) printf("%3d", sa[i]);
-    printf("\ninp[i]:       "); for (int i=1; i<=N; ++i) printf("%3d", inp[sa[i]]);
-    printf("\nrk[i]:        "); for (int i=1; i<=N; ++i) printf("%3d", i);
-    printf("\nlcp[rk[i]]:   "); for (int i=1; i<=N; ++i) printf("%3d", lcp[i]);
-    printf("\n");
-
-    while (true)
-    {
-        int d; scanf("%d", &d);
-        check(d);
-    }
+    //printf("\ni:            "); for (int i=1; i<=N; ++i) printf("%3d", sa[i]);
+    //printf("\ninp[i]:       "); for (int i=1; i<=N; ++i) printf("%3d", inp[sa[i]]);
+    //printf("\nrk[i]:        "); for (int i=1; i<=N; ++i) printf("%3d", i);
+    //printf("\nlcp[rk[i]]:   "); for (int i=1; i<=N; ++i) printf("%3d", lcp[i]);
+    //printf("\n");
+    //
+    //while (true)
+    //{
+    //    int d; scanf("%d", &d);
+    //    check(d);
+    //}
 
     int l=0, r=MXN;
     for (int i=0; i<50; ++i)
     {
         int mid = l + (r-l>>1);
+        if (check(mid)) l = mid;
+        else r = mid;
     }
+    printf("%d\n", l);
 
 	return 0;
 }
