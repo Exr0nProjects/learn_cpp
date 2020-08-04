@@ -30,7 +30,7 @@ int lcp[MXN];
 
 void ksa()
 {
-    int mx = MXV;
+    int mx = MXV-10;
     for (int i=1; i<=N; ++i)
         rk[i] = inp[i], sa[i] = i;
     for (int i=1; i>>1<=N; i<<=1)
@@ -40,14 +40,16 @@ void ksa()
         for (int i=1; i<=k; ++i) tmp[i] = N-i+1;
         for (int i=1; i<=N; ++i) if (sa[i] > k) tmp[++p] = sa[i]-k;
         // first keyword
-        memset(pos, 0, 1+mx<<2);
+        //memset(pos, 0, 1+mx<<2);
+        for (int i=1; i<=mx; ++i) pos[i] = 0;
         for (int i=1; i<=N; ++i) ++pos[rk[i]];
         for (int i=1; i<=mx; ++i) pos[i] += pos[i-1];       // FIX: typo--mx not MX
         for (int i=N; i; --i) sa[pos[ rk[tmp[i]] ]--] = tmp[i];
         // rerank
         for (int i=1; i<=N; ++i)
             tmp[sa[i]] = tmp[sa[i-1]] + (rk[sa[i]] != rk[sa[i-1]] || rk[sa[i]+k] != rk[sa[i-1]+k]);
-        memcpy(rk, tmp, 1+N<<2);
+        //memcpy(rk, tmp, 1+N<<2);
+        for (int i=1; i<=N; ++i) rk[i] = tmp[i];
         // reset
         mx = rk[sa[N]];
         if (mx == N) break;
@@ -59,7 +61,7 @@ void ksa()
             while (inp[  i  +lcp[rk[i]]] == inp[  sa[rk[i]-1]  +lcp[rk[i]]])    // FIX: sa[rk[i]-1] not lcp[rk[i]-1] for start pos of rank-prev suffix
                 ++lcp[rk[i]];
     }
-    for (int i=2; i<=N; ++i) printf("%d\n", lcp[i]);
+    //for (int i=2; i<=N; ++i) printf("%d\n", lcp[i]);  // FIX: remove debug output
 }
 
 bool check(int mn)
@@ -85,7 +87,8 @@ int main()
     scanf("%d%d", &N, &K);
     for (int i=1; i<=N; ++i) scanf("%d", &inp[i]);
     for (int i=1; i<=N; ++i) ++inp[i];  // FIX: input fencepost--otherwise inp[i] could equal zero
-    ksa();
+    //ksa();
+    gen_sa();
 
     //printf("\ni:            "); for (int i=1; i<=N; ++i) printf("%3d", sa[i]);
     //printf("\ninp[i]:       "); for (int i=1; i<=N; ++i) printf("%3d", inp[sa[i]]);
