@@ -44,18 +44,18 @@ void klcp() {
     memset(sa, 0, sizeof sa);
     memset(rk, 0, sizeof rk);
     memset(tmp, 0, sizeof tmp);
-    memset(pos, 0, sizeof pos);
+    //memset(pos, 0, sizeof pos);
     memset(lcp, 0, sizeof lcp);
     // prep
     for (int i=1; i<=N; ++i)
         rk[i] = inp[i], sa[i] = i;
     int mx = 128;
     // sa, rk
-    for (int i=1; i>>1<N; ++i)
+    for (int i=1; i>>1<N; i<<=1)    // FIX: typo--i<<=1 not ++i
     {
         int k = i>>1, p = k;
         // second
-        for (int i=1; i<=k; ++i) tmp[i] = N-k+1;
+        for (int i=1; i<=k; ++i) tmp[i] = N-i+1;    // FIX: typo--N-i+1 not N-k+1
         for (int i=1; i<=N; ++i) if (sa[i] > k) tmp[++p] = sa[i]-k;
         // first
         memset(pos, 0, 1+mx<<2);
@@ -73,22 +73,56 @@ void klcp() {
     // lcp
     for (int i=1; i<=N; ++i)
     {
-        lcp[rk[i]] = min(lcp[rk[i-1]]-1, 0);
+        lcp[rk[i]] = max(lcp[rk[i-1]]-1, 0);    // FIX: typo--max not min
         if (rk[i] > 1)
             while (inp[i + lcp[rk[i]]] == inp[sa[rk[i]-1] + lcp[rk[i]]])
                 ++lcp[rk[i]];
     }
 }
 
+int count_groups(int mn)
+{
+    int tot=0, pre=0;
+    for (int i=1; i<=N; ++i)
+    {
+        if (lcp[i+1] < mn)
+        {
+            if (i-pre >= K) ++tot;
+            pre=i;
+        }
+        if (min(sa[i], sa[i+1]) + mn > max(sa[i], sa[i+1]))
+            pre=i;
+    }
+    return tot;
+}
+
 int main()
 {
-    int T;
+    int T=1;
     scanf("%d", &T);
     for (int t=0; t<T; ++t)
     {
-        scanf("%d%s", &K, inp);
+        scanf("%d", &K);
+        scanf("%s", inp+1);
         N = strlen(inp+1);
-        printf("%d: '%s'\n", N, inp);
+        klcp();
+        //printf("\ni:           "); for (int i=1; i<=N; ++i) printf("%3d", sa[i]);
+        //printf("\ninp[i]:      "); for (int i=1; i<=N; ++i) printf("%3d", inp[sa[i]]);
+        //printf("\nrk[i]:       "); for (int i=1; i<=N; ++i) printf("%3d", i);
+        //printf("\nlcp[rk[i]]:  "); for (int i=1; i<=N; ++i) printf("%3d", lcp[i]);
+        //printf("\n\n");
+        //printf("%d: '%s'\n", N, inp+1);
+
+        int tot=0;
+        for (int i=1; i<=N; ++i)
+            tot += count_groups(i);
+        printf("%d\n", tot);
+
+        //while (true)
+        //{
+        //    int d; scanf("%d", &d);
+        //    printf("%d\n", count_groups(d));
+        //}
     }
 
 
