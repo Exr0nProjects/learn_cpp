@@ -80,18 +80,58 @@ void klcp() {
     }
 }
 
-int count_groups(int mn)
+//int count_groups(int mn)
+//{
+//    int tot=0, pre=0;
+//    for (int i=1; i<=N; ++i)
+//    {
+//        if (lcp[i+1] < mn)
+//        {
+//            if (i-pre >= K) ++tot;  // TODO: exactly k times -> i-pre == K
+//            pre=i;
+//        }
+//        if (min(sa[i], sa[i+1]) + mn > max(sa[i], sa[i+1]))
+//            pre=i;
+//    }
+//    return tot;
+//}
+
+
+void dumpset(const multiset<int> &s)
 {
-    int tot=0, pre=0;
-    for (int i=1; i<=N; ++i)
+    for (int n : s) printf("%3d", n); printf("\n");
+}
+
+int count_groups()
+{
+    multiset<int> ind, mn;
+    int l=0, r=1, tot=0;    // include exclude
+    ind.insert(sa[1]);
+    while (l < N)
     {
-        if (lcp[i+1] < mn)
-        {
-            if (i-pre >= K) ++tot;  // TODO: exactly k times -> i-pre == K
-            pre=i;
+        //printf("l %d r %d\n", l, r);
+        printf("    mn:  "); dumpset(mn);
+        printf("    ind: "); dumpset(ind);
+        if (r == l || lcp[r+1]) {
+            printf("increment r to %d\n", r+1);
+            ++r;
+            if (lcp[r]) mn.insert(lcp[r]);
+            ind.insert(sa[r]);
+            if (r-l > K && *ind.begin() + *mn.begin() <= *ind.rbegin()) {
+                printf("range is %d..%d which is more than %d -> adding %d\n", *ind.begin(), *ind.rbegin(), *mn.begin(), *mn.begin());
+                tot += *mn.begin();
+            }
         }
-        if (min(sa[i], sa[i+1]) + mn > max(sa[i], sa[i+1]))
-            pre=i;
+        else
+        {
+            printf("increment l to %d\n", l+1);
+            ++l;
+            printf("    removing? %d (%d) and %d (%d)\n", sa[l], ind.find(sa[l]) != ind.end(), lcp[l], mn.find(lcp[l]) != mn.end());
+            ind.erase(ind.find(sa[l]));
+            if (lcp[l]) {   // FIX: don't remove zeros cuz we don't add them
+                mn.erase(mn.find(lcp[l]));  // TODO: may segfault
+            }
+        }
     }
     return tot;
 }
@@ -111,12 +151,15 @@ int main()
         printf("\nrk[i]:       "); for (int i=1; i<=N; ++i) printf("%3d", i);
         printf("\nlcp[rk[i]]:  "); for (int i=1; i<=N; ++i) printf("%3d", lcp[i]);
         printf("\n\n");
+
+        printf("%d\n", count_groups());
+
         //printf("%d: '%s'\n", N, inp+1);
 
-        int tot=0;
-        for (int i=1; i<=N; ++i)
-            tot += count_groups(i);
-        printf("%d\n", tot);
+        //int tot=0;
+        //for (int i=1; i<=N; ++i)
+        //    tot += count_groups(i);
+        //printf("%d\n", tot);
 
         //while (true)
         //{
