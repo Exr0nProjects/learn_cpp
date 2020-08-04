@@ -79,11 +79,18 @@ int count_groups(int mn)
         if (lcp[i+1] < mn)
         {
             //printf("%d - %d = %d\n", i, pre, i-pre);
-            if (i-pre >= 2) ++tot;
+            if (i-pre >= 2)
+            {
+                int mxi=0, mni=N;
+                for (int j=pre; j<=i; ++j)
+                {
+                    mxi = max(mxi, sa[j+1]), mni = min(mni, sa[j+1]);   // FIX: typo-- j not i
+                    //printf("    at %d (%d), mx %d mn %d\n", i+1, sa[j+1], mxi, mni);
+                }
+                if (mni + mn <= mxi) ++tot;
+            }
             pre = i;
         }
-        if (min(sa[i], sa[i+1]) + mn > max(sa[i], sa[i+1])) // FIX: need the min/max thing cuz sa[i] might lt sa[i+1]
-        { printf("    overlap at %d\n", i); pre = i; }
     }
     return tot;
 }
@@ -92,21 +99,28 @@ int main()
 {
     while (true)
     {
+        memset(sa, 0, sizeof sa);
+        memset(rk, 0, sizeof rk);
+        memset(tmp, 0, sizeof tmp);
+        memset(pos, 0, sizeof pos);
+        memset(lcp, 0, sizeof lcp);
+        memset(inp, 0, sizeof inp);
+
         scanf("%s", inp+1);
         if (inp[1] == '#') break;
         N = strlen(inp+1);
         ksa();
 
-        printf("\ni:         "); for (int i=1; i<=N; ++i) printf("%3d", sa[i]);
-        printf("\ninp[i]:    "); for (int i=1; i<=N; ++i) printf("%3d", inp[sa[i]]);
-        printf("\nrk[i]:     "); for (int i=1; i<=N; ++i) printf("%3d", i);
-        printf("\nlcp[rk[i]]:"); for (int i=1; i<=N; ++i) printf("%3d", lcp[i]);
-        printf("\n\n");
-        while (true)
-        {
-            int d; scanf("%d", &d);
-            printf("=> %d\n", count_groups(d));
-        }
+        //printf("\ni:         "); for (int i=1; i<=N; ++i) printf("%3d", sa[i]);
+        //printf("\ninp[i]:    "); for (int i=1; i<=N; ++i) printf("%3d", inp[sa[i]]);
+        //printf("\nrk[i]:     "); for (int i=1; i<=N; ++i) printf("%3d", i);
+        //printf("\nlcp[rk[i]]:"); for (int i=1; i<=N; ++i) printf("%3d", lcp[i]);
+        //printf("\n\n");
+        //while (true)
+        //{
+        //    int d; scanf("%d", &d);
+        //    printf("=> %d\n", count_groups(d));
+        //}
 
         int tot = 0;
         for (int i=1; i<=N; ++i)
