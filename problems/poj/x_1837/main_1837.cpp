@@ -1,6 +1,6 @@
 #include <cstdio>
 #define S 4725
-short C, G; int w[20], d[20];
+short C, G; int w[20], d[20];   // TODO: why does using shorts make it wa
 int dp[2][S*2];
 int main()
 {
