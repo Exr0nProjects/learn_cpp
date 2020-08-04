@@ -13,11 +13,12 @@ typedef long long ll;
 #define f first
 #define s second
 
-const int maxn = 20200;
-const int MXV = 1000100;
-
-int N, K, inp[maxn], sa[maxn], rk[maxn], lcp[maxn];
-int tmp[maxn], pos[MXV];
+const int MXN = 20200;
+const int MXV = 1000111;
+int N, K;
+int inp[MXN];
+int sa[MXN], rk[MXN], tmp[MXN], pos[MXV];
+int lcp[MXN];
 
 //void gen_sa() {
 //    for (int i = 1; i <= n; i++) {
@@ -124,9 +125,10 @@ bool check(int mn)
 
 int main() {
     scanf("%d%d", &N, &K);
-    for (int i = 1; i <= N; i++) {
-        scanf("%d", &inp[i]);
-    }
+    for (int i=1; i<=N; ++i) scanf("%d", &inp[i]);
+    //for (int i = 1; i <= N; i++) {
+    //    scanf("%d", &inp[i]);
+    //}
     //gen_sa();
     ksa();
     //for (int i = 1; i <= N; i++) {
@@ -140,7 +142,7 @@ int main() {
     //}
     //printf("\n");
 
-        int l=0, r=N+1; // FIX: upper bound should be N+1 not N (exc r) and not MXN (too high)
+    int l=0, r=N+1; // FIX: upper bound should be N+1 not N (exc r) and not MXN (too high)
     while (l+1 < r)
     {
         int mid = l + (r-l>>1);
