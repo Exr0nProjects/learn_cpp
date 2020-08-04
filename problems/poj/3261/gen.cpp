@@ -7,14 +7,14 @@
 //const int MXV = 1e6;
 
 const int MXN = 20000;
-const int MXV = 1e6;
+const int MXV = 1e1;
 
 int main()
 {
     srand(time(0));
     printf("%d %d\n", MXN, rand(1, 3));
     for (int i=0; i<MXN; ++i)
-        printf("%d\n", rand(1, MXV));
+        printf("%d\n", rand(0, MXV));
 
     return 0;
 }

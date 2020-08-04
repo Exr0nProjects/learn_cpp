@@ -59,7 +59,7 @@ void ksa()
             while (inp[  i  +lcp[rk[i]]] == inp[  sa[rk[i]-1]  +lcp[rk[i]]])    // FIX: sa[rk[i]-1] not lcp[rk[i]-1] for start pos of rank-prev suffix
                 ++lcp[rk[i]];
     }
-    for (int i=1; i<=N; ++i) printf("%3d", lcp[i]); printf("\n");
+    for (int i=2; i<=N; ++i) printf("%d\n", lcp[i]);
 }
 
 bool check(int mn)
@@ -75,22 +75,16 @@ bool check(int mn)
             start = i;
         }
     }
-    maxsz = max(maxsz, N-start);
+    maxsz = max(maxsz, N+1-start);  // FIX: fencepost--`N+1 - start`, since N-start already checked by for loop i<=N
+    //printf("maxsize: %d\n", maxsz);
     return maxsz >= K;
 }
 
 int main()
 {
-    //scanf("%s", inp+1);
-    //int N1 = strlen(inp+1);
-    ////N = strlen(inp+1);
-    //inp[N1+1] = '#';
-    //scanf("%s", inp+2+N1);          // FIX: rename-- +N1 not +N because N == 0 here!
-    ////printf("'%s'\n", inp+1);
-    //N = N1 + strlen(inp+1+N1);      // FIX: uncomment--don't double add length of second string
-
     scanf("%d%d", &N, &K);
     for (int i=1; i<=N; ++i) scanf("%d", &inp[i]);
+    for (int i=1; i<=N; ++i) ++inp[i];  // FIX: input fencepost--otherwise inp[i] could equal zero
     ksa();
 
     //printf("\ni:            "); for (int i=1; i<=N; ++i) printf("%3d", sa[i]);
