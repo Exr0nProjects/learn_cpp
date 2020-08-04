@@ -87,7 +87,7 @@ int count_groups(int mn)
     {
         if (lcp[i+1] < mn)
         {
-            if (i-pre >= K) ++tot;
+            if (i-pre >= K) ++tot;  // TODO: exactly k times -> i-pre == K
             pre=i;
         }
         if (min(sa[i], sa[i+1]) + mn > max(sa[i], sa[i+1]))
@@ -99,18 +99,18 @@ int count_groups(int mn)
 int main()
 {
     int T=1;
-    scanf("%d", &T);
+    //scanf("%d", &T);
     for (int t=0; t<T; ++t)
     {
         scanf("%d", &K);
         scanf("%s", inp+1);
         N = strlen(inp+1);
         klcp();
-        //printf("\ni:           "); for (int i=1; i<=N; ++i) printf("%3d", sa[i]);
-        //printf("\ninp[i]:      "); for (int i=1; i<=N; ++i) printf("%3d", inp[sa[i]]);
-        //printf("\nrk[i]:       "); for (int i=1; i<=N; ++i) printf("%3d", i);
-        //printf("\nlcp[rk[i]]:  "); for (int i=1; i<=N; ++i) printf("%3d", lcp[i]);
-        //printf("\n\n");
+        printf("\ni:           "); for (int i=1; i<=N; ++i) printf("%3d", sa[i]);
+        printf("\ninp[i]:      "); for (int i=1; i<=N; ++i) printf("%3d", inp[sa[i]]);
+        printf("\nrk[i]:       "); for (int i=1; i<=N; ++i) printf("%3d", i);
+        printf("\nlcp[rk[i]]:  "); for (int i=1; i<=N; ++i) printf("%3d", lcp[i]);
+        printf("\n\n");
         //printf("%d: '%s'\n", N, inp+1);
 
         int tot=0;
