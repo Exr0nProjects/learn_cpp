@@ -1,7 +1,7 @@
 /*
  * Problem 3518 (hdu/3518)
  * Create time: Tue 04 Aug 2020 @ 12:11 (PDT)
- * Accept time: [!meta:end!]
+ * Accept time: Tue 04 Aug 2020 @ 15:36 (PDT)
  *
  */
 
@@ -78,16 +78,13 @@ int count_groups(int mn)
     {
         if (lcp[i+1] < mn)
         {
-            //printf("%d - %d = %d\n", i, pre, i-pre);
             if (i-pre >= 2)
             {
-                int mxi=0, mni=N;
-                for (int j=pre; j<=i; ++j)
-                {
+                int mxi=0, mni=N+1;
+                for (int j=pre; j<i; ++j)   // FIX: iter bounds-- j<i not j<=i cuz we do the whole thing over j+1
                     mxi = max(mxi, sa[j+1]), mni = min(mni, sa[j+1]);   // FIX: typo-- j not i
-                    //printf("    at %d (%d), mx %d mn %d\n", i+1, sa[j+1], mxi, mni);
-                }
-                if (mni + mn <= mxi) ++tot;
+                if (mxi > 0 && mni <= N && mni + mn <= mxi)     // FIX: numeric bounds--don't count it if one of them wasn't set
+                    ++tot;
             }
             pre = i;
         }
@@ -111,11 +108,13 @@ int main()
         N = strlen(inp+1);
         ksa();
 
+        //printf("'%s'", inp+1);
         //printf("\ni:         "); for (int i=1; i<=N; ++i) printf("%3d", sa[i]);
         //printf("\ninp[i]:    "); for (int i=1; i<=N; ++i) printf("%3d", inp[sa[i]]);
         //printf("\nrk[i]:     "); for (int i=1; i<=N; ++i) printf("%3d", i);
         //printf("\nlcp[rk[i]]:"); for (int i=1; i<=N; ++i) printf("%3d", lcp[i]);
         //printf("\n\n");
+
         //while (true)
         //{
         //    int d; scanf("%d", &d);
