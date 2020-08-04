@@ -71,6 +71,23 @@ void ksa()
     }
 }
 
+int count_groups(int mn)
+{
+    int tot = 0, pre = 0;
+    for (int i=1; i<=N; ++i)
+    {
+        if (lcp[i+1] < mn)
+        {
+            //printf("%d - %d = %d\n", i, pre, i-pre);
+            if (i-pre >= 2) ++tot;
+            pre = i;
+        }
+        if (min(sa[i], sa[i+1]) + mn > max(sa[i], sa[i+1])) // FIX: need the min/max thing cuz sa[i] might lt sa[i+1]
+        { printf("    overlap at %d\n", i); pre = i; }
+    }
+    return tot;
+}
+
 int main()
 {
     while (true)
@@ -79,11 +96,22 @@ int main()
         if (inp[1] == '#') break;
         N = strlen(inp+1);
         ksa();
+
         printf("\ni:         "); for (int i=1; i<=N; ++i) printf("%3d", sa[i]);
         printf("\ninp[i]:    "); for (int i=1; i<=N; ++i) printf("%3d", inp[sa[i]]);
         printf("\nrk[i]:     "); for (int i=1; i<=N; ++i) printf("%3d", i);
         printf("\nlcp[rk[i]]:"); for (int i=1; i<=N; ++i) printf("%3d", lcp[i]);
+        printf("\n\n");
+        while (true)
+        {
+            int d; scanf("%d", &d);
+            printf("=> %d\n", count_groups(d));
+        }
 
+        int tot = 0;
+        for (int i=1; i<=N; ++i)
+            tot += count_groups(i);
+        printf("%d\n", tot);
     }
 
 	return 0;
