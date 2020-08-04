@@ -59,7 +59,7 @@ void ksa()
             while (inp[  i  +lcp[rk[i]]] == inp[  sa[rk[i]-1]  +lcp[rk[i]]])    // FIX: sa[rk[i]-1] not lcp[rk[i]-1] for start pos of rank-prev suffix
                 ++lcp[rk[i]];
     }
-    //for (int i=1; i<=N; ++i) printf("%3d", lcp[i]); printf("\n");
+    for (int i=1; i<=N; ++i) printf("%3d", lcp[i]); printf("\n");
 }
 
 bool check(int mn)
@@ -98,15 +98,14 @@ int main()
     //printf("\nrk[i]:        "); for (int i=1; i<=N; ++i) printf("%3d", i);
     //printf("\nlcp[rk[i]]:   "); for (int i=1; i<=N; ++i) printf("%3d", lcp[i]);
     //printf("\n");
-    //
     //while (true)
     //{
     //    int d; scanf("%d", &d);
     //    check(d);
     //}
 
-    int l=0, r=MXN;
-    for (int i=0; i<50; ++i)
+    int l=0, r=N+1; // FIX: upper bound should be N+1 not N (exc r) and not MXN (too high)
+    while (l+1 < r)
     {
         int mid = l + (r-l>>1);
         if (check(mid)) l = mid;
