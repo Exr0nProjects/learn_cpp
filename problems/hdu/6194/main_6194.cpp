@@ -97,49 +97,67 @@ void klcp() {
 //}
 
 
-void dumpset(const multiset<int> &s)
-{
-    for (int n : s) printf("%3d", n); printf("\n");
-}
+//void dumpset(const multiset<int> &s)
+//{
+//    for (int n : s) printf("%3d", n); printf("\n");
+//}
+//int count_groups2()
+//{
+//    multiset<int> ind, mn;
+//    int l=0, r=0, tot=0;    // include exclude
+//    int lastadd = 0;
+//    while (l < N)
+//    {
+//        printf("l %d r %d\n", l, r);
+//        printf("    mn:  "); dumpset(mn);
+//        printf("    ind: "); dumpset(ind);
+//        if (r == l || lcp[r+1]) {
+//            printf("    increment r to %d\n", r+1);
+//            ++r;
+//            if (lcp[r]) mn.insert(lcp[r]);
+//            ind.insert(sa[r]);
+//            if (r-l >= K && *ind.begin() + *mn.begin() <= *ind.rbegin()) {
+//                printf("range is %d(%d)..%d(%d) which is more than %d -> adding %d\n", l+1, *ind.begin(), r, *ind.rbegin(), *mn.begin(), max(*mn.begin()-max(lcp[l], lcp[r+1]), 0));
+//                tot += max(*mn.begin()-max(lcp[l], lcp[r+1]), 0);
+//                //tot += *mn.rbegin();
+//                lastadd = *mn.rbegin();
+//            }
+//        }
+//        else
+//        {
+//            printf("    increment l to %d\n", l+1);
+//            ++l;
+//            printf("    removing? %d (%d) and %d (%d)\n", sa[l], ind.find(sa[l]) != ind.end(), lcp[l], mn.find(lcp[l]) != mn.end());
+//            ind.erase(ind.find(sa[l]));
+//            if (lcp[l]) {   // FIX: don't remove zeros cuz we don't add them
+//                mn.erase(mn.find(lcp[l]));  // TODO: may segfault
+//            }
+//            if (r-l >= K && *ind.begin() + *mn.begin() <= *ind.rbegin()) {
+//                printf("range is %d(%d)..%d(%d) which is more than %d -> adding %d\n", l+1, *ind.begin(), r, *ind.rbegin(), *mn.begin(), max(*mn.begin()-max(lcp[l], lcp[r+1]), 0));
+//                tot += max(*mn.begin()-max(lcp[l], lcp[r+1]), 0);
+//                //tot += *mn.rbegin();
+//                lastadd = *mn.rbegin();
+//            }
+//        }
+//    }
+//    return tot;
+//}
 
-int count_groups()
+int count_groups3()
 {
-    multiset<int> ind, mn;
-    int l=0, r=0, tot=0;    // include exclude
-    int lastadd = 0;
-    while (l < N)
+    int tot = 0;
+    multiset<int> mn;           // TODO: replace w/ sparse table?
+    for (int i=2; i<=K; ++i)    // TODO: doesn't work for K=1
+        mn.insert(lcp[i]);
+    for (int i=2; i+K-2<=N; ++i)
     {
-        printf("l %d r %d\n", l, r);
-        printf("    mn:  "); dumpset(mn);
-        printf("    ind: "); dumpset(ind);
-        if (r == l || lcp[r+1]) {
-            printf("    increment r to %d\n", r+1);
-            ++r;
-            if (lcp[r]) mn.insert(lcp[r]);
-            ind.insert(sa[r]);
-            if (r-l >= K && *ind.begin() + *mn.begin() <= *ind.rbegin()) {
-                printf("range is %d(%d)..%d(%d) which is more than %d -> adding %d\n", l+1, *ind.begin(), r, *ind.rbegin(), *mn.begin(), max(*mn.begin()-max(lcp[l], lcp[r+1]), 0));
-                tot += max(*mn.begin()-max(lcp[l], lcp[r+1]), 0);
-                //tot += *mn.rbegin();
-                lastadd = *mn.rbegin();
-            }
+        if (lcp[i-1] < *mn.begin() && lcp[i+K-1] < *mn.begin()) {
+            //printf("range %d..%d legal!\n", i, i+K-2);
+            tot += *mn.begin() - max(lcp[i-1], lcp[i+K-1]);
         }
-        else
-        {
-            printf("    increment l to %d\n", l+1);
-            ++l;
-            printf("    removing? %d (%d) and %d (%d)\n", sa[l], ind.find(sa[l]) != ind.end(), lcp[l], mn.find(lcp[l]) != mn.end());
-            ind.erase(ind.find(sa[l]));
-            if (lcp[l]) {   // FIX: don't remove zeros cuz we don't add them
-                mn.erase(mn.find(lcp[l]));  // TODO: may segfault
-            }
-            if (r-l >= K && *ind.begin() + *mn.begin() <= *ind.rbegin()) {
-                printf("range is %d(%d)..%d(%d) which is more than %d -> adding %d\n", l+1, *ind.begin(), r, *ind.rbegin(), *mn.begin(), max(*mn.begin()-max(lcp[l], lcp[r+1]), 0));
-                tot += max(*mn.begin()-max(lcp[l], lcp[r+1]), 0);
-                //tot += *mn.rbegin();
-                lastadd = *mn.rbegin();
-            }
-        }
+        //printf("erasing %d \n", lcp[i]);
+        mn.erase(mn.find(lcp[i]));
+        mn.insert(lcp[i+K-1]);
     }
     return tot;
 }
@@ -147,20 +165,20 @@ int count_groups()
 int main()
 {
     int T=1;
-    //scanf("%d", &T);
+    scanf("%d", &T);
     for (int t=0; t<T; ++t)
     {
         scanf("%d", &K);
         scanf("%s", inp+1);
         N = strlen(inp+1);
         klcp();
-        printf("\ni:           "); for (int i=1; i<=N; ++i) printf("%3d", sa[i]);
-        printf("\ninp[i]:      "); for (int i=1; i<=N; ++i) printf("%3d", inp[sa[i]]);
-        printf("\nrk[i]:       "); for (int i=1; i<=N; ++i) printf("%3d", i);
-        printf("\nlcp[rk[i]]:  "); for (int i=1; i<=N; ++i) printf("%3d", lcp[i]);
-        printf("\n\n");
+        //printf("\ni:           "); for (int i=1; i<=N; ++i) printf("%3d", sa[i]);
+        //printf("\ninp[i]:      "); for (int i=1; i<=N; ++i) printf("%3d", inp[sa[i]]);
+        //printf("\nrk[i]:       "); for (int i=1; i<=N; ++i) printf("%3d", i);
+        //printf("\nlcp[rk[i]]:  "); for (int i=1; i<=N; ++i) printf("%3d", lcp[i]);
+        //printf("\n\n");
 
-        printf("%d\n", count_groups());
+        printf("%d\n", count_groups3());
 
         //printf("%d: '%s'\n", N, inp+1);
 
