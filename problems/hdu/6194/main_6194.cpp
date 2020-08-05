@@ -105,31 +105,39 @@ void dumpset(const multiset<int> &s)
 int count_groups()
 {
     multiset<int> ind, mn;
-    int l=0, r=1, tot=0;    // include exclude
-    ind.insert(sa[1]);
+    int l=0, r=0, tot=0;    // include exclude
+    int lastadd = 0;
     while (l < N)
     {
-        //printf("l %d r %d\n", l, r);
+        printf("l %d r %d\n", l, r);
         printf("    mn:  "); dumpset(mn);
         printf("    ind: "); dumpset(ind);
         if (r == l || lcp[r+1]) {
-            printf("increment r to %d\n", r+1);
+            printf("    increment r to %d\n", r+1);
             ++r;
             if (lcp[r]) mn.insert(lcp[r]);
             ind.insert(sa[r]);
-            if (r-l > K && *ind.begin() + *mn.begin() <= *ind.rbegin()) {
-                printf("range is %d..%d which is more than %d -> adding %d\n", *ind.begin(), *ind.rbegin(), *mn.begin(), *mn.begin());
-                tot += *mn.begin();
+            if (r-l >= K && *ind.begin() + *mn.begin() <= *ind.rbegin()) {
+                printf("range is %d(%d)..%d(%d) which is more than %d -> adding %d\n", l+1, *ind.begin(), r, *ind.rbegin(), *mn.begin(), max(*mn.begin()-max(lcp[l], lcp[r+1]), 0));
+                tot += max(*mn.begin()-max(lcp[l], lcp[r+1]), 0);
+                //tot += *mn.rbegin();
+                lastadd = *mn.rbegin();
             }
         }
         else
         {
-            printf("increment l to %d\n", l+1);
+            printf("    increment l to %d\n", l+1);
             ++l;
             printf("    removing? %d (%d) and %d (%d)\n", sa[l], ind.find(sa[l]) != ind.end(), lcp[l], mn.find(lcp[l]) != mn.end());
             ind.erase(ind.find(sa[l]));
             if (lcp[l]) {   // FIX: don't remove zeros cuz we don't add them
                 mn.erase(mn.find(lcp[l]));  // TODO: may segfault
+            }
+            if (r-l >= K && *ind.begin() + *mn.begin() <= *ind.rbegin()) {
+                printf("range is %d(%d)..%d(%d) which is more than %d -> adding %d\n", l+1, *ind.begin(), r, *ind.rbegin(), *mn.begin(), max(*mn.begin()-max(lcp[l], lcp[r+1]), 0));
+                tot += max(*mn.begin()-max(lcp[l], lcp[r+1]), 0);
+                //tot += *mn.rbegin();
+                lastadd = *mn.rbegin();
             }
         }
     }
