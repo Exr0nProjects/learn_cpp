@@ -100,12 +100,14 @@ int main()
         scanf("%d", &K);
         scanf("%s", inp+1);
         N = strlen(inp+1);
+
         klcp();
-        //printf("\ni:           "); for (int i=1; i<=N; ++i) printf("%3d", sa[i]);
-        //printf("\ninp[i]:      "); for (int i=1; i<=N; ++i) printf("%3d", inp[sa[i]]);
-        //printf("\nrk[i]:       "); for (int i=1; i<=N; ++i) printf("%3d", i);
-        //printf("\nlcp[rk[i]]:  "); for (int i=1; i<=N; ++i) printf("%3d", lcp[i]);
-        //printf("\n\n");
+
+        printf("\ni:           "); for (int i=1; i<=N; ++i) printf("%3d", sa[i]);
+        printf("\ninp[i]:      "); for (int i=1; i<=N; ++i) printf("%3d", inp[sa[i]]);
+        printf("\nrk[i]:       "); for (int i=1; i<=N; ++i) printf("%3d", i);
+        printf("\nlcp[rk[i]]:  "); for (int i=1; i<=N; ++i) printf("%3d", lcp[i]);
+        printf("\n\n");
 
         //if (K == 1) for (int i=1; i==i; ++i) ++N; else
             printf("%d\n", count_groups3());
