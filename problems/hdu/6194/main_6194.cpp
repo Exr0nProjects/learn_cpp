@@ -13,6 +13,7 @@
 #include <cstring>
 #include <set>
 #include <utility>
+#include <algorithm>
 
 using namespace std;
 const int MX = 100111;
@@ -57,21 +58,35 @@ void klcp() {
     }
 }
 
+int st[MX];
 int count_groups3()
 {
+    // sparse table
+    //memcpy(st, lcp, 1+N<<2);
+    for (int i=1; i<=N; ++i) st[i] = lcp[i];
+    for (int d=0; 1<<1+d < K; ++d) {
+        //printf("\n%2d: ", 1<<d);
+        for (int i=1; i<=N; ++i) {
+            st[i] = min(st[i], st[i+(1<<d)]);
+            //printf("%3d", st[i]);
+        }
+    }
+    //printf("\n");
+
+    // sliding window to count
     int tot = 0;
-    multiset<int> mn;           // TODO: replace w/ sparse table?
-    for (int i=2; i<=K; ++i)    // TODO: doesn't work for K=1
-        mn.insert(lcp[i]);
-    for (int i=2; i+K-2<=N; ++i)
+    //multiset<int> mn;           // TODO: replace w/ sparse table?
+    //for (int i=2; i<=K; ++i)
+    //    mn.insert(lcp[i]);
+    for (int i=2; i+K-2<=N; ++i)// TODO: doesn't work for K=1
     {
-        tot += max(*mn.begin() - max(lcp[i-1], lcp[i+K-1]), 0);
+        tot += max(st[i] - max(lcp[i-1], lcp[i+K-1]), 0);
         //if (lcp[i-1] < *mn.begin() && lcp[i+K-1] < *mn.begin()) {
         //    //printf("range %d..%d legal!\n", i, i+K-2);
         //    tot += *mn.begin() - max(lcp[i-1], lcp[i+K-1]);
         //}
-        mn.erase(mn.find(lcp[i]));
-        mn.insert(lcp[i+K-1]);
+        //mn.erase(mn.find(lcp[i]));
+        //mn.insert(lcp[i+K-1]);
     }
     return tot;
 }
@@ -79,9 +94,10 @@ int count_groups3()
 int main()
 {
     int T=1;
-    scanf("%d", &T);
+    //scanf("%d", &T);
     for (int t=0; t<T; ++t)
     {
+        //K = 3;
         scanf("%d", &K);
         scanf("%s", inp+1);
         N = strlen(inp+1);
