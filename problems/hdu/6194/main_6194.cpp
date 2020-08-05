@@ -2,39 +2,17 @@
  * Problem 6194 (hdu/6194)
  * Create time: Tue 04 Aug 2020 @ 10:44 (PDT)
  * Accept time: [!meta:end!]
- *
+ *  I read the problem so wrong--I thought that the problem statement was wrong
+ *  and that it actually meant count the number of non-overlapping substrings
+ *  of length atleast K, since I thought that it was atleast K and not exactly
+ *  K cuz we had done so many of thos problems. dang it.
  */
 
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
-#include <sstream>
-#include <iostream>
-#include <vector>
-#include <string>
-#include <list>
-#include <array>
-#include <queue>
-#include <stack>
 #include <set>
-#include <map>
-#include <unordered_set>
-#include <unordered_map>
-#include <cmath>
-#include <random>
-#include <chrono>
 #include <utility>
-#include <algorithm>
-#include <functional>
-
-#define ll long long
-#define dl double
-
-#define pii pair<int, int>
-#define pb push_back
-#define mp make_pair
-#define f first
-#define s second
 
 using namespace std;
 const int MX = 100111;
@@ -44,7 +22,6 @@ void klcp() {
     memset(sa, 0, sizeof sa);
     memset(rk, 0, sizeof rk);
     memset(tmp, 0, sizeof tmp);
-    //memset(pos, 0, sizeof pos);
     memset(lcp, 0, sizeof lcp);
     // prep
     for (int i=1; i<=N; ++i)
@@ -80,69 +57,6 @@ void klcp() {
     }
 }
 
-//int count_groups(int mn)
-//{
-//    int tot=0, pre=0;
-//    for (int i=1; i<=N; ++i)
-//    {
-//        if (lcp[i+1] < mn)
-//        {
-//            if (i-pre >= K) ++tot;  // TODO: exactly k times -> i-pre == K
-//            pre=i;
-//        }
-//        if (min(sa[i], sa[i+1]) + mn > max(sa[i], sa[i+1]))
-//            pre=i;
-//    }
-//    return tot;
-//}
-
-
-//void dumpset(const multiset<int> &s)
-//{
-//    for (int n : s) printf("%3d", n); printf("\n");
-//}
-//int count_groups2()
-//{
-//    multiset<int> ind, mn;
-//    int l=0, r=0, tot=0;    // include exclude
-//    int lastadd = 0;
-//    while (l < N)
-//    {
-//        printf("l %d r %d\n", l, r);
-//        printf("    mn:  "); dumpset(mn);
-//        printf("    ind: "); dumpset(ind);
-//        if (r == l || lcp[r+1]) {
-//            printf("    increment r to %d\n", r+1);
-//            ++r;
-//            if (lcp[r]) mn.insert(lcp[r]);
-//            ind.insert(sa[r]);
-//            if (r-l >= K && *ind.begin() + *mn.begin() <= *ind.rbegin()) {
-//                printf("range is %d(%d)..%d(%d) which is more than %d -> adding %d\n", l+1, *ind.begin(), r, *ind.rbegin(), *mn.begin(), max(*mn.begin()-max(lcp[l], lcp[r+1]), 0));
-//                tot += max(*mn.begin()-max(lcp[l], lcp[r+1]), 0);
-//                //tot += *mn.rbegin();
-//                lastadd = *mn.rbegin();
-//            }
-//        }
-//        else
-//        {
-//            printf("    increment l to %d\n", l+1);
-//            ++l;
-//            printf("    removing? %d (%d) and %d (%d)\n", sa[l], ind.find(sa[l]) != ind.end(), lcp[l], mn.find(lcp[l]) != mn.end());
-//            ind.erase(ind.find(sa[l]));
-//            if (lcp[l]) {   // FIX: don't remove zeros cuz we don't add them
-//                mn.erase(mn.find(lcp[l]));  // TODO: may segfault
-//            }
-//            if (r-l >= K && *ind.begin() + *mn.begin() <= *ind.rbegin()) {
-//                printf("range is %d(%d)..%d(%d) which is more than %d -> adding %d\n", l+1, *ind.begin(), r, *ind.rbegin(), *mn.begin(), max(*mn.begin()-max(lcp[l], lcp[r+1]), 0));
-//                tot += max(*mn.begin()-max(lcp[l], lcp[r+1]), 0);
-//                //tot += *mn.rbegin();
-//                lastadd = *mn.rbegin();
-//            }
-//        }
-//    }
-//    return tot;
-//}
-
 int count_groups3()
 {
     int tot = 0;
@@ -151,11 +65,11 @@ int count_groups3()
         mn.insert(lcp[i]);
     for (int i=2; i+K-2<=N; ++i)
     {
-        if (lcp[i-1] < *mn.begin() && lcp[i+K-1] < *mn.begin()) {
-            //printf("range %d..%d legal!\n", i, i+K-2);
-            tot += *mn.begin() - max(lcp[i-1], lcp[i+K-1]);
-        }
-        //printf("erasing %d \n", lcp[i]);
+        tot += max(*mn.begin() - max(lcp[i-1], lcp[i+K-1]), 0);
+        //if (lcp[i-1] < *mn.begin() && lcp[i+K-1] < *mn.begin()) {
+        //    //printf("range %d..%d legal!\n", i, i+K-2);
+        //    tot += *mn.begin() - max(lcp[i-1], lcp[i+K-1]);
+        //}
         mn.erase(mn.find(lcp[i]));
         mn.insert(lcp[i+K-1]);
     }
@@ -179,21 +93,7 @@ int main()
         //printf("\n\n");
 
         printf("%d\n", count_groups3());
-
-        //printf("%d: '%s'\n", N, inp+1);
-
-        //int tot=0;
-        //for (int i=1; i<=N; ++i)
-        //    tot += count_groups(i);
-        //printf("%d\n", tot);
-
-        //while (true)
-        //{
-        //    int d; scanf("%d", &d);
-        //    printf("%d\n", count_groups(d));
-        //}
     }
-
 
 	return 0;
 }
