@@ -64,29 +64,28 @@ int count_groups3()
     // sparse table
     //memcpy(st, lcp, 1+N<<2);
     for (int i=1; i<=N; ++i) st[i] = lcp[i];
-    for (int d=0; 1<<1+d < K; ++d) {
-        //printf("\n%2d: ", 1<<d);
-        for (int i=1; i<=N; ++i) {
+    int d;
+    for (d=0; 1<<1+d < K; ++d)      // FIX: sparse table fencepost--lt K not le K
+        for (int i=1; i<=N; ++i)
             st[i] = min(st[i], st[i+(1<<d)]);
-            //printf("%3d", st[i]);
-        }
+    printf("st[i]:       "); for (int i=1; i<=N; ++i) printf("%3d", st[i]); printf("\n");
+    for (int i=1; i<=N; ++i)
+    {
+        printf("d %d 1<<1+d %d %d+%d-%d = %d\n", d, 1<<d, i, K-1, 1<<d, i+K-1-(1<<d));
+        st[i] = min(st[i], st[i+K-1-(1<<d)]);
     }
-    //printf("\n");
+    printf("st[i]:       "); for (int i=1; i<=N; ++i) printf("%3d", st[i]); printf("\n");
 
     // sliding window to count
     int tot = 0;
-    //multiset<int> mn;           // TODO: replace w/ sparse table?
-    //for (int i=2; i<=K; ++i)
-    //    mn.insert(lcp[i]);
     for (int i=2; i+K-2<=N; ++i)// TODO: doesn't work for K=1
     {
+        if (st[i] - max(lcp[i-1], lcp[i+K-1]) > 0)
+        {
+            printf("adding %d: ", i);
+            for (int j=1; j<st[i]; ++j) printf("%c", inp[sa[i]+j]); printf("\n");
+        }
         tot += max(st[i] - max(lcp[i-1], lcp[i+K-1]), 0);
-        //if (lcp[i-1] < *mn.begin() && lcp[i+K-1] < *mn.begin()) {
-        //    //printf("range %d..%d legal!\n", i, i+K-2);
-        //    tot += *mn.begin() - max(lcp[i-1], lcp[i+K-1]);
-        //}
-        //mn.erase(mn.find(lcp[i]));
-        //mn.insert(lcp[i+K-1]);
     }
     return tot;
 }
@@ -97,16 +96,15 @@ int main()
     //scanf("%d", &T);
     for (int t=0; t<T; ++t)
     {
-        //K = 3;
         scanf("%d", &K);
         scanf("%s", inp+1);
         N = strlen(inp+1);
         klcp();
-        //printf("\ni:           "); for (int i=1; i<=N; ++i) printf("%3d", sa[i]);
-        //printf("\ninp[i]:      "); for (int i=1; i<=N; ++i) printf("%3d", inp[sa[i]]);
-        //printf("\nrk[i]:       "); for (int i=1; i<=N; ++i) printf("%3d", i);
-        //printf("\nlcp[rk[i]]:  "); for (int i=1; i<=N; ++i) printf("%3d", lcp[i]);
-        //printf("\n\n");
+        printf("\ni:           "); for (int i=1; i<=N; ++i) printf("%3d", sa[i]);
+        printf("\ninp[i]:      "); for (int i=1; i<=N; ++i) printf("%3d", inp[sa[i]]);
+        printf("\nrk[i]:       "); for (int i=1; i<=N; ++i) printf("%3d", i);
+        printf("\nlcp[rk[i]]:  "); for (int i=1; i<=N; ++i) printf("%3d", lcp[i]);
+        printf("\n\n");
 
         printf("%d\n", count_groups3());
     }
