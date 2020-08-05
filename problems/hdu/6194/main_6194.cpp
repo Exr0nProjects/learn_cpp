@@ -11,6 +11,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <cassert>
 #include <set>
 #include <utility>
 #include <algorithm>
@@ -62,29 +63,29 @@ int st[MX];
 int count_groups3()
 {
     // sparse table
-    //memcpy(st, lcp, 1+N<<2);
-    for (int i=1; i<=N; ++i) st[i] = lcp[i];
+    memcpy(st, lcp, 1+N<<2);
+    //for (int i=1; i<=N; ++i) st[i] = lcp[i];
     int d;
     for (d=0; 1<<1+d < K; ++d)      // FIX: sparse table fencepost--lt K not le K
         for (int i=1; i<=N; ++i)
             st[i] = min(st[i], st[i+(1<<d)]);
-    printf("st[i]:       "); for (int i=1; i<=N; ++i) printf("%3d", st[i]); printf("\n");
+    //printf("st[i]:       "); for (int i=1; i<=N; ++i) printf("%3d", st[i]); printf("\n");
     for (int i=1; i<=N; ++i)
     {
-        printf("d %d 1<<1+d %d %d+%d-%d = %d\n", d, 1<<d, i, K-1, 1<<d, i+K-1-(1<<d));
+        //printf("d %d 1<<1+d %d %d+%d-%d = %d\n", d, 1<<d, i, K-1, 1<<d, i+K-1-(1<<d));
         st[i] = min(st[i], st[i+K-1-(1<<d)]);
     }
-    printf("st[i]:       "); for (int i=1; i<=N; ++i) printf("%3d", st[i]); printf("\n");
+    //printf("st[i]:       "); for (int i=1; i<=N; ++i) printf("%3d", st[i]); printf("\n");
 
     // sliding window to count
     int tot = 0;
     for (int i=2; i+K-2<=N; ++i)// TODO: doesn't work for K=1
     {
-        if (st[i] - max(lcp[i-1], lcp[i+K-1]) > 0)
-        {
-            printf("adding %d: ", i);
-            for (int j=1; j<st[i]; ++j) printf("%c", inp[sa[i]+j]); printf("\n");
-        }
+        //if (st[i] - max(lcp[i-1], lcp[i+K-1]) > 0)
+        //{
+        //    printf("adding %d: ", i);
+        //    for (int j=1; j<st[i]; ++j) printf("%c", inp[sa[i]+j]); printf("\n");
+        //}
         tot += max(st[i] - max(lcp[i-1], lcp[i+K-1]), 0);
     }
     return tot;
@@ -93,20 +94,21 @@ int count_groups3()
 int main()
 {
     int T=1;
-    //scanf("%d", &T);
+    scanf("%d", &T);
     for (int t=0; t<T; ++t)
     {
         scanf("%d", &K);
         scanf("%s", inp+1);
         N = strlen(inp+1);
         klcp();
-        printf("\ni:           "); for (int i=1; i<=N; ++i) printf("%3d", sa[i]);
-        printf("\ninp[i]:      "); for (int i=1; i<=N; ++i) printf("%3d", inp[sa[i]]);
-        printf("\nrk[i]:       "); for (int i=1; i<=N; ++i) printf("%3d", i);
-        printf("\nlcp[rk[i]]:  "); for (int i=1; i<=N; ++i) printf("%3d", lcp[i]);
-        printf("\n\n");
+        //printf("\ni:           "); for (int i=1; i<=N; ++i) printf("%3d", sa[i]);
+        //printf("\ninp[i]:      "); for (int i=1; i<=N; ++i) printf("%3d", inp[sa[i]]);
+        //printf("\nrk[i]:       "); for (int i=1; i<=N; ++i) printf("%3d", i);
+        //printf("\nlcp[rk[i]]:  "); for (int i=1; i<=N; ++i) printf("%3d", lcp[i]);
+        //printf("\n\n");
 
-        printf("%d\n", count_groups3());
+        //if (K == 1) for (int i=1; i==i; ++i) ++N; else
+            printf("%d\n", count_groups3());
     }
 
 	return 0;
