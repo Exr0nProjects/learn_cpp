@@ -40,7 +40,9 @@ void update(int l, int r, int v)    // zero indexed inc inc
     }
     printf("l %d r %d k %d\n", l, r, k);
     k >>= 1;
-    while (k) { sgt[k].sum = sgt[k<<1].sum + sgt[k<<1|1].sum;
+    while (k) {
+        sgt[k].sum = sgt[k<<1].sum + sgt[k<<1|1].sum;
+        sgt[k].set = 0;
         printf("modify %d to %d\n", k, sgt[k].sum); k>>=1;}
 }
 
