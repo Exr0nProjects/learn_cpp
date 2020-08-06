@@ -12,7 +12,7 @@
 using namespace std;
 const int MX = 100010;
 struct Node { int sum, set; } sgt[MX<<1];
-int N, D;
+int N, D, Q;
 
 void dump()
 {
@@ -26,15 +26,18 @@ void dump()
     printf("\n");
 }
 
-void update(int l, int r, int v)
+void update(int l, int r, int v)    // zero indexed inc exc
 {
+    l += D; r += D;
     int d = 1;
     while (l <= r)
     {
-        if ( l&1) sgt[l].sum = (sgt[l].set = v) * d;
-        if (~r&1) sgt[r].sum = (sgt[r].set = v) * d;
-        l <<= 1, r <<= 1, d >>= 1;
+        printf("    l %d, r %d\n", l, r);
+        if ( l&1) sgt[printf("hi\n"), l].sum = (sgt[l].set = v) * d;
+        if (~r&1) sgt[r--].sum = (sgt[r].set = v) * d;
+        l >>= 1, r >>= 1, d <<= 1;
     }
+    while (l) sgt[l].sum = (sgt[l].set = v) * d, l>>=1;
 }
 
 int main()
@@ -46,6 +49,16 @@ int main()
     for (int i=D-1; i; --i)
         sgt[i].sum = sgt[i<<1].sum + sgt[i<<1|1].sum;
     dump();
+
+    scanf("%d", &Q);
+    for (int i=0; i<Q; ++i)
+    {
+        int l, r, v;
+        scanf("%d%d%d", &l, &r, &v);
+        update(l-1, r, v);
+        dump();
+    }
+
 
 	return 0;
 }
