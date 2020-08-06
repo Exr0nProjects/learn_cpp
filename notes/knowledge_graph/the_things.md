@@ -97,7 +97,7 @@
 - Properties
     - Only one in a rooted tree
 - Algorithms
-    - Constant time: sparse table of dfs order traversal, min depth in range of any occurance of the two endpoints
+    - Constant time: sparse table of dfs order traversal, min depth in range of any occurance of the two endpoints (euler tour method)
     - Doubling method ~~([exponential search?](https://www.geeksforgeeks.org/exponential-search/))~~ [with rmq](https://www.geeksforgeeks.org/find-lca-in-binary-tree-using-rmq/)
     - Single pass
 - Derived From
