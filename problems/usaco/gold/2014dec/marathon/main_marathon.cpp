@@ -81,6 +81,19 @@ void su(int q, int v, int k=1, int tl=1, int tr=D)
     else su(q, v, k<<1|1, mid+1, tr);
     tmax[k] = max(tmax[k<<1], tmax[k<<1|1]);
 }
+void dump()
+{
+    printf("bit:\n");
+    for (int i=1; i<=N; ++i) printf("%3d", bq(i, i)); printf("\nsegt:");
+    int d = D-1;
+    for (int i=1; i<D<<1; ++i)
+    {
+        if (__builtin_popcount(i) == 1) { d>>=1; printf("\n"); }
+        printf("%5d", tmax[i]);
+        for (int i=1; i<=d; ++i) printf("     ");
+    }
+    printf("\n");
+}
 
 int main()
 {
@@ -88,13 +101,33 @@ int main()
     for (int i=1; i<=N; ++i) scanf("%d%d", x+i, y+i);
     // init bit
     for (int i=2; i<=N; ++i) bu(i, dist(i, i-1));
-    for (int i=1; i<=N; ++i) printf("%3d", bq(i, i)); printf("\n");
     // init segt
     for (D=1; D<N; D<<=1);
     for (int i=3; i<=N; ++i)
     {
-        printf("%d..%d = %d\n", i-2, i, dist(i-2, i));
-        tmax[D+i-1] = bq(i-2, i)-dist(i-2, i);
+        printf("%d..%d = %d - %d = %d\n", i-2, i, bq(i-1, i), dist(i-2, i), bq(i-1, i) - dist(i-2, i));
+        tmax[D+i-1] = bq(i-1, i)-dist(i-2, i);  // FIX: fencepost--bq(i-1, i) not bq(i-2, i) since we want 2 things not 3
+    }
+    for (int i=D-1; i; --i)
+        tmax[i] = max(tmax[i<<1], tmax[i<<1|1]);
+    dump();
+
+    // queries
+    for (int q=0; q<Q; ++q)
+    {
+        char c; cin >> c;
+        if (c == 'U')
+        {
+            int i, predist;
+            scanf("%d", &i); scanf("%d%d", x+i, y+i);   // must be two statements otherwise i isn't inited
+            predist = bq(i, i);
+            bu(i, dist(i-1, i)-predist);             // update dist i-1..i
+            bu(i+1, dist(i+1, i)-bq(i+1, i+1));    // update dist i..i+1
+            su(i,   bq(i-1, i)-dist(i-2, i));           // update skip i-1
+            su(i+1, bq(i, i+1)-dist(i-1, i+1));         // update skip i
+            su(i+2, bq(i+1, i+2)-dist(i, i+2));         // update skip i+1
+            dump();
+        }
     }
 
 	return 0;
