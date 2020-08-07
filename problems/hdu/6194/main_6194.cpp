@@ -21,7 +21,6 @@ const int MX = 100111;
 int N, K, sa[MX], rk[MX], tmp[MX], pos[MX], lcp[MX];
 char inp[MX];
 void klcp() {
-    memset(sa, 0, sizeof sa);
     memset(rk, 0, sizeof rk);
     memset(tmp, 0, sizeof tmp);
     memset(lcp, 0, sizeof lcp);
@@ -59,30 +58,22 @@ void klcp() {
     }
 }
 
-int st[MX];
+int st[MX]; // minimum from lcp[i]..lcp[i+K-2]
 int count_groups3()
-{
+{   // NOTE: doesn't work for K=1
     // sparse table
     memcpy(st, lcp, 1+N<<2);
-    //for (int i=1; i<=N; ++i) st[i] = lcp[i];
     int d;
     for (d=0; 1<<1+d < K; ++d)      // FIX: sparse table fencepost--lt K not le K
         for (int i=1; i<=N; ++i)
             st[i] = min(st[i], st[i+(1<<d)]);
-    //printf("st[i]:       "); for (int i=1; i<=N; ++i) printf("%3d", st[i]); printf("\n");
     for (int i=1; i<=N; ++i)
-    {
-        //printf("d %d 1<<1+d %d %d+%d-%d = %d\n", d, 1<<d, i, K-1, 1<<d, i+K-1-(1<<d));
         st[i] = min(st[i], st[i+K-1-(1<<d)]);
-    }
-    //printf("st[i]:       "); for (int i=1; i<=N; ++i) printf("%3d", st[i]); printf("\n");
 
     // sliding window to count
     int tot = 0;
-    for (int i=2; i+K-2<=N; ++i)// TODO: doesn't work for K=1
-    {
+    for (int i=2; i+K-2<=N; ++i)
         tot += max(st[i] - max(lcp[i-1], lcp[i+K-1]), 0);
-    }
     return tot;
 }
 
@@ -109,7 +100,7 @@ int main()
         {
             int sum=0;
             for (int i=1; i<=N; ++i)
-                sum += N - sa[i] + 1 - max(lcp[i], lcp[i+1]);   // FIX: carried by alex du
+                sum += N - sa[i] + 1 - max(lcp[i], lcp[i+1]);   // FIX: carried by big turtle
             printf("%d\n", sum);
         }
     }
