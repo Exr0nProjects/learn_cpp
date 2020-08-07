@@ -67,6 +67,8 @@ int bu(int n, int v)
 int D, tmax[MX<<1];
 int sq(int ql, int qr, int k=1, int tl=1, int tr=D)
 {
+    //printf("query %d..%d @ %d (%d..%d)\n", ql, qr, k, tl, tr);
+    if (ql > qr) return 0;
     if (tr < ql || qr < tl) return 0;
     if (ql <= tl && tr <= qr) return tmax[k];
     int mid = tl + (tr-tl>>1);
@@ -75,7 +77,7 @@ int sq(int ql, int qr, int k=1, int tl=1, int tr=D)
 void su(int q, int v, int k=1, int tl=1, int tr=D)
 {
     //if (q < tl || tr < q) return;   // NOTE: not needed?
-    printf("update %d <- %d at %d (%d..%d)\n", q, v, k, tl, tr);
+    //printf("update %d <- %d at %d (%d..%d)\n", q, v, k, tl, tr);
     if (tl == tr) { tmax[k] = v; return; } // FIX: return on break condition
     int mid = tl + (tr-tl>>1);
     if (q <= mid) su(q, v, k<<1, tl, mid);
@@ -98,6 +100,8 @@ void dump()
 
 int main()
 {
+    freopen("marathon.in", "r", stdin);
+    freopen("marathon.out", "w+", stdout);
     scanf("%d%d", &N, &Q);
     for (int i=1; i<=N; ++i) scanf("%d%d", x+i, y+i);
     // init bit
@@ -106,12 +110,12 @@ int main()
     for (D=1; D<N; D<<=1);
     for (int i=3; i<=N; ++i)
     {
-        printf("%d..%d = %d - %d = %d\n", i-2, i, bq(i-1, i), dist(i-2, i), bq(i-1, i) - dist(i-2, i));
+        //printf("%d..%d = %d - %d = %d\n", i-2, i, bq(i-1, i), dist(i-2, i), bq(i-1, i) - dist(i-2, i));
         tmax[D+i-1] = bq(i-1, i)-dist(i-2, i);  // FIX: fencepost--bq(i-1, i) not bq(i-2, i) since we want 2 things not 3
     }
     for (int i=D-1; i; --i)
         tmax[i] = max(tmax[i<<1], tmax[i<<1|1]);
-    dump();
+    //dump();
 
     // queries
     for (int q=0; q<Q; ++q)
@@ -129,7 +133,12 @@ int main()
 
             su(i+1, bq(i, i+1)-dist(i-1, i+1));         // update skip i
             su(i+2, bq(i+1, i+2)-dist(i, i+2));         // update skip i+1
-            dump();
+            //dump();
+        }
+        else
+        {
+            int l, r; scanf("%d%d", &l, &r);
+            printf("%d\n", bq(l+1, r) - sq(l+2, r));
         }
     }
 
