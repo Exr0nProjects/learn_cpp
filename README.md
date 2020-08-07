@@ -111,6 +111,10 @@ Don't make names too similar, it's easy to make typos (`djs` vs `djf`)
 
 ### Time Limit Exceeded (correct algorithm, optimizations)
 
+#### Something went wrong
+- Infinite looping
+	- Recursive base cases?
+	- BIT will tle if index is zero
 #### What to Optimize
 1. Symmetries
 	- Does the problem have more properties that can be used to calculate only part of it?
