@@ -81,11 +81,6 @@ int count_groups3()
     int tot = 0;
     for (int i=2; i+K-2<=N; ++i)// TODO: doesn't work for K=1
     {
-        //if (st[i] - max(lcp[i-1], lcp[i+K-1]) > 0)
-        //{
-        //    printf("adding %d: ", i);
-        //    for (int j=1; j<st[i]; ++j) printf("%c", inp[sa[i]+j]); printf("\n");
-        //}
         tot += max(st[i] - max(lcp[i-1], lcp[i+K-1]), 0);
     }
     return tot;
@@ -103,14 +98,20 @@ int main()
 
         klcp();
 
-        printf("\ni:           "); for (int i=1; i<=N; ++i) printf("%3d", sa[i]);
-        printf("\ninp[i]:      "); for (int i=1; i<=N; ++i) printf("%3d", inp[sa[i]]);
-        printf("\nrk[i]:       "); for (int i=1; i<=N; ++i) printf("%3d", i);
-        printf("\nlcp[rk[i]]:  "); for (int i=1; i<=N; ++i) printf("%3d", lcp[i]);
-        printf("\n\n");
+        //printf("\ni:           "); for (int i=1; i<=N; ++i) printf("%3d", sa[i]);
+        //printf("\ninp[i]:      "); for (int i=1; i<=N; ++i) printf("%3d", inp[sa[i]]);
+        //printf("\nrk[i]:       "); for (int i=1; i<=N; ++i) printf("%3d", i);
+        //printf("\nlcp[rk[i]]:  "); for (int i=1; i<=N; ++i) printf("%3d", lcp[i]);
+        //printf("\n\n");
 
-        //if (K == 1) for (int i=1; i==i; ++i) ++N; else
-            printf("%d\n", count_groups3());
+        if (K > 1) printf("%d\n", count_groups3());
+        else
+        {
+            int sum=0;
+            for (int i=1; i<=N; ++i)
+                sum += N - sa[i] + 1 - max(lcp[i], lcp[i+1]);   // FIX: carried by alex du
+            printf("%d\n", sum);
+        }
     }
 
 	return 0;
