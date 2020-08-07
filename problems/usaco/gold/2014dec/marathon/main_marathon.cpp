@@ -75,7 +75,8 @@ int sq(int ql, int qr, int k=1, int tl=1, int tr=D)
 void su(int q, int v, int k=1, int tl=1, int tr=D)
 {
     //if (q < tl || tr < q) return;   // NOTE: not needed?
-    if (tl == tr) tmax[k] = v;
+    printf("update %d <- %d at %d (%d..%d)\n", q, v, k, tl, tr);
+    if (tl == tr) { tmax[k] = v; return; } // FIX: return on break condition
     int mid = tl + (tr-tl>>1);
     if (q <= mid) su(q, v, k<<1, tl, mid);
     else su(q, v, k<<1|1, mid+1, tr);
@@ -123,7 +124,9 @@ int main()
             predist = bq(i, i);
             bu(i, dist(i-1, i)-predist);             // update dist i-1..i
             bu(i+1, dist(i+1, i)-bq(i+1, i+1));    // update dist i..i+1
+
             su(i,   bq(i-1, i)-dist(i-2, i));           // update skip i-1
+
             su(i+1, bq(i, i+1)-dist(i-1, i+1));         // update skip i
             su(i+2, bq(i+1, i+2)-dist(i, i+2));         // update skip i+1
             dump();
