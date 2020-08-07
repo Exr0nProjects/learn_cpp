@@ -1,7 +1,7 @@
 /*
  * Problem marathon (usaco/gold/2014dec/marathon)
  * Create time: Fri 07 Aug 2020 @ 15:05 (PDT)
- * Accept time: [!meta:end!]
+ * Accept time: Fri 07 Aug 2020 @ 16:02 (PDT)
  *
  */
 
@@ -63,7 +63,7 @@ int bu(int n, int v)
         bit[n] += v;
 }
 // point update max segtree
-int D, tmax[MX<<1];
+int D, tmax[MX<<2]; // FIX: MX<<2 not MX<<1 weird
 //int sq(int ql, int qr, int k=1, int tl=1, int tr=D)
 //{
 //    //printf("query %d..%d @ %d (%d..%d)\n", ql, qr, k, tl, tr);
