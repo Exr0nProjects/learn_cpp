@@ -63,16 +63,27 @@ int bu(int n, int v)
         bit[n] += v;
 }
 // point update max segtree
-// TODO: init segtree
 int D, tmax[MX<<1];
-int sq(int ql, int qr, int k=1, int tl=1, int tr=D)
+//int sq(int ql, int qr, int k=1, int tl=1, int tr=D)
+//{
+//    //printf("query %d..%d @ %d (%d..%d)\n", ql, qr, k, tl, tr);
+//    if (ql > qr) return 0;
+//    if (tr < ql || qr < tl) return 0;
+//    if (ql <= tl && tr <= qr) return tmax[k];
+//    int mid = tl + (tr-tl>>1);
+//    return max(sq(ql, qr, k<<1, tl, mid), sq(ql, qr, k<<1|1, mid+1, tr));
+//}
+int isq(int ql, int qr)
 {
-    //printf("query %d..%d @ %d (%d..%d)\n", ql, qr, k, tl, tr);
-    if (ql > qr) return 0;
-    if (tr < ql || qr < tl) return 0;
-    if (ql <= tl && tr <= qr) return tmax[k];
-    int mid = tl + (tr-tl>>1);
-    return max(sq(ql, qr, k<<1, tl, mid), sq(ql, qr, k<<1|1, mid+1, tr));
+    ql += D-1, qr += D-1;
+    int tot=0;
+    while (ql <= qr)
+    {
+        if ( ql&1) tot = max(tot, tmax[ql++]);
+        if (~qr&1) tot = max(tot, tmax[qr--]);
+        ql >>=1; qr >>=1;
+    }
+    return tot;
 }
 void su(int q, int v, int k=1, int tl=1, int tr=D)
 {
@@ -84,19 +95,19 @@ void su(int q, int v, int k=1, int tl=1, int tr=D)
     else su(q, v, k<<1|1, mid+1, tr);
     tmax[k] = max(tmax[k<<1], tmax[k<<1|1]);
 }
-void dump()
-{
-    printf("bit:\n");
-    for (int i=1; i<=N; ++i) printf("%3d", bq(i, i)); printf("\nsegt:");
-    int d = D-1;
-    for (int i=1; i<D<<1; ++i)
-    {
-        if (__builtin_popcount(i) == 1) { d>>=1; printf("\n"); }
-        printf("%5d", tmax[i]);
-        for (int i=1; i<=d; ++i) printf("     ");
-    }
-    printf("\n");
-}
+//void dump()
+//{
+//    printf("bit:\n");
+//    for (int i=1; i<=N; ++i) printf("%3d", bq(i, i)); printf("\nsegt:");
+//    int d = D-1;
+//    for (int i=1; i<D<<1; ++i)
+//    {
+//        if (__builtin_popcount(i) == 1) { d>>=1; printf("\n"); }
+//        printf("%5d", tmax[i]);
+//        for (int i=1; i<=d; ++i) printf("     ");
+//    }
+//    printf("\n");
+//}
 
 int main()
 {
@@ -123,22 +134,20 @@ int main()
         char c; cin >> c;
         if (c == 'U')
         {
-            int i, predist;
+            int i;
             scanf("%d", &i); scanf("%d%d", x+i, y+i);   // must be two statements otherwise i isn't inited
-            predist = bq(i, i);
-            bu(i, dist(i-1, i)-predist);             // update dist i-1..i
-            bu(i+1, dist(i+1, i)-bq(i+1, i+1));    // update dist i..i+1
+            if (i > 1) bu(i, dist(i-1, i)-bq(i, i));               // update dist i-1..i
+            bu(i+1, dist(i+1, i)-bq(i+1, i+1));         // update dist i..i+1
 
-            su(i,   bq(i-1, i)-dist(i-2, i));           // update skip i-1
-
-            su(i+1, bq(i, i+1)-dist(i-1, i+1));         // update skip i
-            su(i+2, bq(i+1, i+2)-dist(i, i+2));         // update skip i+1
+            if (i > 1) su(i,   bq(i-1, i)-dist(i-2, i));         // update skip i-1; FIX: bit will tle if index is zero
+            su(i+1, bq(i, i+1)-dist(i-1, i+1));       // update skip i
+            su(i+2, bq(i+1, i+2)-dist(i, i+2));       // update skip i+1
             //dump();
         }
         else
         {
             int l, r; scanf("%d%d", &l, &r);
-            printf("%d\n", bq(l+1, r) - sq(l+2, r));
+            printf("%d\n", bq(l+1, r) - isq(l+2, r));
         }
     }
 
