@@ -1,7 +1,7 @@
 /*
  * Problem guard (usaco/gold/2014dec/guard)
  * Create time: Sat 08 Aug 2020 @ 09:30 (PDT)
- * Accept time: [!meta:end!]
+ * Accept time: Sat 08 Aug 2020 @ 09:51 (PDT)
  *
  */
 
@@ -43,7 +43,7 @@ pair<ll, ll> dp[1<<MX];
 
 pair<ll, ll> calc(int cows) // < saftey factor, weight >
 {
-    if (!cows) return mp(1ll<<30, 0ll);
+    if (!cows) return mp(1ll<<50, 0ll);
     pair<ll, ll> &ret = dp[cows];
     if (ret.s) return ret;
     ll sum=0;
@@ -64,12 +64,12 @@ int main()
     freopen("guard.in", "r", stdin);
     freopen("guard.out", "w+", stdout);
 
-    scanf("%d%d", &N, &H);
+    scanf("%lld%lld", &N, &H);
     for (int i=0; i<N; ++i)
-        scanf("%d%d%d", h+i, w+i, s+i);
+        scanf("%lld%lld%lld", h+i, w+i, s+i);
     calc((1<<N)-1);
-    if (mx < 0) printf("Mark is too tall\n");
-    else printf("%d\n", mx);
+    if (mx <= 0) printf("Mark is too tall\n");  // FIX: mark is too tall if its le zero not just lt zero
+    else printf("%lld\n", mx);
 
 	return 0;
 }
