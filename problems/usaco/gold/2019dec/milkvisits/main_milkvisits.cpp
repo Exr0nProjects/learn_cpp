@@ -41,7 +41,9 @@ const ll MX = 131072;
 int N, M, type[MX];
 vector<int> head[MX];
 
-int D, rt[MX], alc=1, lc[MX<<6], rc[MX<<6], tsum[MX<<6];
+int st[18][MX<<1], occ[MX], par[MX], stsz=1;  // TODO: might be MX<<1
+int D, rt[MX], alc=1, lc[MX<<6], rc[MX<<6];
+unordered_map<int, int> tsum;
 void dumpseg(int i)
 {
     printf("seg %d:", i);
@@ -62,7 +64,6 @@ void dupe(int &k)
 {
     lc[alc] = lc[k];
     rc[alc] = rc[k];
-    tsum[alc] = tsum[k];
     k = alc++;
 }
 void su(int q, int v, int &k, int tl=1, int tr=D) // FIX: args--&k for pst
@@ -84,7 +85,6 @@ int sq(int q, int ku, int kv, int klca, int kslca, int tl=1, int tr=D)
     else return sq(q, rc[ku], rc[kv], rc[klca], rc[kslca], mid+1, tr);
 }
 
-int st[18][MX<<2], occ[MX], par[MX], stsz=1;  // TODO: might be MX<<1
 void dfs(int cur, int pre=0)
 {
     par[cur] = pre;
