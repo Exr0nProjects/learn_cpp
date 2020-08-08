@@ -77,6 +77,7 @@ void su(int q, int v, int &k, int tl=1, int tr=D) // FIX: args--&k for pst
 }
 int sq(int q, int ku, int kv, int klca, int kslca, int tl=1, int tr=D)
 {
+    //printf("query %d @ %d %d %d %d (%d..%d)\n", q, ku, kv, klca, kslca, tl, tr);
     if (tl == tr) return tsum[ku] + tsum[kv] - tsum[klca] - tsum[kslca];
     int mid = tl + (tr-tl>>1);
     if (q <= mid) return sq(q, lc[ku], lc[kv], lc[klca], lc[kslca], tl, mid);
@@ -88,7 +89,7 @@ void dfs(int cur, int pre=0)
 {
     par[cur] = pre;
     rt[cur] = rt[pre];
-    su(cur, 1, rt[cur]);
+    su(type[cur], 1, rt[cur]);  // FIX: typo--update type[cur] not cur
     for (int nxt : head[cur])
         if (nxt != pre)
         {
@@ -101,17 +102,17 @@ void dfs(int cur, int pre=0)
 void klca()
 {
     dfs(1);
-    for (int i=1; i<=N; ++i) printf("%3d", occ[i]); printf("\n");
+    //for (int i=1; i<=N; ++i) printf("%3d", occ[i]); printf("\n");
     //for (int i=1; i<N<<1; ++i) printf("%3d", st[0][i]); printf("\n");
     for (int j=1; 1<<j < N<<1; ++j)
         for (int i=1; i+(1<<j) <= N<<1; ++i)
             st[j][i] = min(st[j-1][i], st[j-1][i+(1<<j-1)]);
-    for (int j=0; 1<<j < N<<1; ++j)
-    {
-        for (int i=1; i<= N<<1; ++i)
-            printf("%3d", st[j][i]);
-        printf("\n");
-    }
+    //for (int j=0; 1<<j < N<<1; ++j)
+    //{
+    //    for (int i=1; i<= N<<1; ++i)
+    //        printf("%3d", st[j][i]);
+    //    printf("\n");
+    //}
 }
 int rmq(int l, int r)
 {
@@ -124,6 +125,8 @@ int rmq(int l, int r)
 
 int main()
 {
+    freopen("milkvisits.in", "r", stdin);
+    freopen("milkvisits.out", "w+", stdout);
     scanf("%d%d", &N, &M);
     for (D=1; D<N; D<<=1);
     for (int i=1; i<=N; ++i) scanf("%d", type+i);
@@ -136,12 +139,15 @@ int main()
     }
 
     klca();
-    for (int i=1; i<=N; ++i) dumpseg(i);
+    //for (int i=1; i<=N; ++i) dumpseg(i);
     for (int i=1; i<=M; ++i)
     {
         int u, v, t; scanf("%d%d%d", &u, &v, &t);
-        printf("lca: %d\n", rmq(occ[u], occ[v]));
+        int lca = rmq(occ[u], occ[v]);
+        printf("%d", (bool)sq(t, rt[u], rt[v], rt[lca], rt[par[lca]]));
+        //printf("lca: %d\n", rmq(occ[u], occ[v]));
     }
+    printf("\n");
 
 	return 0;
 }

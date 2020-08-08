@@ -13,6 +13,13 @@
 17:47 | stringid RE or MLE on sample test case :// | debugging #3
 18:02 | why is it different on my computer vs grading server?? | debugging #3
 18:09 | dunno how to debug | pause
+continue 8 Aug 2020 @ 10:59 | continue | refreshing memory
+11:08 | no plan for #1, #2 feels like spojcot but must be simpler, #3 is floyd then edit dist? | analysing #3
+11:23 | not sure how to improve N^2 palendrome-like spliting | analysing #2
+11:25 | wait, static makes simple, just store prefix freq? how to store? | analysing #2
+11:29 | I guess I should just code the spojcot pst | coding #2
+12:04 | taking a while to code but might as well grind it out | coding #2
+12:17 | WA 3/15 #2 | debugging
 
 ## Contest Reflection
 
