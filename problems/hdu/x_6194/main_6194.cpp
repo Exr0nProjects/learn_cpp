@@ -21,6 +21,7 @@ const int MX = 100001;
 int N, K, sa[MX], rk[MX], tmp[MX], pos[MX], lcp[MX];
 char inp[MX];
 int st[MX]; // minimum from lcp[i]..lcp[i+K-2]
+int mq[MX]; // monotonic queue
 
 int main()
 {
@@ -34,6 +35,7 @@ int main()
 
         memset(rk, 0, sizeof rk);
         memset(lcp, 0, sizeof lcp);
+        memset(mq, 0, sizeof mq);
         // prep
         for (int i=1; i<=N; ++i)
             rk[i] = inp[i], sa[i] = i;
@@ -86,9 +88,22 @@ int main()
                 st[i] = min(st[i], st[i+K-1-(1<<d)]);
 
             // sliding window to count
-            int tot = 0;
+            int tot = 0, l=1, r=0;  // l and r for monotonic queue
+            for (int i=2; i<=K; ++i)
+            {
+                while (r >= l && mq[r] > lcp[i]) --r;
+                mq[++r] = lcp[i];
+            }
             for (int i=2; i+K-2<=N; ++i)
-                tot += max(st[i] - max(lcp[i-1], lcp[i+K-1]), 0);
+            {
+                //printf("%3d:", i); for (int i=1; i<=N; ++i) printf("%3d", mq[i]); printf("\n");
+                //printf("%d..%d", l, r); int j=2; for (; j<=l; ++j) printf("   "); printf("  ^"); for (++j; j <= r; ++j) printf("   "); if (l != r) printf("  ^"); printf("\n");
+                tot += max(mq[l] - max(lcp[i-1], lcp[i+K-1]), 0);
+                //if (mq[l] != st[i]) printf("i = %d mq = %d st = %d\n", i, mq[l], st[i]);
+                while (r >= l && mq[r] > lcp[i+K-1]) --r;
+                mq[++r] = lcp[i+K-1];
+                if (mq[l] == lcp[i]) ++l;
+            }
             printf("%d\n", tot);
         }
         else
