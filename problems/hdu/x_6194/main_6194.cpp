@@ -20,7 +20,6 @@ using namespace std;
 const int MX = 100001;
 int N, K, sa[MX], rk[MX], tmp[MX], pos[MX], lcp[MX];
 char inp[MX];
-int st[MX]; // minimum from lcp[i]..lcp[i+K-2]
 int mq[MX]; // monotonic queue
 
 int main()
@@ -69,37 +68,19 @@ int main()
                     ++lcp[rk[i]];
         }
 
-        //printf("\ni:           "); for (int i=1; i<=N; ++i) printf("%3d", sa[i]);
-        //printf("\ninp[i]:      "); for (int i=1; i<=N; ++i) printf("%3d", inp[sa[i]]);
-        //printf("\nrk[i]:       "); for (int i=1; i<=N; ++i) printf("%3d", i);
-        //printf("\nlcp[rk[i]]:  "); for (int i=1; i<=N; ++i) printf("%3d", lcp[i]);
-        //printf("\n\n");
-
         if (K > 1)
         {
-            // count_groups, NOTE: doesn't work for K=1
-            // sparse table
-            memcpy(st+1, lcp+1, N<<2);
-            int d;
-            for (d=0; 1<<1+d < K; ++d)      // FIX: sparse table fencepost--lt K not le K
-                for (int i=1; i<=N; ++i)
-                    st[i] = min(st[i], st[i+(1<<d)]);
-            for (int i=1; i<=N; ++i)
-                st[i] = min(st[i], st[i+K-1-(1<<d)]);
-
-            // sliding window to count
             int tot = 0, l=1, r=0;  // l and r for monotonic queue
+            // monotonic queue
             for (int i=2; i<=K; ++i)
             {
-                while (r >= l && mq[r] > lcp[i]) --r;
+                while (r >= l && mq[r] > lcp[i]) --r;   // FIX: init monotonic queue properly, delete bigger old things
                 mq[++r] = lcp[i];
             }
+            // sliding window to count
             for (int i=2; i+K-2<=N; ++i)
             {
-                //printf("%3d:", i); for (int i=1; i<=N; ++i) printf("%3d", mq[i]); printf("\n");
-                //printf("%d..%d", l, r); int j=2; for (; j<=l; ++j) printf("   "); printf("  ^"); for (++j; j <= r; ++j) printf("   "); if (l != r) printf("  ^"); printf("\n");
                 tot += max(mq[l] - max(lcp[i-1], lcp[i+K-1]), 0);
-                //if (mq[l] != st[i]) printf("i = %d mq = %d st = %d\n", i, mq[l], st[i]);
                 while (r >= l && mq[r] > lcp[i+K-1]) --r;
                 mq[++r] = lcp[i+K-1];
                 if (mq[l] == lcp[i]) ++l;
