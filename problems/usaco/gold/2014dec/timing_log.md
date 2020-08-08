@@ -36,6 +36,7 @@ This took longer than I hoped to code, but atleast I was still able to code it. 
 #### Problem 3: cowjog
 
 I thought about running LIS repeatedly, but I thought that the complexity would be N^2 log N because you have to run LIS for O(N) up to N times. so, I didn't code it. I don't yet understand how the solution runs LIS only once
+I guess i was missing the greedy analysis figuring out a property of the important chain of cows that decides how many rows there are. Also such clean LIS code! Should be good to recode this problem.
 
 ### Strategy
 How did you spend your time during the test, and whether there's any issue about your strategy?
