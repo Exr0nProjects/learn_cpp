@@ -1,7 +1,7 @@
 /*
  * Problem cowjog (usaco/gold/2014dec/cowjog)
  * Create time: Sat 08 Aug 2020 @ 09:53 (PDT)
- * Accept time: [!meta:end!]
+ * Accept time: Sat 08 Aug 2020 @ 10:12 (PDT)
  *
  */
 
@@ -44,15 +44,15 @@ int main()
 {
     freopen("cowjog.in", "r", stdin);
     freopen("cowjog.out", "w+", stdout);
-    scanf("%d%d", &N, &T);
+    scanf("%lld%lld", &N, &T);
     for (ll i=0; i<N; ++i)
     {
-        ll x, v; scanf("%d%d", &x, &v);
+        ll x, v; scanf("%lld%lld", &x, &v); // FIX: bounds--ll smah
         x += T*v;
         if (!len || lis[len-1] >= x) lis[len++] = x;    // FIX: need `!len ||` else won't ever add first one
-        else *upper_bound(lis, lis+N, x, greater<rl>{}) = x;
+        else *upper_bound(lis, lis+len, x, greater<ll>{}) = x;  // FIX: typo--end is lis+len not lis+N
     }
-    printf("%d\n", len);
+    printf("%lld\n", len);  // FIX: bounds-- remember to convert ll format strings smah
 	return 0;
 }
 

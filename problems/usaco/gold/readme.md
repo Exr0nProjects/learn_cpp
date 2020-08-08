@@ -4,9 +4,9 @@ Next up: finish 2h of 2019dec
 
 |Contest | # | Original | Gap | Action |
 |--------|---|----------|-----|--------|
-2014dec  | 1 | nosub    | DP state | code
+2014dec  | 1 | nosub    | DP state | AC
 2014dec  | 2 | AC | | AC
-2014dec  | 3 | nosub    | Greedy analysis | code
+2014dec  | 3 | nosub    | Greedy analysis | AC
 2015jan  | 1 |
 2015jan  | 2 |
 2015jan  | 3 |
