@@ -20,6 +20,11 @@ continue 8 Aug 2020 @ 10:59 | continue | refreshing memory
 11:29 | I guess I should just code the spojcot pst | coding #2
 12:04 | taking a while to code but might as well grind it out | coding #2
 12:17 | WA 3/15 #2 | debugging
+12:29 | not sure why its WA, trying more cases i guess | debugging
+12:36 | not sure what's wrong | analysing #3
+12:37 | I guess I should code the brute force for #3 | coding brute force #3
+12:47 | #3 isn't working, probably fenceposts somewhere | coding #3
+13:00 | found the fencepost a minute after time, forgot to do file i/o anyways | nosub 1, WA #2 3/15, nosub 3
 
 ## Contest Reflection
 
@@ -28,15 +33,15 @@ What knowledge did you use in this test, and which part you didn't do well knowl
 
 #### Problem 1:
 
--
+seems scary
 
 #### Problem 2:
 
--
+spojcot but static. not sure why it WA'd
 
 #### Problem 3:
 
--
+Not sure how to do the conversion DP, although its cool that you can use floyd to compress paths I guess.
 
 ### Strategy
 How did you spend your time during the test, and whether there's any issue about your strategy?

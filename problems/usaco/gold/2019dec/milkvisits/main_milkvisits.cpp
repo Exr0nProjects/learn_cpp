@@ -42,8 +42,7 @@ int N, M, type[MX];
 vector<int> head[MX];
 
 int st[18][MX<<1], occ[MX], par[MX], stsz=1;  // TODO: might be MX<<1
-int D, rt[MX], alc=1, lc[MX<<6], rc[MX<<6];
-unordered_map<int, int> tsum;
+int D, rt[MX], alc=1, lc[MX<<6], rc[MX<<6], tsum[MX<<6];
 void dumpseg(int i)
 {
     printf("seg %d:", i);
@@ -64,6 +63,7 @@ void dupe(int &k)
 {
     lc[alc] = lc[k];
     rc[alc] = rc[k];
+    tsum[alc] = tsum[k];
     k = alc++;
 }
 void su(int q, int v, int &k, int tl=1, int tr=D) // FIX: args--&k for pst
