@@ -38,19 +38,19 @@
 
 using namespace std;
 const ll MX = 100111;
-int N, T, len=0, lis[MX];
+ll N, T, len=0, lis[MX];
 
 int main()
 {
     freopen("cowjog.in", "r", stdin);
     freopen("cowjog.out", "w+", stdout);
     scanf("%d%d", &N, &T);
-    for (int i=1; i<=N; ++i)
+    for (ll i=0; i<N; ++i)
     {
-        int x, v; scanf("%d%d", &x, &v);
+        ll x, v; scanf("%d%d", &x, &v);
         x += T*v;
         if (!len || lis[len-1] >= x) lis[len++] = x;    // FIX: need `!len ||` else won't ever add first one
-        else *upper_bound(lis, lis+N, x, greater<int>{}) = x;
+        else *upper_bound(lis, lis+N, x, greater<rl>{}) = x;
     }
     printf("%d\n", len);
 	return 0;
