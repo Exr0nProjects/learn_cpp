@@ -109,19 +109,27 @@ int main() {
             ++a[i];
         }
         set_sa();
-        /*for (int i = 1; i <= N; i++) {
+        //for (int i = 1; i <= N; i++) {
+        //    int j = max(0, lcp[rk[i - 1]] - 1), prv = sa[rk[i] - 1];
+        //    while (a[i + j] == a[prv + j]) ++j;
+        //    lcp[rk[i]] = j;
+        //}
+            for (int i=1; i<=N; ++i)
+    {
+        lcp[rk[i]] = max(lcp[rk[i-1]]-1, 0);
+        if (rk[i] > 1)
+            while (a[i+lcp[rk[i]]] == a[sa[rk[i]-1]+lcp[rk[i]]])
+                ++lcp[rk[i]];
+    }
+
+        for (int i = 1; i <= N; i++) {
             printf("%d ", sa[i]);
         }
         printf("\n");
         for (int i = 1; i <= N; i++) {
             printf("%d ", rk[i]);
         }
-        printf("\n");*/
-        for (int i = 1; i <= N; i++) {
-            int j = max(0, lcp[rk[i - 1]] - 1), prv = sa[rk[i] - 1];
-            while (a[i + j] == a[prv + j]) ++j;
-            lcp[rk[i]] = j;
-        }
+        printf("\n");
         //        int tot=0;
         //for (int i=1; i<N; ++i)
         //{
