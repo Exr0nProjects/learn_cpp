@@ -1,7 +1,7 @@
 /*
  * Problem 1276 (poj/1276)
  * Create time: Sat 08 Aug 2020 @ 14:46 (PDT)
- * Accept time: [!meta:end!]
+ * Accept time: Mon 10 Aug 2020 @ 10:43 (PDT)
  *
  */
 
@@ -34,11 +34,11 @@ int main()
         {
             for (int k=1; k<c[i]; k<<=1)
             {
-                for (int j=k*v[i]; j<=M; ++j)
+                for (int j=M; j>=k*v[i]; --j)   // FIX: loop from high to low because bounded knapsack-> 0/1 knapsack not bounded knapsack -> unbounded
                     dp[j] |= dp[j-k*v[i]];
                 c[i] -= k;
             }
-            for (int j=c[i]*v[i]; j<=M; ++j)
+            for (int j=M; j>=c[i]*v[i]; --j)    // FIX: 0/1 knapsack loops from high to low in rolling array
                 dp[j] |= dp[j-c[i]*v[i]];
         }
         for (int i=M; ~i; --i) if (dp[i]) { printf("%d\n", i); break; } // FIX: break on ~i not i because i might go down to zero

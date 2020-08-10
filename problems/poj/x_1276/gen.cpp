@@ -3,7 +3,7 @@
 #include <cstdlib>
 #define rand(l,h) (rand()%(h-l+1)+l)
 
-const int T = 10;
+const int T = 1000;
 const int MXC = 100000;
 const int MXN = 10;
 const int MXV = 1000;
