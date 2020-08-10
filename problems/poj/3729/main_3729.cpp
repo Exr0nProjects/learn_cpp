@@ -8,24 +8,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
-#include <sstream>
-#include <iostream>
-#include <vector>
-#include <string>
-#include <list>
-#include <array>
-#include <queue>
-#include <stack>
-#include <set>
-#include <map>
-#include <unordered_set>
-#include <unordered_map>
-#include <cmath>
-#include <random>
-#include <chrono>
-#include <utility>
 #include <algorithm>
-#include <functional>
 
 #define ll long long
 #define dl double
@@ -45,7 +28,6 @@ int sa[MX], rk[MX], tmp[MX], pos[MXV], lcp[MX];
 void klcp()
 {
     int mx = MXV;
-    N += M+1;
     for (int i=1; i<=N; ++i)
         rk[i] = inp[i], sa[i] = i;
     for (int i=1; i>>1<N; i<<=1)    // FIX: typo--main loop in suffarray is i<<=1
@@ -72,6 +54,42 @@ void klcp()
 
 int main()
 {
+    while (~scanf("%d%d%d", &N, &M, &K))
+    {
+        int i=1;
+        for (; i<=N; ++i)
+            scanf("%d", inp+i);
+        inp[i] = MXV-5;
+        N += M+1;
+        M = N-M-1; // store string boundary for later
+        for (++i; i<=N; ++i)
+            scanf("%d", inp+i);
+        //for (int i=1; i<=N; ++i) printf("%d ", inp[i]); printf("\n");
+        klcp();
+
+        //for (int i=1; i<=N; ++i) printf("%3d", sa[i]);  printf("\n");
+        //for (int i=1; i<=N; ++i) printf("%3d", lcp[i]); printf("\n");
+
+        int tot=0;
+        for (int i=1; i<N; ++i)
+        {
+            //printf("i %d: ", i);
+            int j=i+1;
+            while (lcp[j] > K) ++j;
+            //printf("j %d..", j);
+            if (lcp[j] < K) continue;   // FIX: continue not break
+            for (; lcp[j] > K-1; ++j)
+            {
+                if (min(sa[i], sa[j]) < M && max(sa[i], sa[j]) > M)
+                {
+                    //printf("%d..", j);
+                    ++tot;
+                }
+            }
+            //printf("%d\n", j);
+        }
+        printf("%d\n", tot);
+    }
 
 	return 0;
 }
