@@ -56,6 +56,12 @@ int main()
 {
     while (~scanf("%d%d%d", &N, &M, &K))
     {
+        memset(inp, 0, sizeof inp); // FIX: clears
+        memset(sa, 0, sizeof sa);
+        memset(rk, 0, sizeof rk);
+        memset(tmp, 0, sizeof tmp);
+        memset(pos, 0, sizeof pos);
+        memset(lcp, 0, sizeof lcp);
         int i=1;
         for (; i<=N; ++i)
             scanf("%d", inp+i);
@@ -64,29 +70,31 @@ int main()
         M = N-M-1; // store string boundary for later
         for (++i; i<=N; ++i)
             scanf("%d", inp+i);
-        //for (int i=1; i<=N; ++i) printf("%d ", inp[i]); printf("\n");
-        klcp();
 
-        //for (int i=1; i<=N; ++i) printf("%3d", sa[i]);  printf("\n");
-        //for (int i=1; i<=N; ++i) printf("%3d", lcp[i]); printf("\n");
+        klcp();
+        for (int i=1; i<=N; ++i) printf("%3d", i); printf("\n");
+        for (int i=1; i<=N; ++i) inp[i] +6 > MXV ? printf("  _") : printf("%3d", inp[i]); printf("\n");
+        for (int i=1; i<=N; ++i) printf("%3d", sa[i]);  printf("\n");
+        for (int i=1; i<=N; ++i) printf("%3d", lcp[i]); printf("\n");
 
         int tot=0;
         for (int i=1; i<N; ++i)
         {
-            //printf("i %d: ", i);
+            printf("i %d: ", i);
             int j=i+1;
             while (lcp[j] > K) ++j;
-            //printf("j %d..", j);
-            if (lcp[j] < K) continue;   // FIX: continue not break
-            for (; lcp[j] > K-1; ++j)
+            printf("j %d..", j);
+            //if (lcp[j] < K) continue;   // FIX: continue not break
+            if (lcp[j] < K) { printf("\n"); continue; }
+            for (; max(sa[i], sa[j])+K <= N && lcp[j] > K-1; ++j)   // FIX: don't go too far to the right
             {
                 if (min(sa[i], sa[j]) < M && max(sa[i], sa[j]) > M)
                 {
-                    //printf("%d..", j);
+                    printf("%d..", j);
                     ++tot;
                 }
             }
-            //printf("%d\n", j);
+            printf("%d\n", j);
         }
         printf("%d\n", tot);
     }
