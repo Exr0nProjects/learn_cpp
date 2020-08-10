@@ -45,6 +45,7 @@ void klcp()
         memcpy(rk, tmp, 1+N<<2);
         mx = rk[sa[N]]; if (mx == N) break; // FIX: logic--forgot suffarr resync code
     }
+
     //for (int i = 1; i <= N; i++) {
     //    rk[i] = inp[i];
     //    sa[i] = i;
@@ -106,14 +107,14 @@ int main()
         M = N-M-1; // store string boundary for later
         for (++i; i<=N; ++i)
             scanf("%d", inp+i);
-        inp[++N] = MXV-5;
         for (int i=1; i<=N; ++i) ++inp[i];
 
         klcp();
+        //printf("N = %d M = %D K = %D\n", N, M, K);
         //for (int i=1; i<=N; ++i) printf("%3d", i); printf("\n");
         //for (int i=1; i<=N; ++i) inp[i] +6 > MXV ? printf("  _") : printf("%3d", inp[i]); printf("\n");
-        //for (int i=1; i<=N; ++i) printf("%3d", sa[i]);  printf("\n");
         //for (int i=1; i<=N; ++i) printf("%3d", rk[i]);  printf("\n");
+        //for (int i=1; i<=N; ++i) printf("%3d", sa[i]);  printf("\n");
         //for (int i=1; i<=N; ++i) printf("%3d", lcp[i]); printf("\n");
 
         int tot=0;
@@ -125,9 +126,9 @@ int main()
             //printf("j %d..", j);
             if (lcp[j] < K) continue;   // FIX: continue not break
             //if (lcp[j] < K) { printf("\n"); continue; }
-            for (; max(sa[i], sa[j])+K <= N && lcp[j] > K-1; ++j)   // FIX: don't go too far to the right
+            for (; max(sa[i], sa[j])+K-1 <= N && lcp[j] > K-1; ++j)   // FIX: don't go too far to the right
             {
-                if (min(sa[i], sa[j]) < M && max(sa[i], sa[j]) > M)
+                if (min(sa[i], sa[j]) <= M && max(sa[i], sa[j]) >= M)
                 {
                     //printf("%d..", j);
                     vis[min(sa[i], sa[j])] = 1;
