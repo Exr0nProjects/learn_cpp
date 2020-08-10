@@ -122,14 +122,14 @@ int main() {
                 ++lcp[rk[i]];
     }
 
-        for (int i = 1; i <= N; i++) {
-            printf("%d ", sa[i]);
-        }
-        printf("\n");
-        for (int i = 1; i <= N; i++) {
-            printf("%d ", rk[i]);
-        }
-        printf("\n");
+        //for (int i = 1; i <= N; i++) {
+        //    printf("%d ", sa[i]);
+        //}
+        //printf("\n");
+        //for (int i = 1; i <= N; i++) {
+        //    printf("%d ", rk[i]);
+        //}
+        //printf("\n");
         //        int tot=0;
         //for (int i=1; i<N; ++i)
         //{

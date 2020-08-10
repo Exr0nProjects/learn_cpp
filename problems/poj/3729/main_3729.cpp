@@ -20,8 +20,8 @@
 #define s second
 
 using namespace std;
-const ll MX = 500101<<1;
-const int MXV = 10010;
+const int MX = 500101<<1;
+const int MXV = 100010;
 int N, M, K, inp[MX];
 
 int sa[MX], rk[MX], tmp[MX], pos[MXV], lcp[MX];
@@ -97,6 +97,7 @@ int main()
         memset(tmp, 0, sizeof tmp);
         memset(pos, 0, sizeof pos);
         memset(lcp, 0, sizeof lcp);
+        memset(vis, 0, sizeof vis);
         int i=1;
         for (; i<=N; ++i)
             scanf("%d", inp+i);
@@ -105,32 +106,34 @@ int main()
         M = N-M-1; // store string boundary for later
         for (++i; i<=N; ++i)
             scanf("%d", inp+i);
+        inp[++N] = MXV-5;
+        for (int i=1; i<=N; ++i) ++inp[i];
 
         klcp();
-        for (int i=1; i<=N; ++i) printf("%3d", i); printf("\n");
-        for (int i=1; i<=N; ++i) inp[i] +6 > MXV ? printf("  _") : printf("%3d", inp[i]); printf("\n");
-        for (int i=1; i<=N; ++i) printf("%3d", sa[i]);  printf("\n");
-        for (int i=1; i<=N; ++i) printf("%3d", rk[i]);  printf("\n");
-        for (int i=1; i<=N; ++i) printf("%3d", lcp[i]); printf("\n");
+        //for (int i=1; i<=N; ++i) printf("%3d", i); printf("\n");
+        //for (int i=1; i<=N; ++i) inp[i] +6 > MXV ? printf("  _") : printf("%3d", inp[i]); printf("\n");
+        //for (int i=1; i<=N; ++i) printf("%3d", sa[i]);  printf("\n");
+        //for (int i=1; i<=N; ++i) printf("%3d", rk[i]);  printf("\n");
+        //for (int i=1; i<=N; ++i) printf("%3d", lcp[i]); printf("\n");
 
         int tot=0;
         for (int i=1; i<N; ++i)
         {
-            printf("i %d: ", i);
+            //printf("i %d: ", i);
             int j=i+1;
             while (lcp[j] > K) ++j;
-            printf("j %d..", j);
-            //if (lcp[j] < K) continue;   // FIX: continue not break
-            if (lcp[j] < K) { printf("\n"); continue; }
+            //printf("j %d..", j);
+            if (lcp[j] < K) continue;   // FIX: continue not break
+            //if (lcp[j] < K) { printf("\n"); continue; }
             for (; max(sa[i], sa[j])+K <= N && lcp[j] > K-1; ++j)   // FIX: don't go too far to the right
             {
                 if (min(sa[i], sa[j]) < M && max(sa[i], sa[j]) > M)
                 {
-                    printf("%d..", j);
+                    //printf("%d..", j);
                     vis[min(sa[i], sa[j])] = 1;
                 }
             }
-            printf("%d\n", j);
+            //printf("%d\n", j);
         }
         for (int i=1; i<=M; ++i) tot += vis[i];
         printf("%d\n", tot);

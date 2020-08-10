@@ -7,8 +7,8 @@ int T = 10;
 int K = 3;
 //const int MXN = 50000;
 //const int MXV = 10000;
-const int MXN = 50;
-const int MXV = 10;
+const int MXN = 50000;
+const int MXV = 100;
 
 int main()
 {
