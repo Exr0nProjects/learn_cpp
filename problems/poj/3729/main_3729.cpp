@@ -117,27 +117,7 @@ int main()
         //for (int i=1; i<=N; ++i) printf("%3d", sa[i]);  printf("\n");
         //for (int i=1; i<=N; ++i) printf("%3d", lcp[i]); printf("\n");
 
-        int tot=0;
-        for (int i=1; i<N; ++i)
-        {
-            //printf("i %d: ", i);
-            int j=i+1;
-            while (lcp[j] > K) ++j;
-            //printf("j %d..", j);
-            if (lcp[j] < K) continue;   // FIX: continue not break
-            //if (lcp[j] < K) { printf("\n"); continue; }
-            for (; max(sa[i], sa[j])+K-1 <= N && lcp[j] > K-1; ++j)   // FIX: don't go too far to the right
-            {
-                if (min(sa[i], sa[j]) <= M && max(sa[i], sa[j]) >= M)
-                {
-                    //printf("%d..", j);
-                    vis[min(sa[i], sa[j])] = 1;
-                }
-            }
-            //printf("%d\n", j);
-        }
-        for (int i=1; i<=M; ++i) tot += vis[i];
-        printf("%d\n", tot);
+        // TODO: add max between prev and next b-suf for each a-suf. counting sort. output pos[K]
     }
 
 	return 0;
