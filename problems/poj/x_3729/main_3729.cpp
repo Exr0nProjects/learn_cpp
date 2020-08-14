@@ -25,7 +25,7 @@ const int MXV = 100010;
 int N, M, K, inp[MX];
 
 int sa[MX], rk[MX], tmp[MX], pos[MXV], lcp[MX];
-int mq[MX], cnt[MX];    // how many suffixes from a have lcp of len i with b
+int vis[MX], cnt[MX];    // how many suffixes from a have lcp of len i with b
 void klcp()
 {
     int mx = MXV;
@@ -54,16 +54,6 @@ void klcp()
     }
 }
 
-void mqi(int &l, int &r, int i)
-{
-    while (l <= r && lcp[i] < mq[r]) --r;
-    mq[++r] = lcp[i];
-}
-void mqp(int &l, int &r, int i)
-{
-    if (mq[l] == v) ++l;
-}
-
 int main()
 {
     while (~scanf("%d%d%d", &N, &M, &K))
@@ -72,9 +62,7 @@ int main()
         memset(sa, 0, sizeof sa);
         memset(rk, 0, sizeof rk);
         memset(tmp, 0, sizeof tmp);
-        memset(pos, 0, sizeof pos);
         memset(lcp, 0, sizeof lcp);
-        memset(vis, 0, sizeof vis);
         memset(cnt, 0, sizeof cnt);
         int i=1;
         for (; i<=N; ++i)
@@ -88,23 +76,27 @@ int main()
 
         klcp();
         //printf("N = %d M = %D K = %D\n", N, M, K);
-        //for (int i=1; i<=N; ++i) printf("%3d", i); printf("\n");
+        //for (int i=1; i<=N; ++i) printf("%3d", i); printf("\n\n");
         //for (int i=1; i<=N; ++i) inp[i] +6 > MXV ? printf("  _") : printf("%3d", inp[i]); printf("\n");
         //for (int i=1; i<=N; ++i) printf("%3d", rk[i]);  printf("\n");
         //for (int i=1; i<=N; ++i) printf("%3d", sa[i]);  printf("\n");
-        //for (int i=1; i<=N; ++i) printf("%3d", lcp[i]); printf("\n");
-
-        // TODO: add max between prev and next b-suf for each a-suf. counting sort. output pos[K]
-        int pre=0, i=1, l=1, r=0;
-        for (; i <= N; ++i)
-        {
-            if (sa[i] > M)
-            {
-                mqi(l, r, i);
-        }
-        for (; sa[i] > M; ++i)
-            if (sa[i] > M) mqi(l, r, i);
-            else break;
+        //for (int i=1; i<=N; ++i) printf("%3d", lcp[i]); printf("\n\n");
+        //
+        // NOTE: add max between prev and next b-suf for each a-suf. counting sort. output pos[K]
+        int mn = MX-5;
+        for (int i=1; i <= N; ++i)
+            if (sa[i] > M) mn = MX-5;
+            else mn = min(mn, lcp[i]), vis[sa[i]] = mn;
+        //for (int i=1; i<=M; ++i) printf("%3d", vis[i]); printf("\n");
+        mn = MX-5;
+        for (int i=N; i; --i)
+            if (sa[i] > M) mn = lcp[i];
+            else vis[sa[i]] = max(vis[sa[i]], mn), mn = min(mn, lcp[i]);
+            //else vis[sa[i]] = mn, mn = min(mn, lcp[i]);
+        for (int i=1; i<=M; ++i) ++cnt[vis[i]];
+        //for (int i=1; i<=M; ++i) printf("%3d", vis[i]); printf("\n");
+        //for (int i=1; i<=M; ++i) printf("%3d", cnt[i]); printf("\n");
+        printf("%d\n", cnt[K]);
     }
 
 	return 0;
