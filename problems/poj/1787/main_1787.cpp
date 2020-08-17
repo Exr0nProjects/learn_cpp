@@ -10,19 +10,32 @@
 #include <cstdlib>
 #include <cstring>
 
+const int MXV = 10111;
 int p, c1, c2, c3, c4;
+int tot, dp[MXV];
+
+void kp(int c, int w)
+{
+    for (int k=1; k<c; k<<=1)
+    {
+        for (int j=tot; ~j; --j)
+            dp[j] = max(dp[j], dp[j-k*w]+k);
+        c -= k;
+    }
+    for (int j=tot; ~j; --j)
+        dp[j] = max(dp[j], dp[j-c*w]+c);
+}
 
 int main()
 {
     while (~scanf("%d%d%d%d%d", &p, &c1, &c2, &c3, &c4) && p)   // FIX: format--5 `%d`s not 4
     {
-        int tot = c1 + c2 + c3 + c4;
-        p = c1 + 5*c2 + 10*c3 + 25*c4 -p;
-        for (; c4 && p >= 25; p-=25) --c4;
-        for (; c3 && p >= 10; p-=10) --c3;
-        for (; c2 && p >= 5; p-=5) --c2;
-        for (; c1 && p >= 1; p-=1) --c1;
-        if (p) printf("Charlie cannot buy coffee.\n");
+        tot = c1 + 5*c2 + 10*c3 + 25*c4;
+        kp(c1, 1);
+        kp(c2, 5);
+        kp(c3, 10);
+        kp(c4, 25);
+        if () printf("Charlie cannot buy coffee.\n");
         else printf("Throw in %d cents, %d nickels, %d dimes, and %d quarters.\n", c1, c2, c3, c4);
     }
 
