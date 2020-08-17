@@ -12,31 +12,54 @@
 
 const int MXV = 10111;
 int p, c1, c2, c3, c4;
-int tot, dp[MXV];
+int tot, pre[5][MXV], dp[MXV];
 
-void kp(int c, int w)
+void kp(int i, int c, int w)
 {
     for (int k=1; k<c; k<<=1)
     {
-        for (int j=tot; ~j; --j)
-            dp[j] = max(dp[j], dp[j-k*w]+k);
+        for (int j=tot; j>=k*w; --j)
+        {
+            if (dp[j] < dp[j-k*w]+k)
+                dp[j] = dp[j-k*w]+k,
+                pre[i][j] = pre[i][j-k*w] + k;
+            //if (dp[j] > 0) printf("%3d", dp[j]); else printf("  -");
+        }
+        //printf("\n");
         c -= k;
     }
-    for (int j=tot; ~j; --j)
-        dp[j] = max(dp[j], dp[j-c*w]+c);
+    for (int j=tot; j>=c*w; --j)
+    {
+        if (dp[j] < dp[j-c*w]+c)
+            dp[j] = dp[j-c*w]+c,
+            pre[i][j] = pre[i][j-c*w] + c;
+        //if (dp[j] > 0) printf("%3d", dp[j]); else printf("  -");
+    }
+    //printf("\n");
 }
 
 int main()
 {
     while (~scanf("%d%d%d%d%d", &p, &c1, &c2, &c3, &c4) && p)   // FIX: format--5 `%d`s not 4
     {
+        //printf("\n");
+        memset(dp, 0x8f, sizeof dp);
+        memset(pre, 0, sizeof pre);
+        dp[0] = 0;
         tot = c1 + 5*c2 + 10*c3 + 25*c4;
-        kp(c1, 1);
-        kp(c2, 5);
-        kp(c3, 10);
-        kp(c4, 25);
-        if () printf("Charlie cannot buy coffee.\n");
-        else printf("Throw in %d cents, %d nickels, %d dimes, and %d quarters.\n", c1, c2, c3, c4);
+        //for (int i=tot; i > 0; --i) printf("%3d", i); printf("\n");
+        kp(1, c1, 1);
+        kp(2, c2, 5);
+        kp(3, c3, 10);
+        kp(4, c4, 25);
+        //printf("\n");
+        //for (int i=1; i<=4; ++i) { for (int j=tot; j>0; --j) if (pre[i][j]) printf("%3d", pre[i][j]); else printf(" "); printf("\n"); }
+        if (dp[p] <= 0) { printf("Charlie cannot buy coffee.\n"); return 0; }
+        c4 = pre[4][p]; p -= c4*25;
+        c3 = pre[3][p]; p -= c3*10;
+        c2 = pre[2][p]; p -= c2*5;
+        c1 = pre[1][p]; p -= c1*1;
+        printf("Throw in %d cents, %d nickels, %d dimes, and %d quarters.\n", c1, c2, c3, c4);
     }
 
 	return 0;
