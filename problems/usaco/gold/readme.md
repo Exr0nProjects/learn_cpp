@@ -19,6 +19,7 @@ Next up: finish 2h of 2019dec
 2015dec  | 1 | | | AC
 2015dec  | 2 | | | AC
 2015dec  | 3 | | | AC
+FOCUS BELOW
 2016jan  | 1 |
 2016jan  | 2 |
 2016jan  | 3 |
@@ -64,9 +65,9 @@ Next up: finish 2h of 2019dec
 2019open | 1 | TLE | | AC
 2019open | 2 | TLE | | AC
 2019open | 3 | nosub | | analyze
-2019dec  | 1 | paused | | compete
-2019dec  | 2 | paused | | compete
-2019dec  | 3 | paused | | compete
+2019dec  | 1 | TODO | | compete
+2019dec  | 2 | TODO | | compete
+2019dec  | 3 | TODO | | compete
 2020jan  | 1 | WA 1/11  | | analyze
 2020jan  | 2 | MLE 1/15 | | analyze
 2020jan  | 3 | TLE 3/15 | | analyze
