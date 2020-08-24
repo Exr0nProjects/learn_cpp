@@ -21,25 +21,32 @@
 
 using namespace std;
 const ll MX = 111;
-int N, s[MX], f[MX], dp[MX][MX*1000][MX*1000];
-
-int kdp(int i, int ss, int sf)
-{
-    if (i == 0 || ss < 0 || sf < 0) return 0;
-    int &ret = dp[i][ss][sf];
-    if (ret) return ret;
-    ret = max(kdp(i-1, ss, sf), kdp(i-1, ss+s[i], sf+f[i])+s[i]+f[i]);
-    return ret;
-}
+const int S = MX*1000;
+int N, best=0, s[MX], f[MX], dp[MX][S*2]; // dp[i][j] = max sum of `f` from first `i` cows with sum of `s` = `j`
 
 int main()
 {
     scanf("%d", &N);
     for (int i=1; i<=N; ++i) scanf("%d%d", &s[i], &f[i]);
 
+    memset(dp, 0x8f, sizeof dp);
 
-    for (int i=1; i<=
-    printf("%d\n", kdp(N, );
+    dp[0][S] = 0;   // FIX: base-case: dp[0][S] not dp[0][0] because everything is shifted
+    for (int i=1; i<=N; ++i)
+    {
+        for (int j=-S; j<S; ++j)
+        {
+            if (s[i] + f[i] >= 0)
+                dp[i][j+S] = dp[i-1][j-s[i]+S]+f[i];
+            else dp[i][j+S] = dp[i-1][j+S];
+            //dp[i][j+S] = max(dp[i-1][j+S], dp[i-1][j-s[i]+S]+f[i]);
+            //printf("i %d j %d dp[i][j] %d\n", i, j, dp[i][j+S]);
+            if (dp[i][j+S] >= 0 && j >= 0)
+                best = max(best, dp[i][j+S]+j);
+        }
+        printf("i = %d best = %d\n", i, best);
+    }
+    printf("%d\n", best);
 
 	return 0;
 }
