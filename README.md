@@ -41,6 +41,8 @@ Don't make names too similar, it's easy to make typos (`djs` vs `djf`)
 		- don't abuse xor
 		- don't spam comma operators
 		- add curlies
+        - don't spam nested expressions
+        - don't use assignments as expressions (esp modification assignments like +=)
 
 ## Debugging
 
@@ -60,6 +62,7 @@ Don't make names too similar, it's easy to make typos (`djs` vs `djf`)
 		- DJS
 		- Edgelist
 2. Spot checking
+    - Read all the compiler warnings
 	- Array bounds
 		- Segment tree needs 2*N nodes
 		- Edge list needs N*N nodes
@@ -71,6 +74,10 @@ Don't make names too similar, it's easy to make typos (`djs` vs `djf`)
 		- check all globals, memset pods only (not pairs!)
 	- Initialization
 		- INIT DJS
+    - Check math
+        - watch for `1+min()` over rolling mins, see [here](cses/dp/x_minmizing_coins_up/main_minmizing_coins_up.cpp)
+    - Abusing the language
+        - See abusing the language (above)
 	- See the [spreadsheet](https://docs.google.com/spreadsheets/d/108BTxTj_I0vphA3WWyaXxDSzDrEKQHLStBFrrKi03Ec/edit#gid=2108033227)
 3. Check edge cases
 	- All zeros
