@@ -1,7 +1,7 @@
 /*
  * Problem coin_combinations_i_up (cses/dp/coin_combinations_i_up)
  * Create time: Mon 24 Aug 2020 @ 17:26 (PDT)
- * Accept time: [!meta:end!]
+ * Accept time: Mon 24 Aug 2020 @ 17:51 (PDT)
  *
  */
 
@@ -39,17 +39,17 @@
 using namespace std;
 const ll MX = 1e6+10;
 
-int N, X, v[MX], dp[MX];
+int N, X, v[110], dp[MX];
 
 int main()
 {
     scanf("%d%d", &N, &X);
-    for (int i=0; i<N; ++i) scanf("%d", v+i);
+    for (int i=0; i<N; ++i) scanf("%d", &v[i]);
     dp[0] = 1;
     for (int i=1; i<=X; ++i)
         for (int j=0; j<N; ++j)
             if (v[j] <= i)
-                dp[i] += dp[i-v[j]];
+                dp[i] = (dp[i] + dp[i-v[j]]) % (int)(1e9+7);
     printf("%d\n", dp[X]);
 
 	return 0;
