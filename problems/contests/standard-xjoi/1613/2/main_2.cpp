@@ -35,6 +35,7 @@ int find(int n)
 }
 void merge(int a, int b)
 {
+    printf("merge %d and %d\n", a, b);
     if (!a || !b) return;
     a = find(a);
     b = find(b);
