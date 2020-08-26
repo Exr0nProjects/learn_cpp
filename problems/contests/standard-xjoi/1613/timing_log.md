@@ -17,6 +17,10 @@ The problems are from Gold 2020 Open.
 17:15 | wait I don't understand the question, can a cow admire two cows who have diff colors?? | analysing #2
 17:19 | their diagram just confuses me | coding #2
 17:29 | I think I still need that amortized tree thing for dist > 2 | analysing #2
+17:39 | Patch dsu merge somehow? store a cow who admires each dummy? | coding #2
+17:56 | somewhere the merge is finicky | debugging #2
+18:09 | finally works for sample | submitting #2
+18:12 | WA 1/100? | debugging #2
 
 ## Contest Reflection
 
