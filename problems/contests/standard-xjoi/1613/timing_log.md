@@ -27,26 +27,34 @@ The problems are from Gold 2020 Open.
 19:00 | maybe just write it as a brute force? I'm running out of time anyways | coding #1
 19:11 | not sure how to calculate LCM well, should I just keep thinking? | analysing #1
 19:19 | I have to add them... maybe this is the right solution | coding #1
+19:27 | Idk if I should go back to coding #2 brute force but this one can get me more cases | coding #1
+19:50 | brute force #1 still has WA 1 | debugging #1
+19:54 | i can try to code brute #2 ig | coding #2 brute force
+20:00 | what if there are loops? | end
 
 ## Contest Reflection
 
 ### Knowledge
-What knowledge did you use in this test, and which part you didn't do well knowledge-wise?
 
 #### Problem 1:
 
--
+We had talked alot about haircut, so I knew that it was solved with counting inversions. I also remember from the past that it was something about prefix sums, so I just looked for how you can figure out when a hair pair stops mattering.
+It turns out that this happens when both have been cut to the same length, aka the global len is the minimum in the pair or less. Thus, you can store how many inversion pairs have a minimum at a_i, and prefix sum over that for the answer.
+For a moment, I couldn't figure out how to gaurentee the minimum, but later I realized that when using the BIT method you always have either the minimum or maximum in the pair. Thus, you just have to sweep forwards and use range query, or in my case use one query and subtract it from the running total.
 
 #### Problem 2:
 
--
+I quickly realized that if you start at a node, then all layers in the tree going off that node must be the same color. I'm not sure why I didn't understand this when I previously saw the problem. However, I couldn't figure out how to merge all the sets right without N^2, because when you merge two sets you have to merge the sets that admire them as well.
+I had a sketchy recursive DSU which I think should work, but I don't know why it only gets one test case.
 
 #### Problem 3:
 
--
+We need to sum the LCMs of all sets S such that the sum of S is = N. I didn't realize this last time I saw the problem, but I now see that it comes from splitting cows into groups that have period of length (size of group). I think this gaurentees that you find all possible periods, but I don't have a rigerous proof for it.
+However, I couldn't figure out a math way to sum the LCMs, and I couldn't figure out how to generate the groups quickly to calculate LCM. Besides, it was WA on all but 1 test case. Not sure how to do this problem.
 
 ### Strategy
-How did you spend your time during the test, and whether there's any issue about your strategy?
+
+I started with doing #1 because I was pretty sure I could figure it out quickly. That worked out. However, afterwards I spent a lot of time on #2 before moving on to #3. Although I don't think I'm close to solving #3, if it had been easier then that might have been a misplay.
 
 ### Action item
-How would you change your homework, your mastery of knowledge, or class time etc in order to do better next time?
+Math with LCM? Practice writing recursion because I struggled with that on #3
