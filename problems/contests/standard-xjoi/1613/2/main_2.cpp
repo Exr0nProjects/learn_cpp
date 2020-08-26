@@ -24,8 +24,8 @@
 using namespace std;
 const ll MX = 3e5;
 
-int N, M, a[MX<<1], /*djs[MX<<1],*/ djf[MX<<1];
-int has[MX<<1];
+int N, M, a[MX], djf[MX];
+int has[MX];
 
 int find(int n)
 {
@@ -35,40 +35,27 @@ int find(int n)
 }
 void merge(int a, int b)
 {
-    printf("merge %6d and %6d", a, b);
-    int _a = find(a);
+    if (!a || !b) return;
+    a = find(a);
     b = find(b);
-    //if (!_a || !b || !(_a-MX) || !(b-MX) || _a == b) return;
-    if (!_a || !b || !(_a-MX) || !(b-MX)) { printf(" is redundant!\n", a, b, a, has[b]); return; }
-    if (_a == b) { printf(" is redundant!\n", a, b, a, has[b]); return; }
-    //if (djs[a] < djs[b]) swap(a, b);
-    //djs[a] += djs[b];
-    djf[_a] = b;
-    printf(" aka %6d and %6d, now merging %d* and %d*\n", _a, b, a, has[b]);
-    //if (a < MX) {
-    //    merge(a+MX, has[b]+MX);
-    //    if (b > MX) has[b] = a;
-    //    printf("      has %d = %d\n", b, a);
-    //} else
-    merge(has[a]+MX, has[b]+MX);
-    if (a < MX && b > MX) has[b] = a;
+    if (a == b) return;
+    djf[a] = b;
+    merge(has[a], has[b]);
 }
 
 int main()
 {
-    for (int i=1; i<MX<<1; ++i)
+    for (int i=1; i<MX; ++i)
         //djs[i] = 1,
         djf[i] = i;
-    for (int i=1; i<MX; ++i)
-        has[i] = i;
 
     scanf("%d%d", &N, &M);
     for (int i=1; i<=M; ++i)
     {
         int u, v;
         scanf("%d%d", &u, &v);
-        merge(v, u+MX); // merge `v` with the group that admires `u`
-        //printf("\n");
+        merge(v, has[u]);           // merge `v` with the group that admires `u`
+        if (!has[u]) has[u] = v;
     }
 
     int cnt=0;
