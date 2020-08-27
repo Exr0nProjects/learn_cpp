@@ -2,7 +2,7 @@
  * Problem 2 (contests/standard-xjoi/1613/2)
  * Create time: Tue 25 Aug 2020 @ 17:19 (PDT)
  * Accept time: [!meta:end!]
- *
+ * if cycles lengths have gcd = 1, this just breaks... need to rethink method
  */
 
 #include <cstdio>
@@ -43,13 +43,21 @@ int N, M, a[MX<<1], djf[MX<<1];
 bool self[MX<<1];
 int has[MX<<1];
 
+//int find(int n)
+//{
+//    while (djf[n] != n)
+//        //printf("%d %d\n", djf[n], n),
+//        n = djf[n];
+//    return n;
+//}
 int find(int n)
 {
-    while (djf[n] != n)
-        //printf("%d %d\n", djf[n], n),
-        n = djf[n] = djf[djf[n]];
+    //printf("        %d\n", n);
+    if (djf[n] != n) n = find(djf[n]);
     return n;
 }
+
+
 //void merge(int a, int b)
 //{
 //    //printf("merge %6d and %6d", a, b);
@@ -78,16 +86,16 @@ void merge(int a, int b)
     a = find(a);
     b = find(b);
     //printf("aka %2d%c <- %2d%c  ", a%MX, a>MX?'*':' ', b%MX, b>MX?'*':' ');
-    if (!(a%MX) || !(b%MX) || a == b) return;
-    //{ printf("\n"); return; }
+    if (!(a%MX) || !(b%MX) || a == b) { /* printf("\n"); */return; }
     if (self[a] || self[b])
     {   // FIX: special logic to do handle self loops
         self[a] = self[b] = 1;
-        djf[find(a%MX+MX)] = find(a%MX);
-        djf[find(b%MX+MX)] = find(b%MX);
+        merge(a%MX, a%MX + MX);
+        merge(b%MX, b%MX + MX);
     }
     //printf("success\n");
     djf[b] = a;
+    //printf("a %d b %d djf[b] %d\n", a, b, djf[b]);
     merge(has[a]+MX, has[b]+MX);
 }
 
@@ -111,6 +119,8 @@ int main()
         if (!has[u+MX]) has[u+MX] = v;
         //printf("\n");
     }
+
+    //for (int i=1; i<=N; ++i) printf("%3d: %3d\n%3d* %3d\n", i, find(i), i+MX, find(i+MX));
 
     int cnt=0;
     for (int i=1; i<=N; ++i)
