@@ -2,7 +2,7 @@
  * Problem 3 (contests/standard-xjoi/1614/3)
  * Create time: Thu 27 Aug 2020 @ 16:45 (PDT)
  * Accept time: [!meta:end!]
- *
+ *  Basically yoinked the usaco soln because I was close-ish to figuring it out. I guess the takeaway is to use this method of matching instead of counting sort.
  */
 
 #include <cstdio>
@@ -27,65 +27,52 @@
 using namespace std;
 const ll MX = 1e5+11;
 
-int N, pos[MX];
-list<int> h[MX];
-vector<int> q[MX];
+int N, pos[MX], siz[MX];
+list<int> h[MX], around[MX];
 
-int remain(int c, int p, int k, int lay=1)
+void ksub(int c, int p) // get subtree sizes
 {
-    for (int i=0; i<lay; ++i) printf("|   "); printf("%d from %d k %d\n", c, p, k);
-    q[c].clear();
-    //memset(pos, 0, sizeof pos);
-    for (int i=0; i<MX; ++i) pos[i] = 0;
-    printf("pos[1] = %d\n", pos[1]);
+    siz[c] = 1;
     for (int n : h[c]) if (n != p)
     {
-        int got = remain(n, c, k, lay+1) % k;
-        if (got < 0) return -1;
-        if (got > 0) {
-            if (!pos[got]) q[c].pb(got);
-            ++pos[got];
-            for (int i=1; i<=lay; ++i) printf("|   "); printf("INCREMENT %d\n", got);
-        }
+        ksub(n, c);
+        siz[c] += siz[n];
+        around[c].pb(siz[n]);
     }
+    around[c].pb(N-siz[c]); // subtree complement
+}
 
-    //for (auto p : pos) { for (int i=0; i<lay; ++i) printf("|   "); printf("%d...%d\n", p.f, p.s); }
-    printf("pos[1] = %d\n", pos[1]);
-    for (int i : q[c]) { for (int i=0; i<lay; ++i) printf("|   "); printf("%d...%d\n", i, pos[i]); }
-    printf("pos[1] = %d\n", pos[1]);
-
-    int ret=0;
-    if (~k&1 && pos[k>>1]&1) ret = k>>1;    // if even k, center must match self
-    for (int i=1; i<=lay; ++i) printf("|   "); printf("pos[%d] = %d    ret = %d\n", k>>1, pos[k>>1], ret);
-
-    for (int i : q[c])
-        if (pos[i] && pos[i] > pos[k-i]) // FIX: don't doublecount by p.s > pos[k-p.f] instead of p.s != pos[k-p.f]
+int check(int k)
+{
+    if ((N-1)%k) return 0;
+    memset(pos, 0, sizeof pos);
+    for (int i=1; i<=N; ++i)    // FIX: precompute then looop to avoid an entire counting sort per stack frame
+    {
+        int dif=0;
+        for (int a : around[i]) if (a %= k)
         {
-            printf("mismatch! val=%d (%d vs %d) ret=%d\n", i, pos[i], pos[k-i], ret);
-            if (ret) ret = -2;
-            else ret = i;
+            if (pos[k-a]) --pos[k-a], --dif;    // FIX: enourmous brain matching sweep
+            else          ++pos[a],   ++dif;
         }
-    for (int i=0; i<lay; ++i) printf("|   "); printf("=> %d\n", (ret+1)%k);
-    return ret+1;
+        if (dif) return 0;
+    }
+    return 1;
 }
 
 int main()
 {
     scanf("%d", &N);
-    --N;
-    for (int i=0; i<N; ++i)
+    //--N;
+    for (int i=1; i<N; ++i)
     {
         int u, v; scanf("%d%d", &u, &v);
         h[u].pb(v); h[v].pb(u);
     }
 
-    int i; scanf("%d", &i);
+    ksub(1, 0);
 
-    //for (int i=1; i<=N; ++i)
-        if (N % i == 0 && remain(1, 0, i) == 1)
-            printf("1");
-        else
-            printf("0");
+    for (int k=1; k<N; ++k)
+        printf("%d", check(k));
     printf("\n");
 
 	return 0;
