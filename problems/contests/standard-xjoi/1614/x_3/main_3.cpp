@@ -61,6 +61,8 @@ int check(int k)
 
 int main()
 {
+    freopen("deleg.in", "r", stdin);
+    freopen("deleg.out", "w+", stdout);
     scanf("%d", &N);
     //--N;
     for (int i=1; i<N; ++i)
