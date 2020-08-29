@@ -24,12 +24,12 @@
 #define s second
 
 using namespace std;
-const ll MX = 1e4+11;
+const ll MX = 1e5+11;
 
-//vector<int> adj[MX];
 queue<int> q;
 list<int> has[MX];
-int N, M, djf[MX], djs[MX], ans[MX];
+int N, M, cnt[MX], djf[MX], djs[MX], ans[MX];
+// cnt[i] is the number of distinct groups that admire group i
 
 int find(int n)
 {
@@ -37,17 +37,20 @@ int find(int n)
     return djf[n];
 }
 
-void merge(int a, int b)
+bool merge(int a, int b)
 {
     //printf("merge %d and %d\n", a, b);
     a = find(a), b = find(b);
-    if (djf[a] == djf[b]) return;
+    if (djf[a] == djf[b]) return false;
     if (djs[a] < djs[b]) swap(a, b);
     djs[a] += djs[b];
     djf[b] = a;
     has[a].splice(has[a].end(), has[b]);
+    cnt[a] += cnt[b];
+    cnt[b] = 0;
     //printf("    res size: %d\n", has[a].size());
-    if (has[a].size() > 1) q.push(a);
+    if (cnt[a] > 1) q.push(a);
+    return true;
 }
 
 int main()
@@ -58,25 +61,28 @@ int main()
     scanf("%d%d", &N, &M);
     for (int i=0; i<M; ++i)
     {
-        int u, v; scanf("%d%d", &u, &v);
+        int u, v;
+        scanf("%d%d", &u, &v);
         has[u].pb(v);
+        ++cnt[u];
     }
     for (int i=1; i<=N; ++i)
         if (has[i].size() > 1) q.push(i);
     while (!q.empty())
     {
         int cur = q.front(); q.pop();
-        while (has[cur].size() > 1)
+        //printf("has[%d] %d cnt %d\n", cur, has[cur].size(), cnt[cur]);
+        while (cnt[cur] > 1 && has[cur].size() > 1)
         {
             int back = has[cur].back();
             has[cur].pop_back();
-            merge(has[cur].back(), back);
+            cnt[cur] -= merge(has[cur].back(), back);
         }
     }
-    int cnt = 0;
+    int cur = 0;
     for (int i=1; i<=N; ++i)
     {
-        if (!ans[find(i)]) ans[find(i)] = ++cnt;
+        if (!ans[find(i)]) ans[find(i)] = ++cur;
         printf("%d\n", ans[find(i)]);
     }
 
