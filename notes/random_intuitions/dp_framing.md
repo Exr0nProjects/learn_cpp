@@ -153,6 +153,9 @@ cses dp dice combinations | Scalar/Linear | Constant | Tree | 1 | `dp[i]` = max 
 cses dp minmizing coins, basic coin problem | Linear | Linear (over # of coins) | Linear | 1 | `dp[i]` = minimum number of coins to get value `i` | `dp[i] = min { dp[i-k] +1 for k is a valid coin value }`
 cses dp coin combinations i | Linear | Linear (# of coin denominations) | Linear | 1 | `dp[i]` = number of ways to get to value `i` | `dp[i] = sum { dp[i-k] for k is a valid coin value }`
 cses dp coin combinations ii | Linear | Linear (# of coin denomns, see above) | Linear | 2 -> 1 rolling | `dp[i][j]` = # of ways to get to value `j` using the first `i` denominations, this is to avoid having coins like `1, 3, 1` by having each iteration of `i` allow only the coin of type `i` | `dp[i][j] = dp[i-1][j] + sum { dp[i][j-k] for k is a coin denomination }`, rolling over `i`. Looks like unbounded knapsack...
+cses dp removing digits | Linear | Logarithmic | Linear | 1 | `dp[i]` = minimum steps to clear `i` | `dp[i] = 1 + min { dp[i-k] for k is a digit in i }`
+cses dp grid paths | 2d Linear | Constant | Linear | 2 (2d cell) | `dp[i][j]` = number of ways to get to coords (`i`, `j`) | `dp[i][j] = dp[i-1][j] + dp[i][j-1] if grid[i][j] is legal, else 0`
+cses dp book shop aka 0/1 knapsack | see 0/1 Knapsack
 
 Note on DP22: We store the basket state using a global that is updated through backtracking, which normally wouldn't work (because the basket state wouldn't necessarily be the same for each occurance of the subproblem) except that the basket state is already encoded in the frame the problem: the candies that have been through the basket can be determined by which candies have been taken, which is can be determined by how many candies have been taken from each pile.
 
