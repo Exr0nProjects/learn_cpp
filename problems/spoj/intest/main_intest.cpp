@@ -49,17 +49,28 @@
 //    return n * neg;
 //}
 
+inline ll sc()
+{
+    int neg = 1;
+    register ll n = 0;
+    register char c;
+    do c = getchar();
+    while ((c < '0' || c > '9') && c != '-' && c != '+');
+    if (c == '-') neg = -1, c = getchar();
+    while (c >= '0' && c <= '9')
+        (n *= 10) += (c-'0'), c = getchar();
+    return n * neg;
+}
+
 #define sc \
 ({                                                        \
     int neg = 1;                                          \
-    register ll n = 0;                                    \
-    register char c = getchar_unlocked();                 \
-    while ((c <  '0' || c >  '9') && c != '-' && c != '+')\
-        c = getchar_unlocked();                           \
-    if (c == '-') neg = -1, c = getchar_unlocked();       \
-    while ((c <  '0' || c >  '9'))                        \
-        c = getchar_unlocked();                           \
-    while ((c >= '0' && c <= '9'))                        \
+    ll n = 0;                                             \
+    char c;                                               \
+    do c = getchar_unlocked();                            \
+    while ((c < '0' || c > '9') && c != '-' && c != '+'); \
+    if (c == '-') neg = 1, c = getchar_unlocked();        \
+    while (c >= '0' && c <= '9')                          \
         (n *= 10) += (c-'0'), c = getchar_unlocked();     \
     n * neg;                                              \
 })
@@ -71,8 +82,8 @@ const int MX = -1;
 int main()
 {
     int N=sc, K=sc, tot=0;
+    //printf("%d %d\n", N, K);
     //while (N--) { int x; sc(x); if (!(x%K)) ++tot; }
-    int a = ({int b = 2; b;});
     while (N--) if (!(sc%K)) ++tot;
     printf("%d\n", tot);
 
