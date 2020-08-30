@@ -36,6 +36,9 @@
 #define f first
 #define s second
 
+#define F(i,b) for (ll i=1; i<=(b); ++i)
+#define R(i,b) for (ll i=(b); i>=1; --i)
+
 using namespace std;
 const ll MX = -1;
 
