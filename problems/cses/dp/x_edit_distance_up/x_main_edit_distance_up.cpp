@@ -1,7 +1,7 @@
 /*
  * Problem intest (spoj/intest)
  * Create time: Sun 30 Aug 2020 @ 11:26 (PDT)
- * Accept time: [!meta:end!]
+ * Accept time: Mon 31 Aug 2020 @ 07:43 (PDT)
  *
  */
 
@@ -59,7 +59,7 @@ int main()
     B = strlen(b+1);
 
     F(i, A) dp[i][0] = i;
-    F(i, B) dp[0][B] = i;
+    F(i, B) dp[0][i] = i;   // FIX: typo--[0][i] not [0][B]
 
     F(i, A){F(j, B)
         {
