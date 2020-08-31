@@ -156,6 +156,9 @@ cses dp coin combinations ii | Linear | Linear (# of coin denomns, see above) | 
 cses dp removing digits | Linear | Logarithmic | Linear | 1 | `dp[i]` = minimum steps to clear `i` | `dp[i] = 1 + min { dp[i-k] for k is a digit in i }`
 cses dp grid paths | 2d Linear | Constant | Linear | 2 (2d cell) | `dp[i][j]` = number of ways to get to coords (`i`, `j`) | `dp[i][j] = dp[i-1][j] + dp[i][j-1] if grid[i][j] is legal, else 0`
 cses dp book shop aka 0/1 knapsack | see 0/1 Knapsack
+cses dp array description | Linear | Constant | Tree | 2 | `dp[i][j]` = number of ways to fulfill first `i` with number `i` equal to `j` | `dp[i][j] = sum { dp[i-1][j-1] (if i > 1) + dp[i-1][j+1] (if i < M) + dp[i-1][j] }`, be careful to init the base case on `i = 1` not `i = 0`
+cses dp edit distance | Linear | Constant | Linear | 2 | `dp[i][j]` = edit distance to satisfy through first `i` chars in `A` and first `j` chars in `B`, such that `i+1` and `j+1` can be matched directly next | `dp[i][j] = min { dp[i-1][j]+1, dp[i][j-1]+1, dp[i-1][j-1] + (a[i] != b[j]) }`. Base case is `dp[0][i] = dp[i][0] = i` for all `i`
+cses dp rectangle cutting | 2d | Linear | Tree | 2 | `dp[i][j]` = min steps to cut rectangle of size `i`x`j` | `dp[i][j] = min { dp[k][j] + dp[i-k][j] for 1 <= k < i, dp[i][k] + dp[i][j-k] for 1 <= k < j }`
 
 Note on DP22: We store the basket state using a global that is updated through backtracking, which normally wouldn't work (because the basket state wouldn't necessarily be the same for each occurance of the subproblem) except that the basket state is already encoded in the frame the problem: the candies that have been through the basket can be determined by which candies have been taken, which is can be determined by how many candies have been taken from each pile.
 
