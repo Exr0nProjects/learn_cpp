@@ -22,10 +22,10 @@ inline bool sc(ll &n)
 {
     n = 0;
     int neg = 1;
-    register char c = getchar_unlocked();
+    register char c;
+    do c = getchar_unlocked();
     while ((c <  '0' || c >  '9') && c != '-'
-            && c != '+' && c!=EOF)
-        c = getchar_unlocked();
+            && c != '+' && c!=EOF);
     if (c == '-') neg = -1, c = getchar_unlocked();
     //while ((c <  '0' || c >  '9') && c!=EOF)
     //    c = getchar_unlocked();

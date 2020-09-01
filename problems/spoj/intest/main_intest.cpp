@@ -62,18 +62,6 @@ inline ll sc()
     return n * neg;
 }
 
-#define sc \
-({                                                        \
-    int neg = 1;                                          \
-    ll n = 0;                                             \
-    char c;                                               \
-    do c = getchar_unlocked();                            \
-    while ((c < '0' || c > '9') && c != '-' && c != '+'); \
-    if (c == '-') neg = 1, c = getchar_unlocked();        \
-    while (c >= '0' && c <= '9')                          \
-        (n *= 10) += (c-'0'), c = getchar_unlocked();     \
-    n * neg;                                              \
-})
 //struct Edge { int f, t, n; } edges[-1]; int head[-1];
 
 using namespace std;
@@ -81,10 +69,10 @@ const int MX = -1;
 
 int main()
 {
-    int N=sc, K=sc, tot=0;
+    int N=sc(), K=sc(), tot=0;
     //printf("%d %d\n", N, K);
     //while (N--) { int x; sc(x); if (!(x%K)) ++tot; }
-    while (N--) if (!(sc%K)) ++tot;
+    while (N--) if (!(sc()%K)) ++tot;
     printf("%d\n", tot);
 
     return 0;
