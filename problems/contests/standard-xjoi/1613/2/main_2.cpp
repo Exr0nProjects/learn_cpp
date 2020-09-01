@@ -43,11 +43,13 @@ bool merge(int a, int b)
     a = find(a), b = find(b);
     if (djf[a] == djf[b]) return false;
     if (djs[a] < djs[b]) swap(a, b);
+    printf("has[%d] %d has[%d] %d\n", a, has[a].size(), b, has[b].size());
     djs[a] += djs[b];
     djf[b] = a;
     has[a].splice(has[a].end(), has[b]);
     cnt[a] += cnt[b];
     cnt[b] = 0;
+    printf("has[%d] %d (%d) has[%d] %d\n\n", a, has[a].size(), cnt[a], b, has[b].size());
     //printf("    res size: %d\n", has[a].size());
     if (cnt[a] > 1) q.push(a);
     return true;
@@ -70,6 +72,7 @@ int main()
         if (has[i].size() > 1) q.push(i);
     while (!q.empty())
     {
+        printf("q size: %d\n", q.size());
         int cur = q.front(); q.pop();
         //printf("has[%d] %d cnt %d\n", cur, has[cur].size(), cnt[cur]);
         while (cnt[cur] > 1 && has[cur].size() > 1)
@@ -83,7 +86,7 @@ int main()
     for (int i=1; i<=N; ++i)
     {
         if (!ans[find(i)]) ans[find(i)] = ++cur;
-        printf("%d\n", ans[find(i)]);
+        //printf("%d\n", ans[find(i)]);
     }
 
 	return 0;
