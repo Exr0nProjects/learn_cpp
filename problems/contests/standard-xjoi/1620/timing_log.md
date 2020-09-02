@@ -14,6 +14,12 @@
 18:10 | binary search topological sort doesn't even work, does this dp thing even make sense? | analysing #3
 18:22 | use 2d rmq for #3? | coding #3
 18:42 | wait this MLEs so hard | analysing #3
+18:50 | but wait, I can sweep line | coding #3
+19:05 | RE #3 | debugging #3
+19:24 | this is so weird why does accessing the `val` array RE | debugging #3;
+19:35 | N != P and I forgot to use the descretization WA #3 | debugging
+19:46 | fixed some bugs, now WA 86/100 | debugging
+19:49 | not sure why wa | end
 
 ## Contest Reflection
 
