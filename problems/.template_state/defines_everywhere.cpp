@@ -1,6 +1,6 @@
 /*
- * Problem intest (spoj/intest)
- * Create time: Sun 30 Aug 2020 @ 11:26 (PDT)
+ * Problem [!meta:pid!] ([!meta:srcpath!])
+ * Create time: [!meta:beg!]
  * Accept time: [!meta:end!]
  *
  */
@@ -44,11 +44,13 @@ inline bool sc(ll &n)
     return c != EOF;
 }
 #define _ilb inline bool
-_ilb sc(int &a) { ll x; bool b=sc(x); a=x; return b; }
-_ilb sc(int &a, int &b) { return sc(a)&&sc(b); }
-_ilb sc(int &a, int &b, int &c) { return sc(a, b)&&sc(c); }
-_ilb sc(ll &a, ll &b) { return sc(a)&&sc(b); }
-_ilb sc(ll &a, ll &b, int &c) { return sc(a, b)&&sc(c); }
+_ilb sc(int&a){ll x;bool b=sc(x);a=x;return b;}
+_ilb sc(int&a,int&b){return sc(a)&&sc(b);}
+_ilb sc(int&a,int&b,int&c){return sc(a,b)&&sc(c);}
+_ilb sc(int&a,int&b,int&c,int&d){return sc(a,b)&&sc(c,d);}
+_ilb sc(ll&a,ll&b){return sc(a)&&sc(b);}
+_ilb sc(ll&a,ll&b,ll&c){return sc(a,b)&&sc(c);}
+_ilb sc(ll&a,ll&b,ll&c,ll&d){return sc(a,b)&&sc(c,d);}
 
 using namespace std;
 const int MX = -1;
