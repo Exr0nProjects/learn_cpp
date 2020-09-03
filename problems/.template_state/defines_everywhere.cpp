@@ -15,6 +15,7 @@
 #define mp make_pair
 #define f first
 #define s second
+#define lb(x) ((x)&-(x))
 
 #define F(i,b) for (ll i=1; i<=(b); ++i)
 #define R(i,b) for (ll i=(b); i>=1; --i)
