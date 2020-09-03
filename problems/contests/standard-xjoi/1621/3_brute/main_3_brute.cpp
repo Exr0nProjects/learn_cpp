@@ -5,7 +5,9 @@
  *
  */
 
-#include <bits/stdc++.h>
+//#include <bits/stdc++.h>
+#include <iostream>
+#include <cstring>
 
 #define ll long long
 #define dl double
@@ -21,13 +23,6 @@
 #define R(i,b) for (ll i=(b); i>=1; --i)
 //struct Edge { int f, t, n; } edges[-1]; int head[-1];
 
-void setIO(const std::string &name = "3_brute")
-{
-    //ios_base::sync_with_stdio(0); cin.tie(0);
-    if (fopen((name + ".in").c_str(), "r") != 0)
-        freopen((name + ".in").c_str(), "r", stdin),
-        freopen((name + ".out").c_str(), "w+", stdout);
-}
 #define _gc getchar_unlocked
 inline bool sc(ll &n)
 {
@@ -67,22 +62,28 @@ int main()
         cv[i][j] = min(cv[i][j], cv[i][k] + cv[k][j]);
 
     for (int c=1; c<=M; ++c)
-    { printf("c = %d   ", c);
+    //{ printf("c = %d   ", c);
         for (int i=1; i<=N; ++i)
         {
             cvsum[i][c] = cvsum[i-1][c] + cv[S[i]-96][c];
-            if (i > K) cvsum[i][c] -= cv[S[i-K]-96][c];
-            printf(" (+%d)", cv[S[i]-96][c]);
-            if (i > K) printf(" (-%d)", cv[S[i-K]-96][c]);
-            printf("%3d", cvsum[i][c]);
+            if (i >= K) cvsum[i][c] -= cv[S[i-K+1]-96][c];
+            fprintf(stderr, "%d\n", cvsum[i][c]);
+            //printf(" (+%d)", cv[S[i]-96][c]);
+            //if (i > K) printf(" (-%d)", cv[S[i-K]-96][c]);
+            //printf("%3d", cvsum[i][c]);
         }
-    printf("\n");}
+    //printf("\n");}
+    //printf("%d \n", cvsum[3][1]);
     //F(i, M) { F(j, M) printf("%3d", cv[i][j]); printf("\n"); }
     for (int i=K; i<=N; ++i)
         for (int c=1; c<=M; ++c)
         {
-            int cost = 0;
-            for (int k=0; k<i; ++k)
+            int cost = cvsum[i][c]; // FIX: typo--cvsum not cv
+            //cost = 0;
+            //int cost = 0;
+            //printf("i %d c %d cost %d\n", i, c, cost);
+            //for (int k=0; k<i; ++k)
+            for (int k=K-1; k<i; ++k)
             {
                 cost += cv[S[i-k]-96][c];
                 //printf("+= %d (%d) cost to conv %d..%d to %c = %d\n", S[i-k]-96, cv[S[i-k]-96][c], i-k, i, c+96, cost);

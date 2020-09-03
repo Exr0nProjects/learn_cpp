@@ -68,7 +68,8 @@ int main()
     sc(N, M);
     for (int i=1; i<=M; ++i)
     {
-        sc(u[i], v[i], f[i], c[i]);
+        sc(u[i], v[i], c[i], f[i]);
+        //printf("%d %d %D %d\n", u[i], v[i], c[i], f[i]);
         //int u, v, f, c;
         //sc(u, v, c, f);
         //if (f > 1000) fprintf(stderr, "%d\n", *(int*)nullptr);
@@ -79,11 +80,12 @@ int main()
     memset(dist, 0x3f, sizeof dist);
     F(i, MX) dist[1][i] = 0;
 
-    for (int i=1; i<=N; ++i)
-        for (int e=1; e<=ecnt; ++e)
-            for (int j=0; j<=edges[e].f; ++j)
+    for (int i=1; i<=N*2/3; ++i)    // FIX: optimize--only need to do all N if data is unlucky, so this is prolly safe
+        for (int e=1; e<=M; ++e)
+            for (int j=0; j<=f[e]; ++j)
             {
-                dist[edges[e].v][j] = min(dist[edges[e].v][j], dist[edges[e].u][j]+edges[e].c);
+                dist[u[e]][j] = min(dist[u[e]][j], dist[v[e]][j]+c[e]);
+                dist[v[e]][j] = min(dist[v[e]][j], dist[u[e]][j]+c[e]);
             }
     //printf("0\n"); return 0;
 

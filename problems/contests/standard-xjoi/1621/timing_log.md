@@ -11,6 +11,15 @@
 17:51 | call that a brute force | analysing #3
 18:04 | not sure how to RMQ this | coding brute force #3
 18:27 | TLE 30... need to optimize a little | coding brute #3
+18:45 | computer is freaking out | break
+19:19 | using a different machine now | coding brute #3
+19:26 | run error?? | debugging brute #3
+19:40 | Wait, that optimization doesn't even improve the complexity over K... bruh | analysing #3
+19:42 | I should prolly code brute force #1 | coding brute froce #1
+20:09 | Run error not TLE?? | debugging brute force #1
+20:20 | are some numbers larger than 1k?? | debugging brute #1
+20:23 | 9/10 TLE brute force #1, no time for #2 | optimizing brute #1
+20:31 | AC #1 that's soo cheese, 6 min remaining | analysing #3
 
 ## Contest Reflection
 
