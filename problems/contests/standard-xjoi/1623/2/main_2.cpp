@@ -61,9 +61,10 @@ struct Pair
 {
     int first, second, v;
     Pair() {}
-    Pair(int a, int b) : first(a), second(b) {
+    void operator()(int a, int b) {
+        first = a, second = b;
         v = max( (ll)2019201913*a + (ll)2019201949*b,
-                 (ll)2019201949*b + (ll)2019201913*a) % 2019201997;
+                 (ll)2019201913*b + (ll)2019201949*a) % 2019201997;
     }
     bool operator<(const Pair &o) const
     { return v < o.v; }
@@ -91,25 +92,16 @@ bool merge(Pair p)
 int main()
 {
     sc(N, K);
-    F(i, N) F(j, i) dist[i][j] = dist[j][i] = ;
-    //F(i, N) { F(j, N) printf("%12d", dist[i][j]); printf("\n"); }
 
-    int cnt=0; F(i, N) F(j, i) srt[cnt++](i, j);
+    int cnt=0; F(i, N) F(j, i-1) srt[cnt++](i, j);
     sort(srt, srt+cnt);
 
-    //vector<pii> srt; srt.reserve((N/2+1)*N);
-    //F(i, N) F(j, i) if (i != j) srt.pb(mp(i, j));
-    //sort(srt.begin(), srt.end(), [](pii lhs, pii rhs){
-    //        return dist[lhs.f][lhs.s] < dist[rhs.f][rhs.s]; });
-
-    //for (pii p : srt) printf("%d %d\n", p.f, p.s);
     F(i, N) djf[i] = i, djs[i] = 1;
     int groups = N;
-    for (Pair & p : srt)
+    for (int i=0; i<cnt; ++i)
     {
-        groups -= merge(p);
-        //printf("%d %d : %d\n", p.f, p.s, groups);
-        if (groups < K) { printf("%d\n", dist[p.f][p.s]); return 0; }
+        groups -= merge(srt[i]);
+        if (groups < K) { printf("%d\n", srt[i].v); return 0; }
     }
 
 }
