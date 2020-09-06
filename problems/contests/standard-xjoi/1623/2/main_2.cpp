@@ -72,7 +72,8 @@ struct Pair
 
 Pair srt[MX*MX/2];
 
-int djf[MX], djs[MX];
+int djf[MX];
+int djs[MX];
 int find(int n)
 {
     if (djf[n] != n) djf[n] = find(djf[n]);
@@ -83,8 +84,8 @@ bool merge(Pair p)
     p.f = find(p.f);
     p.s = find(p.s);
     if (p.f == p.s) return 0;
-    if (djs[p.f] < djs[p.s]) swap(p.f, p.s);
-    djs[p.f] += djs[p.f];
+    //if (djs[p.f] < djs[p.s]) swap(p.f, p.s);
+    //djs[p.f] += djs[p.f];
     djf[p.s] = p.f;
     return 1;
 }
@@ -96,7 +97,8 @@ int main()
     int cnt=0; F(i, N) F(j, i-1) srt[cnt++](i, j);
     sort(srt, srt+cnt);
 
-    F(i, N) djf[i] = i, djs[i] = 1;
+    F(i, N) djf[i] = i;
+    //F(i, N) djs[i] = 1;
     int groups = N;
     for (int i=0; i<cnt; ++i)
     {
