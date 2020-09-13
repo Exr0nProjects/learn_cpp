@@ -1,7 +1,7 @@
 /*
- * Problem [!meta:pid!] ([!meta:srcpath!])
- * Create time: [!meta:beg!]
- * Accept time: [!meta:end!]
+ * Problem 1 (contests/standard-xjoi/1623/1)
+ * Create time: Sun 06 Sep 2020 @ 09:37 (PDT)
+ * Accept time: Sun 06 Sep 2020 @ 10:23 (PDT)
  *
  */
 
@@ -24,7 +24,7 @@
 #define R(i,b) for (ll i=(b); i>=1; --i)
 //struct Edge { int u, v, n; } edges[MX]; int head[MX], ecnt=0;
 
-void setIO(const std::string &name = "[!meta:pid!]")
+void setIO(const std::string &name = "1")
 {
     //ios_base::sync_with_stdio(0); cin.tie(0);
     if (fopen((name + ".in").c_str(), "r") != 0)
@@ -53,11 +53,34 @@ _ilb sc(ll&a,ll&b,ll&c){return sc(a,b)&&sc(c);}
 _ilb sc(ll&a,ll&b,ll&c,ll&d){return sc(a,b)&&sc(c,d);}
 
 using namespace std;
-const int MX = -1;
+const int MX = 411;
+
+int N, K, dp[MX][MX], best[MX][MX], g[MX];
 
 int main()
 {
-    setIO();
+    sc(N, K); ++K; // ++K because we consider the original size to be a change
+    for (int i=1; i<=N; ++i) sc(g[i]);
+
+    memset(dp, 0x3f, sizeof dp);
+    memset(best, 0x3f, sizeof best);
+    for (int i=0; i<=N; ++i) best[0][i] = 0;
+    //best[0][0] = 0;
+    F(i, N)
+    {
+        F(j, K) F(k, N) if (g[k] >= g[i])
+    {
+        //printf("i %d j %d best %d\n", i, j, best[i-1][j-1]);
+        dp[j][k] = min(dp[j][k], best[i-1][j-1]) + g[k] - g[i];
+        best[i][j] = min(best[i][j], dp[j][k]);
+    }
+    else dp[j][k] = 0x3f3f3f3f;
+        //F(i, K) { F(j, N) dp[i][j] > 1e9 ? printf("  .") : printf("%3d", dp[i][j]); printf("\n"); } printf("\n");
+    }
+
+    int mn = 1e9;
+    for (int i=1; i<=K; ++i) mn = min(mn, best[N][i]);
+    printf("%d\n", mn);
 
 }
 

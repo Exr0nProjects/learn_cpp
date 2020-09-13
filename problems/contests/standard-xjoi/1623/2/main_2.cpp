@@ -1,6 +1,6 @@
 /*
- * Problem [!meta:pid!] ([!meta:srcpath!])
- * Create time: [!meta:beg!]
+ * Problem 2 (contests/standard-xjoi/1623/2)
+ * Create time: Sun 06 Sep 2020 @ 10:36 (PDT)
  * Accept time: [!meta:end!]
  *
  */
@@ -8,7 +8,7 @@
 #include <iostream>
 #include <cstring>
 #include <algorithm>
-#include <utility>
+#include <vector>
 
 #define ll long long
 #define dl double
@@ -24,7 +24,7 @@
 #define R(i,b) for (ll i=(b); i>=1; --i)
 //struct Edge { int u, v, n; } edges[MX]; int head[MX], ecnt=0;
 
-void setIO(const std::string &name = "[!meta:pid!]")
+void setIO(const std::string &name = "2")
 {
     //ios_base::sync_with_stdio(0); cin.tie(0);
     if (fopen((name + ".in").c_str(), "r") != 0)
@@ -53,11 +53,58 @@ _ilb sc(ll&a,ll&b,ll&c){return sc(a,b)&&sc(c);}
 _ilb sc(ll&a,ll&b,ll&c,ll&d){return sc(a,b)&&sc(c,d);}
 
 using namespace std;
-const int MX = -1;
+const int MX = 7501;
+
+int N, K;
+
+struct Pair
+{
+    int first, second, v;
+    Pair() {}
+    void operator()(int a, int b) {
+        first = a, second = b;
+        v = max( (ll)2019201913*a + (ll)2019201949*b,
+                 (ll)2019201913*b + (ll)2019201949*a) % 2019201997;
+    }
+    bool operator<(const Pair &o) const
+    { return v < o.v; }
+};
+
+Pair srt[MX*MX/2];
+
+int djf[MX];
+int djs[MX];
+int find(int n)
+{
+    if (djf[n] != n) djf[n] = find(djf[n]);
+    return djf[n];
+}
+bool merge(Pair p)
+{
+    p.f = find(p.f);
+    p.s = find(p.s);
+    if (p.f == p.s) return 0;
+    //if (djs[p.f] < djs[p.s]) swap(p.f, p.s);
+    //djs[p.f] += djs[p.f];
+    djf[p.s] = p.f;
+    return 1;
+}
 
 int main()
 {
-    setIO();
+    sc(N, K);
+
+    int cnt=0; F(i, N) F(j, i-1) srt[cnt++](i, j);
+    sort(srt, srt+cnt);
+
+    F(i, N) djf[i] = i;
+    //F(i, N) djs[i] = 1;
+    int groups = N;
+    for (int i=0; i<cnt; ++i)
+    {
+        groups -= merge(srt[i]);
+        if (groups < K) { printf("%d\n", srt[i].v); return 0; }
+    }
 
 }
 
