@@ -10,6 +10,7 @@
 #include <algorithm>
 #include <utility>
 #include <map>
+#include <numeric>
 
 #define ll long long
 #define dl double
@@ -57,7 +58,7 @@ _ilb sc(ll&a,ll&b,ll&c,ll&d){return sc(a,b)&&sc(c,d);}
 using namespace std;
 const int MX = 2e5+11;
 
-ll N, a[MX], b[MX], p[MX], bit[MX], dp[MX];
+ll N, a[MX], b[MX], p[MX], bit[MX], dp[MX], srt[MX];
 map<ll, ll> dsc;
 
 ll bq(ll x)
@@ -81,14 +82,21 @@ int main()
         dsc[a[i]], dsc[b[i]];
     ll i=1; for (auto &p : dsc) p.s = i++;
 
+    iota(srt+1, srt+N+1, 1);    // FIX: missing logic--remember to sort
+    sort(srt+1, srt+N+1, [](const int l, const int r) { return b[l] < b[r]; });
+    //for (int i=1; i<=N; ++i) printf("%2d: %2d %2d %2d\n", srt[i], dsc[a[srt[i]]], dsc[b[srt[i]]], p[srt[i]]);
+    //printf("segfault\n");
+
     ll ret=0;
     for (ll i=1; i<=N; ++i)
     {
-        dp[i] = bq(dsc[a[i]]-1) + p[i];
-        bu(dsc[b[i]], dp[i]);
-        ret = max(ret, dp[i]);
+        //printf("bq(%d) = %d => += %d\n", dsc[a[srt[i]]]-1, bq(dsc[a[srt[i]]]-1), p[srt[i]]);
+        dp[srt[i]] = bq(dsc[a[srt[i]]]-1) + p[srt[i]];
+        //printf("bu(%d, %d)\n", dsc[b[srt[i]]], dp[srt[i]]);
+        bu(dsc[b[srt[i]]], dp[srt[i]]);
+        ret = max(ret, dp[srt[i]]);
     }
 
-    printf("%d\n", ret);
+    printf("%lld\n", ret);
 }
 
