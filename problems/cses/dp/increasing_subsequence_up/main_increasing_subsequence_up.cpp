@@ -75,6 +75,7 @@ int bq(int x)
 }
 void bu(int x, int v)
 {
+    //printf("bu(%d, %d)\n", x, v);
     for (; x<=N; x+=lb(x))
         bit[x] = max(bit[x], v);
 }
@@ -83,15 +84,18 @@ int main()
 {
     sc(N);
     for (int i=1; i<=N; ++i) dsc[a[i] = sc()];
-    int i=1; for (pair<const int, int> &p : dsc) p.s = i++;
+    int i=0; for (pair<const int, int> &p : dsc) p.s = i++; // FIX: bit fencepost: start at zero so N-i won't try to update bit at 0
 
-    for (int i=1; i<=N; ++i) printf("%3d", dsc[a[i]]); printf("\n");
+    //for (int i=1; i<=N; ++i) printf("%3d", dsc[a[i]]); printf("\n");
 
     int ret=0;
     for (int i=1; i<=N; ++i)
     {
-        dp[i] = bq(N-dsc[a[i]]) +1;
-        bu(N-dsc[a[i]]+1, dp[i]);
+        dp[i] = bq(dsc[a[i]]) +1;
+        //printf("bq(%d) = %d\n", dsc[a[i]]+1, dp[i]-1);
+        //printf("bu(%d, %d)\n", dsc[a[i]], dp[i]);
+        //printf("dp[%d] = %d\n", i, dp[i]);
+        bu(dsc[a[i]]+1, dp[i]);
         ret = max(ret, dp[i]);
     }
 
