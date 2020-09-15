@@ -1,7 +1,7 @@
 /*
  * Problem projects_up (cses/dp/projects_up)
  * Create time: Mon 14 Sep 2020 @ 19:04 (PDT)
- * Accept time: [!meta:end!]
+ * Accept time: Mon 14 Sep 2020 @ 19:46 (PDT)
  *
  */
 
@@ -58,7 +58,7 @@ _ilb sc(ll&a,ll&b,ll&c,ll&d){return sc(a,b)&&sc(c,d);}
 using namespace std;
 const int MX = 2e5+11;
 
-ll N, a[MX], b[MX], p[MX], bit[MX], dp[MX], srt[MX];
+ll N, a[MX], b[MX], p[MX], bit[MX<<1], dp[MX], srt[MX]; // FIX: unsync update, bounds -- forgot to update MX<<1 here
 map<ll, ll> dsc;
 
 ll bq(ll x)
@@ -70,7 +70,7 @@ ll bq(ll x)
 }
 void bu(ll x, ll v)
 {
-    for (; x<=N; x+=lb(x))
+    for (; x<=N<<1; x+=lb(x))   // FIX: bounds -- bit indices need to be 2*N because theres 2 numbers per i to descritize
         bit[x] = max(bit[x], v);
 }
 
