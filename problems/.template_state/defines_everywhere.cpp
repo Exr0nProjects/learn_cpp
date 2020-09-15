@@ -43,6 +43,7 @@ inline bool sc(ll &n)
     n *= neg;
     return c != EOF;
 }
+inline ll sc() { ll x; sc(x); return x; }
 #define _ilb inline bool
 _ilb sc(int&a){ll x;bool b=sc(x);a=x;return b;}
 _ilb sc(int&a,int&b){return sc(a)&&sc(b);}

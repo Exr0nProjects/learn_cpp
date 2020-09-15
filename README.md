@@ -312,6 +312,10 @@ segment tree					| -
 segment tree range update 		| -
 convex hull						| 
 
+### Things to think about
+- When can you replace min/max BIT with binary search?
+    - usaco gold springboards, cses/dp/x_increasing_subsequence_up
+
 ### Solving problems
 - USACO Silver 2019dec milkvisits:
 	- N * M must be too slow, so maybe we know to solve each in N or N log N, aka query must be constant or log
