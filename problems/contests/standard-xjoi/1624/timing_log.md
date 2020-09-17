@@ -10,6 +10,9 @@
 23:59 | I don't understand the question, why is it 4 not 3?? | reading #2
 00:06 | have plan for #2 even though I don't quite understand the sample input | coding #2
 00:14 | WA sample only #2, not sure what I expected | analysing #3
+00:46 | I could do it with a N^2 way of solving the 1 rect version | analysing #1
+00:55 | I guess it's time to write brute forces | writing partial #1
+01:21 | changeless #1 got WA for one test case only? sad | debugging partial #1
 
 ## Contest Reflection
 
