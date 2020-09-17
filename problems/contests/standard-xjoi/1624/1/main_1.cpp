@@ -119,6 +119,7 @@ int main()
     while (Q--)
     {
         int k, u, v; sc(k, u, v);
+        printf("lca %d %d = %d\n", u, v, lca(u, v));
         if (k == 2)
             printf("%d\n", pxor[u] ^ pxor[v] ^ a[lca(u, v)]);
     }
