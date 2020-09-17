@@ -58,7 +58,7 @@ using namespace std;
 const int MX = 2e5+11;
 
 int N, Q, a[MX];
-int stcnt=0, occ[MX], pxor[MX];
+int stcnt=0, occ[MX], pxor[MX], par[MX];
 pair<int, int> st[16][MX<<2];
 list<int> head[MX];
 
@@ -68,6 +68,7 @@ void tour(int c, int p=0, int d=1)
 {
     if (vis[c]) return; else vis[c] = 1;
     pxor[c] = pxor[p] ^ a[c];
+    par[c] = p;
     st[0][++stcnt] = mp(d, c);
     occ[c] = stcnt;
     for (auto n : head[c])
@@ -102,11 +103,19 @@ int lca(int u, int v)
     return min(st[d][u], st[d][v-(1<<d)]).s;
 }
 
+void update(int c, int v, int o=0)
+{
+    if (!o) o=c;
+    pxor[c] ^= a[o] ^ v;
+    for (int n : head[c]) if (n != par[c])
+        update(n, v, o);
+}
+
 int main()
 {
     sc(N, Q);
     for (int i=1; i<=N; ++i) sc(a[i]);
-    if (N == 5 && Q == 5 && a[3] == 4) return printf("21\n20\n4\n20\n"), 0; // get past first test case
+    //if (N == 5 && Q == 5 && a[3] == 4) return printf("21\n20\n4\n20\n"), 0; // get past first test case
     for (int i=1; i<N; ++i)
     {
         int u, v; sc(u, v);
@@ -124,6 +133,8 @@ int main()
     {
         int k, u, v; sc(k, u, v);
         //printf("lca %d %d = %d\n", u, v, lca(u, v));
+        if (k == 1)
+            update(u, v), a[u] = v;
         if (k == 2)
             printf("%d\n", pxor[u] ^ pxor[v] ^ a[lca(u, v)]);
     }

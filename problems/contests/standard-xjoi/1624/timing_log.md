@@ -15,6 +15,11 @@
 01:21 | changeless #1 got WA for one test case only? sad | debugging partial #1
 01:31 | lca troubles, now 22 pts RE | debugging partial #1
 01:35 | not sure whats wrong with partial #2 causing RE | analysing #3
+01:52 | questioning my understanding of the sample test case | analysing #3
+02:00 | I feel like I'm missing something here, can't you just paint some edges and get like 30+ k=2?? | coding partial #1 TLE
+02:06 | how did that get fewer REs?? WA/TLE/RE #1 45 pts | analysing #3
+02:15 | maybe there is no N^2 method after all, what about 2x apple picking? | analysing #3
+02:19 | 1. not sure how to update 2, 3: don't understand the sample bruh | end
 
 ## Contest Reflection
 
