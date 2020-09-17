@@ -55,15 +55,18 @@ _ilb sc(ll&a,ll&b,ll&c){return sc(a,b)&&sc(c);}
 _ilb sc(ll&a,ll&b,ll&c,ll&d){return sc(a,b)&&sc(c,d);}
 
 using namespace std;
-const int MX = 1e5+11;
+const int MX = 2e5+11;
 
 int N, Q, a[MX];
 int stcnt=0, occ[MX], pxor[MX];
 pair<int, int> st[16][MX<<2];
 list<int> head[MX];
 
+bool vis[MX];
+
 void tour(int c, int p=0, int d=1)
 {
+    if (vis[c]) return; else vis[c] = 1;
     pxor[c] = pxor[p] ^ a[c];
     st[0][++stcnt] = mp(d, c);
     occ[c] = stcnt;
@@ -77,6 +80,7 @@ void tour(int c, int p=0, int d=1)
 void kst()
 {
     tour(1);
+    ++stcnt;    // FIX: inc it again, there seems to be something dangling always
     for (int j=1; j<16; ++j)
         for (int i=1; i+(1<<j)<=stcnt; ++i)
             st[j][i] = min(st[j-1][i], st[j-1][i+(1<<j-1)]);
@@ -92,7 +96,7 @@ int lca(int u, int v)
     //if (u == v) return u;
     u = occ[u], v = occ[v];
     if (u > v) swap(u, v);
-    int d=0; while (2<<d < v-u) ++d; // FIX: fencepost -- 2<<d not 1<<d otherwise it can get too large
+    int d=0; while (2<<d <= v-u) ++d; // FIX: fencepost -- 2<<d not 1<<d otherwise it can get too large
     ++v; // FIX: range semantics fencepost -- sparse table is inc l exc r, glca is inc inc
     //printf("l %d (%d) r %d (%d) d %d\n", u, st[0][u].s, v, st[0][v].s, d);
     return min(st[d][u], st[d][v-(1<<d)]).s;
@@ -119,7 +123,7 @@ int main()
     while (Q--)
     {
         int k, u, v; sc(k, u, v);
-        printf("lca %d %d = %d\n", u, v, lca(u, v));
+        //printf("lca %d %d = %d\n", u, v, lca(u, v));
         if (k == 2)
             printf("%d\n", pxor[u] ^ pxor[v] ^ a[lca(u, v)]);
     }

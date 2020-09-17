@@ -13,6 +13,8 @@
 00:46 | I could do it with a N^2 way of solving the 1 rect version | analysing #1
 00:55 | I guess it's time to write brute forces | writing partial #1
 01:21 | changeless #1 got WA for one test case only? sad | debugging partial #1
+01:31 | lca troubles, now 22 pts RE | debugging partial #1
+01:35 | not sure whats wrong with partial #2 causing RE | analysing #3
 
 ## Contest Reflection
 
