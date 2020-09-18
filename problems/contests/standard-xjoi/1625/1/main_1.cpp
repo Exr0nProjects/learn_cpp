@@ -116,10 +116,12 @@ int main()
     {
         for (int l : lens)
             for (int j=l; j<=K; ++j)
+                printf("%d * %d\n", i, kp[i-1][j-l]),
                 (kp[i][j] += i*kp[i-1][j-l]) %= MOD;
-        for (int j=K; j; --j)
-            (kp[i][j] += kp[i][j+1]) %= MOD;
     }
+    for (int j=0; j<=K; ++j)
+        for (int i=N; ~i; --i)
+            (kp[i][j] += kp[i+1][j]) %= MOD;
 
 
     //// unbounded knapsack for each rhyme class
@@ -131,12 +133,12 @@ int main()
     //            kp[c][j] += kp[c][j-w];
     //}
 
-    for (int i=0; i<=K; ++i) printf("%3d ", i); printf("\n"); for (int j=0; j<=K; ++j) printf("%3d ", kp[j][0]); printf("\n");
+    for (int i=0; i<=K; ++i) printf("%3d ", i); printf("\n"); for (int j=0; j<=K; ++j) printf("%3d ", kp[0][j]); printf("\n");
     // calculate possible lines for each rhyme class
     for (int c=1; c<=N; ++c)
         for (int l : words[c])
             //printf("%d -> %d\n", K-l, kp[K-l]),
-            linepsb[c] += kp[K-l][0];
+            linepsb[c] += kp[0][K-l];
 
     //for (int c=1; c<=N; ++c) printf("class %d has %d posib\n", c, linepsb[c]);
 
