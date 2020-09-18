@@ -27,7 +27,7 @@
 #define R(i,b) for (ll i=(b); i>=1; --i)
 //struct Edge { int u, v, n; } edges[MX]; int head[MX], ecnt=0;
 
-void setIO(const std::string &name = "3")
+void setIO(const std::string &name = "shortcut")
 {
     //ios_base::sync_with_stdio(0); cin.tie(0);
     if (fopen((name + ".in").c_str(), "r") != 0)
@@ -57,7 +57,7 @@ _ilb sc(ll&a,ll&b,ll&c){return sc(a,b)&&sc(c);}
 _ilb sc(ll&a,ll&b,ll&c,ll&d){return sc(a,b)&&sc(c,d);}
 
 using namespace std;
-const int MX = 1e5+11;
+const int MX = 1e4+11;
 typedef pair<int, pair<int, int> > edge; // cost from to
 
 int N, M, T, num[MX];
@@ -68,6 +68,7 @@ stack<int> rwd; // calculating how many cows go thru each edge
 
 int main()
 {
+    setIO();
     sc(N, M, T);
     for (int i=1; i<=N; ++i) sc(num[i]);
     for (int i=1; i<=M; ++i)
@@ -84,9 +85,10 @@ int main()
     while (!pq.empty())
     {
         edge cur = pq.top(); pq.pop();
-        printf("cur: %3d for %d..%d\n", cur.f, cur.s.f, cur.s.s);
+        //printf("cur: %3d for %d..%d\n", cur.f, cur.s.f, cur.s.s);
         if (vis[cur.s.s]) continue;
         vis[cur.s.s] = 1;
+        dist[cur.s.s] = cur.f;  // FIX: store the dist
         from[cur.s.s] = cur.s.f;
         rwd.push(cur.s.s);
 
@@ -97,6 +99,13 @@ int main()
         }
     }
 
+    while (!rwd.empty()) num[from[rwd.top()]] += num[rwd.top()], rwd.pop();
+
     for (int i=1; i<=N; ++i) printf("from[%d] = %d\n", i, from[i]);
+    for (int i=1; i<=N; ++i) printf("num[%d]  = %d\n", i, num[i]);
+
+    int mx=0;
+    for (int i=1; i<=N; ++i) mx = max(mx, (dist[i]-T)*num[i]);
+    printf("%d\n", mx);
 }
 

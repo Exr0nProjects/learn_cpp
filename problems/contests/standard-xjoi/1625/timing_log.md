@@ -9,6 +9,8 @@
 11:39 | have plan for #2 | coding #2
 11:47 | AC #2 | analysing #3
 11:57 | calculate dist, retrace for weight, cost = weight * saved? | coding #3
+12:16 | WA 0?? is this not the max possible ? | analysing #3
+12:35 | why might it be wrong answer? | analysing #1
 
 ## Contest Reflection
 
