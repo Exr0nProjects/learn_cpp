@@ -18,6 +18,8 @@
 13:42 | It works except for the calculation of permutations | debugging #3
 14:08 | I don't know what's wrong with 3 still... | analysing #1
 14:13 | `dp[i][j]` = ways to get sum `j` with `i` elements? | coding #1
+14:33 | noticed that the above equation was overcounting by powers of two, tried adhoc fix but didn't work | debugging #1
+14:38 | not sure what I can do now | end
 
 ## Contest Reflection
 

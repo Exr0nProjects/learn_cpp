@@ -112,7 +112,7 @@ int main()
 
     //memset(kp, 0, sizeof kp);
     kp[0][0] = 1;
-    for (int i=1; i<=N; ++i)
+    for (int i=1; i<=K; ++i)
     {
         for (int l : lens)
             for (int j=l; j<=K; ++j)
@@ -122,9 +122,9 @@ int main()
     int d = 0;
     for (int j=0; j<=K; ++j)
     {
-        for (int i=N; ~i; --i)
+        for (int i=K; ~i; --i)
             (kp[i][j] += kp[i+1][j]) %= MOD;
-        kp[0][j] >>= d;
+        kp[0][j] >>= d; // FIX: maybe dividing everything by powers of two will solve things?
         if (j > 3 && !(j-(j&-j))) ++d; // increment d at powers of two
     }
 
