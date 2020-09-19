@@ -28,15 +28,15 @@ What knowledge did you use in this test, and which part you didn't do well knowl
 
 #### Problem 1:
 
--
+Not sure how to do knapsack when order matters
 
 #### Problem 2:
 
--
+originally thought it was counting inversions, but I realized you could just simulate it as insertion sort 
 
 #### Problem 3:
 
--
+not sure why it was WA, maybe I didn't understand the problem correctly?
 
 ### Strategy
 How did you spend your time during the test, and whether there's any issue about your strategy?
