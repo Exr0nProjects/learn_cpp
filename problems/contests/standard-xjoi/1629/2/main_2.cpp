@@ -85,14 +85,14 @@ int main()
     for (auto p : cnt)
     {
         while (popcnt < 5 && p.f[4-popcnt]) ++popcnt;
-        pie[popcnt] += p.s * (p.s+1) / 2;
+        pie[popcnt] += p.s * (p.s-1) / 2;
 
         //for (int i=0; i<=4; ++i) printf("%3d", p.f[i]);
         //printf("  : %d          (%d)\n", p.s, popcnt);
     }
-    //for (int i=1; i<=N; ++i) printf("%3d", pie[i]); printf("\n");
+    //for (int i=1; i<=5; ++i) printf("%3d", pie[i]); printf("\n");
 
-    ll tot = N*(N+1)/2 - pie[1] + pie[2] - pie[3] + pie[4] - pie[5];
+    ll tot = N*(N-1)/2 - pie[1] + pie[2] - pie[3] + pie[4] - pie[5];
     printf("%lld\n", tot);
 }
 

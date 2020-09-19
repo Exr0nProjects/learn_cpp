@@ -18,6 +18,8 @@
 09:38 | wait, can I just map it? | analysing #2
 09:44 | I think that just works | coding #2
 10:06 | WA 2/10 (pie math prolly borke) | debugging #2
+10:17 | why is my pie math wrong | debugging #2
+10:22 | end, 50 min rem
 
 ## Contest Reflection
 
@@ -26,15 +28,15 @@ What knowledge did you use in this test, and which part you didn't do well knowl
 
 #### Problem 1:
 
--
+Was a graph problem, realized that I could maybe do it in two stages, then realized that i could start dijkstra in the middle by artificially pushing in source nodes.
 
 #### Problem 2:
 
--
+Thought about computing compliment, realized that it was pie. Had method for computing intersections of one node, but not of more. Realized I could loop through all subsets and use a map directly.
 
 #### Problem 3:
 
--
+Just simple dp. Didn't even have to optimize because there was a limit on the size of K.
 
 ### Strategy
 How did you spend your time during the test, and whether there's any issue about your strategy?
