@@ -96,6 +96,7 @@ int main()
     //for (int i=1; i<=N; ++i) printf("%3d : %3d\n", i, dist[i]);
     // eat the hay at every location
     for (int i=1; i<=N; ++i)
+        if (hay[i])
         pq.push(mp(dist[i] - hay[i], i));
     // dijkstra again after eating hay
     while (!pq.empty())
@@ -104,11 +105,14 @@ int main()
         //printf("at %2d after %2d\n", cur.s, cur.f);
         if (!vis[cur.s]) continue;
         vis[cur.s] = 0;
-        if (cur.f < dist[cur.s]) ans[cur.s] = 1;    // TODO: should be le?
+        if (cur.f <= dist[cur.s]) ans[cur.s] = 1;   // FIX: compare--le not lt because at most not less than
 
         for (auto e : hd[cur.s])
-            if (vis[e.s] &&cur.f + e.f < dist[e.s])
+        {
+            //printf("    %d for %d\n", e.s, cur.f+e.f);
+            if (vis[e.s] &&cur.f + e.f <= dist[e.s])    // FIX: compare -- this also needs to be le not lt
                 pq.push(mp(cur.f + e.f, e.s));
+        }
     }
     for (int i=1; i<N; ++i) printf("%d\n", ans[i]);
 }
