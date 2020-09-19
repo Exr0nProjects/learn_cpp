@@ -13,6 +13,11 @@
 08:59 | WA 0 for #1 ? | debugging #1
 09:04 | how to make it less equal rather than less than? | break
 09:08 | can I just don'tnt on adding the ones w/o hay | debugging #1
+09:12 | now how do I still allow visiting through the barn? | debugging #1
+09:17 | AC #1 | analysing #2
+09:38 | wait, can I just map it? | analysing #2
+09:44 | I think that just works | coding #2
+10:06 | WA 2/10 (pie math prolly borke) | debugging #2
 
 ## Contest Reflection
 
