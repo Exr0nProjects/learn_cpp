@@ -33,21 +33,21 @@
 //    n *= neg;
 //    return c != EOF;
 //}
-//inline bool sc(dl &n)
-//{
-//    int neg = 1;
-//    register char c;
-//    do c = _gc(); while (isspace(c));
-//    if (c == '-') neg = -1, c = _gc();
-//    for (n=0; isdigit(c); c=_gc())
-//        (n *= 10) += (c-'0');
-//    n *= neg;
-//    if (c != '.') return c != EOF;
-//    dl p = 1; c = _gc();
-//    for (; isdigit(c); c=_gc())
-//        n += (p /= 10) * (c-'0');
-//    return c != EOF;
-//}
+inline bool sc(dl &n)
+{
+    int neg = 1;
+    register char c;
+    do c = _gc(); while (isspace(c));
+    if (c == '-') neg = -1, c = _gc();
+    for (n=0; isdigit(c); c=_gc())
+        (n *= 10) += (c-'0');
+    if (c != '.') return n*=neg, c != EOF;
+    dl p = 1; c = _gc();
+    for (; isdigit(c); c=_gc())
+        n += (p /= 10) * (c-'0');
+    n *= neg;
+    return c != EOF;
+}
 //inline ll sc() { ll x; sc(x); return x; }
 //#define _ilb inline bool
 //_ilb sc(int&a){ll x;bool b=sc(x);a=x;return b;}
