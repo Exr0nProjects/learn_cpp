@@ -1,67 +1,64 @@
 /*
-ID: spoytie2
-TASK: [!meta:pid!]
-LANG: C++14
-*/
-
-/*
- * Problem [!meta:pid!] [!meta:srcpath!]
+ * Problem [!meta:pid!] ([!meta:srcpath!])
  * Create time: [!meta:beg!]
  * Accept time: [!meta:end!]
- * 
+ *
  */
 
 #include <iostream>
-#include <cstdio>
-#include <tuple>
-#include <vector>
-#include <string>
 #include <cstring>
-#include <queue>
-#include <stack>
-#include <set>
-#include <map>
-#include <unordered_set>
-#include <unordered_map>
-#include <cmath>
-#include <random>
-#include <chrono>
-#include <utility>
-#include <exception>
 #include <algorithm>
-#include <functional>
+#include <utility>
 
-#define cn const int
-#define ca const auto &
 #define ll long long
-#define cl const long long
-#define UN unsigned
-#define ST static
-#define CN const
-#define DL double
-#define LD long double
-#define INF 1047483647
-#define PI 3.14159265358979323846264338
+#define dl double
+
+#define pii pair<int, int>
+#define pb push_back
+#define mp make_pair
+#define f first
+#define s second
+#define lb(x) ((x)&-(x))
+
+#define F(i,b) for (ll i=1; i<=(b); ++i)
+#define R(i,b) for (ll i=(b); i>=1; --i)
+//struct Edge { int u, v, n; } edges[MX]; int head[MX], ecnt=0;
+
+void setIO(const std::string &name = "[!meta:pid!]")
+{
+    //ios_base::sync_with_stdio(0); cin.tie(0);
+    if (fopen((name + ".in").c_str(), "r") != 0)
+        freopen((name + ".in").c_str(), "r", stdin),
+        freopen((name + ".out").c_str(), "w+", stdout);
+}
+#define _gc getchar_unlocked
+inline bool sc(ll &n)
+{
+    int neg = 1;
+    register char c;
+    do c = _gc(); while (isspace(c));
+    if (c == '-') neg = -1, c = _gc();
+    for (n=0; c >= '0' && c <= '9'; c=_gc())
+        (n *= 10) += (c-'0');
+    n *= neg;
+    return c != EOF;
+}
+inline ll sc() { ll x; sc(x); return x; }
+#define _ilb inline bool
+_ilb sc(int&a){ll x;bool b=sc(x);a=x;return b;}
+_ilb sc(int&a,int&b){return sc(a)&&sc(b);}
+_ilb sc(int&a,int&b,int&c){return sc(a,b)&&sc(c);}
+_ilb sc(int&a,int&b,int&c,int&d){return sc(a,b)&&sc(c,d);}
+_ilb sc(ll&a,ll&b){return sc(a)&&sc(b);}
+_ilb sc(ll&a,ll&b,ll&c){return sc(a,b)&&sc(c);}
+_ilb sc(ll&a,ll&b,ll&c,ll&d){return sc(a,b)&&sc(c,d);}
 
 using namespace std;
-void setIO();
-const int MX = -1; // todo
+const int MX = -1;
 
-
-
-int main ()
+int main()
 {
-  setIO();
+    setIO();
 
-  return 0;
 }
 
-void setIO()
-{
-  ios_base::sync_with_stdio(0); cin.tie(0); // fast cin/cout
-  if (fopen("[!meta:pid!].in", "r") != nullptr)
-  {
-    freopen("[!meta:pid!].in", "r", stdin);
-    freopen("[!meta:pid!].out", "w", stdout);
-  }
-}
