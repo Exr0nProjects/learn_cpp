@@ -15,6 +15,7 @@
 20:06 | WA and wayy TLE #1, got cases 1, 9 instead of 1, 2 this time | planning
 20:09 | might as well code the brute force at this ponit | coding #1
 20:13 | tilted, brute force gets 45 points | analysing #2
+20:19 | no inspiration | end
 
 ## Contest Reflection
 
@@ -23,15 +24,19 @@ What knowledge did you use in this test, and which part you didn't do well knowl
 
 #### Problem 1:
 
--
+Didn't really get the analysis I guess.
 
 #### Problem 2:
 
--
+Wait you just binary search? I thought there was a better way because you have to use all the previous ones if you do a binary search. I guess I should've seen that because checking the previous was requiring a rescan of the entire thing... I should've went back to binary search instead of assuming against it.
 
 #### Problem 3:
 
--
+This was like that other binary search problem we did, but I didn't remember the math for it. I'm not entirely sure why I can't just do my method... #todo
+
+#### Summary
+
+I feel like I should be able to do these problems, although I keep going off on the wrong track. I thought some problems were ad-hoc when they weren't and didn't try to combine algorithms well enough.
 
 ### Strategy
 How did you spend your time during the test, and whether there's any issue about your strategy?
