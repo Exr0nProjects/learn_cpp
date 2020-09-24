@@ -81,9 +81,10 @@ int bq(int x)
 int main()
 {
     sc(N); F(i, N) sc(a[i]);
-    F(i, N) dsc[a[i]];
-    int i=1; for (auto &p : dsc) p.s = i++;
-    F(i, N) a[i] = dsc[a[i]];
+    //F(i, N) dsc[a[i]];
+    //int i=1; for (auto &p : dsc) p.s = i++;
+    //F(i, N) a[i] = dsc[a[i]];
+
     //F(i, N) printf("%3d", a[i]); printf("\n");
     //int ans=0;
     //for (int i=N; i; --i)   // FIX: inversions back to front
@@ -94,48 +95,63 @@ int main()
     //}
     //printf("%d\n", ans);
 
-    for (int i=N; i; --i)
-    {
-        bu(a[i], 1);   // normally after but no colision
-        a[i] = bq(a[i]-1);
-    }
+    //for (int i=N; i; --i)
+    //{
+    //    bu(a[i], 1);   // normally after but no colision
+    //    a[i] = bq(a[i]-1);
+    //}
+    //
+    //
+    //int ans=0, cnt;
+    //do {
+    //    ++ans;
+    //    //printf("a: "); F(i, N) printf("%3d", a[i]); printf("\n");
+    //    cnt = 0;
+    //    for (int i=N; i; --i)
+    //    {
+    //        int g = lower_bound(c, c+cnt, mp(a[i], 0)) - c;
+    //        //printf("    a[%d] = %d -> %d\n", i, a[i], g);
+    //        if (g == cnt) c[cnt++] = mp(a[i], i);
+    //        else c[g] = min(c[g], mp(a[i], i));
+    //    }
+    //    for (int i=0; i<cnt; ++i)
+    //    {
+    //        //printf("a[c[%d]] = a[%d] = %d\n", i, c[i].s, a[c[i].s]);
+    //        if (a[c[i].s]) --a[c[i].s];
+    //        c[i] = mp(0, 0);
+    //    }
+    //    //printf("b: "); F(i, N) printf("%3d", a[i]); printf("\n");
+    //    for (int i=0; i<=N; ++i)
+    //    {
+    //        int g = lower_bound(c, c+cnt, mp(a[i], 0)) - c;
+    //        //printf("    a[%d] = %d -> %d\n", i, a[i], g);
+    //        if (g == cnt) c[cnt++] = mp(a[i], i);
+    //        else c[g] = min(c[g], mp(a[i], i));
+    //    }
+    //    for (int i=0; i<cnt; ++i)
+    //    {
+    //        //printf("a[c[%d]] = a[%d] = %d\n", i, c[i].s, a[c[i].s]);
+    //        if (a[c[i].s]) --a[c[i].s];
+    //        c[i] = mp(0, 0);
+    //    }
+    //    //printf("c: "); F(i, N) printf("%3d", a[i]); printf("\n");
+    //    bool flag = 0;
+    //    F(i, N) if (a[i]) flag=1;
+    //    if (!flag) break;
+    //} while (true);
+    //printf("%d\n", ans);
 
 
     int ans=0, cnt;
     do {
         ++ans;
         //printf("a: "); F(i, N) printf("%3d", a[i]); printf("\n");
-        cnt = 0;
-        for (int i=N; i; --i)
-        {
-            int g = lower_bound(c, c+cnt, mp(a[i], 0)) - c;
-            //printf("    a[%d] = %d -> %d\n", i, a[i], g);
-            if (g == cnt) c[cnt++] = mp(a[i], i);
-            else c[g] = min(c[g], mp(a[i], i));
-        }
-        for (int i=0; i<cnt; ++i)
-        {
-            //printf("a[c[%d]] = a[%d] = %d\n", i, c[i].s, a[c[i].s]);
-            if (a[c[i].s]) --a[c[i].s];
-            c[i] = mp(0, 0);
-        }
-        //printf("b: "); F(i, N) printf("%3d", a[i]); printf("\n");
-        for (int i=0; i<=N; ++i)
-        {
-            int g = lower_bound(c, c+cnt, mp(a[i], 0)) - c;
-            //printf("    a[%d] = %d -> %d\n", i, a[i], g);
-            if (g == cnt) c[cnt++] = mp(a[i], i);
-            else c[g] = min(c[g], mp(a[i], i));
-        }
-        for (int i=0; i<cnt; ++i)
-        {
-            //printf("a[c[%d]] = a[%d] = %d\n", i, c[i].s, a[c[i].s]);
-            if (a[c[i].s]) --a[c[i].s];
-            c[i] = mp(0, 0);
-        }
-        //printf("c: "); F(i, N) printf("%3d", a[i]); printf("\n");
+        for (int i=1; i<N; ++i)
+            if (a[i] > a[i+1]) swap(a[i], a[i+1]);
+        for (int i=N-1; i; --i)
+            if (a[i] > a[i+1]) swap(a[i], a[i+1]);
         bool flag = 0;
-        F(i, N) if (a[i]) flag=1;
+        F(i, N-1) if (a[i] > a[i+1]) flag=1;
         if (!flag) break;
     } while (true);
     printf("%d\n", ans);

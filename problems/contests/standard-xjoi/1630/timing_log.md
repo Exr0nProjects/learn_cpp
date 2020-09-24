@@ -11,6 +11,10 @@
 18:49 | not sure how to store dependencies, also my brain feels unfocused | analysing #1
 19:18 | might it be just numbers w/ inversions greater than 1?? | coding #1
 19:30 | didn't work, WA 12/100 | debugging #3
+19:40 | WA #3 45/100, maybe time to code the LIS for #1 | coding #1
+20:06 | WA and wayy TLE #1, got cases 1, 9 instead of 1, 2 this time | planning
+20:09 | might as well code the brute force at this ponit | coding #1
+20:13 | tilted, brute force gets 45 points | analysing #2
 
 ## Contest Reflection
 
