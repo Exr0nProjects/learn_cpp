@@ -75,7 +75,7 @@ bool kdep()
         dep[c.s] = c.f;
         if (c.s == 0) return 1;
         for (int i=0; i<=N; ++i)
-            if (dist[c.s][i])
+            if (dist[c.s][i] > 0)
                 q.push(mp(c.f+1, i));
     }
     return 0;
@@ -86,7 +86,7 @@ int aug(int c, int p, int mn, int lay=0)
     F(i, lay) printf("|   "); printf("%-2d <- %-2d for %-2d\n", c, p, mn);
     if (!mn || c == 0) return mn;
     int flo = 0;
-    for (int i=1; i<=N; ++i) if (dep[c]+1 == dep[i])
+    for (int i=0; i<=N; ++i) if (dep[c]+1 == dep[i])
         if (int g = aug(i, c, min(mn, dist[c][i]), lay+1))
         {
             flo += g;
@@ -111,6 +111,7 @@ int main()
     {
         sum += aug(U, 0, 1e9);
         F(i, N) { F(j, N) printf("%3d", dist[i][j]); printf("\n"); }
+        //break;
     }
     printf("%d\n", sum);
 }
