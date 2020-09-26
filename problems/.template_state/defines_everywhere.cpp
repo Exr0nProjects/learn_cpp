@@ -22,7 +22,7 @@
 
 #define F(i,b) for (ll i=1; i<=(b); ++i)
 #define R(i,b) for (ll i=(b); i>=1; --i)
-//struct Edge { int u, v, n; } edges[MX]; int head[MX], ecnt=0;
+//struct Edge { int u, v, n; } eg[MX]; int hd[MX], ecnt=0;
 
 void setIO(const std::string &name = "[!meta:pid!]")
 {

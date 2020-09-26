@@ -32,7 +32,7 @@ Wait you just binary search? I thought there was a better way because you have t
 
 #### Problem 3:
 
-This was like that other binary search problem we did, but I didn't remember the math for it. I'm not entirely sure why I can't just do my method... #todo
+I had thought that this was just a knapsack, because given any weight of cows the maximum value is obviously going to be best. So, you just calculate that for all weights and take the max ratio. But, because the max value may be too high, I decided to de the switch thing where you take the minimum weight for any value. However, this actually doesn't work because the minimum weight might not be the best, because it might be below the limit. That's why you have to binary search.
 
 #### Summary
 
