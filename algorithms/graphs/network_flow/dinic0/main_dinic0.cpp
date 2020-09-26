@@ -66,16 +66,16 @@ bool kdep()
 {
     memset(dep, 0, sizeof dep);
     queue<pii> q;
-    q.push(mp(1, U));   // FIX: bounds--call dep[U] 1 not 0 else it will get revisited
+    q.push(mp(0, U));
     while (!q.empty())
     {
         pii c = q.front(); q.pop();
         if (dep[c.s]) continue;
-        printf("    c = %d %d\n", c.f, c.s);
+        //printf("    c = %d %d\n", c.f, c.s);
         dep[c.s] = c.f;
-        if (c.s == 0) return 1;
-        for (int i=0; i<=N; ++i)
-            if (dist[c.s][i] > 0)
+        if (c.s == V) return 1;
+        for (int i=1; i<=N; ++i)
+            if (dist[c.s][i])
                 q.push(mp(c.f+1, i));
     }
     return 0;
@@ -83,10 +83,10 @@ bool kdep()
 
 int aug(int c, int p, int mn, int lay=0)
 {
-    F(i, lay) printf("|   "); printf("%-2d <- %-2d for %-2d\n", c, p, mn);
-    if (!mn || c == 0) return mn;
+    //F(i, lay) printf("|   "); printf("%-2d <- %-2d for %-2d\n", c, p, mn);
+    if (!mn || c == V) return dist[p][c] -= mn, mn;
     int flo = 0;
-    for (int i=0; i<=N; ++i) if (dep[c]+1 == dep[i])
+    for (int i=1; i<=N; ++i) if (dep[c]+1 == dep[i])
         if (int g = aug(i, c, min(mn, dist[c][i]), lay+1))
         {
             flo += g;
@@ -94,25 +94,25 @@ int aug(int c, int p, int mn, int lay=0)
             dist[c][p] += g;
             mn = min(mn, dist[p][c]);
         }
-    F(i, lay) printf("|   "); printf("=> %-2d\n", flo);
+    //F(i, lay) printf("|   "); printf("=> %-2d\n", flo);
     return flo;
 }
 
 int main()
 {
-    sc(N, U, V);
-    F(i, N) F(j, N) sc(dist[i][j]);
-    dist[0][U] = 1e9;   // FIX: basecase--inf to source
-    dist[V][0] = 1e9;
-
-        F(i, N) { F(j, N) printf("%3d", dist[i][j]); printf("\n"); }
-    int sum=0;
-    while (kdep())
+    while (sc(N, U, V))
     {
-        sum += aug(U, 0, 1e9);
-        F(i, N) { F(j, N) printf("%3d", dist[i][j]); printf("\n"); }
-        //break;
+        F(i, N) F(j, N) sc(dist[i][j]);
+        dist[0][U] = 1e9;   // FIX: basecase--inf to source
+
+        int sum=0;
+        while (kdep())
+        {
+            sum += aug(U, 0, 1e9);
+            //F(i, N) { F(j, N) printf("%3d", dist[i][j]); printf("\n"); }
+            //break;
+        }
+        printf("%d\n", sum);
     }
-    printf("%d\n", sum);
 }
 
