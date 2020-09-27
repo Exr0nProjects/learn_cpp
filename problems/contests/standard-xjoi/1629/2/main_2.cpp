@@ -63,9 +63,11 @@ ll N, cur[10], pie[10];
 
 int main()
 {
-    sc(N);
-    F(i, N)
+    cin >> N;
+    for (int i=1; i<=N; ++i)
     {
+    //F(i, N)
+    //{
         //F(i, 5) sc(cur[i-1]);
         for (ll i=0; i<5; ++i) sc(cur[i]);
         F(x, 31)
@@ -91,6 +93,8 @@ int main()
         //printf("  : %d          (%d)\n", p.s, popcnt);
     }
     //for (int i=1; i<=5; ++i) printf("%3d", pie[i]); printf("\n");
+
+    for (int i=1; i<=5; ++i) printf("%d ", pie[i]);
 
     ll tot = N*(N-1)/2 - pie[1] + pie[2] - pie[3] + pie[4] - pie[5];
     printf("%lld\n", tot);
