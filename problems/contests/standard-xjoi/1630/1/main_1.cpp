@@ -77,11 +77,13 @@ int bq(int x)
 
 int main()
 {
-    sc(N); F(i, N) dsc[a[i] = sc()];
-    int i=1; for (auto &n : dsc) n.s = i++;
+    sc(N); F(i, N) ++dsc[a[i] = sc()];
+    // FIX: descretize by rank, if two are duplicated then there gets a gap after them like 1, 1, 2 => 1, 1, 3
+    int i=1; for (auto &n : dsc) n.s = i, i+=n.s;
     F(i, N) a[i] = dsc[a[i]];
+    //F(i, N) printf("%3d", a[i]); printf("\n");
 
-    int ans=0;
+    int ans=1;  // FIX: ans=1 cuz its always atleast one iter
     F(i, N)
     {
         bu(a[i]);
