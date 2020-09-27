@@ -88,17 +88,14 @@ void kdep()
 
 int aug(int c, int p, int mn, int lay=1)
 {
-    //F(i, lay) printf("|   "); printf("aug %2d %2d for %2d,                  %d\n", c, p, mn, cap[0][U]);
     if (!mn || c == V) return cap[p][c] -= mn, mn;
     int flo=0;
     for (int n=1; n<=N; ++n)
     {
-            //F(i, lay) printf("|   "); printf("could go to %d -> %d for %d, %d\n", c, n, mn, cap[c][n]);
         if (dep[n] -1 == dep[c])
         {
             if (int g = aug(n, c, min(mn, cap[c][n]), lay+1))
             {
-                //F(i, lay) printf("|   "); printf("g = %d, cap = %d\n", g, cap[p][c]);
                 flo += g;
                 cap[p][c] -= g;
                 cap[c][p] += g;
@@ -106,7 +103,6 @@ int aug(int c, int p, int mn, int lay=1)
             }
         }
     }
-    //F(i, lay) printf("|   "); printf("=> %d\n", flo);
     return flo;
 }
 
@@ -119,18 +115,13 @@ int main()
             //if ((int w = sc(), w > 0)) // TODO: how to abuse language?
             int w=sc();
             if (w > 0)
-                //printf("%d %d = %d\n", i, j, w),
                 hd[i].pb(mp(w, j)), cap[i][j] = w;
         }
         sc(U, V); ++U, ++V;
         cap[0][U] = 1e9;    // FIX: logic--use U after it gets inputted smah
-        //printf("%d\n", cap[0][U]);
 
-        //F(i, N) { F(j, N) printf("%3d", cap[i][j]); printf("\n"); }
 
         kdep();
-        //F(i, N) printf("%3d", i); printf("\n");
-        //F(i, N) printf("%3d", dep[i]); printf("\n");
         printf("%d\n", aug(U, 0, 1e9));
     }
 }

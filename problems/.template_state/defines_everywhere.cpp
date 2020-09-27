@@ -13,6 +13,8 @@
 #define ll long long
 #define dl double
 
+#define gpq(T) priority_queue<T, deque<T>, greater<T> >
+#define CMA , // https://stackoverflow.com/q/13842468/10372825
 #define pii pair<int, int>
 #define pb push_back
 #define mp make_pair
