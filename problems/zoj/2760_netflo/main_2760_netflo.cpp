@@ -67,7 +67,8 @@ list<pii> hd[MX];
 void kdep()
 {
     memset(dep, 0x3f, sizeof dep);
-    priority_queue<pii, deque<pii>, greater<pii> > pq;
+    //priority_queue<pii, deque<pii>, greater<pii> > pq;
+    gpq(pii) pq;
     pq.push(mp(1, U));
     while (!pq.empty())
     {
@@ -81,21 +82,46 @@ void kdep()
     }
 }
 
-int aug(int c, int p, int mn)
+int aug(int c, int p, int mn, int lay=1)
 {
+    F(i, lay) printf("|   "); printf("aug %2d %2d for %2d\n", c, p, mn);
     if (!mn || c == V) return dist[p][c] -= mn, mn;
     int flo=0;
     for (int n=1; n<=N; ++n)
         if (dep[n] -1 == dep[c])
-            if (int g = aug(n, c, min(mn, dist[c][n])))
+        {
+            F(i, lay) printf("|   "); printf("could go to %d -> %d for %d\n", c, n, dist[c][n]);
+            if (int g = aug(n, c, min(mn, dist[c][n]), lay+1))
             {
+                F(i, lay) printf("|   "); printf("g = %d\n", g);
                 flo += g;
                 dist[p][c] -= g;
                 dist[c][p] += g;
                 mn = min(mn, dist[p][c]);
             }
+        }
+    F(i, lay) printf("|   "); printf("=> %d\n", flo);
     return flo;
 }
+
+//int aug(int c, int p, int mn)
+//{
+//    //F(i, lay) printf("|   "); printf("%-2d <- %-2d for %-2d\n", c, p, mn);
+//    if (!mn || c == V) return dist[p][c] -= mn, mn;
+//    int flo=0;
+//    for (int n=1; n<=N; ++n)
+//        if (dep[n] -1 == dep[c])
+//            if (int g = aug(n, c, min(mn, dist[c][n])))
+//            {
+//                flo += g;
+//                dist[p][c] -= g;
+//                dist[c][p] += g;
+//                mn = min(mn, dist[p][c]);
+//            }
+//    //F(i, lay) printf("|   "); printf("=> %-2d\n", flo);
+//    return flo;
+//}
+
 
 int main()
 {
@@ -106,12 +132,17 @@ int main()
         int w=sc();
         if (w > 0)
             //printf("%d %d = %d\n", i, j, w),
-            hd[i].pb(mp(w, j));
+            hd[i].pb(mp(w, j)), dist[i][j] = w;
     }
+    dist[0][U] = 1e9;
     sc(U, V);
+    ++U, ++V;
+
+    F(i, N) { F(j, N) printf("%3d", dist[i][j]); printf("\n"); }
 
     kdep();
     F(i, N) printf("%3d", i); printf("\n");
     F(i, N) printf("%3d", dep[i]); printf("\n");
+    printf("%d\n", aug(U, 0, 1e9));
 }
 
