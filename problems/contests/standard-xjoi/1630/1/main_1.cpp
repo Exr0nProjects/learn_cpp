@@ -9,7 +9,7 @@
 #include <cstring>
 #include <algorithm>
 #include <utility>
-#include <set>
+#include <map>
 
 #define ll long long
 #define dl double
@@ -59,20 +59,34 @@ _ilb sc(ll&a,ll&b,ll&c,ll&d){return sc(a,b)&&sc(c,d);}
 using namespace std;
 const int MX = 1e5+1;
 
-int N, a[MX], srt[MX];
-set<int> seen;
+int N, a[MX], bit[MX];
+map<int, int> dsc;
+
+void bu(int x)
+{
+    for (; x<=N; x+=lb(x))
+        ++bit[x];
+}
+int bq(int x)
+{
+    int ret=0;
+    for (; x; x-=lb(x))
+        ret += bit[x];
+    return ret;
+}
 
 int main()
 {
-    sc(N); F(i, N) a[i] = srt[i] = sc();
-    sort(srt+1, srt+N+1);
-    int M = 0;
+    sc(N); F(i, N) dsc[a[i] = sc()];
+    int i=1; for (auto &n : dsc) n.s = i++;
+    F(i, N) a[i] = dsc[a[i]];
+
+    int ans=0;
     F(i, N)
     {
-        seen.insert(a[i]);
-        M += !seen.count(srt[i]);
-        //printf("%d: %d %d %d\n", i, a[i], srt[i], M);
+        bu(a[i]);
+        ans = max(ans, (int)i-bq(i));
     }
-    printf("%d\n", M);
+    printf("%d\n", ans);
 }
 
