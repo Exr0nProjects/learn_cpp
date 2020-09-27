@@ -26,6 +26,12 @@ What knowledge did you use in this test, and which part you didn't do well knowl
 
 Didn't really get the analysis I guess.
 
+I don't know how I would've seen the line crossings analysis other than some kind of strike of inspiration. Maybe there's a limited number for inversion-type problems: counting inversions, counting participated inversions (haircut), flow across a line (out of sorts), pointers monotonically moving? (I remember that from somewhere).
+
+#takeaway see above for inversion type analysis methods
+
+also, the descretization gave me some trouble becasue I was trying not to copy the code. I don't know that I fully understand it but I think you have to use sort desc instead of map or ranked because we are working with indices and don't expect to have duplicates.
+
 #### Problem 2:
 
 Wait you just binary search? I thought there was a better way because you have to use all the previous ones if you do a binary search. I guess I should've seen that because checking the previous was requiring a rescan of the entire thing... I should've went back to binary search instead of assuming against it.
