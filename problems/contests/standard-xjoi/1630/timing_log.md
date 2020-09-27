@@ -34,6 +34,9 @@ Wait you just binary search? I thought there was a better way because you have t
 
 I had thought that this was just a knapsack, because given any weight of cows the maximum value is obviously going to be best. So, you just calculate that for all weights and take the max ratio. But, because the max value may be too high, I decided to de the switch thing where you take the minimum weight for any value. However, this actually doesn't work because the minimum weight might not be the best, because it might be below the limit. That's why you have to binary search.
 
+#takeaway make sure the dp subproblem structure is correct
+#takeaway knapsack state compress weights if you dont care about exact weight
+
 #### Summary
 
 I feel like I should be able to do these problems, although I keep going off on the wrong track. I thought some problems were ad-hoc when they weren't and didn't try to combine algorithms well enough.

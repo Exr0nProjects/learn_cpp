@@ -1,7 +1,7 @@
 /*
  * Problem 3 (contests/standard-xjoi/1630/3)
  * Create time: Wed 23 Sep 2020 @ 19:19 (PDT)
- * Accept time: [!meta:end!]
+ * Accept time: Sun 27 Sep 2020 @ 12:05 (PDT)
  *
  */
 
@@ -56,32 +56,59 @@ _ilb sc(ll&a,ll&b,ll&c,ll&d){return sc(a,b)&&sc(c,d);}
     b=_b;while(b)(a)%=(b),(a)^=(b)^=(a)^=(b);a;})
 
 using namespace std;
-const int MX = 2510;
-const int MXV = MX*1000;
+const int MX = 251;
+const int MXV = 1000;
 
-int N, W, v[MX], w[MX], dp[MXV];
+int N, W, v[MX], w[MX];
+ll dp[MXV];
+
+bool check(ll x)
+{
+    //printf("x = %d\n", x);
+    memset(dp, 0x8f, sizeof dp);    // FIX: init to inf because we check if it's greater than zero
+    dp[0] = 0;
+    for (int i=1; i<=N; ++i)
+    {
+        //printf("val = %d\n", 1000*v[i]-x*w[i]);
+        for (int j=W; ~j; --j)
+        {
+            int k = min(W, j+w[i]);
+            dp[k] = max(dp[k], dp[j] + 1000LL*(ll)v[i]-x*(ll)w[i]);
+        }
+        //for (int j=0; j<=W; ++j) printf("%13d", dp[j]); printf("\n");
+    }
+    return dp[W] >= 0;
+}
 
 int main()
 {
     sc(N, W);
     F(i, N) sc(w[i], v[i]);
 
-    int mxv = N*1000;
-
-    memset(dp, 0x3f, sizeof dp);
-    dp[0] = 0;  // FIX: base case
-    for (int i=1; i<=N; ++i)
-        for (int j=MXV; j>=v[i]; --j)
-            dp[j] = min(dp[j], dp[j-v[i]]+w[i]);
-
-    ll ratio = 0;
-    for (int j=0; j<MXV; ++j)
-    {
-        //printf("dp[%5d] = %d\n", j, dp[j]);
-        if (dp[j] > W)  // FIX: weight must be greater than W not value
-            ratio = max(ratio, 1000LL*(ll)j/(ll)dp[j]);
-        //if (j/dp[j] > 0) printf("%10d j %d w %d\n", 1000*j/dp[j], j, dp[j]);
+    int l=0, r=1e9;
+    F(i, 40) {
+        int mid = l+(r-l>>1);
+        if (check(mid)) l = mid;
+        else r = mid;
     }
-    printf("%lld\n", ratio);
+    printf("%d\n", l);
+
+    //int mxv = N*1000;
+    //
+    //memset(dp, 0x3f, sizeof dp);
+    //dp[0] = 0;  // FIX: base case
+    //for (int i=1; i<=N; ++i)
+    //    for (int j=MXV; j>=v[i]; --j)
+    //        dp[j] = min(dp[j], dp[j-v[i]]+w[i]);
+    //
+    //ll ratio = 0;
+    //for (int j=0; j<MXV; ++j)
+    //{
+    //    //printf("dp[%5d] = %d\n", j, dp[j]);
+    //    if (dp[j] > W)  // FIX: weight must be greater than W not value
+    //        ratio = max(ratio, 1000LL*(ll)j/(ll)dp[j]);
+    //    //if (j/dp[j] > 0) printf("%10d j %d w %d\n", 1000*j/dp[j], j, dp[j]);
+    //}
+    //printf("%lld\n", ratio);
 }
 
