@@ -11,7 +11,10 @@
 12:20 | have equation, but how to precompute? | analysing #2
 12:24 | wait, the whole thing is offline | coding #2
 12:45 | negative nums?? might be annoying to debug | coding #2
-12:59 | works for sample, xjoi down | analysing #3
+12:58 | works for sample, xjoi down | analysing #3
+13:01 | oh it's back, WA 23/100 | analysing #3
+13:10 | This contest is only 3h, i should probably | coding bruteforce #1
+13:16 | brute force written and TLE 28/100 | analysing #1
 
 ## Contest Reflection
 
