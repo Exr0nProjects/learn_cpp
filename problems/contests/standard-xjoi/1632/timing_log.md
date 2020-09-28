@@ -15,6 +15,8 @@
 13:01 | oh it's back, WA 23/100 | analysing #3
 13:10 | This contest is only 3h, i should probably | coding bruteforce #1
 13:16 | brute force written and TLE 28/100 | analysing #1
+13:44 | probably won't get anywhere with analysis | analysing brute force #3
+13:51 | don't even know how to write brute force | end
 
 ## Contest Reflection
 
@@ -23,15 +25,16 @@ What knowledge did you use in this test, and which part you didn't do well knowl
 
 #### Problem 1:
 
--
+would not have realized double pointers. I need to think about that method--what is it good for? where is it used? what are its specialties?
+#todo summarize double pointers method 
 
 #### Problem 2:
 
--
+I think it's the same method. Would have to fix the code to be sure, I probably have some dumb typo somewhere.
 
 #### Problem 3:
 
--
+It's dp. would not have thought of that, although I hadn't even really understood the problem by that point. Probably should've seen it coming though... I guess i've been trying to be creative but in the wrong direction.
 
 ### Strategy
 How did you spend your time during the test, and whether there's any issue about your strategy?
