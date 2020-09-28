@@ -26,7 +26,7 @@
 #define R(i,b) for (ll i=(b); i>=1; --i)
 //struct Edge { int u, v, n; } edges[MX]; int head[MX], ecnt=0;
 
-void setIO(const std::string &name = "2")
+void setIO(const std::string &name = "cowpatibility")
 {
     //ios_base::sync_with_stdio(0); cin.tie(0);
     if (fopen((name + ".in").c_str(), "r") != 0)
@@ -58,11 +58,12 @@ _ilb sc(ll&a,ll&b,ll&c,ll&d){return sc(a,b)&&sc(c,d);}
 using namespace std;
 const int MX = -1;
 
-map<array<ll, 5>, ll> cnt;
+map<array<ll, 5>, ll> cnt[6];
 ll N, cur[10], pie[10];
 
 int main()
 {
+    setIO();
     cin >> N;
     for (int i=1; i<=N; ++i)
     {
@@ -70,31 +71,37 @@ int main()
     //{
         //F(i, 5) sc(cur[i-1]);
         for (ll i=0; i<5; ++i) sc(cur[i]);
-        F(x, 31)
+        //F(x, 31)
+        for (int x=1; x<32; ++x)
         {
-            array<ll, 5> key{};
+            int popcnt = 0;
+            array<ll, 5> key();
             for (ll i=4, p=4; ~i; --i)
             {
                 //printf("    i %d x>>i %d\n", i, (x>>i)&1);
-                if ((x>>i)&1) key[p--] = cur[i];
+                if ((x>>i)&1) ++popcnt, key[p--] = cur[i];
             }
+            //printf("popcnt = %d\n", popcnt);
             //printf("%2d:", x); for (int i=0; i<=4; ++i) printf("%3d", key[i]); printf("\n");
-            ++cnt[key];
+            ++cnt[popcnt][key];
         }
     }
 
-    ll popcnt = 0;
-    for (auto p : cnt)
-    {
-        while (popcnt < 5 && p.f[4-popcnt]) ++popcnt;
-        pie[popcnt] += p.s * (p.s-1) / 2;
-
-        //for (int i=0; i<=4; ++i) printf("%3d", p.f[i]);
-        //printf("  : %d          (%d)\n", p.s, popcnt);
-    }
+    //ll popcnt = 0;
+    //for (auto p : cnt)
+    //{
+    //    while (popcnt < 5 && p.f[4-popcnt]) ++popcnt;
+    //    pie[popcnt] += p.s * (p.s-1) / 2;
+    //
+    //    //for (int i=0; i<=4; ++i) printf("%3d", p.f[i]);
+    //    //printf("  : %d          (%d)\n", p.s, popcnt);
+    //}
+    for (int i=1; i<=5; ++i)
+        for (auto &p : cnt[i])
+            pie[i] += p.s * (p.s-1)/2LL;
     //for (int i=1; i<=5; ++i) printf("%3d", pie[i]); printf("\n");
 
-    for (int i=1; i<=5; ++i) printf("%d ", pie[i]);
+    //for (int i=1; i<=5; ++i) printf("%d ", pie[i]);
 
     ll tot = N*(N-1)/2 - pie[1] + pie[2] - pie[3] + pie[4] - pie[5];
     printf("%lld\n", tot);
