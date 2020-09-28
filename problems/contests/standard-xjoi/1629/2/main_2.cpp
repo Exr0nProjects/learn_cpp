@@ -10,7 +10,7 @@
 #include <algorithm>
 #include <utility>
 #include <map>
-#include <array>
+#include <vector>
 
 #define ll long long
 #define dl double
@@ -58,7 +58,7 @@ _ilb sc(ll&a,ll&b,ll&c,ll&d){return sc(a,b)&&sc(c,d);}
 using namespace std;
 const int MX = -1;
 
-map<array<ll, 5>, ll> cnt[6];
+map<vector<ll>, ll> cnt[6];
 ll N, cur[10], pie[10];
 
 int main()
@@ -75,12 +75,14 @@ int main()
         for (int x=1; x<32; ++x)
         {
             int popcnt = 0;
-            array<ll, 5> key();
-            for (ll i=4, p=4; ~i; --i)
-            {
+            //array<ll, 5> key();
+            vector<ll> key;
+            for (int i=4; ~i; --i)
+            //for (ll i=4, p=4; ~i; --i)
+            //{
                 //printf("    i %d x>>i %d\n", i, (x>>i)&1);
-                if ((x>>i)&1) ++popcnt, key[p--] = cur[i];
-            }
+                if ((x>>i)&1) ++popcnt, key.pb(cur[i]);
+            //}
             //printf("popcnt = %d\n", popcnt);
             //printf("%2d:", x); for (int i=0; i<=4; ++i) printf("%3d", key[i]); printf("\n");
             ++cnt[popcnt][key];
@@ -97,7 +99,7 @@ int main()
     //    //printf("  : %d          (%d)\n", p.s, popcnt);
     //}
     for (int i=1; i<=5; ++i)
-        for (auto &p : cnt[i])
+        for (pair<const vector<ll>, ll> &p : cnt[i])
             pie[i] += p.s * (p.s-1)/2LL;
     //for (int i=1; i<=5; ++i) printf("%3d", pie[i]); printf("\n");
 
