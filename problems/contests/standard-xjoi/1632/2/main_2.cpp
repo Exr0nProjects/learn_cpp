@@ -63,6 +63,7 @@ const int MX = 1e5+11;
 
 int N, par[MX], dep[MX], cnt[MX];
 vector<int> hd[MX];
+ll ans[MX];
 
 int scname()
 {
@@ -75,23 +76,29 @@ int scname()
 
 int kcnt(int c, int p)
 {
+    ll totw = 0;
     if (!hd[c].size()) cnt[c] = 1;
-    for (auto n : hd[c])
-        cnt[c] += kcnt(n, c);
-    return cnt[c];
+    else for (auto n : hd[c])
+    {
+        totw += kcnt(n, c) + cnt[n]*dep[n];
+        cnt[c] += cnt[n];
+    }
+    //printf("cnt[%d] = %d\n", c, cnt[c]);
+    return totw;
 }
 
-void dfs(int c, int p, int onpath=0, int backtrack=0, int lay=0)
+int dfs(int c, int p, int onpath=0, int backtrack=0, int lay=0)
 {
-    dep[c] += dep[p];
+    //dep[c] += dep[p];
+    ans[c] = 3*backtrack - onpath;
     //(backtrack *= 2) += (cnt[p] - cnt[c]);
 
-    F(i, lay) printf("|   "); printf("%2d -> %2d at dep %2d", p, c, dep[c]);
-    F(i, 5-lay) printf("    "); printf("onpath %2d backtrack %2d\n", onpath, backtrack);
+    //F(i, lay) printf("|   "); printf("%2d -> %2d at dep %2d", p, c, dep[c]);
+    //F(i, 5-lay) printf("    "); printf("onpath %2d backtrack %2d\n", onpath, backtrack);
 
     for (auto n : hd[c])
-        dfs(n, c, onpath+(dep[c]-dep[p])*cnt[c],
-                backtrack*2 + cnt[p]-cnt[c], lay+1);
+        dfs(n, c, onpath+(dep[n])*cnt[n],
+                backtrack*2 + cnt[c]-cnt[n], lay+1);
 }
 
 int main()
@@ -101,7 +108,7 @@ int main()
     for (int i=1; i<=N; ++i)
     {
         dep[i] = scname();
-        printf("name of len %d\n", dep[i]);
+        //printf("name of len %d\n", dep[i]);
         if (int j=sc())
         {
             ++dep[i];
@@ -111,8 +118,11 @@ int main()
     }
     dep[1] = 0;
 
-    kcnt(1, 0);
+    ll totw = kcnt(1, 0);
     dfs(1, 0);
-
+    ll mn = 1e9;
+    F(i, N) mn = min(mn, ans[i]);
+    printf("%lld\n", totw + mn);
+    //for (int i=1; i<=N; ++i) printf("%3d %lld\n", i, ans[i]);
 }
 
