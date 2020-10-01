@@ -1,0 +1,138 @@
+{
+  "theme": "obsidian",
+  "pluginEnabledStatus": {
+    "file-explorer": true,
+    "global-search": true,
+    "switcher": true,
+    "graph": true,
+    "backlink": true,
+    "command-palette": true,
+    "markdown-importer": true,
+    "word-count": true,
+    "custom-css": true,
+    "templates": true,
+    "slides": true,
+    "open-with-default-app": true,
+    "tag-pane": true
+  },
+  "spellcheck": true,
+  "autoPairBrackets": false,
+  "foldHeading": true,
+  "foldIndent": true,
+  "showLineNumber": true,
+  "vimMode": true,
+  "newFileLocation": "current",
+  "newLinkFormat": "relative",
+  "hotkeys": {
+    "editor:follow-link": [
+      {
+        "modifiers": [
+          "Mod"
+        ],
+        "key": "Enter"
+      }
+    ],
+    "editor:focus-top": [
+      {
+        "modifiers": [
+          "Ctrl"
+        ],
+        "key": "k"
+      }
+    ],
+    "editor:focus-bottom": [
+      {
+        "modifiers": [
+          "Ctrl"
+        ],
+        "key": "j"
+      }
+    ],
+    "editor:focus-left": [
+      {
+        "modifiers": [
+          "Ctrl"
+        ],
+        "key": "h"
+      }
+    ],
+    "editor:focus-right": [
+      {
+        "modifiers": [
+          "Ctrl"
+        ],
+        "key": "l"
+      }
+    ],
+    "workspace:toggle-pin": [
+      {
+        "modifiers": [
+          "Mod",
+          "Shift"
+        ],
+        "key": "p"
+      }
+    ],
+    "workspace:split-vertical": [
+      {
+        "modifiers": [
+          "Ctrl",
+          "Mod"
+        ],
+        "key": "\\"
+      }
+    ],
+    "workspace:split-horizontal": [
+      {
+        "modifiers": [
+          "Ctrl",
+          "Mod"
+        ],
+        "key": "-"
+      }
+    ],
+    "workspace:edit-file-title": [
+      {
+        "modifiers": [
+          "Ctrl",
+          "Mod"
+        ],
+        "key": "r"
+      }
+    ],
+    "workspace:copy-path": [
+      {
+        "modifiers": [
+          "Mod"
+        ],
+        "key": "t"
+      }
+    ],
+    "app:go-back": [
+      {
+        "modifiers": [
+          "Mod"
+        ],
+        "key": "["
+      }
+    ],
+    "app:go-forward": [
+      {
+        "modifiers": [
+          "Mod"
+        ],
+        "key": "]"
+      }
+    ],
+    "insert-template": [
+      {
+        "modifiers": [
+          "Ctrl"
+        ],
+        "key": "t"
+      }
+    ]
+  },
+  "promptDelete": false,
+  "alwaysUpdateLinks": true
+}

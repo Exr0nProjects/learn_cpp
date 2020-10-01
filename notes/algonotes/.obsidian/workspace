@@ -1,0 +1,99 @@
+{
+  "main": {
+    "id": "0f9596d3f6864d0e",
+    "type": "split",
+    "children": [
+      {
+        "id": "f1b7a91d39e28eb6",
+        "type": "leaf",
+        "active": true,
+        "state": {
+          "type": "markdown",
+          "state": {
+            "file": "refEulersTheorem.md",
+            "mode": "source"
+          }
+        }
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "b9b1a2a7d10614cd",
+    "type": "split",
+    "children": [
+      {
+        "id": "d6bcf256dcef195b",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "ef92a8874bbde69e",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {}
+            }
+          },
+          {
+            "id": "4d14a45e10f927ad",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "tag:#todo"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "977524f4102e952a",
+    "type": "split",
+    "children": [
+      {
+        "id": "2dec959a2e3f616d",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "85ca1904f37a62af",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "refEulersTheorem.md"
+              }
+            }
+          },
+          {
+            "id": "d74490d3bc5a502f",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {}
+            }
+          }
+        ],
+        "currentTab": 1
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "lastOpenFiles": [
+    "EulersTheorem.md",
+    "refEulersTheorem.md",
+    "AlgosMasterIndex.md",
+    "refEulerTotientFunc.md",
+    "srcChineseRemainderThm.png",
+    "refChineseRemainderTheorem.md",
+    "Pasted image 20200930201009.png",
+    "Pasted image 20200930200312.png",
+    "refModularMultInverse.md",
+    "refEuclidianAlogirthm.md"
+  ]
+}
