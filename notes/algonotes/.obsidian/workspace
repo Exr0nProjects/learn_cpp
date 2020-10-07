@@ -4,15 +4,12 @@
     "type": "split",
     "children": [
       {
-        "id": "f1b7a91d39e28eb6",
+        "id": "fbf1976839274e67",
         "type": "leaf",
         "active": true,
         "state": {
-          "type": "markdown",
-          "state": {
-            "file": "refEulersTheorem.md",
-            "mode": "source"
-          }
+          "type": "empty",
+          "state": {}
         }
       }
     ],
@@ -63,9 +60,7 @@
             "type": "leaf",
             "state": {
               "type": "backlink",
-              "state": {
-                "file": "refEulersTheorem.md"
-              }
+              "state": {}
             }
           },
           {
@@ -85,15 +80,15 @@
     "collapsed": true
   },
   "lastOpenFiles": [
-    "EulersTheorem.md",
-    "refEulersTheorem.md",
+    "unrelated/KBe20phys250retQuizElectrostaticsCircuitsWriteup.md",
     "AlgosMasterIndex.md",
+    "unrelated/Untitled.md",
+    "refNetworkFlow.md",
+    "refEulersTheorem.md",
+    "EulersTheorem.md",
     "refEulerTotientFunc.md",
     "srcChineseRemainderThm.png",
     "refChineseRemainderTheorem.md",
-    "Pasted image 20200930201009.png",
-    "Pasted image 20200930200312.png",
-    "refModularMultInverse.md",
-    "refEuclidianAlogirthm.md"
+    "Pasted image 20200930201009.png"
   ]
 }

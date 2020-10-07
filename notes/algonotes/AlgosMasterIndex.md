@@ -32,4 +32,8 @@ source:  #index
 - [[refEulerTotientFunc]]
 - [[refEulersTheorem]]
 
+# Graphs
+## Network Flow
+- [[refNetworkFlow]]
+
 ---

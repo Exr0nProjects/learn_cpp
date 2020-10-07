@@ -36,14 +36,14 @@ int count()
 
 int main()
 {
-    //while (1)
-    //{
-    //    scanf("%s", pat+1);
-    //    P = strlen(pat+1)+1;
-    //    set_nxt();
-    //    for (int i=1; i<P; ++i) printf("%3d", nxt[i]); printf("\n");
-    //}
-    //return 0;
+    while (1)
+    {
+        scanf("%s", pat+1);
+        P = strlen(pat+1)+1;
+        set_nxt();
+        for (int i=1; i<P; ++i) printf("%3d", nxt[i]); printf("\n");
+    }
+    return 0;
 
     int cs; scanf("%d", &cs);
     while (cs--)

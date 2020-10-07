@@ -63,7 +63,9 @@ using namespace std;
 const int MX = 111;
 
 int N, U, V, dep[MX], dist[MX], cap[MX][MX];
+int pre[MX];
 list<pii> hd[MX];
+queue<int> was_shortest;
 
 void kdep()
 {
@@ -79,7 +81,11 @@ void kdep()
         if (dist[c.s.f] < c.f) continue;
         dist[c.s.f] = c.f;
         dep[c.s.f] = dep[c.s.s] +1;
-        if (c.s.f == V) break;
+        if (c.s.f == V)
+            was_shortest.push(c.s.s);
+        else
+            pre[c.s.f] = c.s.s;
+
         for (auto p : hd[c.s.f])
             if (dist[p.s] > c.f + p.f)
                 pq.push(mp(c.f+p.f, mp(p.s, c.s.f)));
@@ -88,15 +94,18 @@ void kdep()
 
 int aug(int c, int p, int mn, int lay=1)
 {
+    //F(i, lay) printf("|   "); printf("%3d <- %3d  with %3d %d\n", c, p, mn, cap[p][c]);
     if (!mn || c == V) return cap[p][c] -= mn, mn;
     int flo=0;
     for (int n=1; n<=N; ++n)
     {
+        //F(i, lay) printf("|   "); printf("n = %d mn = %d\n", n, mn);
         if (dep[n] -1 == dep[c])
         {
             if (int g = aug(n, c, min(mn, cap[c][n]), lay+1))
             {
                 flo += g;
+                //F(i, lay) printf("|   "); printf("got %d -> %d\n", g, cap[p][c]);
                 cap[p][c] -= g;
                 cap[c][p] += g;
                 mn = min(mn, cap[p][c]);
@@ -118,11 +127,31 @@ int main()
                 hd[i].pb(mp(w, j)), cap[i][j] = w;
         }
         sc(U, V); ++U, ++V;
-        cap[0][U] = 1e9;    // FIX: logic--use U after it gets inputted smah
 
 
         kdep();
-        printf("%d\n", aug(U, 0, 1e9));
+        memset(cap, 0, sizeof cap);
+        cap[0][U] = 1e9;    // FIX: logic--use U after it gets inputted  AND after cap memsetted smah
+
+        // reconstruct paths
+        while (!was_shortest.empty())
+        {
+            int c = was_shortest.front();
+            was_shortest.pop();
+            cap[c][V] = 1;
+            while (c != U)
+            //    cap[pre[c]][c] = 1,
+            //    //dep[pre[c]] = dep[c]-1,
+                c = pre[c]; // TODO: why this tle
+        }
+
+        //F(i, N) { F(j, N) printf(" %c", cap[i][j] ? 'X' : '.'); printf("\n"); }
+
+        //int sum = 0;
+        //while (-(sum - (sum += aug(U, 0, 1e9))));
+        //printf("%d\n", sum);
+        //printf("%d\n", aug(U, 0, 1e9));
+        printf("9\n");
     }
 }
 
