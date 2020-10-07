@@ -140,9 +140,12 @@ int main()
             was_shortest.pop();
             cap[c][V] = 1;
             while (c != U)
-            //    cap[pre[c]][c] = 1,
+            {
+                if (cap[pre[c]][c]) break;  // TODO: why this inf loop
+                cap[pre[c]][c] = 1,
             //    //dep[pre[c]] = dep[c]-1,
-                c = pre[c]; // TODO: why this tle
+                c = pre[c];
+            }
         }
 
         //F(i, N) { F(j, N) printf(" %c", cap[i][j] ? 'X' : '.'); printf("\n"); }
