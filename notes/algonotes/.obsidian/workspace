@@ -8,8 +8,11 @@
         "type": "leaf",
         "active": true,
         "state": {
-          "type": "empty",
-          "state": {}
+          "type": "markdown",
+          "state": {
+            "file": "unrelated/KBe20phys250retQuizElectrostaticsCircuitsWriteup.md",
+            "mode": "source"
+          }
         }
       }
     ],
@@ -60,7 +63,9 @@
             "type": "leaf",
             "state": {
               "type": "backlink",
-              "state": {}
+              "state": {
+                "file": "unrelated/KBe20phys250retQuizElectrostaticsCircuitsWriteup.md"
+              }
             }
           },
           {
