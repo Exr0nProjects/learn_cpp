@@ -64,7 +64,7 @@ const int MX = 1e5+11;
 int N, M, S, T, dep[MX];
 // cap[MX][MX];
 
-struct edge { int t, n, w; } edges[MX]; int head[MX], ecnt=0;
+struct edge { int t, n, w; } edges[MX]; int thead[MX], head[MX], ecnt=0;
 void addEdge(int a, int b, int w)
 {
     //cap[a][b] = w;
@@ -86,14 +86,15 @@ bool kdep()
     {
         int c = q.front(); q.pop();
         //if (c == T) flag = 1;
-        if (c == T) return 1;   // FIX: no need to wait
+        if (c == T) break;   // FIX: no need to wait
 
         //for (int n=1; n<=N; ++n)
         for (int e=head[c]; e; e=edges[e].n)
             if (!dep[edges[e].t] && edges[e].w)
                 dep[edges[e].t] = dep[c]+1, q.push(edges[e].t);
     }
-    return 0;
+    memcpy(thead, head, N+1);   // FIX: args--memcpy last arg is length, not end pointer
+    return !q.empty();
 }
 
 
@@ -102,17 +103,21 @@ int aug(int c, int mn)
     if (!mn || c == T) return mn;
     int flo=0;
     //for (int n=1; n<=N; ++n) if (dep[n] == dep[c]+1)
-    for (int e=head[c]; e; e=edges[e].n) if (dep[edges[e].t] == dep[c]+1)
-        if (int g = aug(edges[e].t, min(mn, edges[e].w)))
-        {
-            flo += g;
-            edges[e].w += g;
-            edges[e^1].w -= g;
-            //cap[c][edges[e].t] -= g;
-            //cap[edges[e].t][c] += g;
-            mn -= g;
-        }
-    if (!flo) dep[c] = 0;   // FIX: EK to dinic basic
+    for (int e=thead[c]; e; e=edges[e].n)
+    {
+        if (dep[edges[e].t] == dep[c]+1)
+            if (int g = aug(edges[e].t, min(mn, edges[e].w)))
+            {
+                flo += g;
+                edges[e].w += g;
+                edges[e^1].w -= g;
+                //cap[c][edges[e].t] -= g;
+                //cap[edges[e].t][c] += g;
+                mn -= g;
+            }
+        if (mn) thead[c] = edges[thead[c].n];
+        else break;
+    }
     return flo;
 }
 
