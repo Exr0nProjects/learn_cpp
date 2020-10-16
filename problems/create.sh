@@ -20,6 +20,10 @@ cat ./.template_state/Makefile\
     > "$1/Makefile"
 
 #tmux new-window -n "$(basename $1)" "cd $1 && tmux split-window -v && PROB=$(basename $1) && tmux resizep -y 30 && tmux selectp -U && nvim 'main_$(basename $1).cpp' -c 'execute \"normal /-1;/\" | normal \"ggnn\" | noh'"
-tmux new-window -n "$(basename $1)" "cd $1 && tmux split-window -h && PROB=$(basename $1) && tmux selectp -L && nvim 'main_$(basename $1).cpp' -c 'normal 8Gzf58Gjf-'"
+#tmux new-window -n "$(basename $1)" "cd $1 && tmux split-window -h && PROB=$(basename $1) && tmux selectp -L && nvim 'main_$(basename $1).cpp' -c 'normal 8Gzf58Gjf-'"
+
+export PROB=$(basename $1)
+cd $1
+nvim main_$(basename $1).cpp -c "normal 8Gzf58Gjf-"
 
 #[[ -s "$1/main_$(basename $1).cpp" ]] && printf "File exists!\n" | exit 1
