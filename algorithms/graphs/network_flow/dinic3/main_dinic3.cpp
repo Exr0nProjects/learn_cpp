@@ -91,21 +91,23 @@ bool kdep()
     return 0;
 }
 
+#define ag aug_ptr
 int aug(int c, int mn)
 {
     if (!mn || c == T) return mn;
     int flo=0;
-    for (int e=aug_ptr[c]; e; e=eg[e].n)
+    //for (int e=aug_ptr[c]; e; e=eg[e].n)
+    for (; mn && ag[c];)
     {
-        if (dep[eg[e].t] == dep[c]+1)
-            if (int g = aug(eg[e].t, min(mn, eg[e].w)))
+        if (dep[eg[ag[c]].t] == dep[c]+1)
+            if (int g = aug(eg[ag[c]].t, min(mn, eg[ag[c]].w)))
             {
                 flo += g;
-                eg[e].w -= g;
-                eg[e^1].w += g;
+                eg[ag[c]].w -= g;
+                eg[ag[c]^1].w += g;
                 mn -= g;
             }
-        if (mn) aug_ptr[c] = eg[aug_ptr[c]].n; else break;
+        if (mn) aug_ptr[c] = eg[aug_ptr[c]].n;
     }
     return flo;
 }
