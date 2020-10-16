@@ -64,15 +64,15 @@ const int MX = 1e5+11;
 int N, M, S, T, dep[MX];
 // cap[MX][MX];
 
-struct edge { int t, n, o; } edges[MX]; int head[MX], ecnt=1;
-int addEdge(int a, int b, int w)
+struct edge { int t, n, w; } edges[MX]; int head[MX], ecnt=0;
+void addEdge(int a, int b, int w)
 {
-    cap[a][b] = w;
+    //cap[a][b] = w;
+    edges[ecnt].w = w;
     //edges[ecnt].f = a;
     edges[ecnt].t = b;
     edges[ecnt].n = head[a];
     head[a] = ecnt++;   // FIX: update head
-    return ecnt-1;
 }
 
 bool kdep()
@@ -90,7 +90,7 @@ bool kdep()
 
         //for (int n=1; n<=N; ++n)
         for (int e=head[c]; e; e=edges[e].n)
-            if (!dep[edges[e].t] && cap[c][edges[e].t])
+            if (!dep[edges[e].t] && edges[e].w)
                 dep[edges[e].t] = dep[c]+1, q.push(edges[e].t);
     }
     return 0;
@@ -103,13 +103,16 @@ int aug(int c, int mn)
     int flo=0;
     //for (int n=1; n<=N; ++n) if (dep[n] == dep[c]+1)
     for (int e=head[c]; e; e=edges[e].n) if (dep[edges[e].t] == dep[c]+1)
-        if (int g = aug(edges[e].t, min(mn, cap[c][edges[e].t])))
+        if (int g = aug(edges[e].t, min(mn, edges[e].w)))
         {
             flo += g;
-            cap[c][edges[e].t] -= g;
-            cap[edges[e].t][c] += g;
+            edges[e].w += g;
+            edges[e^1].w -= g;
+            //cap[c][edges[e].t] -= g;
+            //cap[edges[e].t][c] += g;
             mn -= g;
         }
+    if (!flo) dep[c] = 0;   // FIX: EK to dinic basic
     return flo;
 }
 
@@ -120,10 +123,8 @@ int main()
     {
         int u, v, w; sc(u, v, w);
         //cap[u][v] = w;
-        int f = addEdge(u, v, w);
-        int r = addEdge(v, u, 0);
-        edges[f].o = r;
-        edges[r].o = f;
+        addEdge(u, v, w);
+        addEdge(v, u, 0);
     }
 
     int flo=0;
