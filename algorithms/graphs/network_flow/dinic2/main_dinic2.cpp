@@ -61,7 +61,19 @@ _ilb sc(ll&a,ll&b,ll&c,ll&d){return sc(a,b)&&sc(c,d);}
 using namespace std;
 const int MX = 1e5+11;
 
-int N, M, S, T, dep[MX], cap[MX][MX];
+int N, M, S, T, dep[MX];
+// cap[MX][MX];
+
+struct edge { int t, n, o; } edges[MX]; int head[MX], ecnt=1;
+int addEdge(int a, int b, int w)
+{
+    cap[a][b] = w;
+    //edges[ecnt].f = a;
+    edges[ecnt].t = b;
+    edges[ecnt].n = head[a];
+    head[a] = ecnt++;   // FIX: update head
+    return ecnt-1;
+}
 
 bool kdep()
 {
@@ -76,9 +88,10 @@ bool kdep()
         //if (c == T) flag = 1;
         if (c == T) return 1;   // FIX: no need to wait
 
-        for (int n=1; n<=N; ++n)
-            if (!dep[n] && cap[c][n])
-                dep[n] = dep[c]+1, q.push(n);
+        //for (int n=1; n<=N; ++n)
+        for (int e=head[c]; e; e=edges[e].n)
+            if (!dep[edges[e].t] && cap[c][edges[e].t])
+                dep[edges[e].t] = dep[c]+1, q.push(edges[e].t);
     }
     return 0;
 }
@@ -88,12 +101,13 @@ int aug(int c, int mn)
 {
     if (!mn || c == T) return mn;
     int flo=0;
-    for (int n=1; n<=N; ++n) if (dep[n] -1 == dep[c])
-        if (int g = aug(n, min(mn, cap[c][n])))
+    //for (int n=1; n<=N; ++n) if (dep[n] == dep[c]+1)
+    for (int e=head[c]; e; e=edges[e].n) if (dep[edges[e].t] == dep[c]+1)
+        if (int g = aug(edges[e].t, min(mn, cap[c][edges[e].t])))
         {
             flo += g;
-            cap[c][n] -= g;
-            cap[n][c] += g;
+            cap[c][edges[e].t] -= g;
+            cap[edges[e].t][c] += g;
             mn -= g;
         }
     return flo;
@@ -105,7 +119,11 @@ int main()
     for (int i=1; i<=M; ++i)
     {
         int u, v, w; sc(u, v, w);
-        cap[u][v] = w;
+        //cap[u][v] = w;
+        int f = addEdge(u, v, w);
+        int r = addEdge(v, u, 0);
+        edges[f].o = r;
+        edges[r].o = f;
     }
 
     int flo=0;
