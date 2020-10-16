@@ -84,16 +84,16 @@ bool kdep()
 }
 
 
-int aug(int c, int p, int mn)
+int aug(int c, int mn)
 {
-    if (!mn || c == T) return cap[p][c] -= mn, mn;
+    if (!mn || c == T) return mn;
     int flo=0;
     for (int n=1; n<=N; ++n) if (dep[n] -1 == dep[c])
-        if (int g = aug(n, c, min(mn, cap[c][n])))
+        if (int g = aug(n, min(mn, cap[c][n])))
         {
             flo += g;
-            cap[p][c] -= g;
-            cap[c][p] += g;
+            cap[c][n] -= g;
+            cap[n][c] += g;
             mn -= g;
         }
     return flo;
@@ -107,13 +107,12 @@ int main()
         int u, v, w; sc(u, v, w);
         cap[u][v] = w;
     }
-    cap[0][S] = 1e9;
 
     int flo=0;
     int t = 10;
     while (kdep() && t--)
     {
-        flo += aug(S, 0, 1e9);
+        flo += aug(S, 1e9);
     }
     printf("%d\n", flo);
 }
