@@ -59,13 +59,13 @@ _ilb sc(ll&a,ll&b,ll&c,ll&d){return sc(a,b)&&sc(c,d);}
     b=_b;while(b)(a)%=(b),(a)^=(b)^=(a)^=(b);a;})
 
 using namespace std;
-const int MX = 1e5+11;
+const int MX = 8e3+11;
 
-int N, M, S, T, dep[MX];
+ll N, M, S, T, dep[MX];
 
-struct Edge { int t, w, n; } eg[MX*MX]; int hd[MX], aug_ptr[MX], ecnt=2;
+struct Edge { ll t, w, n; } eg[60000<<2]; ll hd[MX], aug_ptr[MX], ecnt=2;
 
-void addEdge(int u, int v, int w)
+void addEdge(ll u, ll v, ll w)
 {
     eg[ecnt].t = v;
     eg[ecnt].w = w;
@@ -77,14 +77,14 @@ bool kdep()
 {
     memset(dep, 0, sizeof dep);
     memcpy(aug_ptr, hd, N+1<<2);
-    queue<int> q;
+    queue<ll> q;
     q.push(S);
     dep[S] = 1;
     while (!q.empty())
     {
-        int c = q.front(); q.pop();
+        ll c = q.front(); q.pop();
         if (c == T) return 1;
-        for (int e=hd[c]; e; e=eg[e].n)
+        for (ll e=hd[c]; e; e=eg[e].n)
             if (!dep[eg[e].t] && eg[e].w)
                 dep[eg[e].t] = dep[c]+1, q.push(eg[e].t);
     }
@@ -92,15 +92,15 @@ bool kdep()
 }
 
 #define ag aug_ptr
-int aug(int c, int mn)
+ll aug(ll c, ll mn)
 {
     if (!mn || c == T) return mn;
-    int flo=0;
-    //for (int e=aug_ptr[c]; e; e=eg[e].n)
+    ll flo=0;
+    //for (ll e=aug_ptr[c]; e; e=eg[e].n)
     for (; mn && ag[c];)
     {
         if (dep[eg[ag[c]].t] == dep[c]+1)
-            if (int g = aug(eg[ag[c]].t, min(mn, eg[ag[c]].w)))
+            if (ll g = aug(eg[ag[c]].t, min(mn, eg[ag[c]].w)))
             {
                 flo += g;
                 eg[ag[c]].w -= g;
@@ -114,13 +114,15 @@ int aug(int c, int mn)
 
 int main()
 {
-    sc(N, M, S, T);
-    for (int i=1; i<=M; ++i)
+    //sc(N, M, S, T);
+    sc(N, M);
+    S = 1, T = N;
+    for (ll i=1; i<=M; ++i)
         addEdge(sc(), sc(), sc());
 
-    int flo=0;
+    ll flo=0;
     while (kdep())
         flo += aug(S, 1e9);
-    printf("%d\n", flo);
+    printf("%lld\n", flo);
 }
 
