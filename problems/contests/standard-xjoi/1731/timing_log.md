@@ -10,6 +10,8 @@
 15:47 | AC #3 | coding #4
 16:02 | dijkstra wa 0 | debugging
 16:06 | not sure why it's WA | analyzing #5
+16:09 | problem is unclear about whether you can modulo inside dijkstra, will just try it with code from #4 | coding #5
+16:22 | is my dijkstra just wrong? | analyzing #2
 
 ## Contest Reflection
 
