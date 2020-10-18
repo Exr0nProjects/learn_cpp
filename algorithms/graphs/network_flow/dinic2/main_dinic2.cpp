@@ -62,11 +62,11 @@ _ilb sc(ll&a,ll&b,ll&c,ll&d){return sc(a,b)&&sc(c,d);}
 using namespace std;
 const int MX = 1e5+11;
 
-int N, M, S, T, dep[MX];
+ll N, M, S, T, dep[MX];
 // cap[MX][MX];
 
-struct Edge { int t, n, w; } edges[MX]; int thead[MX], head[MX], ecnt=2;
-void addEdge(int a, int b, int w)
+struct Edge { ll t, n, w; } edges[MX]; ll thead[MX], head[MX], ecnt=2;
+void addEdge(ll a, ll b, ll w)
 {
     //cap[a][b] = w;
     edges[ecnt].w = w;
@@ -80,7 +80,7 @@ void addEdge(int a, int b, int w)
 bool kdep()
 {
     memset(dep, 0, sizeof dep);
-    queue<int> q;
+    queue<ll> q;
     q.push(S);
     dep[S] = 1; // FIX: don't return to source
     //bool flag=0;
@@ -88,13 +88,13 @@ bool kdep()
     copy(head, head+N+1, thead);
     while (!q.empty())
     {
-        int c = q.front(); q.pop();
+        ll c = q.front(); q.pop();
         //printf("c = %d\n", c);
         //if (c == T) flag = 1;
         if (c == T) return 1;   // FIX: no need to wait
 
         //for (int n=1; n<=N; ++n)
-        for (int e=head[c]; e; e=edges[e].n)
+        for (ll e=head[c]; e; e=edges[e].n)
             if (!dep[edges[e].t] && edges[e].w)
                 dep[edges[e].t] = dep[c]+1, q.push(edges[e].t);
     }
@@ -104,16 +104,16 @@ bool kdep()
 }
 
 
-int aug(int c, int mn)
+ll aug(ll c, ll mn)
 {
     //printf("%d %d\n", c, mn);
     if (!mn || c == T) return mn;
-    int flo=0;
+    ll flo=0;
     //for (int n=1; n<=N; ++n) if (dep[n] == dep[c]+1)
-    for (int e=thead[c]; e; e=edges[e].n)
+    for (ll e=thead[c]; e; e=edges[e].n)
     {
         if (dep[edges[e].t] == dep[c]+1)
-            if (int g = aug(edges[e].t, min(mn, edges[e].w)))
+            if (ll g = aug(edges[e].t, min(mn, edges[e].w)))
             {
                 flo += g;
                 edges[e].w -= g;    // FIX: typo--subtract from and add reverse smah
@@ -122,28 +122,30 @@ int aug(int c, int mn)
                 //cap[edges[e].t][c] += g;
                 mn -= g;
             }
-        if (mn) thead[c] = edges[thead[c]].n;
+        if (!mn) break;
+        //if (mn) thead[c] = edges[thead[c]].n;
         //else break;
     }
+    if (!flo) dep[c] = 0;   // FIX: if you have this along with the if (!mn) break; then it's basically the head optimization
     return flo;
 }
 
 int main()
 {
     sc(N, M, S, T);
-    for (int i=1; i<=M; ++i)
+    for (ll i=1; i<=M; ++i)
     {
-        int u, v, w; sc(u, v, w);
+        ll u, v, w; sc(u, v, w);
         //cap[u][v] = w;
         addEdge(u, v, w);
         addEdge(v, u, 0);
     }
 
-    int flo=0;
+    ll flo=0;
     while (kdep())
     {
         flo += aug(S, 1e9);
     }
-    printf("%d\n", flo);
+    printf("%lld\n", flo);
 }
 
