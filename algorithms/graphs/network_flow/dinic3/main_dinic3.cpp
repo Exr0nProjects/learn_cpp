@@ -1,16 +1,14 @@
 /*
  * Problem dinic3 (../algorithms/graphs/network_flow/dinic3)
- * Create time: Fri 16 Oct 2020 @ 06:50 (PDT)
+ * Create time: Sat 17 Oct 2020 @ 19:08 (PDT)
  * Accept time: [!meta:end!]
  *
  */
 
 #include <iostream>
-#include <cstdio>
 #include <cstring>
 #include <algorithm>
 #include <utility>
-#include <queue>
 
 #define ll long long
 #define dl double
@@ -28,13 +26,13 @@
 #define R(i,b) for (ll i=(b); i>=1; --i)
 //struct Edge { int u, v, n; } eg[MX]; int hd[MX], ecnt=0;
 
-//void setIO(const std::string &name = "dinic3")
-//{
-//    //ios_base::sync_with_stdio(0); cin.tie(0);
-//    if (fopen((name + ".in").c_str(), "r") != 0)
-//        freopen((name + ".in").c_str(), "r", stdin),
-//        freopen((name + ".out").c_str(), "w+", stdout);
-//}
+void setIO(const std::string &name = "dinic3")
+{
+    //ios_base::sync_with_stdio(0); cin.tie(0);
+    if (fopen((name + ".in").c_str(), "r") != 0)
+        freopen((name + ".in").c_str(), "r", stdin),
+        freopen((name + ".out").c_str(), "w+", stdout);
+}
 #define _gc getchar_unlocked
 inline bool sc(ll &n)
 {
@@ -60,69 +58,11 @@ _ilb sc(ll&a,ll&b,ll&c,ll&d){return sc(a,b)&&sc(c,d);}
     b=_b;while(b)(a)%=(b),(a)^=(b)^=(a)^=(b);a;})
 
 using namespace std;
-const int MX = 8e3+11;
-
-ll N, M, S, T, dep[MX];
-
-struct Edge { ll t, w, n; } eg[60000<<2]; ll hd[MX], aug_ptr[MX], ecnt=2;
-
-void addEdge(ll u, ll v, ll w)
-{
-    eg[ecnt].t = v;
-    eg[ecnt].w = w;
-    eg[ecnt].n = hd[u];
-    hd[u] = ecnt++;
-}
-
-bool kdep()
-{
-    memset(dep, 0, sizeof dep);
-    memcpy(aug_ptr, hd, N+1<<2);
-    queue<ll> q;
-    q.push(S);
-    dep[S] = 1;
-    while (!q.empty())
-    {
-        ll c = q.front(); q.pop();
-        if (c == T) return 1;
-        for (ll e=hd[c]; e; e=eg[e].n)
-            if (!dep[eg[e].t] && eg[e].w)
-                dep[eg[e].t] = dep[c]+1, q.push(eg[e].t);
-    }
-    return 0;
-}
-
-#define ag aug_ptr
-ll aug(ll c, ll mn)
-{
-    if (!mn || c == T) return mn;
-    ll flo=0;
-    //for (ll e=aug_ptr[c]; e; e=eg[e].n)
-    for (; mn && ag[c];)
-    {
-        if (dep[eg[ag[c]].t] == dep[c]+1)
-            if (ll g = aug(eg[ag[c]].t, min(mn, eg[ag[c]].w)))
-            {
-                flo += g;
-                eg[ag[c]].w -= g;
-                eg[ag[c]^1].w += g;
-                mn -= g;
-            }
-        if (mn) aug_ptr[c] = eg[aug_ptr[c]].n;
-    }
-    return flo;
-}
+const int MX = -1;
 
 int main()
 {
-    sc(N, M, S, T);
-    //sc(N, M); S = 1, T = N;
-    for (ll i=1; i<=M; ++i)
-        addEdge(sc(), sc(), sc());
+    setIO();
 
-    ll flo=0;
-    while (kdep())
-        flo += aug(S, 1e9);
-    printf("%lld\n", flo);
 }
 
