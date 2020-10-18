@@ -58,11 +58,64 @@ _ilb sc(ll&a,ll&b,ll&c,ll&d){return sc(a,b)&&sc(c,d);}
     b=_b;while(b)(a)%=(b),(a)^=(b)^=(a)^=(b);a;})
 
 using namespace std;
-const int MX = -1;
+const int MX = 301;
+
+ll N, M, S, T, dep[MX];
+
+struct Edge { ll t, w, n; } eg[MX*MX]; int hd[MX], ecnt=2;
+void addEdge(int u, int v, int w)
+{
+    if (w) addEdge(v, u, 0);    // NOTE: add reverse edge and use xor trick to calculate
+    eg[ecnt].t = v;
+    eg[ecnt].w = w;
+    eg[ecnt].n = hd[u];
+    hd[u] = ecnt++;
+}
+
+int q[MX];
+bool kdep()
+{
+    memset(dep, 0, sizeof dep);
+    int ql=0, qr=0;
+    q[qr++] = S;
+    dep[S] = 1;
+    for (; ql<qr; ++ql)
+    {
+        if (q[ql] == T) return 1;
+        for (int e=hd[q[ql]]; e; e=eg[e].n)
+            if (!dep[eg[e].t] && eg[e].w)
+                dep[eg[e].t] = q[ql]+1,
+                    q[qr++] = eg[e].t;
+    }
+    return 0;
+}
+
+ll aug(ll c, ll mn)
+{
+    if (!mn || c == T) return mn;
+    ll flo;
+    for (ll e=hd[c]; e && mn; e=eg[e].n)    // NOTE: break when mn==0
+        if (dep[eg[e].t] == dep[c]+1 && eg[e].w)
+        //if (dep[eg[e].t] == dep[c]+1) // should work also
+        {
+            ll g = aug(eg[e].t, min(mn, eg[e].w));
+            mn -= g; flo += mn;
+            printf("g = %d -> %d %d\n", g, eg[e].w, eg[e^1].w);
+            eg[e].w -= g;
+            eg[e^1].w += g;
+        }
+    if (!flo) dep[c] = 0;
+    return flo;
+}
 
 int main()
 {
-    setIO();
-
+    sc(N, M, S, T);
+    while (M--) addEdge(sc(), sc(), sc());
+    ll flo = 0;
+    printf("uht\n");
+    int t=10;
+    while (kdep() && t--) flo += aug(S, 1e9);
+    printf("%lld\n", flo);
 }
 
