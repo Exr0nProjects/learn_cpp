@@ -6,7 +6,6 @@
  */
 
 #include <iostream>
-#include <cstdio>
 #include <cstring>
 #include <algorithm>
 #include <utility>
@@ -28,13 +27,13 @@
 #define R(i,b) for (ll i=(b); i>=1; --i)
 //struct Edge { int u, v, n; } eg[MX]; int hd[MX], ecnt=0;
 
-//void setIO(const std::string &name = "dinic3")
-//{
-//    //ios_base::sync_with_stdio(0); cin.tie(0);
-//    if (fopen((name + ".in").c_str(), "r") != 0)
-//        freopen((name + ".in").c_str(), "r", stdin),
-//        freopen((name + ".out").c_str(), "w+", stdout);
-//}
+void setIO(const std::string &name = "dinic3")
+{
+    //ios_base::sync_with_stdio(0); cin.tie(0);
+    if (fopen((name + ".in").c_str(), "r") != 0)
+        freopen((name + ".in").c_str(), "r", stdin),
+        freopen((name + ".out").c_str(), "w+", stdout);
+}
 #define _gc getchar_unlocked
 inline bool sc(ll &n)
 {
@@ -74,20 +73,21 @@ void addEdge(ll u, ll v, ll w)
     hd[u] = ecnt++;
 }
 
+ll q[MX];
 bool kdep()
 {
     memset(dep, 0, sizeof dep);
     memcpy(aug_ptr, hd, N+1<<2);
-    queue<ll> q;
-    q.push(S);
+    int qr=0;
+    q[qr++] = S;
     dep[S] = 1;
-    while (!q.empty())
+    for (int ql=0; ql<qr; ++ql)
     {
-        ll c = q.front(); q.pop();
-        if (c == T) return 1;
-        for (ll e=hd[c]; e; e=eg[e].n)
+        //ll c = q.front(); q.pop();
+        if (q[ql] == T) return 1;
+        for (ll e=hd[q[ql]]; e; e=eg[e].n)
             if (!dep[eg[e].t] && eg[e].w)
-                dep[eg[e].t] = dep[c]+1, q.push(eg[e].t);
+                dep[eg[e].t] = dep[q[ql]]+1, q[qr++] = eg[e].t;
     }
     return 0;
 }
@@ -115,8 +115,9 @@ ll aug(ll c, ll mn)
 
 int main()
 {
-    sc(N, M, S, T);
-    //sc(N, M); S = 1, T = N;
+    //sc(N, M, S, T);
+    sc(N, M);
+    S = 1, T = N;
     for (ll i=1; i<=M; ++i)
         addEdge(sc(), sc(), sc());
 

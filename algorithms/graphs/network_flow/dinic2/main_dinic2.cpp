@@ -6,6 +6,7 @@
  */
 
 #include <iostream>
+#include <cstdio>
 #include <cstring>
 #include <algorithm>
 #include <utility>
@@ -27,14 +28,14 @@
 #define R(i,b) for (ll i=(b); i>=1; --i)
 //struct Edge { int u, v, n; } eg[MX]; int hd[MX], ecnt=0;
 
-void setIO(const std::string &name = "dinic2")
-{
-    //ios_base::sync_with_stdio(0); cin.tie(0);
-    if (fopen((name + ".in").c_str(), "r") != 0)
-        freopen((name + ".in").c_str(), "r", stdin),
-        freopen((name + ".out").c_str(), "w+", stdout);
-}
-#define _gc getchar_unlocked
+//void setIO(const std::string &name = "dinic2")
+//{
+//    //ios_base::sync_with_stdio(0); cin.tie(0);
+//    if (fopen((name + ".in").c_str(), "r") != 0)
+//        freopen((name + ".in").c_str(), "r", stdin),
+//        freopen((name + ".out").c_str(), "w+", stdout);
+//}
+#define _gc getchar
 inline bool sc(ll &n)
 {
     int neg = 1;
@@ -69,7 +70,7 @@ void addEdge(int a, int b, int w)
 {
     //cap[a][b] = w;
     edges[ecnt].w = w;
-    printf("%d -> %d = %d\n", a, b, edges[ecnt].w);
+    //printf("%d -> %d = %d\n", a, b, edges[ecnt].w);
     //edges[ecnt].f = a;
     edges[ecnt].t = b;
     edges[ecnt].n = head[a];
@@ -88,7 +89,7 @@ bool kdep()
     while (!q.empty())
     {
         int c = q.front(); q.pop();
-        printf("c = %d\n", c);
+        //printf("c = %d\n", c);
         //if (c == T) flag = 1;
         if (c == T) return 1;   // FIX: no need to wait
 
@@ -105,7 +106,7 @@ bool kdep()
 
 int aug(int c, int mn)
 {
-    printf("%d %d\n", c, mn);
+    //printf("%d %d\n", c, mn);
     if (!mn || c == T) return mn;
     int flo=0;
     //for (int n=1; n<=N; ++n) if (dep[n] == dep[c]+1)
@@ -121,7 +122,7 @@ int aug(int c, int mn)
                 //cap[edges[e].t][c] += g;
                 mn -= g;
             }
-        //if (mn) thead[c] = edges[thead[c]].n;
+        if (mn) thead[c] = edges[thead[c]].n;
         //else break;
     }
     return flo;
@@ -139,8 +140,7 @@ int main()
     }
 
     int flo=0;
-    int t = 10;
-    while (kdep() && t--)
+    while (kdep())
     {
         flo += aug(S, 1e9);
     }

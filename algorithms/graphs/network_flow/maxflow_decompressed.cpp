@@ -4,7 +4,7 @@ const ll inf=1000000000;
 
 struct flowgraph
 {
-	ll adj[310][310], dep[310], dd[310], ll, rr;
+	ll adj[310][310], dep[310], q[310], ll, rr;
 	void addedge(ll x, ll y, ll z)
 	{
 		if (adj[x][y]<inf) adj[x][y] += z;
@@ -12,19 +12,19 @@ struct flowgraph
 	bool bfs()
 	{
 		memset(dep, 0, sizeof dep);
-        rr = 0;
-        dd[0]=n+1;  // dd is a queue, start from the end
+        ll rr = 0;
+        q[0]=n+1;  // dd is a queue, start from the end
         dep[n+1]=1;
         // src = 0, sink = n+1
-		for (ll = 0; ll<=rr; ll++)
+		for (ll ql = 0; ql<=rr; ql++)
 			for(ll i=0; i<=n; i++)
-                if (adj[i][dd[ll]] && !dep[i])
-                    dep[dd[++rr]=i]=dep[dd[ll]]+1;
+                if (adj[i][q[ql]] && !dep[i])
+                    dep[q[++rr]=i]=dep[q[ql]]+1;
 		return dep[0];
 	}
 	ll dfs(ll k, ll mn)
 	{
-		if (dep[k] == 1) return mn;     // TODO: why dep=1
+		if (dep[k] == 1) return mn;
 		ll t = mn;
 		for (ll i=1; i<=n+1; i++)
             if (dep[k] == dep[i]+1 && adj[k][i])
@@ -49,6 +49,14 @@ struct flowgraph
 int main()
 {
     flowgraph g;
+    int N, M, S, T;
     scanf("%d%d%d%d", &N, &M, &S, &T);
+    while (M--)
+    {
+        int u, v, w;
+        scanf("%d%d%d", &u, &v, &w);
+        g.addedge(u, v, w);
+    }
+    printf("%lld\n", g.maxflow());
 }
 

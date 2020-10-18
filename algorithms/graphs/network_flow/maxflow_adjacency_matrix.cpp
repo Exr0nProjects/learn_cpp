@@ -1,6 +1,11 @@
+#include <cstring>
+#include <cstdio>
 #define llint long long
+#define min(a,b) (a<b?a:b)
 
 const llint inf=1000000000;
+
+int n;
 
 struct flowgraph
 {
@@ -37,3 +42,21 @@ struct flowgraph
 		return ret;
 	}
 };
+
+int main()
+{
+    flowgraph g;
+    int N, M, S, T;
+    n = N;
+    scanf("%d%d%d%d", &N, &M, &S, &T);
+    while (M--)
+    {
+        int u, v, w;
+        scanf("%d%d%d", &u, &v, &w);
+        g.addedge(u, v, w);
+    }
+    g.a[0][S] = 1ll<<60;
+    g.a[T][N+1] = 1ll<<60;
+    printf("%lld\n", g.maxflow());
+}
+
