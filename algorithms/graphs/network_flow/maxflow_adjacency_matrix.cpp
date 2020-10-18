@@ -1,7 +1,7 @@
 #define llint long long
 
 const llint inf=1000000000;
- 
+
 struct flowgraph
 {
 	llint a[310][310],h[310],dd[310],ll,rr;
