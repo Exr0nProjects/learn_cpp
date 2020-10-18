@@ -5,10 +5,11 @@
  *
  */
 
-#include <iostream>
-#include <cstring>
 #include <algorithm>
+#include <iostream>
 #include <utility>
+#include <cstring>
+#include <cstdio>
 
 #define ll long long
 #define dl double
@@ -78,13 +79,13 @@ bool kdep()
     memset(dep, 0, sizeof dep);
     int ql=0, qr=0;
     q[qr++] = S;
-    dep[S] = 1;
+    dep[S] = 2;
     for (; ql<qr; ++ql)
     {
         if (q[ql] == T) return 1;
         for (int e=hd[q[ql]]; e; e=eg[e].n)
             if (!dep[eg[e].t] && eg[e].w)
-                dep[eg[e].t] = q[ql]+1,
+                dep[eg[e].t] = dep[q[ql]]+1,
                     q[qr++] = eg[e].t;
     }
     return 0;
@@ -92,15 +93,14 @@ bool kdep()
 
 ll aug(ll c, ll mn)
 {
-    if (!mn || c == T) return mn;
-    ll flo;
+    if (c == T) return mn;
+    ll flo = 0;
     for (ll e=hd[c]; e && mn; e=eg[e].n)    // NOTE: break when mn==0
-        if (dep[eg[e].t] == dep[c]+1 && eg[e].w)
+        if (dep[eg[e].t] == dep[c]+1)
         //if (dep[eg[e].t] == dep[c]+1) // should work also
         {
             ll g = aug(eg[e].t, min(mn, eg[e].w));
-            mn -= g; flo += mn;
-            printf("g = %d -> %d %d\n", g, eg[e].w, eg[e^1].w);
+            mn -= g; flo += g;  // FIX: typo-- +=g not +=mn
             eg[e].w -= g;
             eg[e^1].w += g;
         }
@@ -113,9 +113,7 @@ int main()
     sc(N, M, S, T);
     while (M--) addEdge(sc(), sc(), sc());
     ll flo = 0;
-    printf("uht\n");
-    int t=10;
-    while (kdep() && t--) flo += aug(S, 1e9);
+    while (kdep()) flo += aug(S, 1e9);
     printf("%lld\n", flo);
 }
 
