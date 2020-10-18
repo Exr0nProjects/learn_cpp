@@ -1,7 +1,7 @@
 /*
  * Problem 3 (contests/standard-xjoi/1731/3)
  * Create time: Sun 18 Oct 2020 @ 15:26 (PDT)
- * Accept time: [!meta:end!]
+ * Accept time: Sun 18 Oct 2020 @ 15:47 (PDT)
  *
  */
 
@@ -80,12 +80,13 @@ int match(int i=0)
     int k=-1;
     for (; i<S; ++i)
     {
-        printf("i   = %d\n", i);
-        for (++k; ~k && p[k] != s[i]; k=pi[k]);
-        printf("  i = %d k = %d\n", i, k);
+        //printf("i   = %d\n", i);
+        for (; ~k && p[k+1] != s[i]; k=pi[k]);
+        //printf("  i = %d k = %d\n", i, k);
+        if (p[k+1] == s[i]) ++k;
         if (k == P-1) break;
     }
-    printf("i = %D\n", i);
+    //printf("i = %D\n", i);
     return i;
 }
 
