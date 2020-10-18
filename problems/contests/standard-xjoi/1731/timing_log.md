@@ -1,0 +1,32 @@
+# Contest contests/standard-xjoi/1731 - played Sun 18 Oct 2020 @ 15:08 (PDT)
+
+## Contest Timeline
+
+| Time | Note | Next |
+|----|----|----|
+15:06 | start | reading problems
+15:12 | read problems, 1, 3, 4 seem doable, 2, 5 need analysis | coding #1
+15:25 | AC #1 | coding #2
+
+## Contest Reflection
+
+### Knowledge
+What knowledge did you use in this test, and which part you didn't do well knowledge-wise?
+
+#### Problem 1:
+
+-
+
+#### Problem 2:
+
+-
+
+#### Problem 3:
+
+-
+
+### Strategy
+How did you spend your time during the test, and whether there's any issue about your strategy?
+
+### Action item
+How would you change your homework, your mastery of knowledge, or class time etc in order to do better next time?
