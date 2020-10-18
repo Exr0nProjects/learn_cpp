@@ -6,7 +6,10 @@
 |----|----|----|
 15:06 | start | reading problems
 15:12 | read problems, 1, 3, 4 seem doable, 2, 5 need analysis | coding #1
-15:25 | AC #1 | coding #2
+15:25 | AC #1 | coding #3
+15:47 | AC #3 | coding #4
+16:02 | dijkstra wa 0 | debugging
+16:06 | not sure why it's WA | analyzing #5
 
 ## Contest Reflection
 
