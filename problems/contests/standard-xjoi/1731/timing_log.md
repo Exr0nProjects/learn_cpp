@@ -12,6 +12,8 @@
 16:06 | not sure why it's WA | analyzing #5
 16:09 | problem is unclear about whether you can modulo inside dijkstra, will just try it with code from #4 | coding #5
 16:22 | is my dijkstra just wrong? | analyzing #2
+16:44 | legit dunno how to do cereal | analyzing #2
+16:15 | wait, can you show that there will be amortized O(N) updates? | coding #2
 
 ## Contest Reflection
 

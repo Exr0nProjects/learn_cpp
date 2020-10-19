@@ -108,11 +108,11 @@ int main()
         //        pq.push(mp(c.f + eg[e].w, mp(eg[e].t, c.s.f)));
         //}
         for (auto n : hd[c.s.f])
-            if (c.s.f * n.f % MOD < dist[n.s])
-                pq.push(mp(c.f * n.f % MOD, mp(n.s, c.s.f)));
+            if (c.s.f * n.f < dist[n.s])
+                pq.push(mp(c.f * n.f, mp(n.s, c.s.f)));
     }
 
-    printf("%d\n", dist[T]);
+    printf("%d\n", dist[T] % MOD);
     //int l=0, c=T; while (c) dist[l++] = c, c = pre[c];
     //while (l--) printf("%d%c", dist[l], l ? ' ' : '\n');
 }
