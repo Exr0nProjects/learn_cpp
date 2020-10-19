@@ -13,7 +13,10 @@
 16:09 | problem is unclear about whether you can modulo inside dijkstra, will just try it with code from #4 | coding #5
 16:22 | is my dijkstra just wrong? | analyzing #2
 16:44 | legit dunno how to do cereal | analyzing #2
-16:15 | wait, can you show that there will be amortized O(N) updates? | coding #2
+17:15 | wait, can you show that there will be amortized O(N) updates? | psudocoding #2
+17:24 | what about senority during jumping? | analyzing #2
+17:29 | this should hopefully work | coding #2
+17:54 | not sure whats wrong with this or dijkstra | end 
 
 ## Contest Reflection
 
@@ -22,18 +25,29 @@ What knowledge did you use in this test, and which part you didn't do well knowl
 
 #### Problem 1:
 
--
+binary search, check function was kind of scuffed but worked with not much debugging
 
 #### Problem 2:
 
--
+not sure how to do it #todo
 
 #### Problem 3:
 
--
+KMP, had to re-derive but somewhat remembered code structure, not too bad.
+
+#### Problem 4:
+
+Simple dijkstra. Not sure why my code doesn't work #todo
+
+#### Problem 5:
+
+Used same dijkstra code, also don't know why it doesn't work. Just multiply should be fine right? #todo
 
 ### Strategy
-How did you spend your time during the test, and whether there's any issue about your strategy?
+
+Strategy was okay, although I ran out of time because I couldn't figure out what was wrong with problems 2, 4, 5. End of patience anyways.
 
 ### Action item
-How would you change your homework, your mastery of knowledge, or class time etc in order to do better next time?
+
+Practice. Hard to get motivation so this might be difficult.
+
