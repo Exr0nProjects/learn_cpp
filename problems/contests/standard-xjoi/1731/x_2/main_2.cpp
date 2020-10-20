@@ -60,7 +60,7 @@ _ilb sc(ll&a,ll&b,ll&c,ll&d){return sc(a,b)&&sc(c,d);}
 using namespace std;
 const int MX = 1e5+11;
 
-int N, M, ans[MX], who[MX], f1[MX], f2[MX]; // FIX: can store fewer states = fewer things to maintain
+int N, M, ans[MX], occ[MX], f1[MX], f2[MX]; // FIX: can store fewer states = fewer things to maintain
 
 int main()
 {
@@ -70,30 +70,20 @@ int main()
     int cnt=0;
     for (int i=N; i; --i)
     {
-        int r=i, c = f1[i];
+        int j=i, pos = f1[i];
         while (true)
         {
-            if (!who[c]) { who[c] = r, ++cnt; break; }
-            else if (who[c] < r || c == f2[who[c]]) break;
-            else swap(who[c], r), c = f2[r];
+            if (!occ[pos]) { occ[pos] = j, ++cnt; break; }
+            else if (occ[pos] < j) break;
+            else
+            {
+                swap(occ[pos], j);
+                if (pos == f2[j]) break;    // FIX: logic ordering--can't just put this in previous else-if statement
+                pos = f2[j];
+            }
         }
         ans[i] = cnt;
-        //if (!fav[f1[i]]) fav[f1[i]] = 1, ++ans[i], jmp[f1[i]] = f2[i], who[f1[i]] = i;
-        //else for (int c=f1[i]; fav[c] < 2;)
-        //{
-        //    //if (!fav[c]) printf("!   new cereal %d\n", c), ++ans[i], fav[c] = 1 + (c != f1[i]), jmp[c] = f2[i];
-        //    if (!fav[c]) ++ans[i], fav[c] = 1 + (c != f1[i]), jmp[c] = f2[i];
-        //    else if (who[c] < pre)
-        //    {
-        //        //printf("    outplayed by %d\n", who[c]);
-        //        break;   // current holder came earlier, so this cow is just sad
-        //    }
-        //    //else printf("    replacing %d\n", c), fav[c] = 2, pre=who[c], c = jmp[c];
-        //    else fav[c] = 2, pre=who[c], c = jmp[c];
-        //}
     }
-
-    //for (int i=N; i; --i) ans[i] += ans[i+1];
     for (int i=1; i<=N; ++i) printf("%d\n", ans[i]);
 }
 
