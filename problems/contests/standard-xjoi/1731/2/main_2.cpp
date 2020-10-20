@@ -60,34 +60,40 @@ _ilb sc(ll&a,ll&b,ll&c,ll&d){return sc(a,b)&&sc(c,d);}
 using namespace std;
 const int MX = 1e5+11;
 
-int N, M, ans[MX], fav[MX], jmp[MX], who[MX], f1[MX], f2[MX];
+int N, M, ans[MX], who[MX], f1[MX], f2[MX]; // FIX: can store fewer states = fewer things to maintain
 
 int main()
 {
     sc(N, M);
     for (int i=1; i<=N; ++i) sc(f1[i], f2[i]);
 
+    int cnt=0;
     for (int i=N; i; --i)
     {
-        //printf("i = %d %d->%d %d->%d\n", i, f1[i], fav[f1[i]], f2[i], fav[f2[i]]);
-        int pre=i;
-        //if (!fav[f1[i]]) printf("ez claps %d\n", f1[i]), fav[f1[i]] = 1, ++ans[i], jmp[f1[i]] = f2[i], who[f1[i]] = i;
-        if (!fav[f1[i]]) fav[f1[i]] = 1, ++ans[i], jmp[f1[i]] = f2[i], who[f1[i]] = i;
-        else for (int c=f1[i]; fav[c] < 2;)
+        int r=i, c = f1[i];
+        while (true)
         {
-            //if (!fav[c]) printf("!   new cereal %d\n", c), ++ans[i], fav[c] = 1 + (c != f1[i]), jmp[c] = f2[i];
-            if (!fav[c]) ++ans[i], fav[c] = 1 + (c != f1[i]), jmp[c] = f2[i];
-            else if (who[c] < pre)
-            {
-                //printf("    outplayed by %d\n", who[c]);
-                break;   // current holder came earlier, so this cow is just sad
-            }
-            //else printf("    replacing %d\n", c), fav[c] = 2, pre=who[c], c = jmp[c];
-            else fav[c] = 2, pre=who[c], c = jmp[c];
+            if (!who[c]) { who[c] = r, ++cnt; break; }
+            else if (who[c] < r || c == f2[who[c]]) break;
+            else swap(who[c], r), c = f2[r];
         }
+        ans[i] = cnt;
+        //if (!fav[f1[i]]) fav[f1[i]] = 1, ++ans[i], jmp[f1[i]] = f2[i], who[f1[i]] = i;
+        //else for (int c=f1[i]; fav[c] < 2;)
+        //{
+        //    //if (!fav[c]) printf("!   new cereal %d\n", c), ++ans[i], fav[c] = 1 + (c != f1[i]), jmp[c] = f2[i];
+        //    if (!fav[c]) ++ans[i], fav[c] = 1 + (c != f1[i]), jmp[c] = f2[i];
+        //    else if (who[c] < pre)
+        //    {
+        //        //printf("    outplayed by %d\n", who[c]);
+        //        break;   // current holder came earlier, so this cow is just sad
+        //    }
+        //    //else printf("    replacing %d\n", c), fav[c] = 2, pre=who[c], c = jmp[c];
+        //    else fav[c] = 2, pre=who[c], c = jmp[c];
+        //}
     }
 
-    for (int i=N; i; --i) ans[i] += ans[i+1];
+    //for (int i=N; i; --i) ans[i] += ans[i+1];
     for (int i=1; i<=N; ++i) printf("%d\n", ans[i]);
 }
 
