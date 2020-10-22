@@ -64,9 +64,9 @@ _ilb sc(ll&a,ll&b,ll&c,ll&d){return sc(a,b)&&sc(c,d);}
 using namespace std;
 const int MX = 1e4+11;
 
-int T, N, M, A, B, dist[MX];
-struct Edge { int t, w, n; } eg[MX*MX]; int hd[MX], ecnt=2;
-void addEdge(int u, int v, int w)
+ll T, N, M, A, B, dist[MX];
+struct Edge { int t, w, n; } eg[MX*MX]; ll hd[MX], ecnt=2;
+void addEdge(ll u, ll v, ll w)
 {
     eg[ecnt].t = v;
     eg[ecnt].w = w;
@@ -79,11 +79,14 @@ int main()
     sc(T); while (T--)
     {
         sc(N, M);
+        ecnt = 2;   // FIX: clears--clear edgelist
+        memset(hd, 0, sizeof hd);   // FIX: clears--clear edgelist head array
         while (M--) addEdge(sc(), sc(), sc());
         sc(A, B);
+
         memset(dist, 0x3f, sizeof dist);
 
-        gpq(pii) pq;
+        gpq(pair<ll CMA ll>) pq;
         pq.push(mp(0, A));
         while (!pq.empty())
         {
@@ -92,12 +95,12 @@ int main()
             dist[c.s] = c.f;
             if (c.s == B) break;
 
-            for (int e=hd[c.s]; e; e=eg[e].n)
+            for (ll e=hd[c.s]; e; e=eg[e].n)
                 if (dist[eg[e].t] > c.f + eg[e].w)
-                    pq.push(mp(c.s + eg[e].w, eg[e].t));
+                    pq.push(mp(c.f + eg[e].w, eg[e].t));    // FIX: typo--c.f+w not c.s+w
         }
         if (dist[B] > 2e8) printf("NO\n");
-        else printf("%d\n", dist[B]);
+        else printf("%lld\n", dist[B]);
     }
 }
 
