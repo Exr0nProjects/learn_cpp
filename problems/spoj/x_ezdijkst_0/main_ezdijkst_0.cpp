@@ -69,14 +69,12 @@ ll T, N, M, A, B, dist[MX];
 struct Edge { int t, w, n; } eg[MX*MX]; ll hd[MX], ecnt=2;
 void addEdge(ll u, ll v, ll w)
 {
+    eg[ecnt].n = 0; // TODO-learn: why do I need this line to clear adjlist?
     eg[ecnt].t = v;
     eg[ecnt].w = w;
     eg[ecnt].n = hd[u];
     hd[u] = ecnt++;
 }
-
-//list<pair<int, int> > head[MX];
-//void addEdge(int u, int v, int w) { head[u].pb(mp(w, v)); }
 
 int main()
 {
@@ -85,13 +83,10 @@ int main()
         sc(N, M);
         ecnt = 2;   // FIX: clears--clear edgelist
         memset(hd, 0, sizeof hd);   // FIX: clears--clear edgelist head array
-        memset(eg, 0, sizeof eg);   // FIX: clears--actually clear edge list, why this needed?
-        //for (int i=1; i<=N; ++i) head[i].clear();
         while (M--) addEdge(sc(), sc(), sc());
         sc(A, B);
 
         memset(dist, 0x3f, sizeof dist);
-
         gpq(pair<ll CMA ll>) pq;
         pq.push(mp(0, A));
         while (!pq.empty())
@@ -104,8 +99,6 @@ int main()
             for (ll e=hd[c.s]; e; e=eg[e].n)
                 if (dist[eg[e].t] > c.f + eg[e].w)
                     pq.push(mp(c.f + eg[e].w, eg[e].t));    // FIX: typo--c.f+w not c.s+w
-            //for (auto p : head[c.s]) if (dist[p.s] > c.f + p.f)
-            //    pq.push(mp(c.f + p.f, p.s));
         }
         if (dist[B] > 2e8) printf("NO\n");
         else printf("%lld\n", dist[B]);
