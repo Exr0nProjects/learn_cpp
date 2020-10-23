@@ -60,31 +60,32 @@ _ilb sc(ll&a,ll&b,ll&c,ll&d){return sc(a,b)&&sc(c,d);}
     b=_b;while(b)(a)%=(b),(a)^=(b)^=(a)^=(b);a;})
 
 using namespace std;
-const int MX = 301;
+const int MX = 1e5+11;
 
 ll N, M, S, T, dep[MX];
 
-struct Edge { ll t, w, n; } eg[MX*MX]; int hd[MX], ecnt=2;
-void addEdge(int u, int v, int w, bool b=1)
+struct Edge { ll t, n, w; } eg[MX];
+ll hd[MX], ecnt=2;
+void addEdge(int a, int b, ll w)
 {
-    if (b) addEdge(v, u, w, 0);    // NOTE: add reverse edge and use xor trick to calculate
-    eg[ecnt].t = v;
+    eg[ecnt].t = b;
     eg[ecnt].w = w;
-    eg[ecnt].n = hd[u];
-    hd[u] = ecnt++;
+    eg[ecnt].n = hd[a];
+    hd[a] = ecnt++;
+    //if (ecnt&1) addEdge(b, a, 0);    // NOTE: add reverse edge and use xor trick to calculate
 }
 
-int q[MX];
+ll q[MX];
 bool kdep()
 {
     memset(dep, 0, sizeof dep);
-    int ql=0, qr=0;
+    ll ql=0, qr=0;
     q[qr++] = S;
     dep[S] = 2;
     for (; ql<qr; ++ql)
     {
         if (q[ql] == T) return 1;
-        for (int e=hd[q[ql]]; e; e=eg[e].n)
+        for (ll e=hd[q[ql]]; e; e=eg[e].n)
             if (!dep[eg[e].t] && eg[e].w)
                 dep[eg[e].t] = dep[q[ql]]+1,
                     q[qr++] = eg[e].t;
@@ -136,12 +137,40 @@ ll aug(ll c, ll mn)
     return flo;
 }
 
+//ll aug(ll c, ll mn)
+//{
+//    //printf("%d %d\n", c, mn);
+//    if (!mn || c == T) return mn;
+//    ll flo=0;
+//    //for (int n=1; n<=N; ++n) if (dep[n] == dep[c]+1)
+//    for (ll e=hd[c]; e; e=eg[e].n)
+//    {
+//        if (dep[eg[e].t] == dep[c]+1)
+//            if (ll g = aug(eg[e].t, min(mn, eg[e].w)))
+//            {
+//                flo += g;
+//                eg[e].w -= g; // FIX: typo--subtract from and add reverse smah
+//                eg[e^1].w += g;
+//                mn -= g;
+//            }
+//        if (!mn) break;
+//        //if (mn) thead[c] = edges[thead[c]].n;
+//        //else break;
+//    }
+//    if (!flo) dep[c] = 0;   // FIX: if you have this along with the if (!mn) break; then it's basically the head optimization
+//    return flo;
+//}
+
 int main()
 {
-    //sc(N, M, S, T);
-    sc(N, M);
-    S = 1, T = N;
-    while (M--) addEdge(sc(), sc(), sc());
+    sc(N, M, S, T);
+    //sc(N, M); S = 1, T = N;
+    for (ll i=1; i<=M; ++i)
+    {
+        int u, v, w; sc(u, v, w);
+        addEdge(u, v, w);
+        addEdge(v, u, 0);
+    }
 
     ll flo = 0;
     while (kdep()) flo += aug(S, 1e9);
