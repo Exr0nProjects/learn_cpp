@@ -69,14 +69,7 @@ const int MXM = 3e5+10;
 int T, N, M, P;
 struct Edge { int u, v, w; bool operator<(const Edge& o)
     const{ return w < o.w; } } eg[MXM]; int ecnt=0;
-//void addEdge(int u, int v, int w)
-//{
-//    eg[ecnt].t = v;
-//    eg[ecnt].w = w;
-//    eg[ecnt].n = 0;
-//    eg[ecnt].n = hd[u];
-//    hd[u] = ecnt++;
-//}
+
 int djs[MX], djf[MX];
 int df(int n)
 {
@@ -95,41 +88,21 @@ bool merge(int a, int b)
     return 1;
 }
 
-vector<pair<int, pair<int, int> > > edges;
-
 int main()
 {
     sc(T);
     while (T--)
     {
         sc(P, N, M);
-        //memset(hd, 0, sizeof hd);
-        //ecnt=2;
-        //F(i, M) eg[ecnt++] = { sc(), sc(), sc() };
-        //sort(eg, eg+M);
-        F(i, M)
-        {
-            int u, v, w; sc(u, v, w);
-            edges.pb(mp(w, mp(u, v)));
-        }
-        sort(edges.begin(), edges.end());
+        F(i, M) eg[ecnt++] = { sc(), sc(), sc() };
+        sort(eg, eg+M);
         F(i, N) djs[i] = 1, djf[i] = i;
 
         int cnt=0, sum=0;
-        //for (int i=0; i<M && cnt < N-1; ++i)    // FIX: bounds-- <N-1 not <N because MST has N-1 edges
-        //    if (df(eg[i].u) != df(eg[i].v))
-        //        //printf("taking %d (%d->%d for %d)\n", i, eg[i].u, eg[i].v, eg[i].w),
-        //        ++cnt, sum+=eg[i].w;
-        for (auto e : edges)
-        {
-            if (df(e.s.f) != df(e.s.s))
-            {
-                merge(e.s.f, e.s.s);
-                ++cnt, sum += e.f;
-            }
-            if (cnt + 1 == N) break;
-        }
-
+        for (int i=0; i<M && cnt < N-1; ++i)    // FIX: bounds-- <N-1 not <N because MST has N-1 edges
+            if (df(eg[i].u) != df(eg[i].v))
+                merge(eg[i].u, eg[i].v),        // FIX: actually do the merge
+                ++cnt, sum+=eg[i].w;
         printf("%d\n", sum * P);
     }
 }
