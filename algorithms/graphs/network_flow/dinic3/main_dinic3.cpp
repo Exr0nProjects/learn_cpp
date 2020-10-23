@@ -65,7 +65,8 @@ const int MX = 300+11;
 ll N, M, S, T, dep[MX];
 
 struct Edge { ll t, n, w; } eg[5100<<1];
-ll hd[MX], thd[MX], ecnt=2;
+//ll hd[MX], thd[MX], ecnt=2;
+ll hd[MX], ecnt=2;
 void addEdge(int a, int b, ll w)
 {
     eg[ecnt] = { b, hd[a], w };
@@ -79,7 +80,7 @@ bool kdep()
     ll ql=0, qr=0;
     q[qr++] = S;
     dep[S] = 2;
-    memcpy(thd, hd, N+1<<3);
+    //memcpy(thd, hd, N+1<<3);
     for (; ql<qr; ++ql)
     {
         if (q[ql] == T) return 1;
@@ -95,7 +96,7 @@ ll aug(ll c, ll mn)
 {
     if (!mn || c == T) return mn;   // FIX: logic--need `if !mn`, else the `dep[c]=0` opt will tle
     ll flo = 0;
-    for (ll e=thd[c]; e && mn; e=eg[e].n)    // NOTE: break when mn==0
+    for (ll e=hd[c]; e && mn; e=eg[e].n)    // NOTE: break when mn==0
         if (dep[eg[e].t] == dep[c]+1)
         //if (dep[eg[e].t] == dep[c]+1) // should work also
         {
@@ -103,7 +104,7 @@ ll aug(ll c, ll mn)
             mn -= g; flo += g;  // FIX: typo-- +=g not +=mn
             eg[e].w -= g;
             eg[e^1].w += g;
-            if (!mn) break; else thd[c] = eg[thd[c]].n;
+            //if (!mn) break; else thd[c] = eg[thd[c]].n;
         }
     if (!flo) dep[c] = 0;
     return flo;
@@ -111,17 +112,17 @@ ll aug(ll c, ll mn)
 
 int main()
 {
-    sc(N, M, S, T);
-    //sc(N, M); S = 1, T = N;
+    //sc(N, M, S, T);
+    sc(N, M); S = 1, T = N;
     for (ll i=1; i<=M; ++i)
     {
         int u, v, w; sc(u, v, w);
         addEdge(u, v, w);
-        addEdge(v, u, 0);
+        addEdge(v, u, w);
     }
 
     ll flo = 0;
-    while (kdep()) flo += aug(S, 1e9);
+    while (kdep()) flo += aug(S, 1e11);
     printf("%lld\n", flo);
 }
 
