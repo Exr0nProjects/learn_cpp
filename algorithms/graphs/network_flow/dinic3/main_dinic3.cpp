@@ -60,19 +60,16 @@ _ilb sc(ll&a,ll&b,ll&c,ll&d){return sc(a,b)&&sc(c,d);}
     b=_b;while(b)(a)%=(b),(a)^=(b)^=(a)^=(b);a;})
 
 using namespace std;
-const int MX = 1e5+11;
+const int MX = 300+11;
 
 ll N, M, S, T, dep[MX];
 
-struct Edge { ll t, n, w; } eg[MX];
-ll hd[MX], ecnt=2;
+struct Edge { ll t, n, w; } eg[5100<<1];
+ll hd[MX], thd[MX], ecnt=2;
 void addEdge(int a, int b, ll w)
 {
-    eg[ecnt].t = b;
-    eg[ecnt].w = w;
-    eg[ecnt].n = hd[a];
+    eg[ecnt] = { b, hd[a], w };
     hd[a] = ecnt++;
-    //if (ecnt&1) addEdge(b, a, 0);    // NOTE: add reverse edge and use xor trick to calculate
 }
 
 ll q[MX];
@@ -82,6 +79,7 @@ bool kdep()
     ll ql=0, qr=0;
     q[qr++] = S;
     dep[S] = 2;
+    memcpy(thd, hd, N+1<<3);
     for (; ql<qr; ++ql)
     {
         if (q[ql] == T) return 1;
@@ -93,38 +91,11 @@ bool kdep()
     return 0;
 }
 
-//bool kdep()
-//{
-//    memset(dep, 0, sizeof dep);
-//    queue<ll> q;
-//    q.push(S);
-//    dep[S] = 1; // FIX: don't return to source
-//    //bool flag=0;
-//    //memcpy(thead, head, N+1<<2);   // FIX: args--memcpy last arg is length, not end pointer
-//    //copy(hd, hd+N+1, hd);
-//    while (!q.empty())
-//    {
-//        ll c = q.front(); q.pop();
-//        //printf("c = %d\n", c);
-//        //if (c == T) flag = 1;
-//        if (c == T) return 1;   // FIX: no need to wait
-//
-//        //for (int n=1; n<=N; ++n)
-//        for (ll e=hd[c]; e; e=eg[e].n)
-//            if (!dep[eg[e].t] && eg[e].w)
-//                dep[eg[e].t] = dep[c]+1, q.push(eg[e].t);
-//    }
-//    //for (int i=1; i<=N; ++i) printf("%3d", thead[i]); printf("\n");
-//    //return !q.empty();
-//    return 0;
-//}
-
 ll aug(ll c, ll mn)
 {
-    //printf("at %lld with %lld\n", c, mn);
-    if (c == T) return mn;
+    if (!mn || c == T) return mn;   // FIX: logic--need `if !mn`, else the `dep[c]=0` opt will tle
     ll flo = 0;
-    for (ll e=hd[c]; e && mn; e=eg[e].n)    // NOTE: break when mn==0
+    for (ll e=thd[c]; e && mn; e=eg[e].n)    // NOTE: break when mn==0
         if (dep[eg[e].t] == dep[c]+1)
         //if (dep[eg[e].t] == dep[c]+1) // should work also
         {
@@ -132,34 +103,11 @@ ll aug(ll c, ll mn)
             mn -= g; flo += g;  // FIX: typo-- +=g not +=mn
             eg[e].w -= g;
             eg[e^1].w += g;
+            if (!mn) break; else thd[c] = eg[thd[c]].n;
         }
     if (!flo) dep[c] = 0;
     return flo;
 }
-
-//ll aug(ll c, ll mn)
-//{
-//    //printf("%d %d\n", c, mn);
-//    if (!mn || c == T) return mn;
-//    ll flo=0;
-//    //for (int n=1; n<=N; ++n) if (dep[n] == dep[c]+1)
-//    for (ll e=hd[c]; e; e=eg[e].n)
-//    {
-//        if (dep[eg[e].t] == dep[c]+1)
-//            if (ll g = aug(eg[e].t, min(mn, eg[e].w)))
-//            {
-//                flo += g;
-//                eg[e].w -= g; // FIX: typo--subtract from and add reverse smah
-//                eg[e^1].w += g;
-//                mn -= g;
-//            }
-//        if (!mn) break;
-//        //if (mn) thead[c] = edges[thead[c]].n;
-//        //else break;
-//    }
-//    if (!flo) dep[c] = 0;   // FIX: if you have this along with the if (!mn) break; then it's basically the head optimization
-//    return flo;
-//}
 
 int main()
 {
