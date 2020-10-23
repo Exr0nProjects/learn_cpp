@@ -10,6 +10,7 @@
 #include <utility>
 #include <cstring>
 #include <cstdio>
+#include <queue>
 
 #define ll long long
 #define dl double
@@ -64,9 +65,9 @@ const int MX = 301;
 ll N, M, S, T, dep[MX];
 
 struct Edge { ll t, w, n; } eg[MX*MX]; int hd[MX], ecnt=2;
-void addEdge(int u, int v, int w)
+void addEdge(int u, int v, int w, bool b=1)
 {
-    if (w) addEdge(v, u, 0);    // NOTE: add reverse edge and use xor trick to calculate
+    if (b) addEdge(v, u, w, 0);    // NOTE: add reverse edge and use xor trick to calculate
     eg[ecnt].t = v;
     eg[ecnt].w = w;
     eg[ecnt].n = hd[u];
@@ -91,8 +92,35 @@ bool kdep()
     return 0;
 }
 
+//bool kdep()
+//{
+//    memset(dep, 0, sizeof dep);
+//    queue<ll> q;
+//    q.push(S);
+//    dep[S] = 1; // FIX: don't return to source
+//    //bool flag=0;
+//    //memcpy(thead, head, N+1<<2);   // FIX: args--memcpy last arg is length, not end pointer
+//    //copy(hd, hd+N+1, hd);
+//    while (!q.empty())
+//    {
+//        ll c = q.front(); q.pop();
+//        //printf("c = %d\n", c);
+//        //if (c == T) flag = 1;
+//        if (c == T) return 1;   // FIX: no need to wait
+//
+//        //for (int n=1; n<=N; ++n)
+//        for (ll e=hd[c]; e; e=eg[e].n)
+//            if (!dep[eg[e].t] && eg[e].w)
+//                dep[eg[e].t] = dep[c]+1, q.push(eg[e].t);
+//    }
+//    //for (int i=1; i<=N; ++i) printf("%3d", thead[i]); printf("\n");
+//    //return !q.empty();
+//    return 0;
+//}
+
 ll aug(ll c, ll mn)
 {
+    //printf("at %lld with %lld\n", c, mn);
     if (c == T) return mn;
     ll flo = 0;
     for (ll e=hd[c]; e && mn; e=eg[e].n)    // NOTE: break when mn==0
@@ -110,8 +138,11 @@ ll aug(ll c, ll mn)
 
 int main()
 {
-    sc(N, M, S, T);
+    //sc(N, M, S, T);
+    sc(N, M);
+    S = 1, T = N;
     while (M--) addEdge(sc(), sc(), sc());
+
     ll flo = 0;
     while (kdep()) flo += aug(S, 1e9);
     printf("%lld\n", flo);
