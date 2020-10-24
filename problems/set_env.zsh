@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 export ENVROOT=$(dirname "$(realpath -s "$0")")
-tmux setenv ENVROOT $ENVROOT
+#tmux setenv ENVROOT $ENVROOT
 
 #tmux setenv IDEMODE 0
 #export IDEMODE=0
