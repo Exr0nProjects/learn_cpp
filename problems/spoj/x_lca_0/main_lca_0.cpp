@@ -89,11 +89,13 @@ int main()
     for (int cs=1; cs<=T; ++cs)
     {
         sc(N);
-        memset(dep, 0, sizeof dep);
-        memset(par, 0, sizeof par);
+        //memset(dep, 0, sizeof dep);
+        //memset(par, 0, sizeof par);
+        for (int i=1; i<=N; ++i) par[i][0] = 0;
         for (int i=1; i<=N; ++i)
         {
             int c = sc(), x;
+            hd[i].clear();
             hd[i].reserve(c);
             while (c--) x=sc(), hd[i].pb(x), par[x][0] = i;
         }
