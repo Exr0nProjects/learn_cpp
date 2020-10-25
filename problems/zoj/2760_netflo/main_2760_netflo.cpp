@@ -63,11 +63,78 @@ _ilb sc(ll&a,ll&b,ll&c,ll&d){return sc(a,b)&&sc(c,d);}
     b=_b;while(b)(a)%=(b),(a)^=(b)^=(a)^=(b);a;})
 
 using namespace std;
-const int MX = -1;
+const int MX = 1e4+11;
+
+int N, M, S, T, dep[MX], cap[MX][MX], dist[MX];
+unsigned int eg[MX][MX];
+
+void kdist()
+{
+    typedef pair<int, int> State;
+    gpq(State) pq;
+    pq.push(mp(1, S));
+    while (!pq.empty())
+    {
+        State cur = pq.top(); pq.pop();
+        if (dist[cur.s] < cur.f) continue;
+        dist[cur.s] = cur.f;
+
+        if (dist[cur.s] > dist[T]) break;
+
+        for (int i=0; i<N; ++i)
+            if (eg[cur.s][i] + cur.f < dist[i])
+                pq.push(mp(cur.f + eg[cur.s][i], i));
+    }
+}
+
+bool kdep()
+{
+    memset(dep, 0, sizeof dep);
+    queue<int> q;
+    dep[S] = 2;
+    q.push(S);
+    while (!q.empty())
+    {
+        int c = q.front(); q.pop();
+        if (c == T) return 1;
+        for (int i=0; i<N; ++i)
+            if (i != c && dist[i] == dist[c] + eg[c][i])
+                dep[i] = dep[c]+1, q.push(i);
+    }
+    return 0;
+}
+
+int aug(int c, int mn)
+{
+    if (!mn || c == T) return mn;
+    int flo=0;
+    for (int i=0; i<N && mn; ++i)
+    {
+        if (dep[i] == dep[c]+1)
+        {
+            int g = aug(i, min(mn, cap[c][i]));
+            flo += g, mn -= g;
+            cap[c][i] -= g, cap[i][c] += g;
+        }
+    }
+    if (!flo) dep[c] = 0;
+    return flo;
+}
 
 int main()
 {
-    setIO();
-
+    while (sc(N))
+    {
+        memset(dist, 0x3f, sizeof dist);
+        for (int i=0; i<N; ++i)
+            for (int j=0; j<N; ++j)
+                scanf("%d", &eg[i][j]);
+        sc(S, T);
+        kdist();
+        for (int i=0; i<N; ++i) printf("%3d ", dist[i]); printf("\n");
+        int flo=0;
+        while (kdep()) flo += aug(S, 1e9);
+        printf("%d\n", flo);
+    }
 }
 
