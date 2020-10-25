@@ -86,7 +86,7 @@ void kpar()
 int main()
 {
     sc(T);
-    while (T--)
+    for (int cs=1; cs<=T; ++cs)
     {
         sc(N);
         memset(dep, 0, sizeof dep);
@@ -101,9 +101,27 @@ int main()
         par[root][0] = root;
         kdep(root);
         kpar();
-        sc(Q); F(i, Q) sc(), sc();
 
-        for (int j=0; j<16; ++j) { for (int i=1; i<=N; ++i) printf("%3d", par[i][j]); printf("\n"); }
+        //for (int j=0; j<16; ++j) { for (int i=1; i<=N; ++i) printf("%3d", par[i][j]); printf("\n"); }
+
+        printf("Case %d:\n", cs);
+        sc(Q); F(i, Q)
+        {
+            int u, v; sc(u, v);
+            // lift lower to same height
+            if (dep[u] < dep[v]) swap(u, v);
+            for (int mx=16; mx--;)
+                if (dep[par[u][mx]] >= dep[v])
+                    u = par[u][mx];
+            //printf("u %d v %d\n", u, v);
+            // find lca
+            for (int mx=16; mx--;)
+                if (  par[u][mx] != par[v][mx])
+                    u=par[u][mx], v=par[v][mx];
+            if (u != v) u = par[u][0];
+            printf("%d\n", u);
+        }
+
     }
 
 }
