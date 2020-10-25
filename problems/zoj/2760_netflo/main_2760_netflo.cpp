@@ -63,7 +63,7 @@ _ilb sc(ll&a,ll&b,ll&c,ll&d){return sc(a,b)&&sc(c,d);}
     b=_b;while(b)(a)%=(b),(a)^=(b)^=(a)^=(b);a;})
 
 using namespace std;
-const int MX = 1e4+11;
+const int MX = 1e3+11;
 
 int N, M, S, T, dep[MX], cap[MX][MX], dist[MX];
 int eg[MX][MX];
@@ -133,6 +133,7 @@ int main()
             for (int j=0; j<N; ++j)
                 scanf("%d", &eg[i][j]);
         sc(S, T);
+        //if (S == T) { printf("inf\n"); continue; }
         kdist();
         for (int i=0; i<N; ++i)
             for (int j=0; j<N; ++j)
