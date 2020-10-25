@@ -66,7 +66,7 @@ using namespace std;
 const int MX = 1e4+11;
 
 int N, M, S, T, dep[MX], cap[MX][MX], dist[MX];
-unsigned int eg[MX][MX];
+int eg[MX][MX];
 
 void kdist()
 {
@@ -82,7 +82,7 @@ void kdist()
         if (dist[cur.s] > dist[T]) break;
 
         for (int i=0; i<N; ++i)
-            if (eg[cur.s][i] + cur.f < dist[i])
+            if (dist[i] >  cur.f + eg[cur.s][i] && ~eg[cur.s][i])
                 pq.push(mp(cur.f + eg[cur.s][i], i));
     }
 }
@@ -96,9 +96,11 @@ bool kdep()
     while (!q.empty())
     {
         int c = q.front(); q.pop();
+        //printf("c = %d\n", c);
+        //for (int i=0; i<N; ++i) printf("    %d -> %d\n", i, dep[i]);
         if (c == T) return 1;
         for (int i=0; i<N; ++i)
-            if (i != c && dist[i] == dist[c] + eg[c][i])
+            if (!dep[i] && i != c && cap[c][i])
                 dep[i] = dep[c]+1, q.push(i);
     }
     return 0;
@@ -106,6 +108,7 @@ bool kdep()
 
 int aug(int c, int mn)
 {
+    //printf("at %d w/ %d\n", c, mn);
     if (!mn || c == T) return mn;
     int flo=0;
     for (int i=0; i<N && mn; ++i)
@@ -131,7 +134,10 @@ int main()
                 scanf("%d", &eg[i][j]);
         sc(S, T);
         kdist();
-        for (int i=0; i<N; ++i) printf("%3d ", dist[i]); printf("\n");
+        for (int i=0; i<N; ++i)
+            for (int j=0; j<N; ++j)
+                if (dist[j] == dist[i] + eg[i][j])
+                    cap[i][j] = 1;
         int flo=0;
         while (kdep()) flo += aug(S, 1e9);
         printf("%d\n", flo);
