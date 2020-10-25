@@ -1,3 +1,4 @@
+// TODO: doesn't deal with intersections between horzhorz or vertvert
 #include <cstdio>
 #include <queue>
 #define mp make_pair
@@ -20,6 +21,8 @@ int bq(int x)
     for (; x; x-=x&-x) ans += bit[x];
     return ans;
 }
+
+// 0, 0, 0, 0, 0, 0
 
 int main()
 {

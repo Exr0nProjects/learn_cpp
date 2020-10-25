@@ -1,0 +1,19 @@
+
+int main()
+{
+    // input
+    for line in input:
+        if line is vertical:
+            store(bot[item], top[item]), pq.push(vertical_event)
+        else
+            pq.push(begin_event), pq.push(end_event)
+    // sweep
+    for item in queue:
+        if item.type == vertical:
+            ans += query_active(bot[item], top[item])
+        else if item.type == begin:
+            add_to_structure(item.y)
+        else
+            rem_from_structure(item.y)
+}
+
