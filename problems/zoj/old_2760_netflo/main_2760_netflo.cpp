@@ -151,7 +151,7 @@ int main()
         //F(i, N) { F(j, N) printf(" %c", cap[i][j] ? 'X' : '.'); printf("\n"); }
 
         int sum = 0;
-        while (-(sum - (sum += aug(U, 0, 1e9))));
+        while (sum - (sum += aug(U, 0, 1e9)));
         printf("%d\n", sum);
         //printf("%d\n", aug(U, 0, 1e9));
         //printf("9\n");
