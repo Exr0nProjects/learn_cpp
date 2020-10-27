@@ -102,6 +102,14 @@ int main()
     while (T--)
     {
         sc(L, C, W);
+        memset(trie, 0, sizeof trie);
+        memset(fail, 0, sizeof fail);
+        memset(hasw, 0, sizeof hasw);
+        memset(dep, 0, sizeof dep);
+        memset(isw, 0, sizeof isw);
+        lcnt=1;
+        for (int i=1; i<=W; ++i) ans[i] = {};
+
         for (int i=0; i<L; ++i) { scanf("%s", grid[i]); printf("'%s'\n", grid[i]); }
         scanf("%*c");   // FIX: input--consume newline
         printf("w %d\n", W);
@@ -202,6 +210,7 @@ int main()
         }
         for (int i=1; i<=W; ++i)
             printf("%d %d %c\n", ans[i].f.f, ans[i].f.s, ans[i].s);
+        printf("\n");
     }
 }
 
