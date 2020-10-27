@@ -88,12 +88,17 @@ int main()
             int cur=0, c=_gc()-'A';
             while (true)
             {
-                printf("got char '%c'\n", c+'A');
-                if (c < 0) { hasw[cur] = 1, isw[cur] = i; break; }
+                if (c < 0)
+                {
+                    printf("\n");
+                    hasw[cur] = 1, isw[cur] = i;
+                    break;
+                }
                 if (!trie[cur][c])
                     //par[lcnt] = cur,
                     dep[lcnt] = dep[cur]+1,
                     trie[cur][c] = lcnt++;
+                printf("got char '%c' -> %d\n", c+'A', trie[cur][c]);
                 cur = trie[cur][c], c = _gc() - 'A';
             }
         }
@@ -102,13 +107,13 @@ int main()
         queue<QState> q;   // cur, pre, char
         //q.push(mp(mp(0, 0), 26));
         for (int i=0; i<26; ++i) if (trie[0][i])    // FIX: push root node manually
-            q.push(mp(mp(trie[0][i], 0), i));
+            q.push(mp(mp(trie[0][i], 0), 26));  // FIX: first order nodes don't failpoint to themselves
         while (!q.empty())
         {
             QState c = q.front(); q.pop();
             printf("q cur %d <- %d (%c)\n", c.f.f, c.f.s, c.s+'A');
             // construct fail pointer
-            for (fail[c.f.f] = fail[c.f.s]; !fail[c.f.f] && !trie[fail[c.f.f]][c.s];
+            for (fail[c.f.f] = fail[c.f.s]; fail[c.f.f] && !trie[fail[c.f.f]][c.s]; // FIX: typo--go while fail[c.f.f], not stop when it
                     fail[c.f.f] = fail[fail[c.f.f]]);   // kmp flashbacks
             if (trie[fail[c.f.f]][c.s]) fail[c.f.f] = trie[fail[c.f.f]][c.s];
             hasw[c.f.f] |= hasw[fail[c.f.f]];
@@ -122,9 +127,9 @@ int main()
         {
             printf("%-3d ", i);
             for (int j=0; j<26; ++j)
-                printf("%3d", trie[i][j]);
+                if (trie[i][j]) printf("%3d", trie[i][j]);
+                else printf("  .");
             printf("   ->%3d     isw %3d hasw %d\n", fail[i], isw[i], hasw[i]);
-            printf("\n");
         }
 
         // check the grid
