@@ -2,6 +2,7 @@
  * Problem wpuzzles (spoj/wpuzzles)
  * Create time: Mon 26 Oct 2020 @ 18:29 (PDT)
  * Accept time: [!meta:end!]
+ * problem: find occurances of words in a word finder puzzle
  * AC Automaton in all the directions
  */
 
@@ -65,15 +66,29 @@ _ilb sc(ll&a,ll&b,ll&c,ll&d){return sc(a,b)&&sc(c,d);}
 using namespace std;
 const int MX = 1e3+10;
 const int MXL = 1e6+11;
-
-int T, L, C, W;
-int trie[MXL][30], fail[MXL], dep[MXL], isw[MXL], lcnt=1;
-//                                      ^^^ isw[i] means this node is the end of word i
-bool hasw[MXL];  // has a word in failpointer linkedlist
+const int delta[] = {-1, 0, 1};
 
 char grid[MX][MX];
+int T, L, C, W, wlen[MX];   // length of each word
 
-const int delta[] = {-1, 0, 1};
+int trie[MXL][30], fail[MXL], dep[MXL], isw[MXL], lcnt=1;
+//                                      ^^^ isw[i] means this node is the end of word i
+bool hasw[MXL], failvis[MXL];  // has a word in failpointer linkedlist; visited this node on failtrail already
+pair<pair<int, int>, char> ans[MX];
+
+vector<int> useChar(int &cur, char c)
+{
+    for (; cur && !trie[cur][c]; cur=fail[cur]);    // KMP flashbacks
+    if (trie[cur][c]) cur = trie[cur][c];
+    // follow failtrail for skipped words
+    vector<int> tans;
+    for (int ftc=cur; ftc && !failvis[ftc] && hasw[ftc]; failvis[ftc]=1, ftc=fail[ftc])
+        if (isw[ftc]) tans.pb(ftc);
+    return tans;
+}
+
+inline bool ok(int y, int x)
+{ return x > 0 && x < C && y > 0 && y < L; }
 
 int main()
 {
@@ -91,6 +106,7 @@ int main()
                 if (c < 0)
                 {
                     printf("\n");
+                    wlen[i] = dep[cur];
                     hasw[cur] = 1, isw[cur] = i;
                     break;
                 }
@@ -122,6 +138,7 @@ int main()
                 q.push(mp(mp(trie[c.f.f][i], c.f.f), i));
         }
 
+        // debug ac automaton
         printf("    "); for (int i=0; i<26; ++i) printf("%3c", i+'A'); printf("\n");
         for (int i=0; i<lcnt; ++i)
         {
@@ -129,19 +146,39 @@ int main()
             for (int j=0; j<26; ++j)
                 if (trie[i][j]) printf("%3d", trie[i][j]);
                 else printf("  .");
-            printf("   ->%3d     isw %3d hasw %d\n", fail[i], isw[i], hasw[i]);
+            printf("   ->%3d     isw %-3d hasw %d dep %-3d\n", fail[i], isw[i], hasw[i], dep[i]);
         }
 
         // check the grid
-        for (int i=0; i<L; ++i)
+        for (int i=0; i<L; ++i) for (int d=0; d<3; ++d)
         {
             // start on left side
+            for (int y=i, x=0, cur=0; ok(y, x); ++x, y+=delta[d])
+            {
+                vector<int> g = useChar(cur, grid[y][x]);
+                for (auto a : g) ans[a] = mp(mp(y-wlen[a]*delta[d], x-wlen[a]), 'B'+d);
+            }
             // start on right side
+            for (int y=i, x=C-1, cur=0; ok(y, x); --x, y+=delta[d])
+            {
+                vector<int> g = useChar(cur, grid[y][x]);
+                for (auto a : g) ans[a] = mp(mp(y-wlen[a]*delta[d], x+wlen[a]), 'H'-d);
+            }
         }
         for (int i=0; i<C; ++i)
         {
             // start from the top edge (no diagonals)
+            for (int x=i, y=0, cur=0; ok(y, x); ++y)
+            {
+                vector<int> g = useChar(cur, grid[y][x]);
+                for (auto a : g) ans[a] = mp(mp(y-wlen[a], x), 'E');
+            }
             // bottom edge (no diagonals)
+            for (int x=i, y=L-1, cur=0; ok(y, x); --y)
+            {
+                vector<int> g = useChar(cur, grid[y][x]);
+                for (auto a : g) ans[a] = mp(mp(y+wlen[a], x), 'A');
+            }
         }
     }
 }
