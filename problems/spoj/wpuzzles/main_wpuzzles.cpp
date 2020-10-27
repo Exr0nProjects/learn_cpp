@@ -76,19 +76,25 @@ int trie[MXL][30], fail[MXL], dep[MXL], isw[MXL], lcnt=1;
 bool hasw[MXL], failvis[MXL];  // has a word in failpointer linkedlist; visited this node on failtrail already
 pair<pair<int, int>, char> ans[MX];
 
-vector<int> useChar(int &cur, char c)
+vector<int> useChar(int &cur, int c)
 {
+    printf("    using char '%c' on %d\n", c+'A', cur);
     for (; cur && !trie[cur][c]; cur=fail[cur]);    // KMP flashbacks
     if (trie[cur][c]) cur = trie[cur][c];
+    printf("        went to %d\n", cur);
     // follow failtrail for skipped words
     vector<int> tans;
     for (int ftc=cur; ftc && !failvis[ftc] && hasw[ftc]; failvis[ftc]=1, ftc=fail[ftc])
-        if (isw[ftc]) tans.pb(ftc);
+    {
+        printf("           visiting %-3d on failtrail\n", ftc);
+        if (isw[ftc]) tans.pb(isw[ftc]);
+    }
+    printf("        got %d answers\n", tans.size());
     return tans;
 }
 
 inline bool ok(int y, int x)
-{ return x > 0 && x < C && y > 0 && y < L; }
+{ return x >= 0 && x < C && y >= 0 && y < L; }
 
 int main()
 {
@@ -97,6 +103,7 @@ int main()
     {
         sc(L, C, W);
         for (int i=0; i<L; ++i) { scanf("%s", grid[i]); printf("'%s'\n", grid[i]); }
+        scanf("%*c");   // FIX: input--consume newline
         printf("w %d\n", W);
         // construct trie
         for (int i=1; i<=W; ++i)
@@ -107,7 +114,7 @@ int main()
                 if (c < 0)
                 {
                     printf("\n");
-                    wlen[i] = dep[cur];
+                    wlen[i] = dep[cur]-1;
                     hasw[cur] = 1, isw[cur] = i;
                     break;
                 }
@@ -154,31 +161,43 @@ int main()
         for (int i=0; i<L; ++i) for (int d=0; d<3; ++d)
         {
             // start on left side
+            memset(failvis, 0, sizeof failvis);
+            printf("left  side d=%d\n", d);
             for (int y=i, x=0, cur=0; ok(y, x); ++x, y+=delta[d])
             {
-                vector<int> g = useChar(cur, grid[y][x]);
-                for (auto a : g) ans[a] = mp(mp(y-wlen[a]*delta[d], x-wlen[a]), 'B'+d);
+                vector<int> g = useChar(cur, grid[y][x]-'A');
+                printf("        cur = %d\n", cur);
+                for (auto a : g) printf("    setting ans %d\n", a), ans[a] = mp(mp(y-wlen[a]*delta[d], x-wlen[a]), 'B'+d);
             }
             // start on right side
+            memset(failvis, 0, sizeof failvis);
+            printf("right side d=%d\n", d);
             for (int y=i, x=C-1, cur=0; ok(y, x); --x, y+=delta[d])
             {
-                vector<int> g = useChar(cur, grid[y][x]);
-                for (auto a : g) ans[a] = mp(mp(y-wlen[a]*delta[d], x+wlen[a]), 'H'-d);
+                vector<int> g = useChar(cur, grid[y][x]-'A');
+                printf("        cur = %d\n", cur);
+                for (auto a : g) printf("    setting ans %d\n", a), ans[a] = mp(mp(y-wlen[a]*delta[d], x+wlen[a]), 'H'-d);
             }
         }
         for (int i=0; i<C; ++i)
         {
             // start from the top edge (no diagonals)
+            memset(failvis, 0, sizeof failvis);
+            printf("top   edge");
             for (int x=i, y=0, cur=0; ok(y, x); ++y)
             {
-                vector<int> g = useChar(cur, grid[y][x]);
-                for (auto a : g) ans[a] = mp(mp(y-wlen[a], x), 'E');
+                vector<int> g = useChar(cur, grid[y][x]-'A');
+                printf("        cur = %d\n", cur);
+                for (auto a : g) printf("    setting ans %d\n", a), ans[a] = mp(mp(y-wlen[a], x), 'E');
             }
             // bottom edge (no diagonals)
+            printf("bot   edge");
+            memset(failvis, 0, sizeof failvis);
             for (int x=i, y=L-1, cur=0; ok(y, x); --y)
             {
-                vector<int> g = useChar(cur, grid[y][x]);
-                for (auto a : g) ans[a] = mp(mp(y+wlen[a], x), 'A');
+                vector<int> g = useChar(cur, grid[y][x]-'A');
+                printf("        cur = %d\n", cur);
+                for (auto a : g) printf("    setting ans %d\n", a), ans[a] = mp(mp(y+wlen[a], x), 'A');
             }
         }
         for (int i=1; i<=W; ++i)
