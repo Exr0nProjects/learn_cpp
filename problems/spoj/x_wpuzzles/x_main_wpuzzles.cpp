@@ -1,7 +1,7 @@
 /*
  * Problem wpuzzles (spoj/wpuzzles)
  * Create time: Mon 26 Oct 2020 @ 18:29 (PDT)
- * Accept time: [!meta:end!]
+ * Accept time: Mon 26 Oct 2020 @ 22:21 (PDT)
  * problem: find occurances of words in a word finder puzzle
  * AC Automaton in all the directions
  */
@@ -174,7 +174,7 @@ int main()
                 vector<int> g = useChar(cur, grid[y][x]-'A');
                 //printf("        cur = %d\n", cur);
                 //for (auto a : g) printf("    setting ans %d\n", a), ans[a] = mp(mp(y-wlen[a]*d, x-wlen[a]), 'B'+d);
-                for (auto a : g) ans[a] = mp(mp(y-wlen[a]*d, x-wlen[a]), 'B'+d);
+                for (auto a : g) ans[a] = mp(mp(y-wlen[a]*d, x-wlen[a]), 'B'+d+1);
             }
             // start on right side
             memset(failvis, 0, sizeof failvis);
@@ -184,12 +184,12 @@ int main()
                 vector<int> g = useChar(cur, grid[y][x]-'A');
                 //printf("        cur = %d\n", cur);
                 //for (auto a : g) printf("    setting ans %d\n", a), ans[a] = mp(mp(y-wlen[a]*d, x+wlen[a]), 'H'-d);
-                for (auto a : g) ans[a] = mp(mp(y-wlen[a]*d, x+wlen[a]), 'H'-d);
+                for (auto a : g) ans[a] = mp(mp(y-wlen[a]*d, x+wlen[a]), 'H'-d-1);
             }
         }
         for (int i=0; i<C; ++i) for (int d=-1; d<2; ++d)
         {
-            // start from the top edge (no diagonals)
+            // start from the top edge
             memset(failvis, 0, sizeof failvis);
             //printf("top   edge");
             for (int x=i, y=0, cur=0; ok(y, x); ++y, x+=d)
@@ -197,9 +197,9 @@ int main()
                 vector<int> g = useChar(cur, grid[y][x]-'A');
                 //printf("        cur = %d\n", cur);
                 //for (auto a : g) printf("    setting ans %d\n", a), ans[a] = mp(mp(y-wlen[a], x-wlen[a]*d), 'E');
-                for (auto a : g) ans[a] = mp(mp(y-wlen[a], x-wlen[a]*d), 'E');
+                for (auto a : g) ans[a] = mp(mp(y-wlen[a], x-wlen[a]*d), 'F'-d-1);
             }
-            // bottom edge (no diagonals)
+            // bottom edge
             //printf("bot   edge");
             memset(failvis, 0, sizeof failvis);
             for (int x=i, y=L-1, cur=0; ok(y, x); --y, x+=d)
@@ -207,7 +207,7 @@ int main()
                 vector<int> g = useChar(cur, grid[y][x]-'A');
                 //printf("        cur = %d\n", cur);
                 //for (auto a : g) printf("    setting ans %d\n", a), ans[a] = mp(mp(y+wlen[a], x-wlen[a]*d), 'A');
-                for (auto a : g) ans[a] = mp(mp(y+wlen[a], x-wlen[a]*d), 'A');
+                for (auto a : g) ans[a] = mp(mp(y+wlen[a], x-wlen[a]*d), ~d?'A'+d:'H');
             }
         }
         for (int i=1; i<=W; ++i)
