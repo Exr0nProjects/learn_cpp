@@ -17,7 +17,7 @@
 
 #define gpq(T) priority_queue<T, deque<T>, greater<T> >
 #define CMA , // https://stackoverflow.com/q/13842468/10372825
-#define pii pair<int, int>
+#define pii pair<ll, ll>
 #define pb push_back
 #define mp make_pair
 #define f first
@@ -60,14 +60,15 @@ _ilb sc(ll&a,ll&b,ll&c,ll&d){return sc(a,b)&&sc(c,d);}
     b=_b;while(b)(a)%=(b),(a)^=(b)^=(a)^=(b);a;})
 
 using namespace std;
-const int MX = 300+11;
+const ll MX = 5e3+11;
+const ll MXE = 3e4+11;
 
 ll N, M, S, T, dep[MX];
 
-struct Edge { ll t, n, w; } eg[5100<<1];
+struct Edge { ll t, n, w; } eg[MXE<<1];
 //ll hd[MX], thd[MX], ecnt=2;
 ll hd[MX], ecnt=2;
-void addEdge(int a, int b, ll w)
+void addEdge(ll a, ll b, ll w)
 {
     eg[ecnt] = { b, hd[a], w };
     hd[a] = ecnt++;
@@ -116,7 +117,7 @@ int main()
     sc(N, M); S = 1, T = N;
     for (ll i=1; i<=M; ++i)
     {
-        int u, v, w; sc(u, v, w);
+        ll u, v, w; sc(u, v, w);
         addEdge(u, v, w);
         addEdge(v, u, w);
     }
