@@ -96,7 +96,8 @@ int main()
     while (T--)
     {
         sc(L, C, W);
-        for (int i=0; i<L; ++i) scanf("%s", grid[L]);
+        for (int i=0; i<L; ++i) { scanf("%s", grid[i]); printf("'%s'\n", grid[i]); }
+        printf("w %d\n", W);
         // construct trie
         for (int i=1; i<=W; ++i)
         {
@@ -180,6 +181,8 @@ int main()
                 for (auto a : g) ans[a] = mp(mp(y+wlen[a], x), 'A');
             }
         }
+        for (int i=1; i<=W; ++i)
+            printf("%d %d %c\n", ans[i].f.f, ans[i].f.s, ans[i].s);
     }
 }
 
