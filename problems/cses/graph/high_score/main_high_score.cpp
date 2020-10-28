@@ -71,8 +71,8 @@ _ilb sc(ll&a,ll&b,ll&c,ll&d){return sc(a,b)&&sc(c,d);}
     b=_b;while(b)(a)%=(b),(a)^=(b)^=(a)^=(b);a;})
 
 using namespace std;
-const int MX = 2511;
-const int MXE = 5010;
+const int MX = 25110;
+const int MXE = 50100;
 
 ll N, M, dist[MX];
 //struct Edge { ll f, t, w; } eg[MXE];
@@ -82,16 +82,23 @@ void addEdge()
     int a = sc();
     eg[ecnt].f = a;
     eg[ecnt].t = sc();
-    eg[ecnt].w = sc();
+    eg[ecnt].w = -sc();
     eg[ecnt].n = hd[a];
     hd[a] = ecnt++;
 }
 
-bool vis[MX], die=0;
+bool previs[MX], vis[MX], die=0;
 
+void predfs(int c)
+{
+    if (previs[c]) return;
+    previs[c] = 1;
+    for (int e=hd[c]; e; e=eg[e].n)
+        predfs(eg[e].t);
+}
 void dfs(int c)
 {
-    printf("brick at %d\n", c);
+    //printf("brick at %d\n", c);
     if (vis[c]) return;
     vis[c] = 1;
     if (c == N) { die=1; return; }
@@ -112,14 +119,16 @@ int main()
     dist[1] = 0;    // FIX: base case
     for (int i=1; i<=N; ++i)
         for (int j=1; j<=N; ++j) for (int e=hd[j]; e; e=eg[e].n)
+            //printf("%d -> %d (%d)\n", j, eg[e].t, dist[eg[e].t]),
             dist[eg[e].t] = min(dist[eg[e].t], dist[eg[e].f] + eg[e].w);
 
     for (int j=1; j<=N; ++j) for (int e=hd[j]; e; e=eg[e].n)
-        if (dist[eg[e].t] > dist[eg[e].f] + eg[e].w)
+        if (previs[eg[e].t] && dist[eg[e].t] > dist[eg[e].f] + eg[e].w)
+            //printf("uht\n"),
             dfs(eg[e].t);
 
     if (die) printf("-1\n");
-    else printf("%lld\n", dist[N]);
+    else printf("%lld\n", -dist[N]);
 
     //ll tmp = dist[N];
     //for (int i=1; i<=N; ++i) for (int e=1; e<=M; ++e)
