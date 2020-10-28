@@ -75,35 +75,62 @@ const int MX = 2511;
 const int MXE = 5010;
 
 ll N, M, dist[MX];
-struct Edge { ll f, t, w; } eg[MXE];
-//struct Edge { int t, w, n; } eg[MX]; int hd[MX], ecnt=2;
-//void addEdge()
-//{
-//    int a = sc();
-//    eg[ecnt].t = sc();
-//    eg[ecnt].w = sc();
-//    eg[ecnt].n = hd[a];
-//    hd[a] = ecnt++;
-//}
+//struct Edge { ll f, t, w; } eg[MXE];
+struct Edge { int f, t, w, n; } eg[MX]; int hd[MX], ecnt=2;
+void addEdge()
+{
+    int a = sc();
+    eg[ecnt].f = a;
+    eg[ecnt].t = sc();
+    eg[ecnt].w = sc();
+    eg[ecnt].n = hd[a];
+    hd[a] = ecnt++;
+}
+
+bool vis[MX], die=0;
+
+void dfs(int c)
+{
+    printf("brick at %d\n", c);
+    if (vis[c]) return;
+    vis[c] = 1;
+    if (c == N) { die=1; return; }
+    for (int e=hd[c]; e; e=eg[e].n)
+        dfs(eg[e].t);
+}
 
 int main()
 {
     sc(N, M);
     //for (int i=1; i<=M; ++i) eg[i] = { sc(), sc(), -sc() };
-    for (int i=1; i<=M; ++i)
-        eg[i].f = sc(),
-        eg[i].t = sc(),
-        eg[i].w = -sc();
+    //for (int i=1; i<=M; ++i)
+    //    eg[i].f = sc(),
+    //    eg[i].t = sc(),
+    //    eg[i].w = -sc();
+    for (int i=1; i<=M; ++i) addEdge();
     memset(dist, 0x3f, sizeof dist);
     dist[1] = 0;    // FIX: base case
-    for (int i=1; i<=N; ++i) for (int e=1; e<=M; ++e)
-        dist[eg[e].t] = min(dist[eg[e].t], dist[eg[e].f] + eg[e].w);
+    for (int i=1; i<=N; ++i)
+        for (int j=1; j<=N; ++j) for (int e=hd[j]; e; e=eg[e].n)
+            dist[eg[e].t] = min(dist[eg[e].t], dist[eg[e].f] + eg[e].w);
+
+    for (int j=1; j<=N; ++j) for (int e=hd[j]; e; e=eg[e].n)
+        if (dist[eg[e].t] > dist[eg[e].f] + eg[e].w)
+            dfs(eg[e].t);
+
+    if (die) printf("-1\n");
+    else printf("%lld\n", dist[N]);
+
+    //ll tmp = dist[N];
+    //for (int i=1; i<=N; ++i) for (int e=1; e<=M; ++e)
+    //    dist[eg[e].t] = min(dist[eg[e].t], dist[eg[e].f] + eg[e].w);
+    //if (dist[N] != tmp) printf("-1\n");
+    //else printf("%lld\n", -dist[N]);
         //if (dist[eg[e].t] > dist[eg[e].f] + eg[e].w)
             //dist[eg[e].t] = dist[eg[e].f] + eg[e].w;
 
-    for (int i=1; i<=N; ++i) for (int e=1; e<=M; ++e)
-        if (dist[eg[e].t] > dist[eg[e].f] + eg[e].w)
-        { printf("-1\n"); return 0; }
-    printf("%lld\n", -dist[N]);
+    //for (int i=1; i<=N; ++i) for (int e=1; e<=M; ++e)
+    //    if (dist[eg[e].t] > dist[eg[e].f] + eg[e].w)
+    //    { printf("-1\n"); return 0; }
 }
 
