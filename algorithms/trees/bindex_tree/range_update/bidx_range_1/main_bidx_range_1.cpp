@@ -2,7 +2,7 @@
  * Problem bidx_range_1 (../algorithms/trees/bindex_tree/range_update/bidx_range_1)
  * Create time: Sun 25 Oct 2020 @ 18:58 (PDT)
  * Accept time: [!meta:end!]
- *
+ * for problem BIT https://www.luogu.com.cn/problem/P3372
  */
 
 #include <set>
@@ -63,31 +63,31 @@ _ilb sc(ll&a,ll&b,ll&c,ll&d){return sc(a,b)&&sc(c,d);}
     b=_b;while(b)(a)%=(b),(a)^=(b)^=(a)^=(b);a;})
 
 using namespace std;
-const int MX = 1e6+11;
+const int MX = 1e5+11;
 
-int N, M, bd[MX], bp[MX];
+ll N, M, bd[MX], bp[MX];
 
-void rbu(int* b, int x, int v)
+void rbu(ll* b, ll x, ll v)
 {
-    for (; x; x-=lb(x))
+    for (; x<=N; x+=lb(x))
         b[x] += v;
 }
-int rbq(int *b, int x)
+ll rbq(ll *b, ll x)
 {
-    int sum=0;
-    for (; x<=N; x+=lb(x))
+    ll sum=0;
+    for (; x; x-=lb(x))
         sum += b[x];
     return sum;
 }
 
-int bq(int l, int r)
+ll bq(ll l, ll r)
 {
     --l;
     r = (r+1)*rbq(bd, r) - rbq(bp, r);
     l = (l+1)*rbq(bd, l) - rbq(bp, l);
     return r - l;
 }
-void bu(int l, int r, int v)
+void bu(ll l, ll r, ll v)
 {
     ++r;
     rbu(bd, l, v);
@@ -99,14 +99,13 @@ void bu(int l, int r, int v)
 int main()
 {
     sc(N, M);
-    for (int i=1; i<=N; ++i)
-        sc(bd[i]), bd[i] -= bd[i-1],
-        bp[i] = bd[i] * i;
+    for (ll i=1; i<=N; ++i)
+        bu(i, i, sc());
     while (M--)
     {
-        int l, r, v; sc(l, r, v);
-        if (!v) printf("%d\n", bq(l, r));
-        else bu(l, r, v);
+        ll t, l, r, v; sc(t, l, r);
+        if (t-1) printf("%lld\n", bq(l, r));
+        else bu(l, r, sc());
     }
 }
 
