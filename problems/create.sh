@@ -24,6 +24,6 @@ cat ./.template_state/Makefile\
 
 export PROB=$(basename $1)
 cd $1
-nvim main_$(basename $1).cpp -c "normal 8Gzf63Gjf-"
+nvim main_$(basename $1).cpp -c "normal 8Gzf72Gjf-"
 
 #[[ -s "$1/main_$(basename $1).cpp" ]] && printf "File exists!\n" | exit 1

@@ -31,6 +31,14 @@
 #define R(i,b) for (ll i=(b); i>=1; --i)
 //struct Edge { int u, v, n; } eg[MX]; int hd[MX], ecnt=0;
 
+inline ll pow(ll b, ll e, ll m)
+{
+    ll ret=1;
+    for (; e; e>>=1, (b*=b)%=m)
+        if (e&1) (ret *= b)%=m;
+    return ret;
+}
+
 void setIO(const std::string &name = "[!meta:pid!]")
 {
     //ios_base::sync_with_stdio(0); cin.tie(0);
