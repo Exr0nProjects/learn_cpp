@@ -1,0 +1,78 @@
+* Problem
+  - directed graph
+  - each edge (u, v) has 2 attributes: capacity $w$ and cost $c$
+  - cost of an edge = $t*c$ where $t$ is the amount of flow out of $w$ in the edge.
+** Ideas
+   - Reverse edges get the negative cost
+   - Put new nodes on edges to make it normal max flow
+     - works, but poor time complexity.
+   - maybe augmenting paths are negative loops
+     - because then you can just use it instead
+** Answer: Successive Shortest Path Algorithm
+   - Equivilant to the adding nodes on edges method
+   - Basically EK, but with Dijkstra instead of BFS
+   - You always pick the shortest first, so it will end up being the minimum cost
+   - Also like SPFA + Augmenting paths
+   - *Works when there are negative cycles*
+*** Correctness Proof
+**** Lemma 1
+     #+begin_quote
+     there will be no negative cycles if we always augment by shortest path
+     #+end_quote
+     - No, because we always take the shortest path and reverse it
+     - That means either there's no other path to cancel, or
+     - the other edges are more expensive, so there won't be a negative cycle.
+     - rigerous proof is toxic (define interactions with $x_1, \ldots, x_n$ and sum/check)
+***** TODO Does this mean that you won't create a negative cycle if there were none originally?
+**** Lemma 2
+     #+begin_quote
+     Given a flow $f$, there is no negative cycle in the residual network iff $f$ is the minimum cost flow with current flow size.
+     #+end_quote
+***** Reverse Direction
+      "is obvious (same argument as Lemma 1)"
+***** Forward Direction
+      Assume that there's another flow $g$ with the same flow size and a smoller cost.
+      $$g-f$$
+      is another flow which has all of the edges in $g$ plus all of the reverse edges in $f$ (ignore edges that are in neither). "Take $g$ and then take $f$ back." This flow does not have to start at a source or end at a sink (and it starts and ends at the same node).
+      Because $g < f$, $g-f < 0$ which means that we have a negative cycle. Thus, if $f$ was not the minimum flow cost, then we would have a negative cycle. This implies the contrapositive: if we don't have a negative cycle, then $f$ must be the minimum cost for this flow size.
+*** Complexity
+    $$\mathcal O (|V||E|c)$$
+    where $c$ is the size of the max flow.
+*** Optimization
+    Dinic like optimization has way higher constant factor, so it tends to be slower.
+
+* Problem 2: Negative Cycles
+** Memes
+   - Spontaneous milk
+** New Network Flow Meaning
+   - All network flow requires is that each node's incoming flow is equal to its outgoing flow (except source and sink)
+   - Thus, we can have spontaneous milk
+** Ideas
+***  Use lemma 2
+    - Find maximum flow first, then remove all negative cycles
+      - because you found the maximum flow, and by removing negative cycles you are finding the minimum cost.
+**** why can't we just do this for when there are no negative cycles again?
+***** Because lemma 1 only works when you are taking the shortest path. When you straight up run dinics, you might end up creating a negative cycle and so you still have to run the rest of the algorithm.
+*** Use bellman ford to find negative cycles
+** Algorithm
+*** First find the max flow
+*** Then remove negative cycles using Bellman Ford until there are none left
+**** What is "removing" a negative cycle
+***** reverse each edge, and negate the original cost in the original
+****** might create another negative cycle, but that will be removed in the next cycle
+** Correctness
+   - Lemma 2 OP
+* Summary
+** SSPA
+*** Pro
+**** "easy" to implement
+**** Decently fast ($\mathcal O(|V||E|c)$)
+***** TODO kinda EK speed?
+*** Cons
+**** Only works when there are no negative cycles
+** Cycle Canceling Algorithm
+*** Pros
+**** Works in all cases
+*** Con
+**** Sloooooo
+** Use SSPA when possible (no negative cycles)
