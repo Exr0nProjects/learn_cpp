@@ -23,7 +23,9 @@
      - That means either there's no other path to cancel, or
      - the other edges are more expensive, so there won't be a negative cycle.
      - rigerous proof is toxic (define interactions with $x_1, \ldots, x_n$ and sum/check)
-***** TODO Does this mean that you won't create a negative cycle if there were none originally?
+***** DONE Does this mean that you won't create a negative cycle if there were none originally?
+      CLOSED: [2020-10-29 Thu 19:06]
+      Yeah, there's no gaurentees if there is already a negative cycle.
 **** Lemma 2
      #+begin_quote
      Given a flow $f$, there is no negative cycle in the residual network iff $f$ is the minimum cost flow with current flow size.
@@ -66,8 +68,10 @@
 ** SSPA
 *** Pro
 **** "easy" to implement
-**** Decently fast ($\mathcal O(|V||E|c)$)
-***** TODO kinda EK speed?
+**** Decently fast ($\mathcal O(|V||E|c)$), where $c$ is the number of times that bellman ford is run. $c \le$ the max flow capacity of an edge.
+***** DONE kinda EK speed?
+      CLOSED: [2020-10-29 Thu 19:15]
+      No, EK is $\mathcal O(|V||E|^2)$. $c$ is not bounded by the cost of the edge, but rather the max /flow/.
 *** Cons
 **** Only works when there are no negative cycles
 ** Cycle Canceling Algorithm
@@ -75,4 +79,5 @@
 **** Works in all cases
 *** Con
 **** Sloooooo
+**** Not super common
 ** Use SSPA when possible (no negative cycles)

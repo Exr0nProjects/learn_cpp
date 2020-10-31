@@ -1,0 +1,40 @@
+* Max Flow
+** If it's DP but there's tooooo many states
+** Tips and Tricks
+*** It's probably maxflow if you need to balance something, and you can flow something from one place to another through edges.
+*** Write out the cost function such that neither greedy nor dp can solve it. If 500-1000 nodes then it might be a network flow.
+* Min Cut
+** Cut one side or the other (source or sink) is a good way to decide how to split some subset of nodes
+** Usually bipartite graph (except the maximum close subgraph problem)
+*** Optimal Choice Problem: kind of bipartite, because you have cost on the boundary but not within the sets (29 oct 2020)
+** Maximum closed subgraph problem
+*** Not /really/ bipartite because you can only cut edges directly connected to source/sink.
+**** Kind of a special case though..
+** *Tips and Tricks*
+*** Use $\infty$ edges to stop some edges from being cut. Or, remove them altogether.
+*** when the cost is "between two sets", but never three
+*** Split one node into two nodes (node cut) or delete infinite edges that you must cut but cannot (if a node is tied directly to both source and sink, maybe it doesn't need to be tied to either).
+*** "cost is on a boundary between two sets"
+* problems
+** how many shortest paths
+   dijkstra then use network flow to deduplicate paths
+** min cut
+   just min cut
+** wolf cut rabbits
+   dijkstra because planar graphs can be converted into dual graph
+** Euler circuit
+   Chose each edge randomly, and reverse paths to propogate flow, multi source multi sink
+** *maximum value closed subgraph*
+   Graph building: negatives and positives are source vs sink
+** Optimal choice
+   Cost is on a boundary, so remove some useless edges and do min cut
+** min cost max flow no negative cycles
+   Successive shortest path algorithm
+** "                " with negative cycles
+   use cycle cancling algorithm
+** cities and planes max city
+   low number of paths can be DP-ed, higher number is min cost max flow
+** lower bound max flow
+   split edges, each lower bound incoming edge goes to supersink, ending goes to super source, you "borrow' from super source and send as much as possible to super sink to gaurentee that lower bound is satisfied first
+** min cost lower bound
+   first set up lower bound graph and then run min cost.
