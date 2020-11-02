@@ -90,6 +90,7 @@ bool ok=1;
 
 void postdfs(int c)
 {
+    //printf("post %d\n", c);
     if (postvis[c]) return;
     postvis[c] = 1;
     if (c == N) { ok=0; return; }
@@ -120,14 +121,17 @@ int main()
         }
     }
     //for (; ql != qr; ql = (ql+1)%MXE)
-    for (int i=1; i<=N; ++i) if (dist[i] < 1e18)
+    for (int i=1; i<=N; ++i) if (dist[i] < (ll)1e18)
     {
-        for (int e=hd[q[ql]]; e; e=eg[e].n)
+        //printf("checking bad of %d\n", i);
+        //for (int e=hd[q[ql]]; e; e=eg[e].n)
+        for (int e=hd[i]; e; e=eg[e].n)
             if (dist[eg[e].t] > dist[eg[e].f] + eg[e].w)
+            //if (dist[eg[e].t] < (ll)1e18 && dist[eg[e].t] > dist[eg[e].f] + eg[e].w)
                 postdfs(eg[e].t);
     }
-    //printf("ok? %d     dist %lld\n", ok, dist[N]-1e18);
-    if (ok && dist[N] < 1e18) printf("%lld\n", -dist[N]);
+    //printf("ok? %d     dist %lld %lld\n", ok, dist[N], dist[N] < (ll)1e18);
+    if (ok && dist[N] < (ll)1e18) printf("%lld\n", -1*dist[N]);
     else printf("-1\n");
 }
 
