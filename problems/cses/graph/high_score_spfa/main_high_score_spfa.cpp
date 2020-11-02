@@ -82,7 +82,6 @@ void addEdge()
     eg[ecnt].t = sc();
     eg[ecnt].w = -sc();
     eg[ecnt].n = hd[a];
-    //printf("add edge %3d %3d %3d %3d\n", eg[ecnt].f, eg[ecnt].t, eg[ecnt].w, eg[ecnt].n);
     hd[a] = ecnt++;
 }
 ll N, M, dist[MX], vis[MX], postvis[MX], q[MXE]; // FIX: bounds--SPFA queue needs to be MXE
@@ -107,31 +106,27 @@ int main()
     dist[1] = 0; int ql=0, qr=0;
     for (int i=1; i<=N; ++i) q[qr++] = i;
 
+
     for (; ql != qr && ++vis[q[ql]] <= N; ql = (ql+1) % MXE)    // FIX: put infloop detection here, not in edge traversal
     {
-        //printf("q[%3d.%3d] = %-3d      ", ql, qr, q[ql]); for (int i=1; i<=N; ++i) printf("%20lld", dist[i]); printf("\n");
+        //printf("q[%3d.%3d] = %-3d      ", ql, qr, q[ql]); for (int i=1; i<=N; ++i) printf("%3d", dist[i]); printf("\n");
         for (int e=hd[q[ql]]; e; e=eg[e].n)
-        {
-            //printf("    %3d - %2d -> %d               ->%d\n", eg[e].f, eg[e].w, eg[e].t, eg[e].n);
             if (dist[eg[e].t] > dist[eg[e].f] + eg[e].w)
             {
                 dist[eg[e].t] = dist[eg[e].f] + eg[e].w;
                 q[qr] = eg[e].t, qr = (qr+1)%MXE;   // FIX: queue can hold up to MXE things, not just N because it's not deduplicated
             }
-        }
     }
     //for (; ql != qr; ql = (ql+1)%MXE)
-    for (int i=1; i<=N; ++i) if (dist[i] < (ll)1e18)
+    for (int i=1; i<=N; ++i) if (dist[i] < 1e18)
     {
-        //printf("checking bad of %d\n", i);
         //for (int e=hd[q[ql]]; e; e=eg[e].n)
         for (int e=hd[i]; e; e=eg[e].n)
             if (dist[eg[e].t] > dist[eg[e].f] + eg[e].w)
-            //if (dist[eg[e].t] < (ll)1e18 && dist[eg[e].t] > dist[eg[e].f] + eg[e].w)
                 postdfs(eg[e].t);
     }
-    //printf("ok? %d     dist %lld %lld\n", ok, dist[N], dist[N] < (ll)1e18);
-    if (ok && dist[N] < (ll)1e18) printf("%lld\n", -1*dist[N]);
+    //printf("ok? %d     dist %lld\n", ok, dist[N]-1e18);
+    if (ok && dist[N] < 1e18) printf("%lld\n", -dist[N]);
     else printf("-1\n");
 }
 
