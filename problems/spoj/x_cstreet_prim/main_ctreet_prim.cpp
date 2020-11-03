@@ -78,18 +78,13 @@ struct Edge { int t, w, n; } eg[MXE]; int hd[MX], ecnt=2;
 int T, P, N, M;
 bool vis[MX];
 
-void addEdge()
+void addEdge(int a=sc(), int b=sc(), int w=sc()*P, bool n=1)
 {
-    int a=sc(), b=sc(), w=sc()*P;
     eg[ecnt].t = b;
     eg[ecnt].w = w;
     eg[ecnt].n = hd[a];
     hd[a] = ecnt++;
-    // FIX: two way streets
-    eg[ecnt].t = a;
-    eg[ecnt].w = w;
-    eg[ecnt].n = hd[b];
-    hd[b] = ecnt++;
+    if (n) addEdge(b, a, w, 0); // FIX: two way streets
 }
 
 int main()
