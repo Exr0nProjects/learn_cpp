@@ -4,9 +4,7 @@
  * Accept time: [!meta:end!]
  *  xcup hard 3
  */
-
 #include <set>
-#include <map>
 #include <queue>
 #include <cstdio>
 #include <cstdlib>
@@ -14,7 +12,7 @@
 #include <cstring>
 #include <iostream>
 #include <algorithm>
-
+#include <map>
 
 #define ll long long
 #define dl double
@@ -31,22 +29,7 @@
 #define F(i,b) for (ll i=1; i<=(b); ++i)
 #define R(i,b) for (ll i=(b); i>=1; --i)
 //struct Edge { int u, v, n; } eg[MX]; int hd[MX], ecnt=0;
-
-inline ll pow(ll b, ll e, ll m)
-{
-    ll ret=1;
-    for (; e; e>>=1, (b*=b)%=m)
-        if (e&1) (ret *= b)%=m;
-    return ret;
-}
-
-void setIO(const std::string &name = "13")
-{
-    //ios_base::sync_with_stdio(0); cin.tie(0);
-    if (fopen((name + ".in").c_str(), "r") != 0)
-        freopen((name + ".in").c_str(), "r", stdin),
-        freopen((name + ".out").c_str(), "w+", stdout);
-}
+//
 #define _gc getchar_unlocked
 inline bool sc(ll &n)
 {
@@ -72,72 +55,94 @@ _ilb sc(ll&a,ll&b,ll&c,ll&d){return sc(a,b)&&sc(c,d);}
     b=_b;while(b)(a)%=(b),(a)^=(b)^=(a)^=(b);a;})
 
 using namespace std;
-const int MX = 1e5+11;
+const int MX = 1e3+10;
+const int MXL = 1e6+11;
+const int delta[] = {-1, 0, 1};
 
-map<int, int> trie[MX];
-int fp[MX], tcnt=1, fp_trail_cnt[MX], name_cnt[MX];
-bool isw[MX];
-struct Edge { int t, n; } eg[MX]; int hd[MX], ecnt=2;
-void addEdge(int a, int b)
+int T, L, C, W, wlen[MX];   // length of each word
+
+map<int, int> trie[MXL]
+int fail[MXL], dep[MXL], wcnt[MXL], isw[MXL], viscnt[MXL], lcnt=1;
+
+pair<pair<int, int>, char> ans[MX];
+
+int useChar(int &cur, int c)
 {
-    eg[ecnt].t = b;
-    eg[ecnt].n = hd[a];
-    hd[a] = ecnt++;
+    //printf("    using char '%c' on %d\n", c+'A', cur);
+    for (; cur && !trie[cur].count(c); cur=fail[cur]);    // KMP flashbacks
+    if (trie[cur].count(c)) cur = trie[cur][c];
+    //printf("        went to %d\n", cur);
+    return wcnt[cur];
+    //// follow failtrail for skipped words
+    //vector<int> tans;
+    //for (int ftc=cur; ftc && !failvis[ftc] && hasw[ftc]; failvis[ftc]=1, ftc=fail[ftc])
+    //{
+    //    //printf("           visiting %-3d on failtrail\n", ftc);
+    //    if (isw[ftc]) tans.pb(isw[ftc]);
+    //}
+    ////printf("        got %d answers\n", tans.size());
+    //return tans;
 }
-//vector<int>
 
-int N, M;
+inline bool ok(int y, int x)
+{ return x >= 0 && x < C && y >= 0 && y < L; }
+
+void insert(int idx)
+{
+    int len; sc(len);
+    int cur=0;
+    while (len--)
+    {
+        int c = sc();
+        if (!trie[cur].count(c))
+            dep[lcnt] = dep[cur]+1,
+            trie[cur][c] = lcnt++;
+        cur = trie[cur][c];
+    }
+    wlen[idx] = dep[cur]-1;
+    isw[cur] = 1;
+    wcnt[cur]++;
+}
 
 int main()
 {
     sc(N, M);
-    for (int i=1; i<=N; ++i)
+    // construct trie
+    for (int i=1; i<=W; ++i)
     {
-        // first name
-        int len=sc(), cur=0, nxt;
-        while (len--)
-        {
-            nxt = sc();
-            //printf("got %d, now at %d\n", nxt, cur);
-            if (!trie[cur].count(nxt)) trie[cur][nxt] = tcnt++;
-            cur = trie[cur][nxt];
-        }
-        isw[cur] = 1;
-
-        // last name
-        len=sc(), cur=0, nxt;
-        while (len--)
-        {
-            nxt = sc();
-            //printf("got %d, now at %d\n", nxt, cur);
-            if (!trie[cur].count(nxt)) trie[cur][nxt] = tcnt++;
-            cur = trie[cur][nxt];
-        }
+        insert(i); insert(i);
     }
-
-    queue<int> q; for (auto p : trie[0]) q.push(p.s);
+    // construct failpointers
+    typedef pair<pair<int, int>, char> QState;
+    queue<QState> q;   // cur, pre, char
+    //q.push(mp(mp(0, 0), 26));
+    //for (int i=0; i<26; ++i) if (trie[0].count(i))    // FIX: push root node manually
+    for (auto p: trie[0])
+        q.push(mp(mp(p.s, 0), 26));  // FIX: first order nodes don't failpoint to themselves
     while (!q.empty())
     {
-        int c = q.front(); q.pop();
-        for (auto p : trie[c])
-        {
-            printf("%d->%d init %d\n", c, p.s, fp[c]);
-            for (fp[p.s] = fp[c]; fp[p.s] && !trie[fp[p.s]].count(p.f);
-                    fp[p.s] = fp[fp[p.s]]);
-            if (trie[fp[p.s]].count(p.f)) fp[p.s] = trie[fp[p.s]][p.f];
-            q.push(p.s);
-        }
+        QState c = q.front(); q.pop();
+        //printf("q cur %d <- %d (%c)\n", c.f.f, c.f.s, c.s+'A');
+        // construct fail pointer
+        for (fail[c.f.f] = fail[c.f.s]; fail[c.f.f] && !trie[fail[c.f.f]].count(c.s);
+                fail[c.f.f] = fail[fail[c.f.f]]);   // kmp flashbacks
+        if (trie[fail[c.f.f]].count(c.s)) fail[c.f.f] = trie[fail[c.f.f]][c.s];
+        hasw[c.f.f] |= hasw[fail[c.f.f]];
+        // bfs
+        for (auto p : trie[c.f.f])
+        //for (int i=0; i<26; ++i) if (trie[c.f.f].count(i))
+            q.push(mp(mp(p.s, c.f.f), p.f));
     }
 
-    for (int i=1; i<tcnt; ++i)
-    {
-        printf("%d (-> %3d): ", i, fp[i]);
-        for (auto n : trie[i]) printf("%3d->%-3d", n.f, n.s);
-        printf("\n");
-        //printf("%d\n", 10-trie[i].size());
-        //for (int i=10-trie[i].size(); i; --i) printf("        ");
-        //printf("fp-> %d\n", fp[i]);
-    }
-
+    //// debug ac automaton
+    //printf("    "); for (int i=0; i<26; ++i) printf("%3c", i+'A'); printf("\n");
+    //for (int i=0; i<lcnt; ++i)
+    //{
+    //    printf("%-3d ", i);
+    //    for (int j=0; j<26; ++j)
+    //        if (trie[i][j]) printf("%3d", trie[i][j]);
+    //        else printf("  .");
+    //    printf("   ->%3d     isw %-3d hasw %d dep %-3d\n", fail[i], isw[i], hasw[i], dep[i]);
+    //}
 }
 
