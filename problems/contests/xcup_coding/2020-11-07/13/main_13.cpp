@@ -55,38 +55,33 @@ _ilb sc(ll&a,ll&b,ll&c,ll&d){return sc(a,b)&&sc(c,d);}
     b=_b;while(b)(a)%=(b),(a)^=(b)^=(a)^=(b);a;})
 
 using namespace std;
-const int MX = 1e3+10;
-const int MXL = 1e6+11;
+const int MXN = 2e4+10;
+const int MXM = 5e4+10;
+const int MXL = 1e5+11;
 const int delta[] = {-1, 0, 1};
+
+vector<int> hd[MXL];
 
 //int T, L, C, W, wlen[MX];   // length of each word
 int N, M;
 
 map<int, int> trie[MXL];
-int fail[MXL], dep[MXL], wcnt[MXL], isw[MXL], viscnt[MXL], lcnt=1;
+int fail[MXL], dep[MXL], wcnt[MXL], roll[MXN], /*isw[MXL],*/ viscnt[MXL], lcnt=1;
+int nameans[MXN];
 
-pair<pair<int, int>, char> ans[MX];
+//pair<pair<int, int>, char> ans[MX];
+
+pair<vector<int>, vector<int> > names[MXN];
 
 int useChar(int &cur, int c)
 {
-    //printf("    using char '%c' on %d\n", c+'A', cur);
+    //printf("    using char '%2d' on %2d    ", c, cur);
     for (; cur && !trie[cur].count(c); cur=fail[cur]);    // KMP flashbacks
     if (trie[cur].count(c)) cur = trie[cur][c];
+    ++viscnt[cur];
     //printf("        went to %d\n", cur);
     return wcnt[cur];
-    //// follow failtrail for skipped words
-    //vector<int> tans;
-    //for (int ftc=cur; ftc && !failvis[ftc] && hasw[ftc]; failvis[ftc]=1, ftc=fail[ftc])
-    //{
-    //    //printf("           visiting %-3d on failtrail\n", ftc);
-    //    if (isw[ftc]) tans.pb(isw[ftc]);
-    //}
-    ////printf("        got %d answers\n", tans.size());
-    //return tans;
 }
-//
-//inline bool ok(int y, int x)
-//{ return x >= 0 && x < C && y >= 0 && y < L; }
 
 void insert(int idx)
 {
@@ -99,21 +94,37 @@ void insert(int idx)
             dep[lcnt] = dep[cur]+1,
             trie[cur][c] = lcnt++;
         cur = trie[cur][c];
-        printf(" got %d -> %d\n", c, cur);
+        //printf(" got %d -> %d\n", c, cur);
     }
-    printf("----\n");
+    //printf("----\n");
     //wlen[idx] = dep[cur]-1;
-    isw[cur] = idx;
+    roll[idx] = cur;
+    //isw[cur] = idx;
     wcnt[cur]++;
+}
+
+int dfs(int c)
+{
+    for (int n : hd[c])
+        viscnt[c] += dfs(n);
+    return viscnt[c];
 }
 
 int main()
 {
     sc(N, M);
-    // construct trie
+    // store names for querying later
     for (int i=1; i<=N; ++i)
     {
-        insert(i); insert(i);
+        int len=sc(); names[i].f.reserve(len);
+        while (len--) names[i].f.pb(sc());
+        len=sc(); names[i].s.reserve(len);
+        while (len--) names[i].s.pb(sc());
+    }
+    // construct trie
+    for (int i=1; i<=M; ++i)
+    {
+        insert(i);
     }
     // construct failpointers
     typedef pair<pair<int, int>, char> QState;
@@ -131,6 +142,7 @@ int main()
                 fail[c.f.f] = fail[fail[c.f.f]]);   // kmp flashbacks
         if (trie[fail[c.f.f]].count(c.s)) fail[c.f.f] = trie[fail[c.f.f]][c.s];
         wcnt[c.f.f] += wcnt[fail[c.f.f]];
+        hd[fail[c.f.f]].pb(c.f.f); // construct tree of fail
         //hasw[c.f.f] |= hasw[fail[c.f.f]];
         // bfs
         for (auto p : trie[c.f.f])
@@ -139,28 +151,40 @@ int main()
     }
 
     // debug ac automaton
-    printf("    "); for (int i=0; i<26; ++i) printf("%3d", i); printf("\n");
-    for (int i=0; i<lcnt; ++i)
-    {
-        printf("%-3d ", i);
-        for (int j=0; j<27; ++j)
-            if (trie[i].count(j)) printf("%3d", trie[i][j]);
-            else printf("  .");
-        printf("   ->%3d     isw %-3d wcnt %d dep %-3d\n", fail[i], isw[i], wcnt[i], dep[i]);
-    }
+    //printf("    "); for (int i=0; i<26; ++i) printf("%3d", i); printf("\n");
+    //for (int i=0; i<lcnt; ++i)
+    //{
+    //    printf("%-3d ", i);
+    //    for (int j=0; j<27; ++j)
+    //        if (trie[i].count(j)) printf("%3d", trie[i][j]);
+    //        else printf("  .");
+    //    printf("   ->%3d     isw %%-3d wcnt %d dep %-3d\n", fail[i], [>isw[i],<] wcnt[i], dep[i]);
+    //}
 
     // call roll
-    for (int i=1; i<=M; ++i)
+    for (int i=1; i<=N; ++i)
     {
-        int acnt=0;
-        int len = sc(), cur=0;
-        while (len--)
-        {
-            int c = sc();
-            acnt+=useChar(cur, c);
-            printf("got %d -> %d\n", c, cur);
-        }
-        printf("%d\n", acnt);
+        int cur=0; for (auto nxt : names[i].f)
+            nameans[i] += useChar(cur, nxt);
+        cur=0; for (auto nxt : names[i].s)
+            nameans[i] += useChar(cur, nxt);
     }
+
+    dfs(0);
+
+    for (int i=1; i<=M; ++i) printf("%d\n", viscnt[roll[i]]);
+    for (int i=1; i<=N; ++i) printf("%d ", nameans[i]); printf("\n");
+    //for (int i=1; i<=M; ++i)
+    //{
+    //    int acnt=0;
+    //    int len = sc(), cur=0;
+    //    while (len--)
+    //    {
+    //        int c = sc();
+    //        acnt+=useChar(cur, c);
+    //        printf("got %d -> %d\n", c, cur);
+    //    }
+    //    printf("%d\n", acnt);
+    //}
 }
 
