@@ -62,14 +62,12 @@ const int delta[] = {-1, 0, 1};
 
 vector<int> hd[MXL];
 
-//int T, L, C, W, wlen[MX];   // length of each word
 int N, M;
 
 map<int, int> trie[MXL];
-int fail[MXL], dep[MXL], wcnt[MXL], roll[MXN], /*isw[MXL],*/ viscnt[MXL], lcnt=1;
+int fail[MXL], wcnt[MXL], roll[MXN], /*isw[MXL],*/ viscnt[MXL], lcnt=1;
 int nameans[MXN];
-
-//pair<pair<int, int>, char> ans[MX];
+bool failvis[MXN], isw[MXL];
 
 pair<vector<int>, vector<int> > names[MXN];
 
@@ -78,9 +76,18 @@ int useChar(int &cur, int c)
     //printf("    using char '%2d' on %2d    ", c, cur);
     for (; cur && !trie[cur].count(c); cur=fail[cur]);    // KMP flashbacks
     if (trie[cur].count(c)) cur = trie[cur][c];
-    ++viscnt[cur];
     //printf("        went to %d\n", cur);
-    return wcnt[cur];
+    int twcnt = 0;
+    for (int ftc=cur; ftc && !failvis[ftc] && wcnt[ftc]; failvis[ftc]=1, ftc=fail[ftc])
+        //printf("    at %d\n", ftc),
+        ++viscnt[ftc], twcnt += isw[ftc];
+    //{
+    //    //printf("           visiting %-3d on failtrail\n", ftc);
+    //    if (isw[ftc]) tans.pb(isw[ftc]);
+    //}
+    ////printf("        got %d answers\n", tans.size());
+    //return tans;
+    return twcnt;
 }
 
 void insert(int idx)
@@ -91,7 +98,7 @@ void insert(int idx)
     {
         int c = sc();
         if (!trie[cur].count(c))
-            dep[lcnt] = dep[cur]+1,
+            //dep[lcnt] = dep[cur]+1,
             trie[cur][c] = lcnt++;
         cur = trie[cur][c];
         //printf(" got %d -> %d\n", c, cur);
@@ -100,6 +107,7 @@ void insert(int idx)
     //wlen[idx] = dep[cur]-1;
     roll[idx] = cur;
     //isw[cur] = idx;
+    isw[cur] = 1;
     wcnt[cur]++;
 }
 
@@ -122,10 +130,7 @@ int main()
         while (len--) names[i].s.pb(sc());
     }
     // construct trie
-    for (int i=1; i<=M; ++i)
-    {
-        insert(i);
-    }
+    for (int i=1; i<=M; ++i) insert(i);
     // construct failpointers
     typedef pair<pair<int, int>, char> QState;
     queue<QState> q;   // cur, pre, char
@@ -133,6 +138,7 @@ int main()
     //for (int i=0; i<26; ++i) if (trie[0].count(i))    // FIX: push root node manually
     for (auto p: trie[0])
         q.push(mp(mp(p.s, 0), 26));  // FIX: first order nodes don't failpoint to themselves
+
     while (!q.empty())
     {
         QState c = q.front(); q.pop();
@@ -141,6 +147,7 @@ int main()
         for (fail[c.f.f] = fail[c.f.s]; fail[c.f.f] && !trie[fail[c.f.f]].count(c.s);
                 fail[c.f.f] = fail[fail[c.f.f]]);   // kmp flashbacks
         if (trie[fail[c.f.f]].count(c.s)) fail[c.f.f] = trie[fail[c.f.f]][c.s];
+
         wcnt[c.f.f] += wcnt[fail[c.f.f]];
         hd[fail[c.f.f]].pb(c.f.f); // construct tree of fail
         //hasw[c.f.f] |= hasw[fail[c.f.f]];
@@ -158,33 +165,27 @@ int main()
     //    for (int j=0; j<27; ++j)
     //        if (trie[i].count(j)) printf("%3d", trie[i][j]);
     //        else printf("  .");
-    //    printf("   ->%3d     isw %%-3d wcnt %d dep %-3d\n", fail[i], [>isw[i],<] wcnt[i], dep[i]);
+    //    printf("   ->%3d     wcnt %d\n", fail[i], wcnt[i]);
     //}
 
     // call roll
     for (int i=1; i<=N; ++i)
     {
+        memset(failvis, 0, sizeof failvis);
         int cur=0; for (auto nxt : names[i].f)
+            //printf("%3d", nxt),
             nameans[i] += useChar(cur, nxt);
+        //printf("\n");
+
         cur=0; for (auto nxt : names[i].s)
+            //printf("%3d", nxt),
             nameans[i] += useChar(cur, nxt);
+        //printf("\n");
     }
 
     dfs(0);
 
     for (int i=1; i<=M; ++i) printf("%d\n", viscnt[roll[i]]);
     for (int i=1; i<=N; ++i) printf("%d ", nameans[i]); printf("\n");
-    //for (int i=1; i<=M; ++i)
-    //{
-    //    int acnt=0;
-    //    int len = sc(), cur=0;
-    //    while (len--)
-    //    {
-    //        int c = sc();
-    //        acnt+=useChar(cur, c);
-    //        printf("got %d -> %d\n", c, cur);
-    //    }
-    //    printf("%d\n", acnt);
-    //}
 }
 
