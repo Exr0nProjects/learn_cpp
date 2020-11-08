@@ -59,9 +59,10 @@ const int MX = 1e3+10;
 const int MXL = 1e6+11;
 const int delta[] = {-1, 0, 1};
 
-int T, L, C, W, wlen[MX];   // length of each word
+//int T, L, C, W, wlen[MX];   // length of each word
+int N, M;
 
-map<int, int> trie[MXL]
+map<int, int> trie[MXL];
 int fail[MXL], dep[MXL], wcnt[MXL], isw[MXL], viscnt[MXL], lcnt=1;
 
 pair<pair<int, int>, char> ans[MX];
@@ -83,9 +84,9 @@ int useChar(int &cur, int c)
     ////printf("        got %d answers\n", tans.size());
     //return tans;
 }
-
-inline bool ok(int y, int x)
-{ return x >= 0 && x < C && y >= 0 && y < L; }
+//
+//inline bool ok(int y, int x)
+//{ return x >= 0 && x < C && y >= 0 && y < L; }
 
 void insert(int idx)
 {
@@ -98,9 +99,11 @@ void insert(int idx)
             dep[lcnt] = dep[cur]+1,
             trie[cur][c] = lcnt++;
         cur = trie[cur][c];
+        printf(" got %d -> %d\n", c, cur);
     }
-    wlen[idx] = dep[cur]-1;
-    isw[cur] = 1;
+    printf("----\n");
+    //wlen[idx] = dep[cur]-1;
+    isw[cur] = idx;
     wcnt[cur]++;
 }
 
@@ -108,7 +111,7 @@ int main()
 {
     sc(N, M);
     // construct trie
-    for (int i=1; i<=W; ++i)
+    for (int i=1; i<=N; ++i)
     {
         insert(i); insert(i);
     }
@@ -127,22 +130,37 @@ int main()
         for (fail[c.f.f] = fail[c.f.s]; fail[c.f.f] && !trie[fail[c.f.f]].count(c.s);
                 fail[c.f.f] = fail[fail[c.f.f]]);   // kmp flashbacks
         if (trie[fail[c.f.f]].count(c.s)) fail[c.f.f] = trie[fail[c.f.f]][c.s];
-        hasw[c.f.f] |= hasw[fail[c.f.f]];
+        wcnt[c.f.f] += wcnt[fail[c.f.f]];
+        //hasw[c.f.f] |= hasw[fail[c.f.f]];
         // bfs
         for (auto p : trie[c.f.f])
         //for (int i=0; i<26; ++i) if (trie[c.f.f].count(i))
             q.push(mp(mp(p.s, c.f.f), p.f));
     }
 
-    //// debug ac automaton
-    //printf("    "); for (int i=0; i<26; ++i) printf("%3c", i+'A'); printf("\n");
-    //for (int i=0; i<lcnt; ++i)
-    //{
-    //    printf("%-3d ", i);
-    //    for (int j=0; j<26; ++j)
-    //        if (trie[i][j]) printf("%3d", trie[i][j]);
-    //        else printf("  .");
-    //    printf("   ->%3d     isw %-3d hasw %d dep %-3d\n", fail[i], isw[i], hasw[i], dep[i]);
-    //}
+    // debug ac automaton
+    printf("    "); for (int i=0; i<26; ++i) printf("%3d", i); printf("\n");
+    for (int i=0; i<lcnt; ++i)
+    {
+        printf("%-3d ", i);
+        for (int j=0; j<27; ++j)
+            if (trie[i].count(j)) printf("%3d", trie[i][j]);
+            else printf("  .");
+        printf("   ->%3d     isw %-3d wcnt %d dep %-3d\n", fail[i], isw[i], wcnt[i], dep[i]);
+    }
+
+    // call roll
+    for (int i=1; i<=M; ++i)
+    {
+        int acnt=0;
+        int len = sc(), cur=0;
+        while (len--)
+        {
+            int c = sc();
+            acnt+=useChar(cur, c);
+            printf("got %d -> %d\n", c, cur);
+        }
+        printf("%d\n", acnt);
+    }
 }
 
