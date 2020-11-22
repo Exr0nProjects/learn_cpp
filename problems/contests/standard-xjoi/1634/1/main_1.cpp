@@ -114,25 +114,28 @@ int main()
         qs[i] = mp(mp(k, v), i);
     }
 
-    sort(eg, eg+N);
-    sort(qs, qs+Q);
-    for (int i=1; i<N; ++i) printf("%d (%d..%d)\n", eg[i].f, eg[i].s.f, eg[i].s.s);
-    for (int i=1; i<=Q; ++i) printf("(%d  %d) %d\n", qs[i].f.f, qs[i].f.s, qs[i].s);
+    sort(eg+1, eg+N, greater<pair<int, pii> >());
+    sort(qs+1, qs+Q+1, greater<pair<pii, int> >());
+    //for (int i=1; i<N; ++i) printf("%d (%d..%d)\n", eg[i].f, eg[i].s.f, eg[i].s.s);
+    //for (int i=1; i<=Q; ++i) printf("(%d  %d) %d\n", qs[i].f.f, qs[i].f.s, qs[i].s);
     //for (auto p : eg) printf("%d (%d..%d)\n", p.f, p.s.f, p.s.s);
     //for (auto p : qs) printf("(%d  %d) %d\n", p.f.f, p.f.s, p.s);
 
     for (int i=0; i<=N; ++i) djs[i] = 1, djf[i] = i;
-    printf("djs inited!\n");
+    //printf("djs inited!\n");
     int ei=1, qi=1;
     while (1)
     {
-        printf("ei %3d      (%2d %2d %2d)   qi %3d     (%2d %2d %2d)\n", ei, eg[ei].f, eg[ei].s.f, eg[ei].s.s, qi, qs[qi].f.f, qs[qi].f.s, qs[qi].s);
-        for (; qi<=Q && qs[qi].f.f < eg[ei].f; ++qi)
-            ans[qs[qi].s] = djs[find(qs[qi].f.s)];
-        for (; ei<N && eg[ei].f <= qs[qi].f.f; ++ei)
+        //printf("ei %3d      (%2d %2d %2d)   qi %3d     (%2d %2d %2d)\n", ei, eg[ei].f, eg[ei].s.f, eg[ei].s.s, qi, qs[qi].f.f, qs[qi].f.s, qs[qi].s);
+        for (; qi<=Q && qs[qi].f.f > eg[ei].f; ++qi)
+            //printf("    qi %2d     ans[%2d for %2d] = %d\n", qi, qs[qi].f.s, qs[qi].f.f, djs[find(qs[qi].f.s)]),
+            ans[qs[qi].s] = djs[find(qs[qi].f.s)]-1;
+        for (; ei<N && eg[ei].f >= qs[qi].f.f; ++ei)
+            //printf("    ei %2d     merge %2d %2d\n", qi, eg[ei].s.f, eg[ei].s.s),
             merge(eg[ei].s.f, eg[ei].s.s);
         if (qi > Q || ei == N) break;
     }
+    for (; qi <= Q; ++qi) ans[qs[qi].s] = djs[find(qs[qi].f.s)]-1;
     for (int i=1; i<=Q; ++i) printf("%d\n", ans[i]);
 }
 
