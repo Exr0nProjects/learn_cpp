@@ -76,7 +76,7 @@ using namespace std;
 const int MX = 2e5+11;
 
 multimap<ll, ll, greater<ll> > hd[2]; // [side] < tastiness, eid >
-ll N, D, ans[MX], taste[2][MX], loc_ans[2][MX];
+ll N, D, ans[MX], taste[2][MX];//, loc_ans[2][MX];
 
 unordered_set<ll> vis;
 
@@ -100,13 +100,19 @@ int main()
     printf("==========================\n");
 
     memset(ans, 0x3f, sizeof ans);
-    loc_ans[0][0] = loc_ans[1][0] = 0;
+    //loc_ans[0][0] = loc_ans[1][0] = 0;
 
-    queue<pair<ll, ll> > q;   // < tastiness, side >
-    q.push(mp(0, 0)); q.push(mp(0, 1));
+    queue<pair<ll, ll> > q;   // < eid, side >
+    //q.push(mp(0, 0)); q.push(mp(0, 1)); // TODO: fix
+    for (int s=0; s<2; ++s)
+        for (auto it=hd[s].rbegin(); it!=hd[s].rend(); ++it)
+            if (it->f > 0) break; else q.push(mp(it->s, s)), ans[it->s] = 1;
+        //for (auto p : reverse(hd[s]))
+            //if (p.f > 0) break; else q.push(mp(p.s, s)), ans[p.s] = 0;
     while (!q.empty())
     {
-        pair<ll, ll> cur = q.front(); q.pop();
+        pair<ll, ll> cur_e = q.front(); q.pop();
+        pair<ll, ll> cur = mp(taste[cur_e.s][cur_e.f], cur_e.f);
         printf("%d:%03d\n", cur.s, cur.f);
         if (vis.count(cur.s*N+cur.f)) continue;
         vis.insert(cur.s*N+cur.f);
@@ -114,10 +120,13 @@ int main()
         for (auto it = hd[cur.s].lower_bound(cur.f);
                 it != hd[cur.s].end() && it->f >= cur.f - D; ++it)
         {
-            loc_ans[!cur.s][taste[!cur.s][it->s]] = // remember the depth on the other side
-                ans[it->s] = min(ans[it->s], loc_ans[cur.s][cur.f]+1);
-            q.push(mp(taste[!cur.s][it->s], !cur.s));
-            printf("   %03d -> %d:%03d with %3d\n", it->f, !cur.s, taste[!cur.s][it->s], ans[it->s]);
+            //loc_ans[!cur.s][taste[!cur.s][it->s]] = // remember the depth on the other side
+            //    ans[it->s] = min(ans[it->s], loc_ans[cur.s][cur.f]+1);
+            ans[it->s] = min(ans[it->s], ans[cur_e.f]+1);
+
+            //q.push(mp(taste[!cur.s][it->s], !cur.s));
+            q.push(mp(it->s, !cur.s));
+            printf("   %d:%03d -> %d:%03d with %3d\n", cur.s, it->f, !cur.s, taste[!cur.s][it->s], ans[it->s]);
         }
     }
     for (int i=1; i<=N; ++i)
