@@ -87,26 +87,27 @@ int main()
         for (int i=1; i<=N; ++i)
         {
             int inp[2]; sc(inp[0], inp[1]);
-            hd[!s].insert(mp(inp[!s], N*s+i));
+            hd[!s].insert(mp(inp[1], N*s+i));
             for (int k=2; k--;)
                 taste[k][N*s+i] = inp[k];
         }
 
-    //for (int s=0; s<2; ++s)
-    //{
-    //    printf("==========================\nside %d\n", s);
-    //    for (auto p : hd[s]) printf("%3d -> { %3d .. %3d }\n", p.f, taste[0][p.s], taste[1][p.s]);
-    //}
-    //printf("==========================\n");
+    for (int s=0; s<2; ++s)
+    {
+        printf("==========================\nside %d\n", s);
+        for (auto p : hd[s]) printf("%3d -> { %3d .. %3d }\n", p.f, taste[0][p.s], taste[1][p.s]);
+    }
+    printf("==========================\n");
 
     memset(ans, 0x3f, sizeof ans);
+    loc_ans[0][0] = loc_ans[1][0] = 0;
 
     queue<pair<ll, ll> > q;   // < tastiness, side >
     q.push(mp(0, 0)); q.push(mp(0, 1));
     while (!q.empty())
     {
         pair<ll, ll> cur = q.front(); q.pop();
-        //printf("%d:%03d\n", cur.s, cur.f);
+        printf("%d:%03d\n", cur.s, cur.f);
         if (vis.count(cur.s*N+cur.f)) continue;
         vis.insert(cur.s*N+cur.f);
 
@@ -116,7 +117,7 @@ int main()
             loc_ans[!cur.s][taste[!cur.s][it->s]] = // remember the depth on the other side
                 ans[it->s] = min(ans[it->s], loc_ans[cur.s][cur.f]+1);
             q.push(mp(taste[!cur.s][it->s], !cur.s));
-            //printf("   -> %d:%03d with %3d\n", !cur.s, taste[!cur.s][it->s], ans[it->s]);
+            printf("   %03d -> %d:%03d with %3d\n", it->f, !cur.s, taste[!cur.s][it->s], ans[it->s]);
         }
     }
     for (int i=1; i<=N; ++i)
