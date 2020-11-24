@@ -74,40 +74,33 @@ _ilb sc(ll&a,ll&b,ll&c,ll&d){return sc(a,b)&&sc(c,d);}
 using namespace std;
 const int MX = 1e5+11;
 
-int N, Q, a[MX];
+int N, Q, a[MX], gcnt[256][MX], cnt[256];
 
 int main()
 {
     sc(N, Q);
     for (int i=1; i<=N; ++i) sc(a[i]);
-    printf("\n\n=========\n\n");
+    for (int i=1; i<=N; ++i) ++gcnt[a[i]][i];
+    for (int j=1; j<256; ++j)
+        for (int i=1; i<=N; ++i) gcnt[j][i] += gcnt[j][i-1];
+    //printf("\n\n=========\n\n");
 
     while (Q--)
     {
         int l, r, x; sc(l, r, x);
-        map<int, ll> cnt = {};
         ll ans=0;
-        // insert valid numbers
-        for (int i=l; i<=r; ++i)
-            if (!(a[i]&~x)) ++cnt[a[i]];
-
-        for (auto i=cnt.begin(); i!=cnt.end(); ++i)
+        for (int i=1; i<256; ++i)
+            cnt[i] = gcnt[i][r] - gcnt[i][l-1];
+        //for (int i=1; i<20; ++i) printf("%3d: %3d\n", i, cnt[i]);
+        for (int i=1; i<256; ++i) if (!(i&~x))
         {
-            if (i->f == x && i->s >= 3) printf("%3d     <     <           (x %5d)\n", i->f, i->s*(i->s-1)*(i->s-2)), ans += i->s * (i->s-1) * (i->s-2);
-            for (auto j=next(i); j!=cnt.end(); ++j)
+            if (i == x && cnt[i] >= 3) ans += cnt[i]*(cnt[i]-1)*(cnt[i]-2)/6;
+            for (int j=i+1; j<256; ++j) if (!(j&~x))
             {
-                //if ((i->f | j->f) == x && i->s >= 2) ans += i->s * (i->s-1) * j->s;
-                //if ((i->f | j->f) == x && j->s >= 2) ans += j->s * (j->s-1) * i->s;
-                if ((i->f | j->f) == x && i->s >= 2) printf("%3d     <   %3d           (x %5d)\n", i->f, j->f, i->s*(i->s-1)*j->s), ans += i->s * (i->s-1) * j->s;
-                if ((i->f | j->f) == x && j->s >= 2) printf("%3d     >   %3d           (x %5d)\n", i->f, j->f, j->s*(j->s-1)*i->s), ans += j->s * (j->s-1) * i->s;
-                for (auto k=next(j); k!=cnt.end(); ++k)
-                {
-                    if ((i->f | j->f | k->f) == x)
-                    {
-                        printf("%3d   %3d   %3d           (x %5d)\n", i->f, j->f, k->f, i->s*j->s*k->s),
-                        ans += i->s * j->s * k->s;
-                    }
-                }
+                if ((i|j) == x && cnt[i] >= 2) ans += cnt[i]*(cnt[i]-1)*cnt[j]/2;
+                if ((i|j) == x && cnt[j] >= 2) ans += cnt[j]*(cnt[j]-1)*cnt[i]/2;
+                for (int k=j+1; k<256; ++k) if (!(k&~x))
+                    if ((i|j|k) == x) ans += cnt[i]*cnt[j]*cnt[k];
             }
         }
         printf("%lld\n", ans);
