@@ -1,5 +1,5 @@
 /*
- * Problem 1 (contests/standard-xjoi/1634/1)
+ * Problem 1 (contests/standard-xjoi/1636/1)
  * Create time: Mon 23 Nov 2020 @ 10:24 (PST)
  * Accept time: [!meta:end!]
  *
@@ -87,17 +87,17 @@ int main()
         for (int i=1; i<=N; ++i)
         {
             int inp[2]; sc(inp[0], inp[1]);
-            hd[!s].insert(mp(inp[1], N*s+i));
+            hd[!s].insert(mp(inp[!s], N*s+i));
             for (int k=2; k--;)
                 taste[k][N*s+i] = inp[k];
         }
 
-    for (int s=0; s<2; ++s)
-    {
-        printf("==========================\nside %d\n", s);
-        for (auto p : hd[s]) printf("%3d -> { %3d .. %3d }\n", p.f, taste[0][p.s], taste[1][p.s]);
-    }
-    printf("==========================\n");
+    //for (int s=0; s<2; ++s)
+    //{
+    //    printf("==========================\nside %d\n", s);
+    //    for (auto p : hd[s]) printf("%-2d %3d -> { %3d .. %3d }\n", p.s, p.f, taste[0][p.s], taste[1][p.s]);
+    //}
+    //printf("==========================\n");
 
     memset(ans, 0x3f, sizeof ans);
     //loc_ans[0][0] = loc_ans[1][0] = 0;
@@ -106,7 +106,7 @@ int main()
     for (int s=0; s<2; ++s)
         for (auto it=hd[s].rbegin(); it!=hd[s].rend(); ++it)
         {
-            printf("s = %d\n", s);
+            //printf("s = %d\n", s);
             if (it->f > 0) break; else q.push(mp(it->s, s)), ans[it->s] = 1;
         }
     while (!q.empty())
@@ -123,7 +123,7 @@ int main()
             ans[it->s] = min(ans[it->s], ans[cur_e.f]+1);
 
             q.push(mp(it->s, !cur.s));
-            printf("   %d:%03d -> %d:%03d with %3d\n", cur.s, it->f, !cur.s, taste[!cur.s][it->s], ans[it->s]);
+            printf("   %-2d %d:%03d -> %d:%03d with %3d\n", it->s, cur.s, it->f, !cur.s, taste[!cur.s][it->s], ans[it->s]);
         }
     }
     for (int i=1; i<=N; ++i)

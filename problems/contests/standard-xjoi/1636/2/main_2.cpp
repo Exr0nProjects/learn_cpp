@@ -1,5 +1,5 @@
 /*
- * Problem 2 (contests/standard-xjoi/1634/2)
+ * Problem 2 (contests/standard-xjoi/1636/2)
  * Create time: Mon 23 Nov 2020 @ 11:48 (PST)
  * Accept time: [!meta:end!]
  *
@@ -86,21 +86,49 @@ ll N, K, dp[MX][4], paint[MX];
 
 ll op(int c, int x, int p=0, int d=0)
 {
-    for (int _=d; _--;) printf("    "); printf("%d %d", c, x);
-    //if (paint[c] && paint[c] != x) return 0;
-    if (paint[c] && paint[c] != x) { printf(" => 0\n"); return 0; }
-    //if (!eg[hd[c]].n) return 1;
-    if (!eg[hd[c]].n) { printf(" => 1\n"); return 1; } printf("\n");
+    //for (int _=d; _--;) printf("    "); printf("%d %d", c, x);
     ll &ret = dp[c][x]; if (ret) return ret;
-    for (int y=1; y<=3; ++y) if (y != x)
+    //ll &ret = dp[c][x]; if (ret) { printf(" => %d\n", ret); return ret; }
+    if (paint[c]) if (paint[c] == x) return 0; else
+    //if (paint[c]) if (paint[c] == x) { printf(" => 0\n"); return 0; } else
+    {
+        //printf("\n");
+        ret = 1;
         for (int e=hd[c]; e; e=eg[e].n) if (eg[e].t != p)
+            (ret *= op(eg[e].t, paint[c], c, d+1)) %= mod;
+    }
+    else
+    {
+        if (!eg[hd[c]].n) return 2;
+        //if (!eg[hd[c]].n) { printf(" => 2\n"); return 2; } else printf("\n");
+        for (int y=1; y<=3; ++y) if (y != x)
         {
-            //if (paint[eg[e].t] == x) return 0;
-            if (paint[eg[e].t] == x) { for (int _=d; _--;) printf("    "); printf("%d %d !> %d\n", c, x, 0); return 0; }
-            (ret += op(eg[e].t, y, c, d+1)) %= mod;
+            ll tmp = 1;
+            for (int e=hd[c]; e; e=eg[e].n) if (eg[e].t != p)
+                (tmp *= op(eg[e].t, y, c, d+1)) %= mod;
+            //for (int _=d; _--;) printf("    "); printf("color %d -> %d\n", y, tmp);
+            ret += tmp;
         }
-    for (int _=d; _--;) printf("    "); printf("%d %d => %d\n", c, x, ret);
-    return ret;
+    }
+    //for (int _=d; _--;) printf("    "); printf("%d %d => %d\n", c, x, ret);
+    return ret%mod;
+    //for (int _=d; _--;) printf("    "); printf("%d %d", c, x);
+    ////if (paint[c] && paint[c] != x) return 0;
+    //if (paint[c] && paint[c] != x) { printf(" => 0\n"); return 0; }
+    ////if (!eg[hd[c]].n) return 1;
+    //if (!eg[hd[c]].n) { printf(" => 1\n"); return 1; } printf("\n");
+    //ll &ret = dp[c][x]; if (ret) return ret;
+    //for (int y=1; y<=3; ++y) if (y != x)
+    //{
+    //    for (int e=hd[c]; e; e=eg[e].n) if (eg[e].t != p)
+    //    {
+    //        //if (paint[eg[e].t] == x) return 0;
+    //        //if (paint[eg[e].t] == x) { for (int _=d; _--;) printf("    "); printf("%d %d !> %d\n", c, x, 0); return 0; }
+    //        (ret += op(eg[e].t, y, c, d+1)) %= mod;
+    //    }
+    //}
+    //for (int _=d; _--;) printf("    "); printf("%d %d => %d\n", c, x, ret);
+    //return ret;
 }
 
 int main()
@@ -113,6 +141,6 @@ int main()
     }
     int v; while (K--) sc(v), paint[v] = sc();
 
-    printf("%lld\n", op(1, 1) + op(1, 2) + op(1, 3));
+    printf("%lld\n", op(1, 0)%mod);
 }
 
