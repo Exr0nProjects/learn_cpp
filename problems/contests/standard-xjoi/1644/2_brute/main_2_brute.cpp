@@ -1,12 +1,11 @@
 /*
- * Problem 1 (contests/standard-xjoi/1644/1)
- * Create time: Tue 24 Nov 2020 @ 12:30 (PST)
+ * Problem 2_brute (contests/standard-xjoi/1644/2_brute)
+ * Create time: Tue 24 Nov 2020 @ 13:18 (PST)
  * Accept time: [!meta:end!]
  *
  */
 
 #include <set>
-#include <map>
 #include <queue>
 #include <cstdio>
 #include <cstdlib>
@@ -14,7 +13,8 @@
 #include <cstring>
 #include <iostream>
 #include <algorithm>
-
+#include <cmath>
+#include <math.h>
 
 #define ll long long
 #define dl double
@@ -24,8 +24,6 @@
 #define pii pair<int, int>
 #define pb push_back
 #define mp make_pair
-#define f first
-#define s second
 #define lb(x) ((x)&-(x))
 
 #define F(i,b) for (ll i=1; i<=(b); ++i)
@@ -40,7 +38,7 @@ inline ll pow(ll b, ll e, ll m)
     return ret;
 }
 
-void setIO(const std::string &name = "1")
+void setIO(const std::string &name = "2_brute")
 {
     //ios_base::sync_with_stdio(0); cin.tie(0);
     if (fopen((name + ".in").c_str(), "r") != 0)
@@ -72,38 +70,26 @@ _ilb sc(ll&a,ll&b,ll&c,ll&d){return sc(a,b)&&sc(c,d);}
     b=_b;while(b)(a)%=(b),(a)^=(b)^=(a)^=(b);a;})
 
 using namespace std;
-const int MX = 1e5+11;
+const int MX = -1;
 
-int N, Q, a[MX], gcnt[256][MX], cnt[256];
+ll L, N, M;
+
+#define f(x) ((dl)(M-x*L)/(dl)(x+1))
+#define g(y) ((dl)(N-y*L)/(dl)(y+1))
 
 int main()
 {
-    sc(N, Q);
-    for (int i=1; i<=N; ++i) sc(a[i]);
-    for (int i=1; i<=N; ++i) ++gcnt[a[i]][i];
-    for (int j=1; j<256; ++j)
-        for (int i=1; i<=N; ++i) gcnt[j][i] += gcnt[j][i-1];
-    //printf("\n\n=========\n\n");
-
-    while (Q--)
+    sc(L, N, M);
+    ll x = floor((dl)M/(dl)L), y = floor((dl)N/(dl)L);
+    //while (abs(f(x) - g(y)) > 1e-7)
+    while (f(x) != g(y))
     {
-        int l, r, x; sc(l, r, x);
-        ll ans=0;
-        for (int i=1; i<256; ++i)
-            cnt[i] = gcnt[i][r] - gcnt[i][l-1];
-        //for (int i=1; i<20; ++i) printf("%3d: %3d\n", i, cnt[i]);
-        for (int i=1; i<256; ++i) if (!(i&~x))
-        {
-            if (i == x && cnt[i] >= 3) ans += cnt[i]*(cnt[i]-1)*(cnt[i]-2)/6;
-            for (int j=i+1; j<256; ++j) if (!(j&~x))
-            {
-                if ((i|j) == x && cnt[i] >= 2) ans += cnt[i]*(cnt[i]-1)*cnt[j]/2;
-                if ((i|j) == x && cnt[j] >= 2) ans += cnt[j]*(cnt[j]-1)*cnt[i]/2;
-                for (int k=j+1; k<256; ++k)
-                    if ((i|j|k) == x) ans += cnt[i]*cnt[j]*cnt[k];
-            }
-        }
-        printf("%lld\n", ans);
+        //printf("%3d %3d     %lf %lf \n", x, y, f(x), g(y));
+        if (f(x) < g(y)) --x;
+        else --y;
+        if (x <= 0 || y <= 0) { printf("-1\n"); return 0; }
     }
+    //printf("%d %d\n", x, y);
+    printf("%.5lf\n", f(x));
 }
 
