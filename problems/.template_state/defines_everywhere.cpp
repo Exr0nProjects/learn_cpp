@@ -67,8 +67,7 @@ _ilb sc(int&a,int&b,int&c,int&d){return sc(a,b)&&sc(c,d);}
 _ilb sc(ll&a,ll&b){return sc(a)&&sc(b);}
 _ilb sc(ll&a,ll&b,ll&c){return sc(a,b)&&sc(c);}
 _ilb sc(ll&a,ll&b,ll&c,ll&d){return sc(a,b)&&sc(c,d);}
-#define gcd(_a, _b) ({auto a=_a;auto\
-    b=_b;while(b)(a)%=(b),(a)^=(b)^=(a)^=(b);a;})
+ll gcd(ll a, ll b) { while (b^=a^=b^=a%=b); return a; }
 
 using namespace std;
 const int MX = -1;

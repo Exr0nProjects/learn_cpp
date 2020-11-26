@@ -80,8 +80,11 @@ ll N, D, ans[MX], taste[2][MX];//, loc_ans[2][MX];
 
 unordered_set<ll> vis;
 
+#include <cassert>
+
 int main()
 {
+    assert(false);
     sc(N, D);
     for (int s=0; s<2; ++s)
         for (int i=1; i<=N; ++i)
@@ -123,7 +126,7 @@ int main()
             ans[it->s] = min(ans[it->s], ans[cur_e.f]+1);
 
             q.push(mp(it->s, !cur.s));
-            printf("   %-2d %d:%03d -> %d:%03d with %3d\n", it->s, cur.s, it->f, !cur.s, taste[!cur.s][it->s], ans[it->s]);
+            //printf("   %-2d %d:%03d -> %d:%03d with %3d\n", it->s, cur.s, it->f, !cur.s, taste[!cur.s][it->s], ans[it->s]);
         }
     }
     for (int i=1; i<=N; ++i)
