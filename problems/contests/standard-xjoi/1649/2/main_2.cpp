@@ -93,18 +93,18 @@ inline ll cnt(ll x) {
 set<int> q[MX];
 int N, K, dest[MXN];
 
-ll op(int n, int k, int x)
+ll op(int n, int k, int x, int lay=1)
 {
-    printf("%d %d %d\n", n, k, x);
+    printf("%20d %d %d %d\n", lay, n, k, x);
     if (dp.count(chash(n, k, x))) return dp[chash(n, k, x)];
+    if (!n && k == 1) return 0; // base case
     dp[chash(n, k, x)] = 1e18;
-    if (!n && !k) return 0; // base case
     ll ans = 1e18;
-    if (k > 1) ans = min(ans, op(n, k-1, x));               // came from left
-    if (k < N) ans = min(ans, op(n, k+1, x));               // came from right
-    if (cnt(x) && q[k].count(n))                            // picked up passenger
-        ans = min(ans, op(n-1, k, add(x, dest[n], -1)));
-    if (cnt(x) < 4) ans = min(ans, op(n, k, add(x, k, 1))); // dropped off pasenger
+    if (k > 1) ans = min(ans, op(n, k-1, x, lay+1));                // came from left
+    if (k < N) ans = min(ans, op(n, k+1, x, lay+1));                // came from right
+    if (cnt(x) && q[k].count(n))                                    // picked up passenger
+        ans = min(ans, op(n-1, k, add(x, dest[n], -1), lay+1));
+    if (cnt(x) < 4) ans = min(ans, op(n, k, add(x, k, 1), lay+1));  // dropped off pasenger
     dp[chash(n, k, x)] = ans + 1;
     return ans + 1;
 }
