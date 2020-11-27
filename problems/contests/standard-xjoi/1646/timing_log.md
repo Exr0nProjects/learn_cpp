@@ -18,20 +18,23 @@
 ### Knowledge
 jello brain
 
+Remainder is filled in 2 days after:
+
 #### Problem 1:
 
--
+problem statement was a little confusing, but eventually I settled on "given a spanning tree and some extra black edges, remove one tree edge and one black edge to split the graph". Removing an edge can only split the graph into two, and for each tree edge there are either zero, one, or more black edges in parallel. Casework -> zero means you can remove any black edge and it conuts, 1 -> remove that one (one option), two -> zero options. **couldn't figure out how to count the number of parallel edges.**
 
 #### Problem 2:
 
--
+I thought it was an MST problem, but then that didn't work. I thought multi-start dijkstra, which worked but had an edge case. Took a while to code too.
 
 #### Problem 3:
 
--
+I thought you might be able to sort increasing and decreasing, but that didn't really go anywhere. Didn't know what direction to think it in so I ended up giving up.
 
 ### Strategy
-How did you spend your time during the test, and whether there's any issue about your strategy?
+I am filling after doing 1649, and I think the strategy comments are the same. Basically, when I don't know what direction to think something in I kind of give up.
 
 ### Action item
-How would you change your homework, your mastery of knowledge, or class time etc in order to do better next time?
+classic algorithms, improve grit.. how?
+

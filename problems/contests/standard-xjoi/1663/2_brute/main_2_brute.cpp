@@ -1,12 +1,11 @@
 /*
- * Problem 3 (contests/standard-xjoi/1663/3)
- * Create time: Fri 27 Nov 2020 @ 12:03 (PST)
+ * Problem 2_brute (contests/standard-xjoi/1663/2_brute)
+ * Create time: Fri 27 Nov 2020 @ 13:23 (PST)
  * Accept time: [!meta:end!]
  *
  */
 
 #include <set>
-#include <map>
 #include <queue>
 #include <cstdio>
 #include <cstdlib>
@@ -40,7 +39,7 @@ inline ll pow(ll b, ll e, ll m)
     return ret;
 }
 
-void setIO(const std::string &name = "3")
+void setIO(const std::string &name = "2_brute")
 {
     //ios_base::sync_with_stdio(0); cin.tie(0);
     if (fopen((name + ".in").c_str(), "r") != 0)
@@ -71,50 +70,16 @@ _ilb sc(ll&a,ll&b,ll&c,ll&d){return sc(a,b)&&sc(c,d);}
 ll gcd(ll a, ll b) { while (b^=a^=b^=a%=b); return a; }
 
 using namespace std;
-const int MX = 1e3+11;
+const int MX = 1e6+11;
 
-ll N, W, H, rx[MX], ry[MX];
-int x[MX], y[MX], v[MX], ps[MX][MX];
-map<ll, ll> dsx, dsy;
+int N, M, a[MX], ans=0;
 
 int main()
 {
-    sc(N, W, H);
-    for (int i=1; i<=N; ++i)
-        sc(rx[i], ry[i]), sc(v[i]),
-        dsx[rx[i]], dsy[ry[i]];
-    int cnt;
-    cnt = 0; for (pair<const ll, ll>& p : dsx) p.s = ++cnt;
-    cnt = 0; for (pair<const ll, ll>& p : dsy) p.s = ++cnt;
-    //for (auto p : dsy) printf("%d -> %d\n", p.f, p.s);
-
-    for (int i=1; i<=N; ++i)
-        x[i] = dsx[rx[i]],
-        y[i] = dsy[ry[i]],
-        ps[x[i]][y[i]] += v[i];
-    for (int i=1; i<=N; ++i) for (int j=1; j<=N; ++j)
-        ps[i][j] += ps[i-1][j] + ps[i][j-1] - ps[i-1][j-1];
-
-    //printf("idx  "); for (int i=1; i<=N; ++i) printf("%3d", i); printf("\n");
-    //printf(" rx  "); for (int i=1; i<=N; ++i) printf("%3d", rx[i]); printf("\n");
-    //printf(" ry  "); for (int i=1; i<=N; ++i) printf("%3d", ry[i]); printf("\n");
-    //printf("  x  "); for (int i=1; i<=N; ++i) printf("%3d", x[i]); printf("\n");
-    //printf("  y  "); for (int i=1; i<=N; ++i) printf("%3d", y[i]); printf("\n");
-    //for (int i=dsy.size(); i; --i)
-    //{
-    //    for (int j=1; j<=dsx.size(); ++j)
-    //        printf("%3d", ps[j][i]);
-    //    printf("\n");
-    //}
-
-    int ans = 0;
-    for (int i=1; i<=N; ++i)
-    {
-        auto bx = prev(dsx.lower_bound(rx[i] + W));
-        auto by = prev(dsy.lower_bound(ry[i] + H));
-        //printf("%d ends at %d (%d) and %d (%d)\n", i, bx->s, bx->f, by->s, by->f);
-        ans = max(ans, ps[bx->s][by->s] - ps[bx->s][y[i]-1] - ps[x[i]-1][by->s] + ps[x[i]-1][y[i]-1]);
-    }
+    sc(N, M);
+    for (int i=1; i<=N; ++i) sc(a[i]), a[i] ^= a[i-1];
+    for (int i=1; i<=N; ++i) for (int j=i; j<=N; ++j)
+        ans += ((a[j]^a[i-1]) >= M);
     printf("%d\n", ans);
 }
 

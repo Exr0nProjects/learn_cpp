@@ -20,22 +20,22 @@
 ## Contest Reflection
 
 ### Knowledge
-What knowledge did you use in this test, and which part you didn't do well knowledge-wise?
 
 #### Problem 1:
 
--
+I originally thought it was knapsack, found 2^N and MN solutions but didn't know where to go on from there.
 
 #### Problem 2:
 
--
+pretty clearly a complicated DP. I avoided it at first but because other problems were difficult I started grinding out the equation. In the end, I only managed to get a top down method with roughly 10^7 states with logN transition, which would be too slow. In the end I coded it, but it stack overflowed (which I did not but should've seen coming). 
 
 #### Problem 3:
 
--
+Math, I also avoided this problem. After thinking about it for a little I gave up.. on all of the problems.
 
 ### Strategy
-How did you spend your time during the test, and whether there's any issue about your strategy?
+I think the problem is that when I get stuck on a problem (don't know what direction to think it in) then it's hard to keep grinding it out. Maybe I just need more practice with the basics? Or to summarize and connect things we've learned on a per problem level?
 
 ### Action item
-How would you change your homework, your mastery of knowledge, or class time etc in order to do better next time?
+practice standard algorithms, reflect on things we've learned and think about what problems are related and how.
+
