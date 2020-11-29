@@ -1,7 +1,7 @@
 /*
  * Problem 2_partials_1_2 (contests/xjoi_20b/2_partials_1_2)
  * Create time: Sat 28 Nov 2020 @ 18:09 (PST)
- * Accept time: [!meta:end!]
+ * Accept time: Sat 28 Nov 2020 @ 19:59 (PST)
  *
  */
 
@@ -24,8 +24,6 @@
 #define pii pair<int, int>
 #define pb push_back
 #define mp make_pair
-#define f first
-#define s second
 #define lb(x) ((x)&-(x))
 
 #define F(i,b) for (ll i=1; i<=(b); ++i)
@@ -75,16 +73,27 @@ const int MX = -1;
 
 int T, x;
 
+#define f(x) (x*(x+1)/2)
+
 int main()
 {
     sc(T);
     while (T--)
     {
+        char n = 0;
         sc(x);
-        if (floor(sqrt(2*x))*ceil(sqrt(2*x))/2 == x)
-            for (int i=1; i<sqrt(2*x); ++i) printf("a");
-        else if (x <= 233) for (int i=0; i<x; ++i) printf("%c", i%3+'a');
-        else printf("sad");
+        int l=1, r=160, m;
+        while (x > 0)
+        {
+            l = 1;
+            for (; l+1<r; (f(m) <= x ? l : r) = m)
+                //printf("f(l) %3d l %3d r %3d m %3d\n", f(l), l, r, m),
+                m = l+(r-l>>1);
+            for (int i=0; i<l; ++i) printf("%c", n+'a');
+            x -= f(l);
+            //printf("x - %d = %d\n", f(l), x);
+            n = (n+1)%26;
+        }
         printf("\n");
     }
 }
