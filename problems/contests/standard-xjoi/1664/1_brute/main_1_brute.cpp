@@ -125,45 +125,43 @@ int main()
     kdep(rt);
     if (TODOmaxdeg <= 2)    // if its a chain
     {
-        printf("using chain method!\n");
+        //printf("using chain method!\n");
+        for (int i=1; i<=N; ++i) sc(w[i]);
         for (int i=1; i<=M; ++i)
         {
             int u, v; sc(u, v);
-            //++delt[dep[u]<dep[v]][u]; // NOTE: this could probably replaces `cars`
-            //--delt[
+            //printf("%d @%d, %d @%d\n", u, dep[u], v, dep[v]);
             ++delt[dep[u]<dep[v]][u][dep[u]];
             if (dep[u] < dep[v]) // going down
-                --delt[1][son[v]][dep[son[v]]];
+                //printf("sub son %d -> %d\n", v, son[v]),
+                --delt[1][son[v]][dep[u]];
             else
-                --delt[0][bl[0][v]][dep[son[v]]];
-            //cars[dep[u] < dep[v]][u].pb(v); // 1 = going down
+                //printf("sub par %d -> %d\n", v, bl[0][v]),
+                --delt[0][bl[0][v]][dep[u]];
         }
         // going up
         int p = 0;
         map<int, int> sum = {};
-        printf("going up\n");
+        //printf("going up\n");
         for (int c=tail; c!=p; p=c,c=bl[0][c])
         {
+            //printf("@ %d  ", c); for (int i=1; i<=N; ++i) if (delt[0][c].count(i)) printf("%3d", delt[0][c][i]); else printf("  ."); printf("        ");
             if (sum.size() < delt[0][c].size()) swap(sum, delt[0][c]);
             for (auto p : delt[0][c]) sum[p.f] += p.s;
             ans[c] += sum[dep[c] + w[c]];
-            for (int i=1; i<=N; ++i) if (sum.count(i)) printf("%3d", sum[i]); else printf("  ."); printf("\n");
-            //for (auto t : cars[0][c])
-            //    delt[0][c] += 1, delt[0][bl[0][t]] -= 1;
+            //for (int i=1; i<=N; ++i) if (sum.count(i)) printf("%3d", sum[i]); else printf("  ."); printf("\n");
         }
         // going down
         sum = {}; // clear it, opt: could actually deallocate elements
-        printf("going down\n");
+        //printf("going down\n");
         for (int c=rt; c; c=son[c])
         {
+            //printf("@ %d  ", c); for (int i=1; i<=N; ++i) if (delt[1][c].count(i)) printf("%3d", delt[1][c][i]); else printf("  ."); printf("        ");
             if (sum.size() < delt[1][c].size()) swap(sum, delt[1][c]);
             for (auto p : delt[1][c]) sum[p.f] += p.s;
             ans[c] += sum[dep[c] - w[c]];
-            for (int i=1; i<=N; ++i) if (sum.count(i)) printf("%3d", sum[i]); else printf("   "); printf("\n");
+            //for (int i=1; i<=N; ++i) if (sum.count(i)) printf("%3d", sum[i]); else printf("  ."); printf("\n");
         }
-        //int c = rt, p = rt;
-        //for (int i=1; i<=N; ++i)
-        //    for (int e=hd[c]; e; e=eg[e].n) if (eg[e].t != p);
     } else {    // use tle method
     for (int j=1; j<20; ++j)
         for (int i=1; i<=N; ++i)
