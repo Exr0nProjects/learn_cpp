@@ -111,6 +111,22 @@ int lca(int u, int v)
     return bl[0][u];
 }
 
+void kans(int c, int p)
+{
+    // going down
+    //if (sum.size() < delt[1][c].size()) swap(sum, delt[1][c]);    // can't swap because others will use
+    for (auto p : delt[1][p]) if (p.s) delt[1][c][p.f] += p.s;
+    ans[c] += delt[1][0][dep[c] - w[c]];
+    for (int e=hd[c]; e; e=eg[e].n) if (eg[e].t != p)
+    {
+        int n = eg[e].t; kans(n, c);
+        // going up
+        if (delt[0][c].size() < delt[0][n].size()) swap(delt[0][c], delt[0][n]);
+        for (auto p : delt[0][n]) if (p.s) delt[0][c][p.f] += p.s;
+    }
+    ans[c] += delt[0][c][dep[c] + w[c]];
+}
+
 int main()
 {
     sc(N, M);
@@ -123,74 +139,89 @@ int main()
         if (!eg[hd[i]].n) { rt = i; break; }
 
     kdep(rt);
-    if (TODOmaxdeg <= 2)    // if its a chain
-    {
-        //printf("using chain method!\n");
-        for (int i=1; i<=N; ++i) sc(w[i]);
-        for (int i=1; i<=M; ++i)
-        {
-            int u, v; sc(u, v);
-            //printf("%d @%d, %d @%d\n", u, dep[u], v, dep[v]);
-            ++delt[dep[u]<dep[v]][u][dep[u]];
-            if (dep[u] < dep[v]) // going down
-                //printf("sub son %d -> %d\n", v, son[v]),
-                --delt[1][son[v]][dep[u]];
-            else
-                //printf("sub par %d -> %d\n", v, bl[0][v]),
-                --delt[0][bl[0][v]][dep[u]];
-        }
-        // going up
-        int p = 0;
-        map<int, int> sum = {};
-        //printf("going up\n");
-        for (int c=tail; c!=p; p=c,c=bl[0][c])
-        {
-            //printf("@ %d  ", c); for (int i=1; i<=N; ++i) if (delt[0][c].count(i)) printf("%3d", delt[0][c][i]); else printf("  ."); printf("        ");
-            if (sum.size() < delt[0][c].size()) swap(sum, delt[0][c]);
-            for (auto p : delt[0][c]) sum[p.f] += p.s;
-            ans[c] += sum[dep[c] + w[c]];
-            //for (int i=1; i<=N; ++i) if (sum.count(i)) printf("%3d", sum[i]); else printf("  ."); printf("\n");
-        }
-        // going down
-        sum = {}; // clear it, opt: could actually deallocate elements
-        //printf("going down\n");
-        for (int c=rt; c; c=son[c])
-        {
-            //printf("@ %d  ", c); for (int i=1; i<=N; ++i) if (delt[1][c].count(i)) printf("%3d", delt[1][c][i]); else printf("  ."); printf("        ");
-            if (sum.size() < delt[1][c].size()) swap(sum, delt[1][c]);
-            for (auto p : delt[1][c]) sum[p.f] += p.s;
-            ans[c] += sum[dep[c] - w[c]];
-            //for (int i=1; i<=N; ++i) if (sum.count(i)) printf("%3d", sum[i]); else printf("  ."); printf("\n");
-        }
-    } else {    // use tle method
-    for (int j=1; j<20; ++j)
-        for (int i=1; i<=N; ++i)
-            bl[j][i] = bl[j-1][bl[j-1][i]];
-    //for (int i=1; i<=N; ++i) printf("%3d", i); printf("\n");
-    //for (int i=1; i<=N; ++i) printf("%3d", dep[i]); printf("\n");
-    //for (int j=0; j<20; ++j) { for (int i=1; i<=N; ++i) printf("%3d", bl[j][i]); printf("\n"); }
-
-    //int u, v; while (sc(u, v)) printf("-> %d\n", lca(u, v)); // test LCA
     for (int i=1; i<=N; ++i) sc(w[i]);
     for (int i=1; i<=M; ++i)
     {
         int u, v; sc(u, v);
-        int l = lca(u, v), d=dep[u]+dep[v]-2*dep[l];
-        //printf("%d %d\n", u, v);
-        ans[l] += (w[l] == dep[u]-dep[l]);
-        for (int t=0; u!=l; u=bl[0][u], ++t)
-        {
-            //printf("/\\ %d @ %d\n", u, t);
-            if (w[u] == t) ++ans[u];
-        }
-        for (int t=d; v!=l; v=bl[0][v], --t)
-        {
-            //printf("\\/ %d @ %d\n", v, t);
-            if (w[v] == t) ++ans[v];
-        }
-        //for (int i=1; i<=N; ++i) printf("%d ", ans[i]); printf("\n");
+        //printf("%d @%d, %d @%d\n", u, dep[u], v, dep[v]);
+        ++delt[dep[u]<dep[v]][u][dep[u]];
+        if (dep[u] < dep[v]) // going down
+            //printf("sub son %d -> %d\n", v, son[v]),
+            --delt[1][son[v]][dep[u]];
+        else
+            //printf("sub par %d -> %d\n", v, bl[0][v]),
+            --delt[0][bl[0][v]][dep[u]];
     }
-    }
+
+    //if (TODOmaxdeg <= 2)    // if its a chain
+    //{
+    //    //printf("using chain method!\n");
+    //    for (int i=1; i<=N; ++i) sc(w[i]);
+    //    for (int i=1; i<=M; ++i)
+    //    {
+    //        int u, v; sc(u, v);
+    //        //printf("%d @%d, %d @%d\n", u, dep[u], v, dep[v]);
+    //        ++delt[dep[u]<dep[v]][u][dep[u]];
+    //        if (dep[u] < dep[v]) // going down
+    //            //printf("sub son %d -> %d\n", v, son[v]),
+    //            --delt[1][son[v]][dep[u]];
+    //        else
+    //            //printf("sub par %d -> %d\n", v, bl[0][v]),
+    //            --delt[0][bl[0][v]][dep[u]];
+    //    }
+    //    //// going up
+    //    //int p = 0;
+    //    //map<int, int> sum = {};
+    //    ////printf("going up\n");
+    //    //for (int c=tail; c!=p; p=c,c=bl[0][c])
+    //    //{
+    //    //    //printf("@ %d  ", c); for (int i=1; i<=N; ++i) if (delt[0][c].count(i)) printf("%3d", delt[0][c][i]); else printf("  ."); printf("        ");
+    //    //    if (sum.size() < delt[0][c].size()) swap(sum, delt[0][c]);
+    //    //    for (auto p : delt[0][c]) sum[p.f] += p.s;
+    //    //    ans[c] += sum[dep[c] + w[c]];
+    //    //    //for (int i=1; i<=N; ++i) if (sum.count(i)) printf("%3d", sum[i]); else printf("  ."); printf("\n");
+    //    //}
+    //    //// going down
+    //    //sum = {}; // clear it, opt: could actually deallocate elements
+    //    ////printf("going down\n");
+    //    //for (int c=rt; c; c=son[c])
+    //    //{
+    //    //    //printf("@ %d  ", c); for (int i=1; i<=N; ++i) if (delt[1][c].count(i)) printf("%3d", delt[1][c][i]); else printf("  ."); printf("        ");
+    //    //    if (sum.size() < delt[1][c].size()) swap(sum, delt[1][c]);
+    //    //    for (auto p : delt[1][c]) sum[p.f] += p.s;
+    //    //    ans[c] += sum[dep[c] - w[c]];
+    //    //    //for (int i=1; i<=N; ++i) if (sum.count(i)) printf("%3d", sum[i]); else printf("  ."); printf("\n");
+    //    //}
+    //} else {    // use tle method
+    //for (int j=1; j<20; ++j)
+    //    for (int i=1; i<=N; ++i)
+    //        bl[j][i] = bl[j-1][bl[j-1][i]];
+    ////for (int i=1; i<=N; ++i) printf("%3d", i); printf("\n");
+    ////for (int i=1; i<=N; ++i) printf("%3d", dep[i]); printf("\n");
+    ////for (int j=0; j<20; ++j) { for (int i=1; i<=N; ++i) printf("%3d", bl[j][i]); printf("\n"); }
+    //
+    ////int u, v; while (sc(u, v)) printf("-> %d\n", lca(u, v)); // test LCA
+    //for (int i=1; i<=N; ++i) sc(w[i]);
+    //for (int i=1; i<=M; ++i)
+    //{
+    //    int u, v; sc(u, v);
+    //    int l = lca(u, v), d=dep[u]+dep[v]-2*dep[l];
+    //    //printf("%d %d\n", u, v);
+    //    ans[l] += (w[l] == dep[u]-dep[l]);
+    //    for (int t=0; u!=l; u=bl[0][u], ++t)
+    //    {
+    //        //printf("/\\ %d @ %d\n", u, t);
+    //        if (w[u] == t) ++ans[u];
+    //    }
+    //    for (int t=d; v!=l; v=bl[0][v], --t)
+    //    {
+    //        //printf("\\/ %d @ %d\n", v, t);
+    //        if (w[v] == t) ++ans[v];
+    //    }
+    //    //for (int i=1; i<=N; ++i) printf("%d ", ans[i]); printf("\n");
+    //}
+    //}
+
     for (int i=1; i<=N; ++i) printf("%d ", ans[i]); printf("\n");
 }
 
