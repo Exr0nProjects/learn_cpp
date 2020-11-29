@@ -6,6 +6,7 @@
  */
 
 #include <set>
+#include <map>
 #include <queue>
 #include <cstdio>
 #include <cstdlib>
@@ -73,7 +74,8 @@ using namespace std;
 const int MX = 1e5+11;
 
 int N, M, w[MX], ans[MX];
-int TODOmaxdeg = 0;
+int TODOmaxdeg = 0, tail=0, son[MX]; vector<int> cars[2][MX];
+map<int, int> delt[2][MX];
 //int cnt[MX][MX];   // cnt[node][time]
 int dep[MX], bl[20][MX];
 struct Edge { int t, n; } eg[MX<<2]; int hd[MX], ecnt=2;
@@ -86,11 +88,12 @@ void addEdge(int u, int v, bool b=1)
 
 void kdep(int c, int p=1, int d=1)
 {
+    tail = c;   // last visited, TODO remove for actual tree
     dep[c] = d;
     bl[0][c] = p;
     int TODOtmpdeg = 0;
     for (int e=hd[c]; e; e=eg[e].n, ++TODOtmpdeg)
-        if (eg[e].t != p) kdep(eg[e].t, c, d+1);
+        if (eg[e].t != p) kdep(eg[e].t, c, d+1), son[c] = eg[e].t;
     TODOmaxdeg = max(TODOmaxdeg, TODOtmpdeg);
 }
 
@@ -122,7 +125,45 @@ int main()
     kdep(rt);
     if (TODOmaxdeg <= 2)    // if its a chain
     {
-
+        printf("using chain method!\n");
+        for (int i=1; i<=M; ++i)
+        {
+            int u, v; sc(u, v);
+            //++delt[dep[u]<dep[v]][u]; // NOTE: this could probably replaces `cars`
+            //--delt[
+            ++delt[dep[u]<dep[v]][u][dep[u]];
+            if (dep[u] < dep[v]) // going down
+                --delt[1][son[v]][dep[son[v]]];
+            else
+                --delt[0][bl[0][v]][dep[son[v]]];
+            //cars[dep[u] < dep[v]][u].pb(v); // 1 = going down
+        }
+        // going up
+        int p = 0;
+        map<int, int> sum = {};
+        printf("going up\n");
+        for (int c=tail; c!=p; p=c,c=bl[0][c])
+        {
+            if (sum.size() < delt[0][c].size()) swap(sum, delt[0][c]);
+            for (auto p : delt[0][c]) sum[p.f] += p.s;
+            ans[c] += sum[dep[c] + w[c]];
+            for (int i=1; i<=N; ++i) if (sum.count(i)) printf("%3d", sum[i]); else printf("  ."); printf("\n");
+            //for (auto t : cars[0][c])
+            //    delt[0][c] += 1, delt[0][bl[0][t]] -= 1;
+        }
+        // going down
+        sum = {}; // clear it, opt: could actually deallocate elements
+        printf("going down\n");
+        for (int c=rt; c; c=son[c])
+        {
+            if (sum.size() < delt[1][c].size()) swap(sum, delt[1][c]);
+            for (auto p : delt[1][c]) sum[p.f] += p.s;
+            ans[c] += sum[dep[c] - w[c]];
+            for (int i=1; i<=N; ++i) if (sum.count(i)) printf("%3d", sum[i]); else printf("   "); printf("\n");
+        }
+        //int c = rt, p = rt;
+        //for (int i=1; i<=N; ++i)
+        //    for (int e=hd[c]; e; e=eg[e].n) if (eg[e].t != p);
     } else {    // use tle method
     for (int j=1; j<20; ++j)
         for (int i=1; i<=N; ++i)
