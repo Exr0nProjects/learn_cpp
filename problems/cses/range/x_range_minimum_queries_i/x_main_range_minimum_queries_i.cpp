@@ -1,7 +1,7 @@
 /*
  * Problem range_minimum_queries_i (cses/range/range_minimum_queries_i)
  * Create time: Tue 01 Dec 2020 @ 21:42 (PST)
- * Accept time: [!meta:end!]
+ * Accept time: Tue 01 Dec 2020 @ 22:14 (PST)
  *
  */
 
@@ -78,12 +78,15 @@ int main()
 {
     sc(N, Q);
     F(i, N) sc(st[0][i]);
-    F(j, 19) F(i, N-(1<<j))
-        st[j][i] = min(st[j-1][i], st[j-1][i+(1<<j-1)]);
+    for (int j=0; j<18; ++j) F(i, N-(1<<j)+1)
+        st[j+1][i] = min(st[j][i], st[j][i+(1<<j)]);
+    //for (int j=0; j<19; ++j) { F(i, N-(1<<(j))+1) printf("%3d", st[j][i]); printf("\n"); }
     F(i, Q)
     {
         int l, r; sc(l, r); ++r; // FIX: ++r because sparse table is inc exc
-        int d=0; for (; 1<<d+1 <= r-l; ++d);
+        //int d=0; for (; 1<<d+1 < r-l; ++d);
+        int d = 31-__builtin_clz(r-l);
+        //printf("d = %d (%d)\n", d, 1<<d);
         printf("%d\n", min(st[d][l], st[d][r-(1<<d)]));
     }
 }
