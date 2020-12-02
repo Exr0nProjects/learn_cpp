@@ -72,23 +72,19 @@ ll gcd(ll a, ll b) { while (b^=a^=b^=a%=b); return a; }
 using namespace std;
 const int MX = 2e5+11;
 
-int N, Q, arr[MX], ans[MX];
-int ql=1, qr=0, mq[MX];
+int N, Q, st[20][MX];
 
 int main()
 {
     sc(N, Q);
-    F(i, N) sc(arr[i]);
-    for (int i=1; i<=N; ++i)
-    {
-        for (; ql <= qr && mq[qr] > arr[i]; --qr);
-        mq[++qr] = arr[i];
-        ans[i] = mq[ql];
-        if (mq[ql] == arr[i]) ++ql;
-    }
+    F(i, N) sc(st[0][i]);
+    F(j, 19) F(i, N-(1<<j))
+        st[j][i] = min(st[j-1][i], st[j-1][i+(1<<j-1)]);
     F(i, Q)
     {
-        int l, r; sc(l, r);
-        printf
+        int l, r; sc(l, r); ++r; // FIX: ++r because sparse table is inc exc
+        int d=0; for (; 1<<d+1 <= r-l; ++d);
+        printf("%d\n", min(st[d][l], st[d][r-(1<<d)]));
+    }
 }
 
