@@ -1,7 +1,7 @@
 /*
  * Problem range_sum_queries_ii (cses/range/range_sum_queries_ii)
  * Create time: Wed 02 Dec 2020 @ 20:49 (PST)
- * Accept time: [!meta:end!]
+ * Accept time: Wed 02 Dec 2020 @ 21:04 (PST)
  *
  */
 
@@ -73,18 +73,22 @@ using namespace std;
 const int MX = 2e5+11;
 
 int N, M;
-int bit[MX];
+ll bit[MX];
 ll bq(int x)
 {
+    //printf("bq %d -> ", x);
     ll sum=0;
     for (; x; x-=lb(x))
         sum += bit[x];
+    //printf("%d\n", sum);
     return sum;
 }
 void bu(int x, ll v)
 {
-    ll delt = v - bq(x);
+    ll delt = v - bq(x)+bq(x-1);    // FIX: bq is prefix sum dummy
+    //printf("delt %d => %d\n", v, delt);
     for (; x<=N; x+=lb(x))
+        //printf("upadate %d\n", x),
         bit[x] += delt;
 }
 
