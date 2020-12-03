@@ -72,12 +72,13 @@ ll gcd(ll a, ll b) { while (b^=a^=b^=a%=b); return a; }
 using namespace std;
 const int MX = 2e5+11;
 int N, M;
-ll tmax[MX<<1];
+ll tmax[MX<<2];
 
 void comb(int k, int tl, int tr)
 { tmax[k] = max(tmax[k<<1], tmax[k<<1|1]); }
 void update(int q, ll v, int k=1, int tl=1, int tr=N)
 {
+    //printf("%d for %d @ %d (%d..%d\n", q, v, k, tl, tr);
     if (q < tl || q > tr) return;
     if (tl == tr) { tmax[k] += v; return; }
     int mid = tl + (tr-tl>>1);
@@ -87,9 +88,13 @@ void update(int q, ll v, int k=1, int tl=1, int tr=N)
 }
 int bins(ll v, int k=1, int tl=1, int tr=N)
 {
-    if (v < tmax[k]) return 0;
-    int mid = tl + (tr-tlL>>1);
-    if (tmax[mid] >= v) return bins(v, k<<1, tl, mid);
+    //printf("find %d @ %d (%d..%d) has %d (%d %d)\n", v, k, tl, tr, tmax[k], v<tmax[k], tr < tl);
+    if (v > tmax[k] || tr < tl) return 0;
+    //printf("should have something\n");
+    if (tl == tr && tmax[k] >= v) return tl;    // FIX: success condition
+    int mid = tl + (tr-tl>>1);
+    //printf("    max mid = %d\n", tmax[mid]);
+    if (tmax[k<<1] >= v) return bins(v, k<<1, tl, mid); // FIX: k of mid is k<<1 not mid
     else return bins(v, k<<1|1, mid+1, tr);
 }
 
@@ -100,8 +105,10 @@ int main()
     F(i, M)
     {
         int r; sc(r); int g = bins(r);
+        //printf("got %d\n", g);
         if (g) update(g, -r);
-        printf("%d\n", g);
+        printf("%d ", g);
     }
+    printf("\n");
 }
 
