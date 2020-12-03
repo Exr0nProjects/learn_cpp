@@ -1,7 +1,7 @@
 /*
  * Problem range_update_queries (cses/range/range_update_queries)
  * Create time: Wed 02 Dec 2020 @ 21:08 (PST)
- * Accept time: [!meta:end!]
+ * Accept time: Wed 02 Dec 2020 @ 21:28 (PST)
  *
  */
 
@@ -72,7 +72,7 @@ ll gcd(ll a, ll b) { while (b^=a^=b^=a%=b); return a; }
 using namespace std;
 const int MX = 2e5+11;
 
-int N, M, bit[MX];
+ll N, M, bit[MX];
 ll sum=0, p;
 ll bq(int x)
 {
@@ -93,7 +93,7 @@ int main()
     F(i, N) sc(p), bu(i, p-sum), sum=p;
     F(i, M)
     {
-        int t, a, b, v; sc(t, a);
+        ll t, a, b, v; sc(t, a);
         if (t == 2) printf("%lld\n", bq(a));
         else sc(b, v), bu(a, v), bu(b+1, -v);
     }
