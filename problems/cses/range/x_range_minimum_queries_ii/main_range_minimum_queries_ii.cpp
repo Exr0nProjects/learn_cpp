@@ -72,7 +72,8 @@ ll gcd(ll a, ll b) { while (b^=a^=b^=a%=b); return a; }
 using namespace std;
 const int MX = 2e5+11;
 int N, Q;
-int tmin[MX<<1], sett[MX<<1];    // FIX: bounds--segtree takes 2N space
+int tmin[MX<<2], sett[MX<<2];    // FIX: bounds--segtree takes 2N space
+// TODO: /\ why need times four? just doubling should be enough..
 
 void push(int &k, int tl, int tr)
 {
@@ -89,8 +90,7 @@ void comb(int &k, int tl, int tr)
 
 void update(int q, int setv, int k=1, int tl=1, int tr=N)
 {
-    //if (q > MX || tr > MX) printf("uh q = %d    %d\n", q, tr);
-    //printf("%d upd %d @ %d(%d..%d)\n", q, setv, k, tl, tr);
+    printf("%d upd %d @ %d(%d..%d) range %d\n", q, setv, k, tl, tr, tr-tl+1);
     if (q < tl || tr < q) return;
     if (tl == tr) { apply(k, setv, tl, tr); return; }
     int mid = tl + (tr-tl>>1);
@@ -100,7 +100,7 @@ void update(int q, int setv, int k=1, int tl=1, int tr=N)
 }
 int query(int ql, int qr, int k=1, int tl=1, int tr=N)
 {
-    //printf("%d..%d @ %d(%d..%d)\n", ql, qr, k, tl, tr);
+    printf("%d..%d @ %d(%d..%d)\n", ql, qr, k, tl, tr);
     if (qr < tl || tr < ql) return 1e9;
     if (ql <= tl && tr <= qr) return tmin[k];
     int mid = tl + (tr-tl>>1);
