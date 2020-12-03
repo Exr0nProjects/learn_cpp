@@ -70,9 +70,9 @@ _ilb sc(ll&a,ll&b,ll&c,ll&d){return sc(a,b)&&sc(c,d);}
 ll gcd(ll a, ll b) { while (b^=a^=b^=a%=b); return a; }
 
 using namespace std;
-const int MX = 1e5+11;
+const int MX = 2e5+11;
 int N, Q;
-int tmin[MX], sett[MX], D;
+int tmin[MX<<1], sett[MX<<1];    // FIX: bounds--segtree takes 2N space
 
 void push(int &k, int tl, int tr)
 {
@@ -89,8 +89,10 @@ void comb(int &k, int tl, int tr)
 
 void update(int q, int setv, int k=1, int tl=1, int tr=N)
 {
+    //if (q > MX || tr > MX) printf("uh q = %d    %d\n", q, tr);
+    //printf("%d upd %d @ %d(%d..%d)\n", q, setv, k, tl, tr);
     if (q < tl || tr < q) return;
-    if (tl == tr) apply(k, setv, tl, tr);
+    if (tl == tr) { apply(k, setv, tl, tr); return; }
     int mid = tl + (tr-tl>>1);
     if (q <= mid) update(q, setv, k<<1, tl, mid);
     else update(q, setv, k<<1|1, mid+1, tr);
@@ -98,6 +100,7 @@ void update(int q, int setv, int k=1, int tl=1, int tr=N)
 }
 int query(int ql, int qr, int k=1, int tl=1, int tr=N)
 {
+    //printf("%d..%d @ %d(%d..%d)\n", ql, qr, k, tl, tr);
     if (qr < tl || tr < ql) return 1e9;
     if (ql <= tl && tr <= qr) return tmin[k];
     int mid = tl + (tr-tl>>1);
@@ -112,6 +115,7 @@ int main()
     F(i, Q)
     {
         int t, a, b; sc(t, a, b);
+        //printf("got %d %d %d\n", t, a, b);
         if (t == 1) update(a, b);
         else printf("%d\n", query(a, b));
     }
