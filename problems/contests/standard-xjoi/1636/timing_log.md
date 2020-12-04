@@ -31,6 +31,8 @@ What knowledge did you use in this test, and which part you didn't do well knowl
 
 I thought it was a bipartite matching problem because it felt weird that there were two cows. I realized that it didn't actually work like that, because the edges were directed. Then I figured it was DAG-like and that I could just bfs it, which seemed to work. Implementation was tricky (still not correct) because the numbers are big but can't be descritized.
 
+you can also apparently make the nodes into segtree shaped tree graph to binary search for each pie before starting the bfs.
+
 #### Problem 2:
 
 Should be simple tree dp... I had one frame (`dp[i][j]` = number of ways for subtree at `i` with `color[i] = j`) but that ended up breaking when a child was colored. I tried to casework it a bit but realized that actually I should be multplying and adding, and came up with another equation `dp[i][j]` = number of ways for subtree at `i` if it's parent is color `j`, but it was WA 34. Need to revisit.

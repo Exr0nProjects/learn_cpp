@@ -36,6 +36,12 @@ I spent a really long time on this problem, at first working out the algebra and
 
 I have no idea what this problem even means or how to do it.
 
+UPDATE: 
+
+Apparently we didn't see the full code sample. You always choose the largest or smallest index to place in the next selection, and you should almost always choose the largest index (if the current selection is not the left-most empty spot remaining). This is because if it is not the leftmost empty spot, then you should save that spot for the min (it's not symetric because lexographical ordering is not symetric). 
+Remember that the left-most spot is based on the original sequence, not the halfway swapped one (because things are shuffled during quicksort). Use a BIT to maintain whether there is an open space to the left of the current index.
+Also make sure to study the code sample carefully to swap the correct numbers.
+
 ### Strategy
 I spent a lot of time on the second problem, mostly because I thought the first one was hard and that the second one was more approachable. After switching to the first one, I was able to find a brute force approach relatively quickly, and going back to the second one was even faster. I think it was an okay strategy, because I didn't really know what else to do at the time.
 
