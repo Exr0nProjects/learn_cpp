@@ -6,6 +6,8 @@
  */
 
 #include <set>
+#include <map>
+#include <tuple>
 #include <queue>
 #include <cstdio>
 #include <cstdlib>
@@ -13,7 +15,6 @@
 #include <cstring>
 #include <iostream>
 #include <algorithm>
-
 
 #define ll long long
 #define dl double
@@ -29,7 +30,8 @@
 
 #define F(i,b) for (ll i=1; i<=(b); ++i)
 #define R(i,b) for (ll i=(b); i>=1; --i)
-//struct Edge { int u, v, n; } eg[MX]; int hd[MX], ecnt=0;
+#define N(e,c) for (int e=hd[c]; e; e=eg[e].n)
+#define TN(e,c,p) N(e,c) if (eg[e].t != p)
 
 inline ll pow(ll b, ll e, ll m)
 {
@@ -69,6 +71,7 @@ _ilb sc(ll&a,ll&b,ll&c){return sc(a,b)&&sc(c);}
 _ilb sc(ll&a,ll&b,ll&c,ll&d){return sc(a,b)&&sc(c,d);}
 ll gcd(ll a, ll b) { while (b^=a^=b^=a%=b); return a; }
 
+//struct Edge { int f, t, n; } eg[MX*MX]; int hd[MX], ecnt=2;
 using namespace std;
 const int MX = -1;
 
