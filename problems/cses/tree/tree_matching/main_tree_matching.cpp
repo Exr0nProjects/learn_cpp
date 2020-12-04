@@ -72,7 +72,7 @@ ll gcd(ll a, ll b) { while (b^=a^=b^=a%=b); return a; }
 using namespace std;
 const int MX = 2e3+11;
 
-int N, sum[MX], delt[MX], gans=0;
+int N, sum0[MX], sum1[MX], gans=0;
 struct Edge { int t, n; } eg[MX<<1]; int hd[MX], ecnt=2;
 void addEdge(int u, int v, int b=1)
 {
@@ -83,21 +83,32 @@ void addEdge(int u, int v, int b=1)
 
 int kans(int c, bool take=0, int p=1)
 {
-    printf("at %d from %d with %d\n", c, p, take);
+    //printf("at %d from %d with %d\n", c, p, take);
     if (c > 1 && !eg[hd[c]].n) return take;
-    int sum = 0;
-    if (take) for (int e=hd[c]; e; e=eg[e].n) if (eg[e].t != p)
-        sum += delt[eg[e].t] = kans(eg[e].t, 0, c);
-    for (int e=hd[c]; e; e=eg[e].n) if (eg[e].t != p)   // FIX: eg[e].t not e needs to not be p
+
+    if (take)
     {
-        printf("    at %d <- %d could go to %d\n", c, p, eg[e].t);
-        sum += delt[eg[e].t];
-        if (!take) delt[eg[e].t] -= kans(eg[e].t, 1, c);
+        int sum = 0;
+        for (int e=hd[c]; e; e=eg[e].n) if (eg[e].t != p)   // FIX: eg[e].t not e needs to not be p
+        {
+            sum1[eg[e].t] = kans(eg[e].t, 1, c);
+            sum += sum0[eg[e].t] = kans(eg[e].t, 0, c);
+        }
+        return sum+1;
     }
-    if (take) return sum;
+    //
+    //    return sum;
+    //if (take) for (int e=hd[c]; e; e=eg[e].n) if (eg[e].t != p)
+    //
+    //{
+    //    printf("    at %d <- %d could go to %d\n", c, p, eg[e].t);
+    //    sum += delt[eg[e].t];
+    //    if (!take) delt[eg[e].t] -= kans(eg[e].t, 1, c);
+    //}
+    //if (take) return sum;
     int ret = 0;
     for (int e=hd[c]; e; e=eg[e].n) if (eg[e].t != p)
-        ret = max(ret, sum - delt[eg[e].t]);
+        ret = max(ret, sum0[c] - sum0[eg[e].t] + sum1[eg[e].t]);
     return ret;
 }
 
