@@ -72,7 +72,7 @@ ll gcd(ll a, ll b) { while (b^=a^=b^=a%=b); return a; }
 using namespace std;
 const int MX = 2e3+11;
 
-int N, delt[MX], gans=0;
+int N, sum[MX], delt[MX], gans=0;
 struct Edge { int t, n; } eg[MX<<1]; int hd[MX], ecnt=2;
 void addEdge(int u, int v, int b=1)
 {
@@ -86,12 +86,17 @@ int kans(int c, bool take=0, int p=1)
     printf("at %d from %d with %d\n", c, p, take);
     if (c > 1 && !eg[hd[c]].n) return take;
     int sum = 0;
-    for (int e=hd[c]; e; e=eg[e].n) if (e != p)
-        if (take) sum += delt[eg[e].t] = kans(eg[e].t, 0, c);
-        else sum += delt[eg[e].t], delt[eg[e].t] -= kans(eg[e].t, 1, c);
+    if (take) for (int e=hd[c]; e; e=eg[e].n) if (eg[e].t != p)
+        sum += delt[eg[e].t] = kans(eg[e].t, 0, c);
+    for (int e=hd[c]; e; e=eg[e].n) if (eg[e].t != p)   // FIX: eg[e].t not e needs to not be p
+    {
+        printf("    at %d <- %d could go to %d\n", c, p, eg[e].t);
+        sum += delt[eg[e].t];
+        if (!take) delt[eg[e].t] -= kans(eg[e].t, 1, c);
+    }
     if (take) return sum;
     int ret = 0;
-    for (int e=hd[c]; e; e=eg[e].n) if (e != p)
+    for (int e=hd[c]; e; e=eg[e].n) if (eg[e].t != p)
         ret = max(ret, sum - delt[eg[e].t]);
     return ret;
 }
@@ -100,6 +105,6 @@ int main()
 {
     sc(N);
     F(i, N-1) addEdge(sc(), sc());
-    printf("%d\n", kans(1));
+    printf("%d\n", max(kans(1, 0), kans(1, 1)-1));  // FIX: have to do both bc else not populated correctly
 }
 
