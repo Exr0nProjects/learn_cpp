@@ -1,7 +1,7 @@
 /*
  * Problem two_sets_ii_up (cses/dp/two_sets_ii_up)
  * Create time: Sun 13 Sep 2020 @ 10:59 (PDT)
- * Accept time: [!meta:end!]
+ * Accept time: Sat 05 Dec 2020 @ 13:46 (PST)
  *
  */
 
@@ -54,24 +54,21 @@ _ilb sc(ll&a,ll&b,ll&c,ll&d){return sc(a,b)&&sc(c,d);}
 
 using namespace std;
 const int MX = 511;
-const int MXV = 500*501/2 + 10;
+const int MXV = MX*(MX+1)/2 + 10;
 const int MOD = 1e9 + 7;
 
 int N, dp[MXV];
 
 int main()
 {
-    int N; sc(N);
+    sc(N);
 
     dp[0] = 1;
-    for (int i=1; i<=N; ++i)
+    for (int i=1; i<N; ++i)  // FIX: directly take N-1 instead of N and then divide by two, because division after modulo is broke
         for (int j=MXV; j>=i; --j)
             (dp[j] += dp[j-i]) %= MOD;
-            //dp[j] = (dp[j] + dp[j-i]) % MOD;
 
-    //printf("%d ", N*(N+1)/4);
     if ((N*(N+1)/2)&1) printf("0\n");
-    else printf("%d\n", dp[N*(N+1)/4]/2);
-
+    else printf("%lld\n", dp[N*(N+1)/4]);
 }
 
