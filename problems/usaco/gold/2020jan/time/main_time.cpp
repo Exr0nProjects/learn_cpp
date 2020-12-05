@@ -75,12 +75,12 @@ using namespace std;
 const int MX = 1e3+11;
 //const int MX = 10+11;
 
-struct Edge { int t, n; } eg[MX<<2]; int hd[MX], ecnt=2;
+struct Edge { int f, t, n; } eg[MX<<2]; int hd[MX], ecnt=2;
 void addEdge()
 {
     // insert edges backwards
     int u = sc(); int v = sc();
-    eg[ecnt] = { u, hd[v] };
+    eg[ecnt] = { v, u, hd[v] };
     hd[v] = ecnt++;
 }
 
@@ -96,23 +96,33 @@ int main()
     for (int i=1; i<=M; ++i) addEdge();
 
     //F(i, MX) F(c, N) N(e, c)
-    memset(dp[0], 0x8f, sizeof dp[0]); dp[0][1] = 0; // FIX: basecase-- only start at city 1
+    memset(dp[0], -1, sizeof dp[0]); dp[0][1] = 0; // FIX: basecase-- only start at city 1
     for (int i=1; i<MX; ++i)
-        for (int c=1; c<=N; ++c)
+    {
+        for (int e=2; e<ecnt; ++e)
         {
-            //printf("c = %d, hd[c] = %d\n", c, hd[c]);
-            for (int e=hd[c]; e; e=eg[e].n) if (dp[i-1][eg[e].t] >= 0)
-            {
-                //printf("at %d on %d going %d\n", c, i, eg[e].t);
-                dp[i][c] = max(dp[i][c], dp[i-1][eg[e].t] + m[c]);
-            }
-            //printf("at %d on %d got %d\n", c, i, dp[i][c]);
-            if (c == 1)
-            {
-                if (C*i*i < dp[i][c]) printf("%d - %d = %d\n", dp[i][c], C*i*i, dp[i][c] - C*i*i);
-                ans = max(ans, dp[i][c] - C*i*i);
-            }
+            if (dp[i-1][eg[e].t] >= 0)
+                dp[i][eg[e].f] = max(dp[i][eg[e].f], dp[i][eg[e].t] + m[eg[e].f]);
         }
+        ans = max(ans, dp[i][1] - C*i*i);
+        printf("%d - %d = %d\n", dp[i][1], C*i*i, dp[i][1] - C*i*i);
+    }
+        //for (int c=1; c<=N; ++c)
+        //{
+        //    //printf("c = %d, hd[c] = %d\n", c, hd[c]);
+        //    for (int e=hd[c]; e; e=eg[e].n) if (dp[i-1][eg[e].t] >= 0)
+        //    {
+        //        //printf("at %d on %d going %d\n", c, i, eg[e].t);
+        //        dp[i][c] = max(dp[i][c], dp[i-1][eg[e].t] + m[c]);
+        //    }
+        //    //printf("at %d on %d got %d\n", c, i, dp[i][c]);
+        //    if (c == 1)
+        //    {
+        //        //if (C*i*i < dp[i][c]) printf("%d - %d = %d\n", dp[i][c], C*i*i, dp[i][c] - C*i*i);
+        //        printf("%d\n", dp[i][c] - C*i*i);
+        //        ans = max(ans, dp[i][c] - C*i*i);
+        //    }
+        //}
     printf("%d\n", ans);
 }
 
