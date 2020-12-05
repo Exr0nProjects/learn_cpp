@@ -84,7 +84,7 @@ void addEdge()
     hd[v] = ecnt++;
 }
 
-int N, M, C, m[MX];
+ll N, M, C, m[MX];
 ll dp[MX][MX], ans=0;  // day, city
 
 int main()
@@ -96,16 +96,18 @@ int main()
     for (int i=1; i<=M; ++i) addEdge();
 
     //F(i, MX) F(c, N) N(e, c)
-    memset(dp[0], -1, sizeof dp[0]); dp[0][1] = 0; // FIX: basecase-- only start at city 1
+    memset(dp, -1, sizeof dp);
+    dp[0][1] = 0; // FIX: basecase-- only start at city 1
+
     for (int i=1; i<MX; ++i)
     {
         for (int e=2; e<ecnt; ++e)
         {
             if (dp[i-1][eg[e].t] >= 0)
-                dp[i][eg[e].f] = max(dp[i][eg[e].f], dp[i][eg[e].t] + m[eg[e].f]);
+                dp[i][eg[e].f] = max(dp[i][eg[e].f], dp[i-1][eg[e].t] + m[eg[e].f]);    // FIX: typo-- take from dp[i-1] not dp[i]
         }
         ans = max(ans, dp[i][1] - C*i*i);
-        printf("%d - %d = %d\n", dp[i][1], C*i*i, dp[i][1] - C*i*i);
+        //printf("%d - %d = %d\n", dp[i][1], C*i*i, dp[i][1] - C*i*i);
     }
         //for (int c=1; c<=N; ++c)
         //{

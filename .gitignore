@@ -6,3 +6,4 @@ problems/.template_state/last.txt
 **/answer
 **/casegen
 **/*.diff
+**/data/*
