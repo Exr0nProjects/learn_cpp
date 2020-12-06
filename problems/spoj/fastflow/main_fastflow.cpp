@@ -62,7 +62,7 @@ const int MX = 5011;
 const int MXM = 3e4+10;
 
 ll N, M, S, T;
-int dep[MX];
+ll dep[MX];
 ll thd[MX], eid[MX][MX];
 
 struct Edge { ll t, w, n; } eg[MXM << 1];
@@ -71,18 +71,18 @@ void addEdge(ll u, ll v, ll w, bool b=1)
 {
     //if (eid[u][v]) eg[eid[u][v]].w += w;
     //else {
-    eg[ecnt] = { v, w, hd[u] };
+        eg[ecnt] = { v, w, hd[u] };
         //eid[u][v] = ecnt;
-    hd[u] = ecnt++;
+        hd[u] = ecnt++;
     //}
-    if (b) addEdge(v, u, w, 0);
+    if (b) addEdge(v, u, 0, 0); // FIX: typo addEdge(v, u, 0, 0) not addEdge(v, u, w, 0) bc opp should init w/ 0
 }
 
 bool kdep()
 {
     memset(dep, 0, sizeof dep); // FIX: clears-- clear dinic dep arrary each bfs
     memcpy(thd, hd, sizeof hd);
-    int q[MX], ql=1, qr=0;
+    ll q[MX], ql=1, qr=0;
     dep[S] = 2, q[++qr] = S;
     for (;ql <= qr; ++ql)
     {
@@ -123,7 +123,8 @@ ll aug(ll c, ll mn)
 
 int main()
 {
-    sc(N, M, S, T);
+    //sc(N, M, S, T);
+    sc(N, M); S = 1, T = N;
     //F(i, M) addEdge(sc(), sc(), sc());
     F(i, M)
     {

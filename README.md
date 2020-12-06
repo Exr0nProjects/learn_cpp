@@ -63,6 +63,7 @@ Don't make names too similar, it's easy to make typos (`djs` vs `djf`)
 		- DJS
 		- Edgelist
 2. Spot checking
+    - See algorithm specific pitfalls
     - Read all the compiler warnings
 	- Array bounds
 		- Segment tree needs 2*N nodes
@@ -160,6 +161,15 @@ Don't make names too similar, it's easy to make typos (`djs` vs `djf`)
    6. Disjoint graphs
 5. Recursion
    1. Base case
+
+## Algorithm Specific Pitfalls
+
+### Disjoint Set Union
+- iNiTdJs
+
+### Dinic
+- `kdep` (bfs) must clear the `dep` array and re-populate it
+- when adding reverse edges, default weight should be zero.
 
 ## Algorithmic Paradighms
 
