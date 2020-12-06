@@ -61,7 +61,7 @@ using namespace std;
 const int MX = 5011;
 const int MXM = 3e4+10;
 
-struct Edge { ll f, t, w, n; } eg[MXM << 1]; int hd[MX], ecnt=2;
+struct Edge { ll f, t, w, n; } eg[MXM << 1]; int hd[MX], thd[MX], ecnt=2;
 void addEdge(int u, int v, ll w, bool b=1)
 {
     eg[ecnt] = { u, v, w, hd[u] };
@@ -74,6 +74,7 @@ int dep[MX];
 bool kdep()
 {
     memset(dep, 0, sizeof dep); // FIX: clears-- clear dinic dep arrary each bfs
+    memcpy(thd, hd, sizeof hd);
     int q[MX], ql=1, qr=0;
     dep[1] = 1, q[++qr] = 1;
     for (;ql <= qr; ++ql)
@@ -94,16 +95,18 @@ ll aug(int c, ll mn)
     if (c == N || !mn) return mn;
     //printf("epic\n");
     ll flo=0;
-    for (int e=hd[c]; e && mn; e=eg[e].n)
+    //for (int e=hd[c]; e && mn; e=eg[e].n)
+    for (; thd[c] && mn; thd[c]=eg[thd[c]].n)
     {
         //printf("    %d trying to go to %d (%d should %d)\n", c, eg[e].t, dep[eg[e].t], dep[c]+1);
-        if (dep[eg[e].t] == dep[c]+1)
+        if (dep[eg[thd[c]].t] == dep[c]+1)
         {
-            ll g = aug(eg[e].t, min(mn, eg[e].w));
-            eg[e].w -= g;
-            eg[e^1].w += g;
+            ll g = aug(eg[thd[c]].t, min(mn, eg[thd[c]].w));
+            eg[thd[c]].w -= g;
+            eg[thd[c]^1].w += g;
             flo += g;
             mn -= g; // ????
+            if (!mn) break;
         }
     }
     if (!flo) dep[c] = 0;
