@@ -86,14 +86,18 @@ int main()
     setIO();
     sc(A, B);
     F(i, A+B) sc(x[i], y[i]);
+    //F(i, A+B) printf("%d %d %d\n", x[i], y[i], dist(i-1, i));
     memset(dp, 0x3f, sizeof dp);
     dp[1][0][0] = 0; // start at first H
     F(i, A-1) dp[i+1][0][0] = dp[i][0][0] + dist(i, i+1);
-    for (int i=2; i<=A; ++i) for (int j=1; j<=B; ++j)
+    for (int i=1; i<=A; ++i) for (int j=1; j<=B; ++j)
     {
-        dp[i][j][0] = min(dp[i-1][j][0] + dist(i-1, i), dp[i-1][j][1] + dist(j, i));
-        dp[i][j][1] = min(dp[i][j-1][0] + dist(i, j), dp[i][j-1][1] + dist(j-1, j));
+        //printf("dist %d %d %d %d\n", dist(i, i-1), dist(j, i-1), dist(j, j-1), dist(i, j-1));
+        dp[i][j][0] = min(dp[i-1][j][0] + dist(i-1, i), dp[i-1][j][1] + dist(A+j, i));
+        dp[i][j][1] = min(dp[i][j-1][0] + dist(i, A+j), dp[i][j-1][1] + dist(A+j-1, A+j));
     }
+
+    //F(i, A+1) { F(j, B+1) printf("%10d %10d     ", dp[i-1][j-1][0], dp[i-1][j-1][1]); printf("\n"); }
     printf("%d\n", dp[A][B][0]);
 }
 
