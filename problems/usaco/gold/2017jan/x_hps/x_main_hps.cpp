@@ -1,7 +1,7 @@
 /*
  * Problem hps (usaco/gold/2017jan/hps)
  * Create time: Sun 06 Dec 2020 @ 13:25 (PST)
- * Accept time: [!meta:end!]
+ * Accept time: Sun 06 Dec 2020 @ 13:43 (PST)
  *
  */
 
@@ -91,7 +91,7 @@ int main()
         else if (c == 'P') a[i] = 1;
         else a[i] = 0;
     }
-    F(i, N) printf("%3d", a[i]); printf("\n");
+    //F(i, N) printf("%3d", a[i]); printf("\n");
 
     memset(dp, 0x8f, sizeof dp);
     F(j, K+1) F(k, 3) dp[0][j-1][k-1] = 0;
@@ -100,10 +100,11 @@ int main()
     F(i, N) F(j, K) F(k, 3)
     {
         dp[i][j][k-1] = dp[i-1][j][k-1] + (a[i] == k-1);
-        F(pk, 3) dp[i][j][k-1] = max(dp[i][j][k-1], dp[i-1][j-1][pk-1] + 1);
+        if (j) F(pk, 3) dp[i][j][k-1] =
+            max(dp[i][j][k-1], dp[i-1][j-1][pk-1] + (a[i] == k-1));
         ans = max(ans, dp[i][j][k-1]);
     }
-    for (int i=0; i<=N; ++i) { F(j, K) printf("%5d %3d %3d   ", dp[i][j][0], dp[i][j][1], dp[i][j][2]); printf("\n"); }
+    //for (int i=0; i<=N; ++i) { F(j, K) printf("%5d %3d %3d   ", dp[i][j][0], dp[i][j][1], dp[i][j][2]); printf("\n"); }
     printf("%d\n", ans);
 }
 
