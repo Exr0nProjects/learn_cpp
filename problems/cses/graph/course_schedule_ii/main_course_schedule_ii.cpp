@@ -75,19 +75,14 @@ using namespace std;
 const int MX = 1e5+11;
 
 int N, M, vis[MX];
-struct Edge { int t, n; } eg[MX<<1]; int hd[MX], ecnt=2;
-void addEdge()
-{
-    int u, v; sc(u, v);
-    eg[ecnt] = { u, hd[v] };
-    hd[v] = ecnt++;
-}
+vector<int> hd[MX];
+void addEdge() { int u, v; sc(u, v); hd[v].pb(u); }
 
 void topo(int c)
 {
     if (vis[c]) return;
     vis[c] = 1;
-    N(e, c) topo(eg[e].t);
+    for (int n : hd[c]) topo(n);
     printf("%d ", c);
 }
 
@@ -95,6 +90,7 @@ int main()
 {
     sc(N, M);
     F(i, M) addEdge();
+    F(i, N) sort(hd[i].begin(), hd[i].end());
     F(i, N) topo(i);
     printf("\n");
 }
