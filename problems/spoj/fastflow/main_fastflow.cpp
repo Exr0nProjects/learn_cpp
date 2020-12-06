@@ -59,13 +59,56 @@ _ilb sc(ll&a,ll&b,ll&c,ll&d){return sc(a,b)&&sc(c,d);}
 
 using namespace std;
 const int MX = 5011;
+const int MXM = 3e4+10;
 
-int N, M, adj[MX][MX];
+struct Edge { ll f, t, w, n; } eg[MXM]; int hd[MX], ecnt=2;
+void addEdge(int u, int v, ll w, bool b=1)
+{
+    eg[ecnt] = { u, v, w, hd[u] };
+    hd[u] = ecnt++;
+    if (b) addEdge(v, u, w, 0);
+}
+int N, M;
+int dep[MX];
+
+bool bfs()
+{
+    int q[MX], ql=1, qr=0;
+    dep[1] = 1, q[++qr] = 1;
+    for (ql <= qr, ++ql)
+    {
+        if (q[ql] == N) return 1;
+        for (int e=hd[q[ql]]; e; e=eg[e].n) if (eg[e].w > 0)
+            dep[eg[e].t] = dep[q[ql]]+1, q[++qr] = eg[e].t;
+    }
+    return 0;
+}
+
+ll kflo(int c, int mn)
+{
+    if (c == N || !mn) return mn;
+    ll flo=0;
+    for (int e=hd[c]; e && mn; e=eg[e].n)
+        if (dep[eg[e].t] == dep[c]+1)
+        {
+            int g = flo(eg[e].n, min(mn, eg[e].w));
+            eg[e].w -= g;
+            eg[e^1].w += g;
+            flo += g;
+            mn -= g; // ????
+        }
+    if (!flo) dep[c] = 0;
+    return flo;
+}
 
 int main()
 {
     //setIO();
     sc(N, M);
-    F(i, M) adj[sc()][sc()] = sc();
+    F(i, M) addEdge(sc(), sc(), sc());
+    ll ans = 0;
+    while (bfs())
+        ans += kflo(1);
+    printf("%lld\n", ans);
 }
 
