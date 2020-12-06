@@ -61,26 +61,31 @@ using namespace std;
 const int MX = 5011;
 const int MXM = 3e4+10;
 
+int N, M, S, T;
+int dep[MX], eid[MX][MX];
+
 struct Edge { ll f, t, w, n; } eg[MXM << 1]; int hd[MX], thd[MX], ecnt=2;
 void addEdge(int u, int v, ll w, bool b=1)
 {
-    eg[ecnt] = { u, v, w, hd[u] };
-    hd[u] = ecnt++;
+    //if (eid[u][v]) eg[eid[u][v]].w += w;
+    //else {
+        eg[ecnt] = { u, v, w, hd[u] };
+        //eid[u][v] = ecnt;
+        hd[u] = ecnt++;
+    //}
     if (b) addEdge(v, u, w, 0);
 }
-int N, M;
-int dep[MX];
 
 bool kdep()
 {
     memset(dep, 0, sizeof dep); // FIX: clears-- clear dinic dep arrary each bfs
     memcpy(thd, hd, sizeof hd);
     int q[MX], ql=1, qr=0;
-    dep[1] = 1, q[++qr] = 1;
+    dep[S] = 1, q[++qr] = S;
     for (;ql <= qr; ++ql)
     {
         //printf("q[%d] = %d\n", ql, q[ql]);
-        if (q[ql] == N) return 1;
+        if (q[ql] == T) return 1;
         for (int e=hd[q[ql]]; e; e=eg[e].n)
             if (!dep[eg[e].t] && eg[e].w > 0)
                 dep[eg[e].t] = dep[q[ql]]+1,
@@ -92,7 +97,7 @@ bool kdep()
 ll aug(int c, ll mn)
 {
     //printf("aug %d with %d\n", c, mn);
-    if (c == N || !mn) return mn;
+    if (c == T || !mn) return mn;
     //printf("epic\n");
     ll flo=0;
     //for (int e=hd[c]; e && mn; e=eg[e].n)
@@ -115,8 +120,7 @@ ll aug(int c, ll mn)
 
 int main()
 {
-    //setIO();
-    sc(N, M);
+    sc(N, M, S, T);
     //F(i, M) addEdge(sc(), sc(), sc());
     F(i, M)
     {
@@ -125,7 +129,7 @@ int main()
     }
     ll ans = 0;
     while (kdep())
-        ans += aug(1, 1e9);
+        ans += aug(S, 1e9);
     printf("%lld\n", ans);
 }
 
