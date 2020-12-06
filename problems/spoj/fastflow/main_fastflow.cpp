@@ -61,17 +61,19 @@ using namespace std;
 const int MX = 5011;
 const int MXM = 3e4+10;
 
-int N, M, S, T;
-int dep[MX], eid[MX][MX];
+ll N, M, S, T;
+int dep[MX];
+ll thd[MX], eid[MX][MX];
 
-struct Edge { ll f, t, w, n; } eg[MXM << 1]; int hd[MX], thd[MX], ecnt=2;
-void addEdge(int u, int v, ll w, bool b=1)
+struct Edge { ll t, w, n; } eg[MXM << 1];
+ll hd[MX], ecnt=2;
+void addEdge(ll u, ll v, ll w, bool b=1)
 {
     //if (eid[u][v]) eg[eid[u][v]].w += w;
     //else {
-        eg[ecnt] = { u, v, w, hd[u] };
+    eg[ecnt] = { v, w, hd[u] };
         //eid[u][v] = ecnt;
-        hd[u] = ecnt++;
+    hd[u] = ecnt++;
     //}
     if (b) addEdge(v, u, w, 0);
 }
@@ -81,37 +83,38 @@ bool kdep()
     memset(dep, 0, sizeof dep); // FIX: clears-- clear dinic dep arrary each bfs
     memcpy(thd, hd, sizeof hd);
     int q[MX], ql=1, qr=0;
-    dep[S] = 1, q[++qr] = S;
+    dep[S] = 2, q[++qr] = S;
     for (;ql <= qr; ++ql)
     {
         //printf("q[%d] = %d\n", ql, q[ql]);
         if (q[ql] == T) return 1;
-        for (int e=hd[q[ql]]; e; e=eg[e].n)
-            if (!dep[eg[e].t] && eg[e].w > 0)
+        for (ll e=hd[q[ql]]; e; e=eg[e].n)
+            if (!dep[eg[e].t] && eg[e].w)
                 dep[eg[e].t] = dep[q[ql]]+1,
                     q[++qr] = eg[e].t;
     }
     return 0;
 }
 
-ll aug(int c, ll mn)
+ll aug(ll c, ll mn)
 {
-    //printf("aug %d with %d\n", c, mn);
-    if (c == T || !mn) return mn;
-    //printf("epic\n");
-    ll flo=0;
-    //for (int e=hd[c]; e && mn; e=eg[e].n)
-    for (; thd[c] && mn; thd[c]=eg[thd[c]].n)
+    if (!mn || c == T) return mn;
+    ll flo = 0;
+    for (ll e=hd[c]; e && mn; e=eg[e].n)
+    //for (; thd[c] && mn; thd[c]=eg[thd[c]].n)
     {
         //printf("    %d trying to go to %d (%d should %d)\n", c, eg[e].t, dep[eg[e].t], dep[c]+1);
-        if (dep[eg[thd[c]].t] == dep[c]+1)
+        //if (dep[eg[thd[c]].t] == dep[c]+1)
+        if (dep[eg[e].t] == dep[c]+1)
         {
-            ll g = aug(eg[thd[c]].t, min(mn, eg[thd[c]].w));
-            eg[thd[c]].w -= g;
-            eg[thd[c]^1].w += g;
-            flo += g;
-            mn -= g; // ????
-            if (!mn) break;
+            //ll g = aug(eg[thd[c]].t, min(mn, eg[thd[c]].w));
+            ll g = aug(eg[e].t, min(mn, eg[e].w));
+            //eg[thd[c]].w -= g; eg[thd[c]^1].w += g;
+
+            mn -= g; flo += g;
+            eg[e].w -= g;
+            eg[e^1].w += g;
+            //if (!mn) break;
         }
     }
     if (!flo) dep[c] = 0;
@@ -127,9 +130,8 @@ int main()
         int u, v, w; sc(u, v, w);
         addEdge(u, v, w);
     }
-    ll ans = 0;
-    while (kdep())
-        ans += aug(S, 1e9);
-    printf("%lld\n", ans);
+    ll flo = 0;
+    while (kdep()) flo += aug(S, 1e11);
+    printf("%lld\n", flo);
 }
 
