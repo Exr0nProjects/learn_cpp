@@ -21,11 +21,13 @@
 
 #define gpq(T) priority_queue<T, deque<T>, greater<T> >
 #define CMA , // https://stackoverflow.com/q/13842468/10372825
-#define pii pair<int, int>
 #define pb push_back
+#define pii pair<int, int>
 #define mp make_pair
 #define f first
 #define s second
+#define mt make_tuple
+#define un(...) ll __VA_ARGS__; tie(__VA_ARGS__)
 #define lb(x) ((x)&-(x))
 
 #define F(i,b) for (ll i=1; i<=(b); ++i)
