@@ -75,11 +75,12 @@ ll gcd(ll a, ll b) { while (b^=a^=b^=a%=b); return a; }
 using namespace std;
 const int MX = 2e5+11;
 
-int N, a[MX], tsum[MX];
+int N, a[MX], tsum[MX<<2];
 
-void comb(int k, int tl, int tr) { tsum[k] = tsum[k<<1], tsum[k<<1|1]; }
+void comb(int k, int tl, int tr) { tsum[k] = tsum[k<<1] + tsum[k<<1|1]; }
 void update(int q, int v, int k=1, int tl=1, int tr=N)
 {
+    printf("update %d, %d at %d(%d..%d)\n", q, v, k, tl, tr);
     //if (q < tl || tr < q) return;
     if (tl == tr) { tsum[k] += v; return; }
     int mid = tl + (tr-tl>>1);
@@ -89,10 +90,34 @@ void update(int q, int v, int k=1, int tl=1, int tr=N)
 }
 int query(int n, int k=1, int tl=1, int tr=N)
 {
+    printf("query %d at %d (%d..%d)\n", n, k, tl, tr);
+    if (tl == tr) return tl;
     if (n > tsum[tr]) return -1;
     int mid = tl + (tr-tl>>1);
     if (n <= tsum[mid]) return query(n, k<<1, tl, mid);
     else return query(n, k<<1|1, mid+1, tr);
+}
+
+void dump(int k=1, int tl=1, int tr=N)
+{
+    queue<pair<int, pii> > q; q.push(mp(1, mp(1, N)));
+    while (q.size())
+    {
+        int k, tl, tr; pii temp;
+        tie(k, temp) = q.front(); q.pop();
+        tie(tl, tr) = temp;
+        F(i, (tr-tl)/2) printf("                ");
+        printf("%2d (%2d..%2d) %2d  ", k, tl, tr, tsum[k]);
+        F(i, (tr-tl)/2 + (tr-tl)&1) printf("                ");
+        int mid = tl + (tr-tl>>1);
+        if (tr > tl)
+            q.push(mp(k<<1, mp(tl, mid))),
+            q.push(mp(k<<1|1, mp(mid+1, tr)));
+        if (tr == N) printf("\n");
+    }
+    //if (tl == 1) printf("\n");
+    //F(i, tr-tl) printf("                ");
+    //printf("%2d (%2d..%2d) %2d  ", k, tl, tr, tsum[k]);
 }
 
 int main()
@@ -101,8 +126,9 @@ int main()
     F(i, N) sc(a[i]), update(i, 1);
     F(i, N)
     {
+        dump(); printf("\n\n");
         int p = query(sc());
-        printf("%d ", a[p]);
+        printf("gotttt %d \n", a[p]);
         update(p, -1);
     }
 }
