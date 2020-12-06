@@ -1,7 +1,7 @@
 /*
  * Problem moocast (usaco/gold/2016dec/moocast)
  * Create time: Sun 06 Dec 2020 @ 11:02 (PST)
- * Accept time: [!meta:end!]
+ * Accept time: Sun 06 Dec 2020 @ 11:10 (PST)
  *
  */
 
@@ -92,14 +92,14 @@ int main()
     int mni = 1, ans = 0;
     F(i, N)
     {
-        printf("best was %d with %d\n", mni, dist[mni]);
-        ans = dist[mni];
+        //printf("best was %d with %d\n", mni, dist[mni]);
+        if (i != 1) ans = max(ans, dist[mni]);
         dist[mni] = -1;
         int n = 0;
         F(j, N)
         {
             dist[j] = min(dist[j], kdst(mni, j));
-            if (!n || dist[j] < dist[n]) n = j;
+            if (dist[j] >= 0 && (!n ||  dist[j] < dist[n])) n = j;
         }
         mni = n;
     }
