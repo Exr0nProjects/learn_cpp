@@ -19,8 +19,7 @@
 #define ll long long
 #define dl double
 
-#define gpq(T) priority_queue<T, deque<T>, greater<T> >
-#define CMA , // https://stackoverflow.com/q/13842468/10372825
+#define gpq(...) priority_queue<__VA_ARGS__, deque<__VA_ARGS__>, greater<__VA_ARGS__> >
 #define pb push_back
 #define pii pair<int, int>
 #define mp make_pair
