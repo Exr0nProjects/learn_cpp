@@ -74,30 +74,28 @@ ll gcd(ll a, ll b) { while (b^=a^=b^=a%=b); return a; }
 using namespace std;
 const int MX = 1e5+11;
 
-int N, M, deg[MX];
+int N, M, vis[MX];
 struct Edge { int t, n; } eg[MX<<1]; int hd[MX], ecnt=2;
 void addEdge()
 {
     int u, v; sc(u, v);
-    ++deg[v];
-    if (v == 6) printf("six: %d\n", deg[v]);
-    eg[ecnt] = { v, hd[u] };
-    hd[u] = ecnt++;
+    eg[ecnt] = { u, hd[v] };
+    hd[v] = ecnt++;
+}
+
+void topo(int c)
+{
+    if (vis[c]) return;
+    vis[c] = 1;
+    N(e, c) topo(eg[e].t);
+    printf("%d ", c);
 }
 
 int main()
 {
     sc(N, M);
     F(i, M) addEdge();
-    gpq(int) pq;
-    F(i, N) if (!deg[i]) pq.push(i);
-    while (pq.size())
-    {
-        int c = pq.top(); pq.pop();
-        --deg[c];
-        printf("%d\n", c);
-        N(e, c) if (!--deg[eg[e].t]) pq.push(eg[e].t);
-    }
+    F(i, N) topo(i);
     printf("\n");
 }
 
