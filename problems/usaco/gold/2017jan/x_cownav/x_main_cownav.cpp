@@ -1,7 +1,7 @@
 /*
  * Problem cownav (usaco/gold/2017jan/cownav)
  * Create time: Sun 06 Dec 2020 @ 13:49 (PST)
- * Accept time: [!meta:end!]
+ * Accept time: Sun 06 Dec 2020 @ 14:40 (PST)
  *
  */
 
@@ -93,8 +93,9 @@ State move(State s, int cmd)  //    command: -1 = left, 0 = forward, 1 = right
         else if (x != N || y != N)
         {
             x += _x[d]; y += _y[d];
-            printf("move to %d %d (where its '%c')\n", x, y, buf[N-y+1][x]);
+            //printf("move to %d %d (where its '%c')\n", x, y, buf[N-y+1][x]);
             if (buf[N-y+1][x] == 'E') c = mt(x, y, d);
+            //if (buf[N-y+1][x] == 'E') printf("    yayy it worked\n"), c = mt(x, y, d);
         }
     }
     //for (Cow c : s) { un(x, y, d) = c; printf("%d %d %d\n", x, y, d); }
@@ -131,19 +132,23 @@ int main()
     //State s = { mt(1, 1, 2), mt(1, 1, 3) };
     //for (Cow c : s) { un(x, y, d) = c; printf("%d %d %d\n", x, y, d); }
     //s = move(s, 0);
+
     queue<State> q; q.push({ mt(1, 1, 0), mt(1, 1, 1) });
     int ans = 0;
     while (q.size())
     {
         State cur = q.front(); q.pop();
-        if (dist.count(cur)) continue;
-        print(cur);
+        //printf("at "); print(cur);
         if (isEnd(cur)) { printf("%d\n", dist[cur]); break; }
         for (int i=-1; i<=1; ++i)
         {
             State n = move(cur, i);
-            dist[n] = dist[cur]+1;
-            q.push(n);
+            if (!dist.count(n))
+            {
+                //printf("got "); print(n);
+                dist[n] = dist[cur]+1;
+                q.push(n);
+            }
         }
     }
 }
