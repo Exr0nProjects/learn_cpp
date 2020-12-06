@@ -1,6 +1,6 @@
 /*
- * Problem [!meta:pid!] ([!meta:srcpath!])
- * Create time: [!meta:beg!]
+ * Problem list_removals (cses/range/list_removals)
+ * Create time: Sat 05 Dec 2020 @ 23:05 (PST)
  * Accept time: [!meta:end!]
  *
  */
@@ -41,7 +41,7 @@ inline ll pow(ll b, ll e, ll m)
     return ret;
 }
 
-void setIO(const std::string &name = "[!meta:pid!]")
+void setIO(const std::string &name = "list_removals")
 {
     //ios_base::sync_with_stdio(0); cin.tie(0);
     if (fopen((name + ".in").c_str(), "r") != 0)
@@ -73,11 +73,37 @@ ll gcd(ll a, ll b) { while (b^=a^=b^=a%=b); return a; }
 
 //struct Edge { int t, n; } eg[MX*MX]; int hd[MX], ecnt=2;
 using namespace std;
-const int MX = -1;
+const int MX = 2e5+11;
+
+int N, a[MX], tsum[MX];
+
+void comb(int k, int tl, int tr) { tsum[k] = tsum[k<<1], tsum[k<<1|1]; }
+void update(int q, int v, int k=1, int tl=1, int tr=N)
+{
+    //if (q < tl || tr < q) return;
+    if (tl == tr) { tsum[k] += v; return; }
+    int mid = tl + (tr-tl>>1);
+    if (q <= mid) update(q, v, k<<1, tl, mid);
+    else update(q, v, k<<1|1, mid+1, tr);
+    comb(k, tl, tr);
+}
+int query(int n, int k=1, int tl=1, int tr=N)
+{
+    if (n > tsum[tr]) return -1;
+    int mid = tl + (tr-tl>>1);
+    if (n <= tsum[mid]) return query(n, k<<1, tl, mid);
+    else return query(n, k<<1|1, mid+1, tr);
+}
 
 int main()
 {
-    setIO();
-
+    sc(N);
+    F(i, N) sc(a[i]), update(i, 1);
+    F(i, N)
+    {
+        int p = query(sc());
+        printf("%d ", a[p]);
+        update(p, -1);
+    }
 }
 
