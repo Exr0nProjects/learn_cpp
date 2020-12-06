@@ -100,26 +100,51 @@ State move(State s, int cmd)  //    command: -1 = left, 0 = forward, 1 = right
     //for (Cow c : s) { un(x, y, d) = c; printf("%d %d %d\n", x, y, d); }
     return s;
 }
+bool isEnd(State s)
+{
+    bool yes = 1;
+    for (Cow &c : s)
+    {   un(x, y, d) = c;
+        yes &= (x == N && y == N);
+    }
+    return yes;
+}
+
+void print(State s)
+{
+    for (Cow c : s) { un(x, y, d) = c; printf("%d %d %d    ", x, y, d); }
+    printf("\n");
+}
+
 
 int main()
 {
     setIO();
     sc(N);
-    memset(buf, 'x', sizeof buf);
+    //memset(buf, 'x', sizeof buf);
     F(i, N) scanf("%s", buf[i]+1);
 
-    F(i, N) F(j, N) printf("%d %d: '%c'\n", i, j, buf[N-j+1][i]);
-
-    for (int i=0; i<=N+1; ++i) { for (int j=0; j<=N+1; ++j) printf("%2c", buf[i][j]); printf("\n"); }
-
-    State s = { mt(1, 1, 2), mt(1, 1, 3) };
-    for (Cow c : s) { un(x, y, d) = c; printf("%d %d %d\n", x, y, d); }
-    s = move(s, 0);
-    for (Cow c : s) { un(x, y, d) = c; printf("%d %d %d\n", x, y, d); }
-    //queue<State> q; q.push({ mt(1, 1, 0), mt(1, 1, 1) });
-    //while (q.size())
-    //{
-    //    State cur = q.front(); q.pop();
-    //}
+    //F(i, N) F(j, N) printf("%d %d: '%c'\n", i, j, buf[N-j+1][i]);
+    //
+    //for (int i=0; i<=N+1; ++i) { for (int j=0; j<=N+1; ++j) printf("%2c", buf[i][j]); printf("\n"); }
+    //
+    //State s = { mt(1, 1, 2), mt(1, 1, 3) };
+    //for (Cow c : s) { un(x, y, d) = c; printf("%d %d %d\n", x, y, d); }
+    //s = move(s, 0);
+    queue<State> q; q.push({ mt(1, 1, 0), mt(1, 1, 1) });
+    int ans = 0;
+    while (q.size())
+    {
+        State cur = q.front(); q.pop();
+        if (dist.count(cur)) continue;
+        print(cur);
+        if (isEnd(cur)) { printf("%d\n", dist[cur]); break; }
+        for (int i=-1; i<=1; ++i)
+        {
+            State n = move(cur, i);
+            dist[n] = dist[cur]+1;
+            q.push(n);
+        }
+    }
 }
 
