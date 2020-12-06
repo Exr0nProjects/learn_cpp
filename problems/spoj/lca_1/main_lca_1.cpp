@@ -80,44 +80,58 @@ int T, N, Q;
 int bl[16][MX], dep[MX];
 bool haspar[MX];
 
-int kdep(int c) { if (!dep[c]) printf("dep %d: %d = %d\n", c, bl[0][c], kdep(bl[0][c])), dep[c] = kdep(bl[0][c])+1; return dep[c]; }
+int kdep(int c)
+{
+    if (!dep[c])
+        //printf("dep %d: %d = %d\n", c, bl[0][c], kdep(bl[0][c])),
+        dep[c] = kdep(bl[0][c])+1;
+    //printf("dep[%d] = %d\n", c, dep[c]);
+    return dep[c];
+}
 
 int lca(int u, int v)
 {
     if (dep[u] < dep[v]) swap(u, v); // u is lower
+    //printf("u %d dep %d       v %d dep %d\n", u, dep[u], v, dep[v]);
     for (int i=15; ~i; --i)
-        if (dep[bl[i][u]] <= dep[v])
+        if (dep[bl[i][u]] >= dep[v])    // FIX: lower down is >= not <=
             u = bl[i][u];
-    printf("u %d dep %d       v %d dep %d\n", u, dep[u], v, dep[v]);
+    //printf("u %d dep %d       v %d dep %d\n", u, dep[u], v, dep[v]);
     for (int i=15; ~i; --i)
         if (bl[i][u] != bl[i][v])
             u = bl[i][u], v = bl[i][v];
-    printf("u %d v %d\n", u, v);
-    return bl[0][u];
+    //printf("u %d v %d\n", u, v);
+    if (u != v) u = bl[0][u];   // FIX: don't take parent if already equal (one was ancestor of another)
+    return u;
 }
 
 int main()
 {
     sc(T);
-    while (T--)
+    F(t, T)
     {
+        memset(bl, 0, sizeof bl);   // FIX: clears
+        memset(dep, 0, sizeof dep);
+        memset(haspar, 0, sizeof haspar);
         sc(N);
         F(i, N)
         {
             int t, v; sc(t);
-            while (t--) bl[0][v = sc()] = i, haspar[v] = 1;
+            while (t--) bl[0][v = sc()] = i;
         }
-        F(i, N) if (!haspar[i])
+        //F(i, N) if (!haspar[i])
+        F(i, N) if (!bl[0][i])
         { bl[0][i] = i, dep[i] = 1; break; }
 
         F(i, N) kdep(i);
-        F(j, 16) F(i, N) bl[j][i] = bl[j-1][bl[j-1][i]];
+        F(j, 15) F(i, N) bl[j][i] = bl[j-1][bl[j-1][i]];    // FIX: F(j, 15) goes through 15, not to 15
 
         //F(i, N) printf("%3d", i); printf("\n");
-        F(i, N) printf("%3d", kdep(i)); printf("\n");
+        //F(i, N) printf("%3d", dep[i]); printf("\n");
         //F(j, N) { F(i, N) printf("%3d", bl[j][i]); printf("\n"); }
 
         sc(Q);
+        printf("Case %d:\n", t);
         while (Q--)
         {
             int u, v; sc(u, v);
