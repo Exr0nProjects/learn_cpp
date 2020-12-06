@@ -90,11 +90,11 @@ State move(State s, int cmd)  //    command: -1 = left, 0 = forward, 1 = right
     {
         un(x, y, d) = c;
         if (cmd) d = (d+4+cmd)%4, c = mt(x, y, d);
-        else
+        else if (x != N || y != N)
         {
             x += _x[d]; y += _y[d];
-            printf("move to %d %d (where its '%c')\n", x, y, buf[N-x][y]);
-            if (buf[N-x][y] == 'E') c = mt(x, y, d);
+            printf("move to %d %d (where its '%c')\n", x, y, buf[N-y+1][x]);
+            if (buf[N-y+1][x] == 'E') c = mt(x, y, d);
         }
     }
     //for (Cow c : s) { un(x, y, d) = c; printf("%d %d %d\n", x, y, d); }
@@ -105,11 +105,21 @@ int main()
 {
     setIO();
     sc(N);
+    memset(buf, 'x', sizeof buf);
     F(i, N) scanf("%s", buf[i]+1);
 
-    State s = { mt(1, 1, 0), mt(1, 1, 1) };
+    F(i, N) F(j, N) printf("%d %d: '%c'\n", i, j, buf[N-j+1][i]);
+
+    for (int i=0; i<=N+1; ++i) { for (int j=0; j<=N+1; ++j) printf("%2c", buf[i][j]); printf("\n"); }
+
+    State s = { mt(1, 1, 2), mt(1, 1, 3) };
     for (Cow c : s) { un(x, y, d) = c; printf("%d %d %d\n", x, y, d); }
     s = move(s, 0);
     for (Cow c : s) { un(x, y, d) = c; printf("%d %d %d\n", x, y, d); }
+    //queue<State> q; q.push({ mt(1, 1, 0), mt(1, 1, 1) });
+    //while (q.size())
+    //{
+    //    State cur = q.front(); q.pop();
+    //}
 }
 
