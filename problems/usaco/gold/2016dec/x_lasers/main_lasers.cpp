@@ -75,7 +75,7 @@ ll gcd(ll a, ll b) { while (b^=a^=b^=a%=b); return a; }
 using namespace std;
 const int MX = 1e5+11;
 
-int N, x1, y1, x2, y2;
+int N;
 int pos[MX][2];
 map<int, vector<int> > ax[2];
 int dist[MX];
@@ -87,22 +87,26 @@ int main()
     F(i, N+2)
     {
         F(d, 2) sc(pos[i][d-1]);
-        F(d, 2) ax[d-1][pos[i][d-1]].pb(pos[i][d&1]);
+        F(d, 2) ax[d&1][pos[i][d-1]].pb(i);
     }
 
+    //printf("x:\n"); for (auto m : ax[0]) { printf("    %d:", m.f); for (auto n : m.s) printf("%3d", n); printf("\n"); }
+    //printf("y:\n"); for (auto m : ax[1]) { printf("    %d:", m.f); for (auto n : m.s) printf("%3d", n); printf("\n"); }
+
     memset(dist, 0x3f, sizeof dist);
-    dist[1] = 0;
+    dist[1] = -1;
     queue<pair<int, bool> > q;
     q.push(mp(1, 0)); q.push(mp(1, 1));
     while (q.size())
     {
         int c; bool dir;
         tie(c, dir) = q.front(); q.pop();
-        printf("%d: at %d dir %d\n", dist[c], c, dir);
-        if (!c) { printf("%d\n", dist[c]); return 0; }
-        for (auto n : ax[dir][pos[c][dir]])
+        //printf("%d: at %d dir %d\n", dist[c], c, dir);
+        if (c == 2) { printf("%d\n", dist[c]); return 0; }
+        for (auto n : ax[dir][pos[c][!dir]])
             if (dist[n] > 1e9)
-                dist[n] = dist[c]+1,
+                //printf("    going to %d\n", n),
+                dist[n] = min(dist[n], dist[c]+1),
                 q.push(mp(n, !dir));
     }
     printf("IMPOSSIBLE\n");
