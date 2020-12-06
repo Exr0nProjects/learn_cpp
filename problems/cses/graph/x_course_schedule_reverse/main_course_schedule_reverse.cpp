@@ -77,28 +77,31 @@ const int MX = 1e5+11;
 struct Edge { int t, n; } eg[MX<<1]; int hd[MX], ecnt=2;
 void addEdge()
 {
-    int u = sc();
-    eg[ecnt] = { sc(), hd[u] };
-    hd[u] = ecnt++;
+    int u, v; sc(u, v);
+    eg[ecnt] = { u, hd[v] };
+    hd[v] = ecnt++;
 }
 int N, M, ans[MX], acnt=0;
-bool vis[MX];
+int vis[MX]; // -1 = unvisited, 1 = active, 0 = done
 
-void topo(int c)
+int topo(int c)
 {
-    if (vis[c]) return;
+    if (~vis[c]) return vis[c];
     vis[c] = 1;
-    F(e, c) topo(eg[e].t);
+    for (int e=hd[c]; e; e=eg[e].n)
+        if (topo(eg[e].t)) return 1;
+    vis[c] = 0;
     ans[++acnt] = c;
+    return 0;
 }
 
 int main()
 {
     sc(N, M);
     F(i, M) addEdge();
-    F(i, N) topo(i);
-    if (acnt < N) printf("IMPOSSIBLE");
-    else F(i, N) printf("%d ", ans[i]);
-    printf("\n");
+    memset(vis, -1, sizeof vis);
+    F(i, N) if (topo(i))
+    { printf("IMPOSSIBLE\n"); return 0; }
+    F(i, N) printf("%d ", ans[i]); printf("\n");
 }
 
