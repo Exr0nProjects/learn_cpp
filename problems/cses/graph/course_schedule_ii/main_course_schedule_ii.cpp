@@ -80,6 +80,7 @@ void addEdge()
 {
     int u, v; sc(u, v);
     ++deg[v];
+    if (v == 6) printf("six: %d\n", deg[v]);
     eg[ecnt] = { v, hd[u] };
     hd[u] = ecnt++;
 }
@@ -94,7 +95,7 @@ int main()
     {
         int c = pq.top(); pq.pop();
         --deg[c];
-        printf("%d ", c);
+        printf("%d\n", c);
         N(e, c) if (!--deg[eg[e].t]) pq.push(eg[e].t);
     }
     printf("\n");
