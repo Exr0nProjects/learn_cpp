@@ -61,7 +61,7 @@ using namespace std;
 const int MX = 5011;
 const int MXM = 3e4+10;
 
-struct Edge { ll f, t, w, n; } eg[MXM]; int hd[MX], ecnt=2;
+struct Edge { ll f, t, w, n; } eg[MXM << 1]; int hd[MX], ecnt=2;
 void addEdge(int u, int v, ll w, bool b=1)
 {
     eg[ecnt] = { u, v, w, hd[u] };
@@ -71,32 +71,41 @@ void addEdge(int u, int v, ll w, bool b=1)
 int N, M;
 int dep[MX];
 
-bool bfs()
+bool kdep()
 {
+    memset(dep, 0, sizeof dep); // FIX: clears-- clear dinic dep arrary each bfs
     int q[MX], ql=1, qr=0;
     dep[1] = 1, q[++qr] = 1;
-    for (ql <= qr, ++ql)
+    for (;ql <= qr; ++ql)
     {
+        //printf("q[%d] = %d\n", ql, q[ql]);
         if (q[ql] == N) return 1;
-        for (int e=hd[q[ql]]; e; e=eg[e].n) if (eg[e].w > 0)
-            dep[eg[e].t] = dep[q[ql]]+1, q[++qr] = eg[e].t;
+        for (int e=hd[q[ql]]; e; e=eg[e].n)
+            if (!dep[eg[e].t] && eg[e].w > 0)
+                dep[eg[e].t] = dep[q[ql]]+1,
+                    q[++qr] = eg[e].t;
     }
     return 0;
 }
 
-ll kflo(int c, int mn)
+ll aug(int c, ll mn)
 {
+    //printf("aug %d with %d\n", c, mn);
     if (c == N || !mn) return mn;
+    //printf("epic\n");
     ll flo=0;
     for (int e=hd[c]; e && mn; e=eg[e].n)
+    {
+        //printf("    %d trying to go to %d (%d should %d)\n", c, eg[e].t, dep[eg[e].t], dep[c]+1);
         if (dep[eg[e].t] == dep[c]+1)
         {
-            int g = flo(eg[e].n, min(mn, eg[e].w));
+            ll g = aug(eg[e].t, min(mn, eg[e].w));
             eg[e].w -= g;
             eg[e^1].w += g;
             flo += g;
             mn -= g; // ????
         }
+    }
     if (!flo) dep[c] = 0;
     return flo;
 }
@@ -105,10 +114,15 @@ int main()
 {
     //setIO();
     sc(N, M);
-    F(i, M) addEdge(sc(), sc(), sc());
+    //F(i, M) addEdge(sc(), sc(), sc());
+    F(i, M)
+    {
+        int u, v, w; sc(u, v, w);
+        addEdge(u, v, w);
+    }
     ll ans = 0;
-    while (bfs())
-        ans += kflo(1);
+    while (kdep())
+        ans += aug(1, 1e9);
     printf("%lld\n", ans);
 }
 
