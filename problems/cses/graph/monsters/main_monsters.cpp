@@ -88,20 +88,37 @@ const int _x[] = { 1, 0, -1, 0 };
 const char _c[] = { 'R', 'D', 'L', 'U' };
 
 int N, M;
-int ans[MX], acnt=0;
+int ax=-1, ay=-1, ans[MX*MX/2], acnt=0; // FIX: bounds--ans can be up to N^2 / 2 ish
 char buf[MX][MX];
-int near[MX][MX];
+int near[MX][MX], pre[MX][MX];
 
-bool dfs(int y, int x, int dep=0)
+//bool dfs(int y, int x, int dep=0)
+//{
+//     return 0;
+//    printf("at %d, %d    after %d\n", y, x, dep);
+//    if (y==1 || x==1 || y==N || x==M) return 1;
+//    //printf("uh\n");
+//    near[y][x] = -1;
+//    for (int d=0; d<4; ++d)
+//        if (dfs(y+_y[d], x+_x[d], dep+1))
+//        { ans[acnt++] = _c[d]; return 1; }
+//    return 0;
+//}
+
+bool bfs(int y, int x)
 {
-    if (buf[y][x] != '.' || near[y][x] < dep) return 0;
-    printf("at %d, %d    after %d\n", y, x, dep);
-    if (y==1 || x==1 || y==N || x==M) return 1;
-    //printf("uh\n");
-    near[y][x] = -1;
-    for (int d=0; d<4; ++d)
-        if (dfs(y+_y[d], x+_x[d], dep+1))
-        { ans[acnt++] = _c[d]; return 1; }
+    queue<tuple<int, int, int> > q; q.push(mt(y, x, 0));
+    while (q.size())
+    {
+        un(y, x, dep) = q.front(); q.pop();
+        if (y==1 || x==1 || y==N || x==M) { ay=y, ax=x; return 1; }
+
+        for (int d=0; d<4; ++d)
+            if (buf[y+_y[d]][x+_x[d]] == '.' && near[y+_y[d]][x+_x[d]] > dep)
+                near[y+_y[d]][x+_x[d]] = -1,
+                pre [y+_y[d]][x+_x[d]] = d,
+                q.push(mt(y+_y[d], x+_x[d], dep+1));
+    }
     return 0;
 }
 
@@ -112,30 +129,37 @@ int main()
     F(i, N) scanf("%s", buf[i]+1);
 
     queue<pii> q;
-    memset(near, -1, sizeof near);
+    memset(near, 0x3f, sizeof near);
 
     F(i, N) F(j, M) if (buf[i][j] == 'M')
         near[i][j] = 0, q.push(mp(i, j));
     while (q.size())
     {
         un(y, x) = q.front(); q.pop();
-        for (int d=0; d<4; ++d) if (!~near[y+_y[d]][x+_x[d]] && // could be cleaner
+        for (int d=0; d<4; ++d) if (near[y+_y[d]][x+_x[d]] < 1e8 && // could be cleaner
                    (buf[y+_y[d]][x+_x[d]] == '.' || buf[y+_y[d]][x+_x[d]] == 'A'))
                 near[y+_y[d]][x+_x[d]] = near[y][x] + 1,
                 q.push(mp(y+_y[d], x+_x[d]));
     }
-    //F(i, N) { F(j, M) if (near[i][j] >= 0) printf("%3d", near[i][j]); else printf("  ."); printf("\n"); }
+    F(i, N) { F(j, M) if (near[i][j] >= 0) printf("%3d", near[i][j]); else printf("  ."); printf("\n"); }
 
     F(i, N) F(j, M) if (buf[i][j] == 'A')
     {   // how to make this block look good :/
-        buf[i][j] = '.';
-        if (!dfs(i, j))
+        if (!bfs(i, j))
         {
             printf("NO\n");
             return 0;
         }
         break;
     }
+    while (buf[ay][ax] != 'A')
+    {
+        int d = pre[ay][ax];
+        //printf("at %d %d\n", ay, ax),
+        ans[acnt++] = _c[d],
+        ay-=_y[d], ax-=_x[d];
+    }
+
     printf("YES\n%d\n", acnt);
     while (acnt--) printf("%c", ans[acnt]); printf("\n");
 }
