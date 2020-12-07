@@ -1,7 +1,7 @@
 /*
  * Problem message_route (cses/graph/message_route)
  * Create time: Sun 06 Dec 2020 @ 17:38 (PST)
- * Accept time: [!meta:end!]
+ * Accept time: Sun 06 Dec 2020 @ 17:55 (PST)
  *
  */
 
@@ -85,13 +85,26 @@ void addEdge(int u=0, int v=0, bool b=1)
 
 int N, M, vis[MX], ans[MX], acnt=0;
 
-bool dfs(int c, int d=1)
+//bool dfs(int c, int d=1)
+//{
+//    if (c == N) { printf("%d\n", d); return 1; }
+//    if (vis[c]) return 0;
+//    vis[c] = d;
+//    N(e, c) if (dfs(eg[e].t, d+1))
+//    { ans[acnt++] = c; return 1; }
+//    return 0;
+//}
+
+bool bfs()
 {
-    if (c == N) { printf("%d\n", d); return 1; }
-    if (vis[c]) return 0;
-    vis[c] = d;
-    N(e, c) if (dfs(eg[e].t, d+1))
-    { ans[acnt++] = c; return 1; }
+    int q[MX], ql=1, qr=0;
+    vis[1] = 1; q[++qr] = 1;
+    for (; qr+1 != ql; (ql+=1)%=MX)
+    {
+        if (q[ql] == N) { printf("%d\n", vis[q[ql]]); return 1; }
+        N(e, q[ql]) if (!vis[eg[e].t])
+            vis[q[++qr] = eg[e].t] = vis[q[ql]]+1;
+    }
     return 0;
 }
 
@@ -100,7 +113,10 @@ int main()
     sc(N, M);
     F(i, M) addEdge();
 
-    dfs(1);
+    if (!bfs()) { printf("IMPOSSIBLE\n"); return 0; }
+    for (int c=N; c != 1;)
+        N(e, c) if (vis[eg[e].t] +1 == vis[c])
+        { ans[acnt++] = c = eg[e].t; break; }
     while (acnt--) printf("%d ", ans[acnt]);
     printf("%d\n", N);
 }
