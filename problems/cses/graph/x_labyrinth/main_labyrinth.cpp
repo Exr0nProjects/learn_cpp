@@ -79,31 +79,57 @@ int N, M;
 
 int _y[] = { 0, 1, 0, -1 };
 int _x[] = { 1, 0, -1, 0 };
-char _c[] = {};
+char _c[] = { 'R', 'D', 'L', 'U' };
 
 int dir[MX][MX];
-char buf[MX][MX];
+char buf[MX][MX], path[MX*MX];
 
-int endy, endx;
+int ey=-1, ex=-1;
 
-void bfs(int y, int x, int d=-1)
+void bfs(int y, int x, int d=-2)
 {
-    if (buf[y][x] == 'B') endy = y, endx = x;
-    if (buf[y][x] != '.' || dir[y][x]) return;
-    dir[y][x] = d;
-    for (int d=0; d<4; ++d)
-        bfs(y+_y[d], x+_x[d], d);
+    queue<tuple<int, int, int> > q;
+    buf[y][x] = '.'; // FIX: replace starting position w/ blank
+    q.push(mt(y, x, d));
+    while (q.size())
+    {
+        un(y, x, d) = q.front(); q.pop();
+        //printf("at %d, %d    %d\n", y, x, d);
+
+        if (buf[y][x] == 'B') { dir[y][x] = d, ey = y, ex = x; break; }
+        if (buf[y][x] != '.' || ~dir[y][x]) continue;
+        dir[y][x] = d;
+        for (int d=0; d<4; ++d)
+            q.push(mt(y+_y[d], x+_x[d], d));
+    }
 }
 
 int main()
 {
     sc(N, M);
+    memset(dir, -1, sizeof dir);
+    memset(buf, '#', sizeof buf);
     F(i, N) scanf("%s", buf[i]+1);
 
-    F(i, N) F(j, N)
+    F(i, N) F(j, M)
         if (buf[i][j] == 'A')
         { bfs(i, j); break; }
 
+    if (ey < 0) { printf("NO\n"); return 0; }
+    //printf("yes, apparently\n");
+    //F(i, N) { F(j, M) printf("%3d", dir[i][j]); printf("\n"); }
 
+    // reconstruct
+    int cnt=0; while (dir[ey][ex] >= 0)
+    {
+        int d = dir[ey][ex];
+        //printf("at %d, %d     %d\n", ey, ex, dir[ey][ex]);
+        path[++cnt] = _c[d];
+        ey -= _y[d], ex -= _x[d];   // FIX: don't modify vars while reading them
+        //printf("                      -> %d +%d +%d -> %d %d\n", dir[ey][ex], _y[dir[ey][ex]], _x[dir[ey][ex]], ey, ex);
+    }
+
+    printf("YES\n%d\n", cnt);
+    do printf("%c", path[cnt]); while (--cnt); printf("\n");
 }
 
