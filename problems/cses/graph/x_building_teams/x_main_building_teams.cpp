@@ -1,7 +1,7 @@
 /*
  * Problem building_teams (cses/graph/building_teams)
  * Create time: Sun 06 Dec 2020 @ 17:57 (PST)
- * Accept time: [!meta:end!]
+ * Accept time: Sun 06 Dec 2020 @ 18:14 (PST)
  *
  */
 
@@ -87,11 +87,11 @@ void addEdge(int u=0, int v=0, bool b=1)
 
 void dfs(int c, int t)
 {
-    printf("at %d %d\n", c, t);
-    if (ans[c])
+    //printf("at %d %d\n", c, t);
+    if (~ans[c])    // FIX: default is -1 so need to check ~ans[c] not just truthyness
     {
-        if (ans[c] == t)
-            printf("bad news bears %d from %d = %d\n", ans[c], c, t);
+        if (ans[c] != t)
+            //printf("bad news bears %d from %d = %d\n", ans[c], c, t),
             N = -1;
         return;
     }

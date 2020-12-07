@@ -1,6 +1,6 @@
 /*
- * Problem [!meta:pid!] ([!meta:srcpath!])
- * Create time: [!meta:beg!]
+ * Problem building_teams (cses/graph/building_teams)
+ * Create time: Sun 06 Dec 2020 @ 17:57 (PST)
  * Accept time: [!meta:end!]
  *
  */
@@ -42,7 +42,7 @@ inline ll pow(ll b, ll e, ll m)
     return ret;
 }
 
-void setIO(const std::string &name = "[!meta:pid!]")
+void setIO(const std::string &name = "building_teams")
 {
     //ios_base::sync_with_stdio(0); cin.tie(0);
     if (fopen((name + ".in").c_str(), "r") != 0)
@@ -72,21 +72,41 @@ _ilb sc(ll&a,ll&b,ll&c){return sc(a,b)&&sc(c);}
 _ilb sc(ll&a,ll&b,ll&c,ll&d){return sc(a,b)&&sc(c,d);}
 ll gcd(ll a, ll b) { while (b^=a^=b^=a%=b); return a; }
 
-//struct Edge { int t, n; } eg[MX*MX]; int hd[MX], ecnt=2;
-//void addEdge(int u=0, int v=0, bool b=1)
-//{
-//    if (!u) sc(u, v);
-//    eg[ecnt] = { v, hd[u] };
-//    hd[u] = ecnt++;
-//    if (b) addEdge(v, u, 0);
-//}
-
 using namespace std;
-const int MX = -1;
+const int MX = 1e5+11;
+
+int N, M, ans[MX];
+struct Edge { int t, n; } eg[MX<<2]; int hd[MX], ecnt=2;
+void addEdge(int u=0, int v=0, bool b=1)
+{
+    if (!u) sc(u, v);
+    eg[ecnt] = { v, hd[u] };
+    hd[u] = ecnt++;
+    if (b) addEdge(v, u, 0);
+}
+
+void dfs(int c, int t)
+{
+    //printf("at %d %d\n", c, t);
+    if (~ans[c])    // FIX: default is -1 so need to check ~ans[c] not just truthyness
+    {
+        if (ans[c] != t)
+            //printf("bad news bears %d from %d = %d\n", ans[c], c, t),
+            N = -1;
+        return;
+    }
+    ans[c] = t;
+    N(e, c) dfs(eg[e].t, !t);
+}
 
 int main()
 {
-    setIO();
+    sc(N, M);
+    F(i, M) addEdge();
 
+    memset(ans, -1, sizeof ans);
+    F(i, N) if (ans[i]<0) dfs(i, !ans[i-1]);
+    if (N < 0) printf("IMPOSSIBLE\n");
+    F(i, N) printf("%d ", ans[i]+1); printf("\n");
 }
 
