@@ -107,7 +107,7 @@ int near[MX][MX], pre[MX][MX];
 
 bool bfs(int y, int x)
 {
-    queue<tuple<int, int, int> > q; q.push(mt(y, x, 0));
+    queue<tuple<int, int, int> > q; q.push(mt(y, x, 1));
     while (q.size())
     {
         un(y, x, dep) = q.front(); q.pop();
@@ -136,12 +136,12 @@ int main()
     while (q.size())
     {
         un(y, x) = q.front(); q.pop();
-        for (int d=0; d<4; ++d) if (near[y+_y[d]][x+_x[d]] < 1e8 && // could be cleaner
+        for (int d=0; d<4; ++d) if (near[y+_y[d]][x+_x[d]] > 1e9 && // could be cleaner
                    (buf[y+_y[d]][x+_x[d]] == '.' || buf[y+_y[d]][x+_x[d]] == 'A'))
                 near[y+_y[d]][x+_x[d]] = near[y][x] + 1,
                 q.push(mp(y+_y[d], x+_x[d]));
     }
-    F(i, N) { F(j, M) if (near[i][j] >= 0) printf("%3d", near[i][j]); else printf("  ."); printf("\n"); }
+    //F(i, N) { F(j, M) if (near[i][j] >= 0) printf("%3d", near[i][j]); else printf("  ."); printf("\n"); }
 
     F(i, N) F(j, M) if (buf[i][j] == 'A')
     {   // how to make this block look good :/
