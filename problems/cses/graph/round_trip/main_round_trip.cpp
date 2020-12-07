@@ -73,7 +73,7 @@ _ilb sc(ll&a,ll&b,ll&c,ll&d){return sc(a,b)&&sc(c,d);}
 ll gcd(ll a, ll b) { while (b^=a^=b^=a%=b); return a; }
 
 using namespace std;
-const int MX = 1e5+11;
+const int MX = 2e5+11;
 
 struct Edge { int t, n; } eg[MX<<2]; int hd[MX], ecnt=2;
 void addEdge(int u=0, int v=0, bool b=1)
@@ -88,7 +88,9 @@ int N, M, pre[MX], ans[MX], acnt=0;
 int beg = 0;
 bool dfs(int c, int p=0)
 {
+    printf("at %d from %d\n", c, p);
     if (pre[c]) { beg = c; return 1; }
+    pre[c] = p;
     N(e, c) if (eg[e].t != p && dfs(eg[e].t, c)) return 1;
     return 0;
 }
@@ -99,8 +101,11 @@ int main()
     F(i, M) addEdge();
 
     F(i, N) if (!pre[i] && dfs(i)) break;
+    //printf("beg = %d\n", beg);
     if (!beg) { printf("IMPOSSIBLE\n"); return 0; }
-    while (beg != *ans) ans[acnt++] = beg = pre[beg];
-    while (acnt--) printf("%d ", ans[acnt]); printf("\n");
+    while (beg != ans[0]) ans[acnt++] = beg, beg = pre[beg];
+    //while (beg != ans[0]) ans[acnt++] = beg, beg = pre[beg], printf("beg %d <- %d  ans[0] %d\n", beg, pre[beg], ans[0]);
+    printf("%d\n%d", acnt+1, ans[0]);
+    while (acnt--) printf(" %d", ans[acnt]); printf("\n");
 }
 
