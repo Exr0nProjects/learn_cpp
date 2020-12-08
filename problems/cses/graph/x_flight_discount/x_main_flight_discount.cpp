@@ -1,11 +1,11 @@
 /*
  * Problem flight_discount (cses/graph/flight_discount)
  * Create time: Mon 07 Dec 2020 @ 21:12 (PST)
- * Accept time: [!meta:end!]
+ * Accept time: Mon 07 Dec 2020 @ 21:35 (PST)
  *
  */
 
-#define nt int
+#define nt long long
 #include <set>
 #include <map>
 #include <tuple>
@@ -77,7 +77,8 @@ struct Edge { nt t, w, n; } eg[MX<<2]; nt hd[MX], ecnt=2;
 void addEdge(nt u=0, nt v=0, bool b=1)
 {
     if (!u) sc(u, v); nt w = sc();
-    eg[ecnt] = { v, hd[u] };
+    //printf("%d --%d--> %d\n", u, w, v);
+    eg[ecnt] = { v, w, hd[u] }; // FIX: init list takes 3 not 2
     hd[u] = ecnt++;
     //if (b) addEdge(v, u, 0);
 }
@@ -93,8 +94,8 @@ int main()
     while (q.size())
     {
         un(d, c, x) = q.top(); q.pop();
-        printf("at %d %d after %d\n", c, x, d);
-        if (dist[c][x] < d) continue;
+        //printf("at %d %d after %d\n", c, x, d);
+        if (dist[c][x] <= d) continue;  // FIX: compare--dist[c] <= d not dist[c] < d else may keep pushing but not getting better
         dist[c][x] = d;
         N(e, c)
         {

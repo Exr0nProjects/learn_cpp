@@ -1,11 +1,11 @@
 /*
- * Problem [!meta:pid!] ([!meta:srcpath!])
- * Create time: [!meta:beg!]
+ * Problem flight_discount (cses/graph/flight_discount)
+ * Create time: Mon 07 Dec 2020 @ 21:12 (PST)
  * Accept time: [!meta:end!]
  *
  */
 
-#define nt int
+#define nt long long
 #include <set>
 #include <map>
 #include <tuple>
@@ -42,7 +42,7 @@ inline nt pow(nt b, nt e, nt m)
     return ret;
 }
 
-void setIO(const std::string &name = "[!meta:pid!]")
+void setIO(const std::string &name = "flight_discount")
 {
     //ios_base::sync_with_stdio(0); cin.tie(0);
     if (fopen((name + ".in").c_str(), "r") != 0)
@@ -52,7 +52,7 @@ void setIO(const std::string &name = "[!meta:pid!]")
 #define _gc getchar_unlocked
 inline bool sc(nt &n)
 {
-    nt neg = 1;
+    int neg = 1;
     register char c;
     do c = _gc(); while (isspace(c));
     if (c == '-') neg = -1, c = _gc();
@@ -69,20 +69,40 @@ _ilb sc(nt&a,nt&b,nt&c,nt&d){return sc(a,b)&&sc(c,d);}
 nt gcd(nt a, nt b) { while (b^=a^=b^=a%=b); return a; }
 
 using namespace std;
-const nt MX = -1;
+const int MX = 1e5+11;
 
-//struct Edge { nt t, n; } eg[MX*MX]; nt hd[MX], ecnt=2;
-//void addEdge(nt u=0, nt v=0, bool b=1)
-//{
-//    if (!u) sc(u, v);
-//    eg[ecnt] = { v, hd[u] };
-//    hd[u] = ecnt++;
-//    if (b) addEdge(v, u, 0);
-//}
+nt N, M, dist[MX][2];
+
+struct Edge { nt t, w, n; } eg[MX<<2]; nt hd[MX], ecnt=2;
+void addEdge(nt u=0, nt v=0, bool b=1)
+{
+    if (!u) sc(u, v); nt w = sc();
+    //printf("%d --%d--> %d\n", u, w, v);
+    eg[ecnt] = { v, w, hd[u] }; // FIX: init list takes 3 not 2
+    hd[u] = ecnt++;
+    //if (b) addEdge(v, u, 0);
+}
 
 int main()
 {
-    setIO();
+    sc(N, M);
+    F(i, M) addEdge();
 
+    memset(dist, 0x3f, sizeof dist);
+
+    gpq(tuple<nt, nt, nt>) q; q.push(mt(0, 1, 0));
+    while (q.size())
+    {
+        un(d, c, x) = q.top(); q.pop();
+        //printf("at %d %d after %d\n", c, x, d);
+        if (dist[c][x] <= d) continue;  // FIX: compare--dist[c] <= d not dist[c] < d else may keep pushing but not getting better
+        dist[c][x] = d;
+        N(e, c)
+        {
+            q.push(mt(d + eg[e].w, eg[e].t, x));
+            if (!x) q.push(mt(d+eg[e].w/2, eg[e].t, 1));
+        }
+    }
+    printf("%lld\n", min(dist[N][0], dist[N][1]));
 }
 
