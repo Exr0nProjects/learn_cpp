@@ -24,6 +24,6 @@ echo "$1" > "$cache"
 
 export PROB=$(basename $1)
 cd $1
-nvim main_$(basename $1).cpp -c "normal 8Gzf73Gzf83Gzo83G"
+nvim main_$(basename $1).cpp -c "normal 9Gzf69G74Gzf81G73G"
 
 #[[ -s "$1/main_$(basename $1).cpp" ]] && printf "File exists!\n" | exit 1
