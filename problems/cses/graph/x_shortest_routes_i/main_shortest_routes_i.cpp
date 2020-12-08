@@ -73,8 +73,8 @@ _ilb sc(ll&a,ll&b,ll&c,ll&d){return sc(a,b)&&sc(c,d);}
 ll gcd(ll a, ll b) { while (b^=a^=b^=a%=b); return a; }
 
 using namespace std;
-const ll MX = 1e5+11;
-struct Edge { ll t, w, n; } eg[MX<<2]; ll hd[MX], ecnt=2;
+const int MX = 1e5+11;
+struct Edge { ll t, w, n; } eg[MX<<2]; int hd[MX], ecnt=2;
 void addEdge(ll u=0, ll v=0, ll w=0, bool b=0)
 {
     if (!u) sc(u, v, w);
@@ -83,24 +83,21 @@ void addEdge(ll u=0, ll v=0, ll w=0, bool b=0)
     //if (b) addEdge(v, u, 0);
 }
 
-ll N, M;
+int N, M;
 ll dist[MX];
-bool vis[MX];
 
 int main()
 {
     sc(N, M);
     F(i, M) addEdge();
     memset(dist, 0x3f, sizeof dist);
-    //dist[1] = 0;
+    dist[1] = 0;
 
-    gpq(pair<ll, ll>) q; q.push(mp(0, 1));
+    gpq(pair<ll, ll>) q; q.push(mp(0, 1));  // FIX: use a pq instead of a queue smah
     while (q.size())
     {
         un(d, c) = q.top(); q.pop();
-        //printf("at %d after %lld, cur %lld\n", c, d, dist[c]);
-        //if (vis[c]) continue; vis[c] = 1;
-        if (dist[c] <= d) continue;
+        if (dist[c] < d) continue;
         dist[c] = d;
         N(e, c) q.push(mp(d+eg[e].w, eg[e].t));
     }
