@@ -81,7 +81,7 @@ void addEdge(nt u=0, nt v=0, nt w=0, bool b=1)
     //printf("got %d %d %d\n", u, v, w);
     eg[ecnt] = { v, w, hd[u] };
     hd[u] = ecnt++;
-    if (b) addEdge(v, u, w, 0);
+    //if (b) addEdge(v, u, w, 0);
 }
 
 nt q[MX], ql=1, qr=0;
