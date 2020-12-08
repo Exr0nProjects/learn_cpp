@@ -2,7 +2,7 @@
  * Problem cycle_finding (cses/graph/cycle_finding)
  * Create time: Mon 07 Dec 2020 @ 21:36 (PST)
  * Accept time: [!meta:end!]
- *
+ *  apparently you need to deduplicate in the queue for spfa?
  */
 
 #define nt long long
@@ -70,6 +70,7 @@ nt gcd(nt a, nt b) { while (b^=a^=b^=a%=b); return a; }
 
 using namespace std;
 const nt MX = 2511;
+const nt MXQ = MX;
 
 nt N, M;
 nt dist[MX], vis[MX], pre[MX];
@@ -84,7 +85,8 @@ void addEdge(nt u=0, nt v=0, nt w=0, bool b=1)
     //if (b) addEdge(v, u, w, 0);
 }
 
-nt q[MX<<3], ql=1, qr=0;
+nt q[MXQ], ql=1, qr=0;
+bool qhas[MX];
 nt nono = 0, ans[MX], acnt=0;
 
 //bool dfs(int c, int og, int cost)
@@ -105,16 +107,25 @@ int main()
     F(i, M) addEdge();
 
     F(i, N) q[++qr] = i; // make sure to push everything in case it is not connected
+    memset(dist, 0x3f, sizeof dist);
 
-    for (; ql-1 != qr; ++ql%=MX)
+    nt cnt=0;
+    for (; ql-1 != qr; ++ql%=MXQ)
     {
-        maxvis = max(maxvis, vis[q[ql]]+1);
+        ++cnt;
+        qhas[q[ql]] = 0;
+        if (vis[q[ql]]+1 > vis[maxvis]) maxvis = q[ql];
         if (++vis[q[ql]] > N) { nono = q[ql]; break; }
         else N(e, q[ql]) if (dist[eg[e].t] > dist[q[ql]] + eg[e].w)
-            dist[q[++qr%=MX] = eg[e].t] = dist[q[ql]] + eg[e].w, pre[eg[e].t] = q[ql];
+        {
+            //printf("%d..%d    relaxing %d -> %d (dest now %lld)\n", ql, qr, q[ql], eg[e].t, dist[q[ql]] + eg[e].w),
+            dist[eg[e].t] = dist[q[ql]] + eg[e].w, pre[eg[e].t] = q[ql];
+            if (!qhas[eg[e].t]) qhas[q[++qr%=MXQ] = eg[e].t] = 1;
+            //qhas[q[++qr%=MXQ] = eg[e].t] = 1;
+        }
     }
 
-    printf("maxvis %d\n", maxvis);
+    //printf("after %d iters, maxvis %d with %d\n", cnt, maxvis, vis[maxvis]);
 
     if (!nono) { printf("NO\n"); return 0; }
     F(i, N) nono = pre[nono];   // back up N nodes to ensure we are on the cycle
