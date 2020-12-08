@@ -5,7 +5,7 @@
  *
  */
 
-#define nt int
+#define nt long long
 #include <set>
 #include <map>
 #include <tuple>
@@ -21,7 +21,7 @@
 
 #define gpq(...) priority_queue<__VA_ARGS__, deque<__VA_ARGS__>, greater<__VA_ARGS__> >
 #define pb push_back
-#define pii pair<int, int>
+#define pii pair<nt, nt>
 #define mp make_pair
 #define f first
 #define s second
@@ -31,7 +31,7 @@
 
 #define F(i,b) for (nt i=1; i<=(b); ++i)
 #define R(i,b) for (nt i=(b); i>=1; --i)
-#define N(e,c) for (int e=hd[c]; e; e=eg[e].n)
+#define N(e,c) for (nt e=hd[c]; e; e=eg[e].n)
 #define TN(e,c,p) N(e,c) if (eg[e].t != p)
 
 inline nt pow(nt b, nt e, nt m)
@@ -72,9 +72,9 @@ using namespace std;
 const nt MX = 2511;
 
 nt N, M;
-nt dist[MX], vis[MX];
+nt dist[MX], vis[MX], pre[MX];
 
-struct Edge { nt t, w, n; } eg[MX*MX]; nt hd[MX], ecnt=2;
+struct Edge { nt t, w, n; } eg[MX<<3]; nt hd[MX], ecnt=2;
 void addEdge(nt u=0, nt v=0, nt w=0, bool b=1)
 {
     if (!u) sc(u, v, w);
@@ -84,18 +84,20 @@ void addEdge(nt u=0, nt v=0, nt w=0, bool b=1)
     //if (b) addEdge(v, u, w, 0);
 }
 
-nt q[MX], ql=1, qr=0;
+nt q[MX<<3], ql=1, qr=0;
 nt nono = 0, ans[MX], acnt=0;
 
-bool dfs(int c, int og, int cost)
-{
-    //printf("at %d looking for %d\n", c, og);
-    if (c == og && cost < 0) return 1;
-    if (vis[c] < 0) return 0; vis[c] = -1;
-    N(e, c) if (dfs(eg[e].t, og, cost + eg[e].w))
-    { ans[acnt++] = c; return 1; }
-    return 0;
-}
+//bool dfs(int c, int og, int cost)
+//{
+//    //printf("at %d looking for %d\n", c, og);
+//    if (c == og && cost < 0) return 1;
+//    if (vis[c] < 0) return 0; vis[c] = -1;
+//    N(e, c) if (dfs(eg[e].t, og, cost + eg[e].w))
+//    { ans[acnt++] = c; return 1; }
+//    return 0;
+//}
+
+nt maxvis = 0;
 
 int main()
 {
@@ -106,18 +108,25 @@ int main()
 
     for (; ql-1 != qr; ++ql%=MX)
     {
+        maxvis = max(maxvis, vis[q[ql]]+1);
         if (++vis[q[ql]] > N) { nono = q[ql]; break; }
         else N(e, q[ql]) if (dist[eg[e].t] > dist[q[ql]] + eg[e].w)
-            dist[q[++qr%=MX] = eg[e].t] = dist[q[ql]] + eg[e].w;
+            dist[q[++qr%=MX] = eg[e].t] = dist[q[ql]] + eg[e].w, pre[eg[e].t] = q[ql];
     }
 
+    printf("maxvis %d\n", maxvis);
+
     if (!nono) { printf("NO\n"); return 0; }
-    N(e, nono) dfs(eg[e].t, nono, eg[e].w);
+    F(i, N) nono = pre[nono];   // back up N nodes to ensure we are on the cycle
+    for (nt c=pre[nono]; c != nono; c=pre[c]) ans[acnt++] = c;
+
     printf("YES\n%d ", nono);
-    //printf("%d\n", acnt);
     while (acnt--) printf("%d ", ans[acnt]);
     printf("%d\n", nono);
-    //if (nono) printf("YES\n"), dfs(nono, nono), printf("%d\n", nono);
-    //else printf("NO\n");
+
+    //N(e, nono) dfs(eg[e].t, nono, eg[e].w);
+    ////printf("%d\n", acnt);
+    ////if (nono) printf("YES\n"), dfs(nono, nono), printf("%d\n", nono);
+    ////else printf("NO\n");
 }
 
