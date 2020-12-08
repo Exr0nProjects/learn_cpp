@@ -171,6 +171,17 @@ Don't make names too similar, it's easy to make typos (`djs` vs `djf`)
 - `kdep` (bfs) must clear the `dep` array and re-populate it
 - when adding reverse edges, default weight should be zero.
 
+### Dijkstra
+- init dist to inf
+- use `if (dist[c] <= d)` not `if (dist[c] < d)` otherwise you may keep pushing useless nodes
+    - and when doing so, make sure you don't set `dist[SRC] = 0;`, allow the dijkstra update to do it for you
+
+### SPFA
+- need to deduplicate the queue with a `bool qhas[MX]` else each vertex is pushed too many times
+- make sure that the queue wraps around (add with `q[++qr%=MX] = ins;` and pop in the for loop with `for (...; ++ql%=MX)`
+- have a `vis` array that counts the number of times a vertex is visited
+    - if its more than `N` times, then there is a negative cycle!
+
 ## Algorithmic Paradighms
 
 - Brute Force

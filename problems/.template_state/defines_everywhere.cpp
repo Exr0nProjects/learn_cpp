@@ -21,7 +21,7 @@
 
 #define gpq(...) priority_queue<__VA_ARGS__, deque<__VA_ARGS__>, greater<__VA_ARGS__> >
 #define pb push_back
-#define pii pair<int, int>
+#define pii pair<nt, nt>
 #define mp make_pair
 #define f first
 #define s second
@@ -31,7 +31,7 @@
 
 #define F(i,b) for (nt i=1; i<=(b); ++i)
 #define R(i,b) for (nt i=(b); i>=1; --i)
-#define N(e,c) for (int e=hd[c]; e; e=eg[e].n)
+#define N(e,c) for (nt e=hd[c]; e; e=eg[e].n)
 #define TN(e,c,p) N(e,c) if (eg[e].t != p)
 
 inline nt pow(nt b, nt e, nt m)
