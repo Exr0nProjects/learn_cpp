@@ -1,0 +1,44 @@
+/*
+ * Problem 2 (contests/standard-xjoi/1666/2)
+ * Create time: Wed 09 Dec 2020 @ 17:18 (PST)
+ * Accept time: [!meta:end!]
+ *
+ */
+
+#include <bits/stdc++.h>
+#define nt int
+#define F(i, n) for (nt i=1; i<=N; ++i)
+
+const nt MX = 1e5+11;
+const nt MXE = MX<<2;
+nt N, K;
+struct Edge { nt t, n; } eg[MXE]; nt hd[MX], ecnt=2;
+void addEdge(nt u=0, nt v=0, bool b=1)
+{
+    if (!u) scanf("%d%d", &u, &v);
+    printf("%d %d\n", u, v);
+    eg[ecnt] = { v, hd[u] };
+    hd[u] = ecnt++;
+    if (b) addEdge(v, u, 0);
+}
+
+nt dp[MXE][16];
+nt op(nt e, nt p=0, nt k=K)
+{
+    printf("at %d from %d for %d\n", eg[e].t, p, k);
+    if (k == 0) return 1;
+    if (dp[e][k]) return dp[e][k];
+    nt sum=0;
+    for (nt n=hd[eg[e].t]; n; n=eg[n].n) if (eg[n].t != p)
+            sum += op(n, eg[e].t, k-1), dp[e][k] += dp[n][k-1];
+    return sum;
+}
+
+int main()
+{
+    scanf("%d%d", &N, &K);
+    F(i, N-1) addEdge();
+    F(i, N) printf("%d ", op(i)); printf("\n");
+    F(i, N) printf("%d ", dp[i][K]); printf("\n");
+}
+
