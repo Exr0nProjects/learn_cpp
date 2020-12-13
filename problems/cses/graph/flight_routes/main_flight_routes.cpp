@@ -38,20 +38,21 @@ int main()
         printf("at %d from %d after %d\n", c, p, d);
         if (dist[c] <= d) { store[c].push(mt(d, c, p)); continue; }
         dist[c] = d;
-        if (dist[p] < dist[c]) pre[c] = p;
+        pre[c].push(p);
         //printf("continuing\n");
         if (c == N && K--)
         {
             printf("%lld ", d);
             //printf("set pre[%d] to %d\n", c, pre[c]);
-            for (; ~c; c=pre[c])
+            while (~c && pre[c].size())
             {
-                //printf("back to %d\n", c);
-                if (!c) break;
+                printf("back to %d\n", c);
                 dist[c] = 1e17;
                 if (store[c].size())
                     pq.push(store[c].front()),
                     store[c].pop();
+                ll t = c; c = pre[c].top();
+                pre[t].pop();
             }
         } if (!K) break;
         for (int e=hd[c]; e; e=eg[e].n)
