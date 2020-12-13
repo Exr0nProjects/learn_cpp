@@ -7,19 +7,18 @@
 
 #include <bits/stdc++.h>
 using namespace std;
-#define ll int
-const ll MX = 5e4+10;
+const long long MX = 1e6+10;
 
-ll N, bit[MX], seen[MX];
+long long N, bit[MX], cows[MX], seen[MX];
 
-void bu(ll x, ll v)
+void bu(long long x, long long v)
 {
     for (; x <= N; x+=x&-x)
         bit[x] += v;
 }
-ll bq(ll x)
+long long bq(long long x)
 {
-    ll ans = 0; // FIX: init var smah
+    long long ans = 0; // FIX: init var smah
     for (; x; x-=x&-x)
         //printf("    at %d, ans %d\n", x, ans),
         ans += bit[x];
@@ -31,14 +30,25 @@ int main()
     freopen("circlecross.in", "r", stdin);
     freopen("circlecross.out", "w+", stdout);
     scanf("%d", &N);
-    ll ans = 0;
+    vector<pair<long long, long long> > renum(N);
     for (int i=1; i<=2*N; ++i)
     {
+        long long c; scanf("%lld", &c);
+        if (renum[c-1].first) renum[c-1].second = i;
+        else renum[c-1].first = i;
+    }
+    sort(renum.begin(), renum.end());
+    for (int i=0; i<N; ++i) cows[renum[i].first] = cows[renum[i].second] = i+1;
+    //for (int i=1; i<=2*N; ++i) printf("%3d", cows[i]); printf("\n");
+    //printf("um\n");
+    long long ans = 0;
+    for (int i=1; i<=2*N; ++i)
+    {
+        long long c = cows[i];
         //for (int i=1; i<=N; ++i) printf("%3d", bit[i]); printf("\n");
-        ll c; scanf("%d", &c);
         if (!seen[c]) ans -= bq(c), bu(c, 1), seen[c] = 1;
         else { bu(c, -1); ans += bq(c); }
         //printf("saw cow %d, now %d\n", c, ans);
     }
-    printf("%d\n", ans);
+    printf("%lld\n", -ans);
 }
