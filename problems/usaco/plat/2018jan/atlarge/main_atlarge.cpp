@@ -17,36 +17,52 @@ void addEdge(ll u=0, ll v=0, bool b=1)
     hd[u] = ecnt++;
     if (b) addEdge( v, u, 0 );
 }
-ll N, near[MX], snear[MX];
+ll N, near[MX], par[MX];
 
 ll knear(ll c, ll p=0)
 {
+    par[c] = p;
     if (!eg[hd[c]].n) return near[c] = 0;
-    near[c] = snear[c] = 1e9;
+    near[c] = 1e9;
     for (int e=hd[c]; e; e=eg[e].n) if (eg[e].t != p)
-    {
-        ll g = knear(eg[e].t, c);
-        if (g < near[c]) snear[c] = near[c], near[c] = g;
-        else if (g < snear[c]) snear[c] = g;
-    }
+        near[c] = min(near[c], knear(eg[e].t, c))+1;
     return near[c];
+}
+
+void knear2(ll c, ll p=0)
+{
+    for (int e=hd[c]; e; e=eg[e].n) if (eg[e].t != p)
+        near[eg[e].t] = min(near[eg[e].t], near[c]+1),
+        knear2(eg[e].t, c);
 }
 
 ll dfs(ll c, ll p=0, ll d=0)
 {
+    for (int i=1; i<=d; ++i) printf("|   "); printf("at %d <- %d after %d\n", c, p, d);
     if (!eg[hd[c]].n) return 0;
     if (d >= near[c]) return 0;
     ll ret = -2;
     for (int e=hd[c]; e; e=eg[e].n, ++ret)
         if (eg[e].t != p)
             ret += dfs(eg[e].t, c, d+1);
+    for (int i=1; i<=d; ++i) printf("|   "); printf("=> %d\n", ret);
     return ret;
 }
 
 int main()
 {
+    freopen("atlarge.in", "r", stdin);
+    freopen("atlarge.out", "w+", stdout);
     scanf("%d", &N);
     for (int i=1; i<N; ++i) addEdge();
+
+    ll rt = 0;
+    for (int i=1; !rt && i<=N; ++i) if (eg[hd[i]].n) rt = i;
+    knear(rt);
+    for (int i=1; i<=N; ++i) printf("%3d", near[i]); printf("\n");
+    knear2(rt);
+    //{ rt = i; knear(i); knear2(i); break; }
+    //for (int i=1; i<=N; ++i) near[i] = min(near[i], near[par[i]]+1);
     for (int i=1; i<=N; ++i)
         if (!eg[hd[i]].n) printf("1\n");
         else printf("%d\n", dfs(i) +2);
