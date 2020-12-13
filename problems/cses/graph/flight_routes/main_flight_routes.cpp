@@ -10,7 +10,11 @@
 using namespace std;
 const int MX = 1e5+10;
 ll N, M, K;
-ll dist[MX], pre[MX];
+ll dist[MX];
+
+typedef tuple<ll, ll, ll> St;
+stack<ll> pre[MX];
+queue<St> store[MX];
 
 struct Edge { ll t, w, n; } eg[MX<<2]; ll hd[MX], ecnt=2;
 void addEdge()
@@ -25,25 +29,33 @@ int main()
 {
     scanf("%d%d%d", &N, &M, &K);
     for (int i=1; i<=M; ++i) addEdge();
-    typedef tuple<ll, ll, ll> St;
-    //memset(dist, 0x3f, sizeof dist);
+    memset(dist, 0x3f, sizeof dist);
     priority_queue<St, deque<St>, greater<St> > pq;
-    pq.push(mt(0, 1, {1}));
+    pq.push(mt(0, 1, -1));
     while (pq.size())
     {
-        ll d, c; tie(d, c) = pq.top(); pq.pop();
-        //printf("at %d after %d   (hav? %d)\n", c, d, dist[c].count(d));
+        ll d, c, p; tie(d, c, p) = pq.top(); pq.pop();
+        printf("at %d from %d after %d\n", c, p, d);
+        if (dist[c] <= d) { store[c].push(mt(d, c, p)); continue; }
+        dist[c] = d;
+        if (dist[p] < dist[c]) pre[c] = p;
+        //printf("continuing\n");
         if (c == N && K--)
         {
-            printf("%d ", d);
-
-        }
-        if (!K) break;
-        //if (dist[c] <= d) continue;
-        if (dist[c].count(d)) continue;
-        dist[c].insert(d);
+            printf("%lld ", d);
+            //printf("set pre[%d] to %d\n", c, pre[c]);
+            for (; ~c; c=pre[c])
+            {
+                //printf("back to %d\n", c);
+                if (!c) break;
+                dist[c] = 1e17;
+                if (store[c].size())
+                    pq.push(store[c].front()),
+                    store[c].pop();
+            }
+        } if (!K) break;
         for (int e=hd[c]; e; e=eg[e].n)
-            pq.push(mt(d+eg[e].w, eg[e].t));
+            pq.push(mt(d+eg[e].w, eg[e].t, c));
     }
     printf("\n");
     return 0;
