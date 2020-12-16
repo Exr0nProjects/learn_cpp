@@ -14,7 +14,7 @@ ll N, M;
 ll q[MX], ql=1, qr=0;
 ll dep[MX];
 
-struct Edge { ll t, w, n; } eg[MXE<<1]; ll hd[MX], thd[MX], ecnt=2;
+struct Edge { ll t, w, n; } eg[MXE<<1]; ll hd[MX], ecnt=2;
 void addEdge(ll u=0, ll v=0, ll w=0)
 {
     if (!u) scanf("%d%d%d", &u, &v, &w),
@@ -27,7 +27,6 @@ bool bfs()
 {
     memset(dep, 0, sizeof dep);
     memset(q, 0, sizeof q);
-    memcpy(thd, hd, sizeof hd);
     ql = 1, qr = 0;
     dep[1] = 2; // FIX: set dep of src after memset
     for (q[++qr] = 1; ql <= qr; ++ql)
@@ -45,14 +44,12 @@ ll aug(ll c, ll mn)
 {
     if (!mn || c == N) return mn;
     ll flo = 0;
-    //for (int e=hd[c]; e && mn; e=eg[e].n)
-    for (; thd[c]; thd[c] = eg[thd[c]].n)
-        if (dep[eg[thd[c]].t] == dep[c]+1)   // FIX: check dep in aug !!
+    for (int e=hd[c]; e && mn; e=eg[e].n)
+        if (dep[eg[e].t] == dep[c]+1)   // FIX: check dep in aug !!
     {
-        ll g = aug(eg[thd[c]].t, min(mn, eg[thd[c]].w));
-        eg[thd[c]].w -= g, eg[thd[c]^1].w += g;
+        ll g = aug(eg[e].t, min(mn, eg[e].w));
+        eg[e].w -= g, eg[e^1].w += g;
         mn -= g, flo += g;
-        if (!mn) break; // IF using head optimization, must have this line (else a node may get skipped if &&mn is in for condition) else it will be very slow
     }
     if (!flo) dep[c] = 0;
     return flo;
