@@ -1,7 +1,7 @@
 /*
  * Problem planets_and_kingdoms (cses/graph/planets_and_kingdoms)
  * Create time: Tue 15 Dec 2020 @ 22:50 (PST)
- * Accept time: [!meta:end!]
+ * Accept time: Tue 15 Dec 2020 @ 23:20 (PST)
  *
  */
 #include <bits/stdc++.h>
@@ -22,15 +22,13 @@ void addEdge(ll u=0, ll v=0)
 
 ll tarjan(ll c)
 {
-    //printf("tarjan at %d\n", c);
     // init
     pre[c] = ++ncnt;
-    low[c] = pre[c];    // NOTE: don't actually need to store low as an array (used in this recursive frame only)
-    sk[++scnt] = c; // FIX: ++scnt not scnt++.. don't change semantics ig
+    low[c] = pre[c];
+    sk[++scnt] = c;
     // prop
-    for (int e=hd[c]; e; e=eg[e].n) // FIX: typo -- e=eg[e].n not e=eg[e].t
+    for (int e=hd[c]; e; e=eg[e].n)
     {
-        //printf("c %d eg[e].t = %d\n", c, eg[e].t);
         if (!pre[eg[e].t]) low[c] = min(low[c], tarjan(eg[e].t));
         else if (!ans[eg[e].t]) low[c] = min(low[c], pre[eg[e].t]);
     }
@@ -38,7 +36,7 @@ ll tarjan(ll c)
     if (low[c] == pre[c])
     {
         ++acnt;
-        while (scnt > 0 && sk[scnt] != c)
+        while (sk[scnt] != c)
             ans[sk[scnt--]] = acnt;
         ans[c] = acnt, scnt--;
     }
@@ -50,8 +48,7 @@ int main()
     scanf("%d%d", &N, &M);
     for (int i=1; i<=M; ++i) addEdge();
 
-    for (int i=1; i<=N; ++i) if (!pre[i])
-        tarjan(i);
+    for (int i=1; i<=N; ++i) if (!ans[i]) tarjan(i);
     printf("%d\n", acnt);
     for (int i=1; i<=N; ++i) printf("%d ", ans[i]);
     printf("\n");
