@@ -1,7 +1,7 @@
 /*
  * Problem fastflow (spoj/fastflow)
  * Create time: Tue 06 Oct 2020 @ 17:06 (PDT)
- * Accept time: [!meta:end!]
+ * Accept time: Tue 15 Dec 2020 @ 21:50 (PST)
  *
  */
 
@@ -75,7 +75,7 @@ void addEdge(ll u, ll v, ll w, bool b=1)
         //eid[u][v] = ecnt;
         hd[u] = ecnt++;
     //}
-    if (b) addEdge(v, u, 0, 0); // FIX: typo addEdge(v, u, 0, 0) not addEdge(v, u, w, 0) bc opp should init w/ 0
+    if (b) addEdge(v, u, w, 0); // FIX: typo addEdge(v, u, 0, 0) not addEdge(v, u, w, 0) bc opp should init w/ 0
 }
 
 bool kdep()
@@ -132,7 +132,9 @@ int main()
         addEdge(u, v, w);
     }
     ll flo = 0;
-    while (kdep()) flo += aug(S, 1e11);
+    while (kdep())
+        //printf("flo is %d\n", flo),
+        flo += aug(S, 1e11);
     printf("%lld\n", flo);
 }
 
