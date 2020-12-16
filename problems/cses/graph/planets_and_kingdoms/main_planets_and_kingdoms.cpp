@@ -26,7 +26,7 @@ ll tarjan(ll c)
     // init
     pre[c] = ++ncnt;
     low[c] = pre[c];    // NOTE: don't actually need to store low as an array (used in this recursive frame only)
-    sk[scnt++] = c;
+    sk[++scnt] = c; // FIX: ++scnt not scnt++.. don't change semantics ig
     // prop
     for (int e=hd[c]; e; e=eg[e].n) // FIX: typo -- e=eg[e].n not e=eg[e].t
     {
@@ -38,9 +38,9 @@ ll tarjan(ll c)
     if (low[c] == pre[c])
     {
         ++acnt;
-        while (sk[scnt] != c)
-            ans[sk[scnt--]] = c;
-        ans[c] = c, scnt--;
+        while (scnt > 0 && sk[scnt] != c)
+            ans[sk[scnt--]] = acnt;
+        ans[c] = acnt, scnt--;
     }
     return low[c];
 }
@@ -50,7 +50,7 @@ int main()
     scanf("%d%d", &N, &M);
     for (int i=1; i<=M; ++i) addEdge();
 
-    for (int i=1; i<=N; ++i) if (!ans[i])
+    for (int i=1; i<=N; ++i) if (!pre[i])
         tarjan(i);
     printf("%d\n", acnt);
     for (int i=1; i<=N; ++i) printf("%d ", ans[i]);
