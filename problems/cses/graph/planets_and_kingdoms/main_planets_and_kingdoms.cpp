@@ -16,25 +16,28 @@ ll sk[MX], scnt=0;
 struct Edge { ll t, n; } eg[MX<<2]; ll hd[MX], ecnt=2;
 void addEdge(ll u=0, ll v=0)
 {
-    if (!u) scanf("%d%d", &u, &v), addEdge(v, u);
+    if (!u) scanf("%d%d", &u, &v);  // FIX: directed edges
     eg[ecnt] = { v, hd[u] }; hd[u] = ecnt++;
 }
 
 ll tarjan(ll c)
 {
+    //printf("tarjan at %d\n", c);
     // init
     pre[c] = ++ncnt;
-    low[c] = pre[c];
+    low[c] = pre[c];    // NOTE: don't actually need to store low as an array (used in this recursive frame only)
     sk[scnt++] = c;
     // prop
-    for (int e=hd[c]; e; e=eg[e].t)
+    for (int e=hd[c]; e; e=eg[e].n) // FIX: typo -- e=eg[e].n not e=eg[e].t
     {
+        //printf("c %d eg[e].t = %d\n", c, eg[e].t);
         if (!pre[eg[e].t]) low[c] = min(low[c], tarjan(eg[e].t));
         else if (!ans[eg[e].t]) low[c] = min(low[c], pre[eg[e].t]);
     }
     // report
     if (low[c] == pre[c])
     {
+        ++acnt;
         while (sk[scnt] != c)
             ans[sk[scnt--]] = c;
         ans[c] = c, scnt--;
@@ -51,5 +54,6 @@ int main()
         tarjan(i);
     printf("%d\n", acnt);
     for (int i=1; i<=N; ++i) printf("%d ", ans[i]);
+    printf("\n");
 }
 
