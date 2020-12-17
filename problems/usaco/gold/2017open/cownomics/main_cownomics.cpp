@@ -26,7 +26,7 @@ ll compress(char &c)
 
 bool check(ll len)
 {
-    printf("check %d\n", len);
+    //printf("check %d\n", len);
     set<ll> vis;
     for (int j=1; j+len <= M; ++j)
     {
@@ -37,14 +37,17 @@ bool check(ll len)
         for (int i=1; i<=N; ++i)
             if (vis.count(hs[1][i][j][j+len]))
             { good = 0; break; }
+        //if (good) { printf("yes\n"); return 1; }
         if (good) return 1;
     }
-    printf("no \n");
+    //printf("no \n");
     return 0;
 }
 
 int main()
 {
+    freopen("cownomics.in", "r", stdin);
+    freopen("cownomics.out", "w+", stdout);
     scanf("%d%d", &N, &M);
     for (int s=0; s<2; ++s)
         for (int i=1; i<=N; ++i) scanf("%s", gene[s][i]+1);
@@ -53,7 +56,7 @@ int main()
         for (int i=1; i<=N; ++i) for (int j=1; j<=M; ++j)
             hs[s][i][j][j] = compress(gene[s][i][j]);
 
-    for (int i=1; i<=N; ++i) { for (int j=1; j<=M; ++j) printf("%3d", hs[0][i][j][j]); printf("\n"); }
+    //for (int i=1; i<=N; ++i) { for (int j=1; j<=M; ++j) printf("%3d", hs[0][i][j][j]); printf("\n"); }
 
     for (int s=0; s<2; ++s) for (int n=1; n<M; ++n)
     {
@@ -63,9 +66,9 @@ int main()
                 (hs[s][i][j][j+n-1] << 2)%mod + hs[s][i][j+n][j+n];
         //for (int i=1; i<=N; ++i) { for (int j=1; j<=M; ++j) printf("%20lld", hs[0][i][j][j+n]); printf("\n"); } printf("\n\n");
     }
-    ll l=0, r=M-1, m;
-    for (; l+1 <= r; (check(m)?r:l) = m)
+    ll l=-1, r=M, m;
+    for (; l+1 < r; (check(m)?r:l) = m)
         m = l + (r-l>>1);
-    printf("%d\n", r);
+    printf("%d\n", r+1);
 }
 
