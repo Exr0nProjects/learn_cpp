@@ -1,5 +1,5 @@
 /*
- * Problem cstreet (cses/graph/cstreet)
+ * Problem cstreet (spoj/cstreet3)
  * Create time: Thu 17 Dec 2020 @ 22:06 (PST)
  * Accept time: Thu 17 Dec 2020 @ 22:13 (PST)
  *
