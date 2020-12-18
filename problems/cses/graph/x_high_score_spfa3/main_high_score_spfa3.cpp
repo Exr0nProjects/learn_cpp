@@ -12,7 +12,7 @@ const ll MX = 2510;
 ll N, M, dist[MX];
 ll q[MX<<2], ql=1, qr=0;
 ll vis[MX], inq[MX];
-bool vbad[MX];
+ll vbad[MX];
 struct Edge { ll t, w, n; } eg[MX<<2]; ll hd[MX], ecnt=2;
 void addEdge()
 {
@@ -20,13 +20,17 @@ void addEdge()
     eg[ecnt] = { v, -w, hd[u] }; hd[u] = ecnt++;
 }
 
-bool bad(ll c)
+ll bad(ll c)
 {
+    //printf("bad at %d, vbad[c] %d\n", c, vbad[c]);
     if (vbad[c]) return vbad[c];
     if (c == N) return 1;
-    vbad[c] = 1;
-    for (int e=hd[c]; e; e=eg[e].n) if (bad(eg[e].t)) return 1;
-    return 0;   // FIX: forgot default return, should look at compiler warnings
+    vbad[c] = -2;
+    inq[c] = 1; // FIX: don't keep spfa-ing over inf parts
+    for (int e=hd[c]; e; e=eg[e].n)
+        if (bad(eg[e].t) > 0) { vbad[c] = 1; return 1; }
+    vbad[c] = -1;
+    return -1;   // FIX: forgot default return, should look at compiler warnings
 }
 
 int main()
@@ -40,7 +44,7 @@ int main()
     {
         inq[q[ql]] = 0;
         //printf("at %d (%d..%d)\n", q[ql], ql, qr);
-        if (vis[q[ql]]++ > N) if (bad(q[ql])) break;
+        if (vis[q[ql]]++ > N) if (bad(q[ql]) > 0) break;
         for (int e=hd[q[ql]]; e; e=eg[e].n)
         {
             //printf("would go %d -> %d but %lld > %lld?\n", q[ql], eg[e].t, dist[eg[e].t], dist[q[ql]] + eg[e].w);
