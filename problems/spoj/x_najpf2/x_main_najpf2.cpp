@@ -1,7 +1,7 @@
 /*
  * Problem najpf2 (spoj/najpf2)
  * Create time: Thu 17 Dec 2020 @ 22:15 (PST)
- * Accept time: [!meta:end!]
+ * Accept time: Thu 17 Dec 2020 @ 22:34 (PST)
  *
  */
 #include <bits/stdc++.h>
@@ -36,19 +36,19 @@ int main()
         //printf("N %d P %d\n", N, P);
         kpi();
         //for (int i=0; i<P; ++i) printf("%3d", pi[i]);
-        ll c = 0;   // c = next char to match
+        ll c = -1;   // c = prev match; FIX: start at -1 like the kpi fxn
         for (int i=0; i<N; ++i)
         {
-            for (; ~c && pat[c] != str[i];
+            for (; ~c && pat[c+1] != str[i];
                     c = pi[c]);
-            if (pat[c] == str[i]) ++c;
-            if (c == P)
+            if (pat[c+1] == str[i]) ++c;
+            if (c+1 == P)
                 //printf("end match at %d\n", i),
                     ans[++acnt] = i-P+2;
         }
-        if (!acnt) { printf("Not Found\n"); continue; }
-        //printf("%d\n", acnt);
-        for (int i=1; i<=acnt; ++i) printf("%d ", ans[i]); printf("\n");
+        if (!acnt) { printf("Not Found\n\n"); continue; }
+        printf("%d\n", acnt);
+        for (int i=1; i<=acnt; ++i) printf("%d ", ans[i]); printf("\n\n");
     }
 }
 
