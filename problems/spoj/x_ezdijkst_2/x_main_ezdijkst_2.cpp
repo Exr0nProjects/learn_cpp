@@ -1,7 +1,7 @@
 /*
  * Problem ezdijkst_2 (spoj/ezdijkst_2)
  * Create time: Thu 17 Dec 2020 @ 23:21 (PST)
- * Accept time: [!meta:end!]
+ * Accept time: Thu 17 Dec 2020 @ 23:28 (PST)
  *
  */
 #include <bits/stdc++.h>
@@ -32,7 +32,7 @@ int main()
         scanf("%lld%lld", &A, &B);
 
         priority_queue<St, deque<St>, greater<St> > pq;
-        pq.push(mp(0, 1));
+        pq.push(mp(0, A));  // FIX: start from A, not 1
         while (pq.size())
         {
             ll d, c; tie(d, c) = pq.top(); pq.pop();
