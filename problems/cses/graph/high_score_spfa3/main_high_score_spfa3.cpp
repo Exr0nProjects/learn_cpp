@@ -22,9 +22,11 @@ void addEdge()
 
 bool bad(ll c)
 {
-    if (vbad[c]) return 1;
+    if (vbad[c]) return vbad[c];
+    if (c == N) return 1;
     vbad[c] = 1;
-    for (int e=hd[c]; e; e=eg[e].n) bad(eg[e].t);
+    for (int e=hd[c]; e; e=eg[e].n) if (bad(eg[e].t)) return 1;
+    return 0;   // FIX: forgot default return, should look at compiler warnings
 }
 
 int main()
@@ -33,18 +35,24 @@ int main()
     for (int i=1; i<=M; ++i) addEdge();
     memset(dist, 0x3f, sizeof dist);
 
-    for (q[++qr] = 1; ql+1 != qr; ++ql%=MX<<2)
+    dist[1] = 0;
+    for (q[++qr] = 1; ql-1 != qr; ++ql%=MX<<2)
     {
         inq[q[ql]] = 0;
+        //printf("at %d (%d..%d)\n", q[ql], ql, qr);
         if (vis[q[ql]]++ > N) if (bad(q[ql])) break;
         for (int e=hd[q[ql]]; e; e=eg[e].n)
+        {
+            //printf("would go %d -> %d but %lld > %lld?\n", q[ql], eg[e].t, dist[eg[e].t], dist[q[ql]] + eg[e].w);
             if (dist[eg[e].t] > dist[q[ql]] + eg[e].w)
             {
+
                 dist[eg[e].t] = dist[q[ql]] + eg[e].w;
                 if (!inq[eg[e].t]) q[++qr%=MX<<2] = eg[e].t, inq[eg[e].t] = 1;
             }
+        }
     }
-    if (ql+1 != qr) printf("-1\n"); // reached break; instead of normal for loop break
-    else printf("%d\n", -dist[N]);
+    if (ql-1 != qr) printf("-1\n"); // reached break; instead of normal for loop break
+    else printf("%lld\n", -dist[N]);
 }
 
