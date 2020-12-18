@@ -16,11 +16,11 @@ ll T, P, N, M;
 bool vis[MX];
 typedef pair<ll, ll> St;
 
-struct Edge { ll t, n; } eg[MXE]; ll hd[MX], ecnt=2;
-void addEdge(ll u=0, ll v=0)
+struct Edge { ll t, w, n; } eg[MXE]; ll hd[MX], ecnt=2;
+void addEdge(ll u=0, ll v=0, ll w=0)
 {
-    if (!u) scanf("%lld%lld", &u, &v), addEdge(v, u);
-    eg[ecnt] = { v, hd[u] };
+    if (!u) scanf("%lld%lld%lld", &u, &v, &w), addEdge(v, u, w);
+    eg[ecnt] = { v, w, hd[u] };
     hd[u] = ecnt++;
 }
 
@@ -45,7 +45,7 @@ int main()
             for (int e=hd[c]; e; e=eg[e].n)
                 pq.push(mp(eg[e].w, eg[e].t));
         }
-        printf("%lld\n", ans);
+        printf("%lld\n", ans*P);
     }
 }
 
