@@ -20,8 +20,8 @@ int main()
 {
     scanf("%lld", &N);
     for (int i=1; i<=N; ++i) scanf("%lld%lld", ox+i, oy+i);
-    if (N > 20)
-    //if (N > 0)
+    //if (N > 20)
+    if (N > 0)
     {
         unordered_set<bitset<MX> > vis;
         ll mxx=ox[1], mxy=oy[1], mnx=ox[1], mny=oy[1];

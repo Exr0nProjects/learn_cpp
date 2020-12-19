@@ -12,6 +12,10 @@
 11:36 | dunno #2 | coding brute #3
 11:57 | TLE 5/20 #3 | coding brute #3 part 2
 12:34 | brute part 2 broke | coding brute #3
+12:43 | brute too scuffed | analyzing brute #1
+12:50 | can do N^3 | coding brute #1
+13:25 | bfs scuffed, don't understand sample #2 | hm
+13:30 | rolling without it | coding brute #1
 
 ## Contest Reflection
 
