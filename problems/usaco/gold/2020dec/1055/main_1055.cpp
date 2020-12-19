@@ -80,25 +80,33 @@ int main()
                 omny = min(omny, oy[i]);
                 else db("   ");
             db("   :    %d..%d   %d..%d\n", mnx, mxx, mny, mxy);
+            if (popc == 1) { ++ans; continue; }
+            printf("psum = %d\n", psum[mxx  ][mxy  ] + psum[mnx-1][mny-1] -psum[mxx  ][mny-1] - psum[mnx-1][mxy  ]);
             if (psum[mxx  ][mxy  ] + psum[mnx-1][mny-1]
                -psum[mxx  ][mny-1] - psum[mnx-1][mxy  ] > popc) continue;
             if (omxx-omnx > omxy-omny) // slide on y
             {
                 auto lo = descy.lower_bound(omny);
                 auto hi = descy.lower_bound(omxy);
+                //db("slide on y    %d >= %d\n", next(hi)->first - prev(lo)->first, omxx-omnx);
                 if (next(hi) != descy.end() && lo != descy.begin() &&
-                    next(hi)->first - prev(lo)->first >= omxx-omnx) ++ans;
+                    next(hi)->first - prev(lo)->first < omxx-omnx) continue;
+                db("worked\n");
+                ++ans;
             }
             else
             {
                 auto lo = descx.lower_bound(omnx);
                 auto hi = descx.lower_bound(omxx);
+                //db("slide on x  (%d-%d  %d) >= %d\n", next(hi)->first, prev(lo)->second, next(hi)->first - prev(lo)->first, omxx-omnx);
                 if (next(hi) != descx.end() && lo != descx.begin() &&
-                    next(hi)->first - prev(lo)->first >= omxy-omny) ++ans;
+                    next(hi)->first - prev(lo)->first < omxy-omny) continue;
+                db("worked!\n");
+                ++ans;
             }
         }
         printf("%lld\n", ans);
-        //for (int i=1; i<=N; ++i) printf("%d %d\n", dx[i], dy[i]);
+        //for (int i=1; i<=N; ++i) db("%d %d\n", dx[i], dy[i]);
     }
 }
 
