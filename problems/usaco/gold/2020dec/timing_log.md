@@ -17,6 +17,10 @@
 13:25 | bfs scuffed, don't understand sample #2 | hm
 13:30 | rolling without it | coding brute #1
 13:53 | WA/TLE 3/20 #1 | debugging #1
+14:15 | dfs finally works as expected (prev actually did the sample which I don't understand?) | awaiting grade
+14:17 | WA/TLE (mostly WA) 2/20 now | rereading problem
+14:21 | dont understand why so wa | trying edgecases
+14:40 | did I understand the problem wrong? | end
 
 ## Contest Reflection
 
@@ -25,18 +29,19 @@ What knowledge did you use in this test, and which part you didn't do well knowl
 
 #### Problem 1:
 
--
+I thought many BFSs would TLE, but only one test case did. However, basically all WA. Didn't understand the problem?
 
 #### Problem 2:
 
--
+More difficult analysis that I didn't understand
 
 #### Problem 3:
 
--
+had brute force plans for some parts of the data, but only got 25% (other was too difficult to implement).
 
 ### Strategy
-How did you spend your time during the test, and whether there's any issue about your strategy?
+In hindsight, I should have spent more time on #1 instead of the difficult #3 brute force.
 
 ### Action item
-How would you change your homework, your mastery of knowledge, or class time etc in order to do better next time?
+Practice coding things.
+

@@ -90,8 +90,7 @@ int main()
         ll d, x, y; tie(d, x, y) = pq.top(); pq.pop();
         //db("at %d %d %d\n", d, x, y);
         if (smx[x][y] > d) continue;
-        if (grid[x][y] == '.' || grid[x][y] == 'S') ++ans;
-        smx[x][y] = d;
+        smx[x][y] = d; ++ans;
         grid[x][y] = 'x';
         for (int n=0; n<4; ++n) if (smx[x+_x[n]][y+_y[n]] < d-1)
             pq.push(mt(d-1, x+_x[n], y+_y[n]));
