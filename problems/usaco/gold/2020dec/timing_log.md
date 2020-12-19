@@ -16,6 +16,7 @@
 12:50 | can do N^3 | coding brute #1
 13:25 | bfs scuffed, don't understand sample #2 | hm
 13:30 | rolling without it | coding brute #1
+13:53 | WA/TLE 3/20 #1 | debugging #1
 
 ## Contest Reflection
 

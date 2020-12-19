@@ -64,5 +64,20 @@ int main()
             sq2.push(mt(d+1, x+_x[n], y+_y[n], n));
     }
     for (int i=1; i<=N; ++i) { for (int j=1; j<=N; ++j) db("%3d", smx[i][j]); db("\n"); }
+    typedef tuple<ll, ll, ll> St;
+    priority_queue<St, deque<St>, greater<St> > pq;
+    for (int i=1; i<=N; ++i) for (int j=1; j<=N; ++j)
+        if (smx[i][j]) pq.push(mt(smx[i][j], i, j));
+    ll ans = 0;
+    for (; pq.size();)
+    {
+        ll d, x, y; tie(d, x, y) = pq.top(); pq.pop();
+        db("at %d %d %d\n", d, x, y);
+        if (smx[x][y] > d) continue;
+        smx[x][y] = d; ++ans;
+        for (int n=0; n<4; ++n) if (smx[x+_x[n]][y+_y[n]] < d-1)
+            pq.push(mt(d-1, x+_x[n], y+_y[n]));
+    }
+    printf("%lld\n", ans);
 }
 
