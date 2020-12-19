@@ -28,7 +28,7 @@ void flood(ll x, ll y, ll c)
 {
     if (!c) return;
     if (fvis.test((x-1)*MX*MX+(y-1)*MX+c)) return;
-    if (!smx[x][y]) ++ans, grid[x][y] = 'x', smx[x][y] = c;
+    if (!smx[x][y]) ++ans, grid[x][y] = 'x';
     fvis.set((x-1)*MX*MX+(y-1)*MX+c);
     for (int n=0; n<4; ++n)
         flood(x+_x[n], y+_y[n], c-1);
@@ -72,11 +72,16 @@ int main()
         if (near[x+_x[n]][y+_y[n]] >= d/D+1 && vis[x+_x[n]][y+_y[n]][n] < d+1)
             sq2.push(mt(d+1, x+_x[n], y+_y[n], n));
     }
-    for (int i=1; i<=N; ++i) { for (int j=1; j<=N; ++j) db("%3d", smx[i][j]); db("\n"); }
+    for (int i=1; i<=N; ++i) { for (int j=1; j<=N; ++j) if (smx[i][j]) db("%3d", smx[i][j]); else db("  ."); db("\n"); }
 
 
+    ll ans2=0;
     for (int i=1; i<=N; ++i) for (int j=1; j<=N; ++j)
-        if (smx[i][j]) flood(i, j, smx[i][j]), ans += (bool)smx[i][j];
+        if (smx[i][j])
+            flood(i, j, smx[i][j]),
+                ++ans2,
+            db("");
+    printf("ans %d ans2 %d\n", ans, ans2);
     for (int i=1; i<=N; ++i) { for (int j=1; j<=N; ++j) db("%3c", grid[i][j]); db("\n"); }
 
     //typedef tuple<ll, ll, ll> St;
@@ -92,6 +97,6 @@ int main()
     //    for (int n=0; n<4; ++n) if (smx[x+_x[n]][y+_y[n]] < d-1)
     //        pq.push(mt(d-1, x+_x[n], y+_y[n]));
     //}
-    printf("%lld\n", ans);
+    printf("%lld\n", ans+ans2);
 }
 
