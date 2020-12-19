@@ -1,0 +1,108 @@
+
+* USACO Gold
+
+** GENERAL
+
+*** Casework !!
+
+*** Mathematical Modeling
+
+*** Think it into previously seen problem structures
+
+** Trees
+
+*** LCA / Binary Lifting
+
+**** Chain Addable Operations
+     - Distance, chain min/max,
+
+**** Tree re-rooting
+     - Codechef Rootless
+
+*** Centroid Decomposition
+    Compute something for all paths in a tree
+    Combine everything then subtract all pairs in the same subtree.
+    - USACO Platnum Cow At Large (hard...)
+
+*** MST
+
+**** Cheapest Components
+     MST then remove heaviest edges
+     USACO Gold I Would Walk 500 Miles
+
+*** Tree Collapseing
+    Inorder traversal then range update on the array
+    - USACO 2017 Plat Promotion Counting (not gold)
+
+** Graphs
+*** Shortest Path
+**** Single Source
+     - Dijkstra
+     - SPFA (negative edges)
+**** All Pairs
+     - Floyd (k, i, j)
+     - Can be used to compute other things (min/max, multiply with logs)
+*** Negative Cycles
+     - SPFA (beware that negative cycle may not be reachable/upstream of the end)
+*** Strongly Connected Components
+     - Connectivity problems
+*** SCC DAG
+     - Shrink into one node to ensure graph is connected
+     - think about head/tail nodes
+*** Topological Sort
+     - Resolve depnedencies
+     - Tarjan outputs SCC DAG in reverse toposort order!
+** Strings
+*** Direct matching (KMP/ACAuto)
+    - Start with ~pi[0]~ / ~c~ = ~-1~!
+    - Always ~pi=~ over previous index, then add one if the next matches
+*** Hashing / Precomputed Matching
+    - Precompute rolling hash in O(N), query substring by multiplying it by ~p~, compare in constant time.
+*** Suffix Array / longest common prefix
+    - ~sa[rk[i]] = i~, sort ~rk[tmp[i]]~ into ~sa~ and re-rank
+    - RMQ for longest common prefix at two indices.
+    - Can split into blocks by ~lcp~ length, each block will have common prefix of that length. Binary search on length and check number of blocks / size of largest / existence, etc.
+* Segtreeee
+** Dynamic mem alloc
+*** basic range add/query
+    O(M log N) where M queries, N array length
+** segment tree merge
+*** use merge smaller into larger heuristic for N log^2 N
+*** can also do it recursively/directly in O(intersect of the two trees)
+    Just replace the target node with the source if only one exists. Otherwise, ~comb~ the two.
+    Problem 2 (LOJ 516 loj.ac); segment tree for each value, merge on each query, ray pass me the dishes on each node.
+    Problem 3 (NOI2016 Sequence)
+:
+** other applications
+
+* Contest Strategy
+
+** Pre test
+- now is rest time. don't do anything absurd.
+
+** During test
+
+*** Debugging
+
+**** use stderr ~cerr~
+
+**** Binary search on the error
+
+**** if the buggy data is larger than 20, then just read your code
+
+**** write casegen if time
+
+** competition tips
+
+*** forget how important it is if it makes you nervous
+
+*** only you and the problem in the whole world
+
+*** your goal is to get the highest score, not to AC questions
+    *Code brute force and let your brain think*
+
+*** ignore mistakes, do the best from now on
+
+*** if you haven't had a breakthrough in your thinking for a long time, you might as well get rid of the old thinking and rethink
+
+** Post Test
