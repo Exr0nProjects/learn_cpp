@@ -13,6 +13,7 @@ using namespace std;
 
 ll pow(ll b, ll e, ll m)
 {
+    //db("pow %lld %lld %lld\n", b, e, m);
     ll ans = 1;
     //if (e < 0) return 1; // TODO: pow getting passed -1?
     assert(e >= 0);
@@ -53,7 +54,7 @@ ll op(ll i, ll j) // inc
     //if (i+2 == j) ret = dbm(adj[ord(buf[i])][ord(buf[j-1])]);
     ll hash = (((phash[j]>>32) - (phash[i]>>32)*pow(P, j-i+1, MOD1)%MOD1)<<32)
         | ((phash[j]&((1ll<<32)-1ll))-(phash[i]&((1ll<<32)-1ll))*pow(P, j-i+1, MOD2)%MOD2);
-    db("hash %3d..%3d = %20llx %20llx -> %20llx\n", i, j, (((phash[j]>>32) - (phash[i]>>32)*pow(P, j-i+1, MOD1)%MOD1)), ((phash[j]&((1ll<<32)-1ll))-(phash[i]&((1ll<<32)-1ll))*pow(P, j-i+1, MOD2)%MOD1), hash);
+    db("hash %3lld..%3lld = %20llx %20llx -> %20llx\n", i, j, (((phash[j]>>32) - (phash[i]>>32)*pow(P, j-i+1, MOD1)%MOD1)), ((phash[j]&((1ll<<32)-1ll))-(phash[i]&((1ll<<32)-1ll))*pow(P, j-i+1, MOD2)%MOD1), hash);
     if (mem.count(hash)) ret = hash;
     if (i == j) ret = 1<<ord(buf[i]);
     if (i+1 == j) ret = adj[ord(buf[i])][ord(buf[j-1])];
@@ -100,19 +101,21 @@ int main()
     for (int i=1; i<=Q; ++i)
     {
         scanf("%s", buf+1);
-        N = strlen(buf+1)+1;
+        N = strlen(buf+1);
         //ll g = op(0, N);
 
         //phash[1] = ord(buf[0]) | (ord(buf[0])<<32);
         //printf("phash0 = %llx\n", phash[0]);
+        for (int i=1; i<=N; ++i) db("%3c", buf[i]);
         for (int i=1; i<=N; ++i)
-            phash[i] = ((((phash[i-1ll]>>32ll)*P + ord(buf[i])) % MOD1)<<32ll) | (((phash[i-1] & ((1ll<<32ll)-1ll))*P + ord(buf[i]))%MOD2);
+            printf("%llx (%lld) * %lld + %lld = %lld (%llx)\n", phash[i-1]>>32, phash[i-1]>>32, P, ord(buf[i]), (((phash[i-1ll]>>32ll)*P%MOD1 + ord(buf[i])) % MOD1), (((phash[i-1ll]>>32ll)*P%MOD1 + ord(buf[i])) % MOD1)),
+            phash[i] = ((((phash[i-1ll]>>32ll)*P%MOD1 + ord(buf[i])) % MOD1)<<32ll) | (((phash[i-1] & ((1ll<<32ll)-1ll))*P%MOD2 + ord(buf[i]))%MOD2);
         for (int i=1; i<=N; ++i) db("%3d: %20llx ( %10llx %10llx )\n", i, phash[i], phash[i]>>32, phash[i] &((1ll<<32ll)-1ll));
 
         for (int i=1; i<=N; ++i) { for (int j=i; j<=N; ++j)
         {
             ll hash = (((phash[j]>>32) - (phash[i-1]>>32)*pow(P, j-i+1, MOD1)%MOD1)<<32) | ((phash[j]&((1ll<<32)-1ll))-(phash[i-1]&((1ll<<32)-1ll))*pow(P, j-i+1, MOD2)%MOD2);
-            db("hash %3d..%3d = %20llx %20llx -> %20llx\n", i, j, (((phash[j]>>32) - (phash[i-1]>>32)*pow(P, j-i+1, MOD1)%MOD1)), ((phash[j]&((1ll<<32)-1ll))-(phash[i-1]&((1ll<<32)-1ll))*pow(P, j-i+1, MOD2)%MOD1), hash);
+            db("hash %3d..%3d = %20llx %20llx -> %20llx\n", i, j, (((phash[j]>>32) - (phash[i-1]>>32)*pow(P, j-i+1, MOD1)%MOD1)), ((phash[j]&((1ll<<32)-1ll))-(phash[i-1]&((1ll<<32)-1ll))*pow(P, j-i+1, MOD2)%MOD2), hash);
         } }
 
         continue;
