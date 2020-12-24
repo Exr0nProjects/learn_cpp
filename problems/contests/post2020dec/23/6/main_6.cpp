@@ -6,18 +6,21 @@
  */
 #include <bits/stdc++.h>
 #define ll long long
-#define ord(c) (c - 'A' +1)
-//#define db(...) fprintf(stdout, __VA_ARGS__)
-#define db(...)
+#define ord(c) (ll)(c - 'A' +1)
+#define db(...) fprintf(stdout, __VA_ARGS__)
+//#define db(...)
 using namespace std;
 
 const ll MX = 110;
 const ll MXE = 10010;
-const ll mod = 1e6+3;
+const ll P1 = 29;
+const ll P2 = 31;
+const ll MOD = 1e9+7;
 
 ll N, M, Q;
 ll adj[30][30], dp[MX][MX];
-ll mem[1e6+10];
+ll phash[MX];
+unordered_map<ll, ll> mem;
 vector<ll> tail[MX];
 ll dp2[MX];
 char buf[MX];
@@ -47,7 +50,7 @@ ll op(ll i, ll j) // inc exc
         for (int xr=1; xr<27; ++xr) if (r>>xr & 1)
             ret |= adj[xl][xr];
     }
-    db("%d..%d got ", i, j); dbm(ret); db("(%d)\n", ret>>ord('S')&1);
+    //db("%d..%d got ", i, j); dbm(ret); db("(%d)\n", ret>>ord('S')&1);
     if (ret>>ord('S')&1) tail[j].push_back(i);
     return ret;
 }
@@ -72,6 +75,13 @@ int main()
         scanf("%s", buf);
         N = strlen(buf);
         ll g = op(0, N);
+
+        phash[0] = ord(buf[0]) | (ord(buf[0])<<32);
+        printf("phash0 = %llx\n", phash[0]);
+        for (int i=1; i<N; ++i)
+            phash[i] = ((((phash[i-1]>>32)*P1 + ord(buf[i])) % MOD)<<32) | (((phash[i-1] & ((1<<32)-1))*P2 + ord(buf[i]))%MOD);
+        for (int i=0; i<N; ++i) db("%3d: %10llx %10llx\n", i, phash[i]>>32, phash[i] &((1<<32)-1));
+        continue;
 
         memset(dp, 0, sizeof dp);
         for (int i=1; i<=N; ++i) tail[i].clear();
