@@ -13,9 +13,11 @@ using namespace std;
 
 const ll MX = 110;
 const ll MXE = 10010;
+const ll mod = 1e6+3;
 
 ll N, M, Q;
 ll adj[30][30], dp[MX][MX];
+ll mem[1e6+10];
 vector<ll> tail[MX];
 ll dp2[MX];
 char buf[MX];
@@ -41,8 +43,8 @@ ll op(ll i, ll j) // inc exc
         ll l = op(i, k), r = op(k, j);
         //db("l "); dbm(l); db("r "); dbm(r);
         if (!l || !r) continue;
-        for (int xl=1; xl<30; ++xl) if (l>>xl & 1)
-        for (int xr=1; xr<30; ++xr) if (r>>xr & 1)
+        for (int xl=1; xl<27; ++xl) if (l>>xl & 1)
+        for (int xr=1; xr<27; ++xr) if (r>>xr & 1)
             ret |= adj[xl][xr];
     }
     db("%d..%d got ", i, j); dbm(ret); db("(%d)\n", ret>>ord('S')&1);
