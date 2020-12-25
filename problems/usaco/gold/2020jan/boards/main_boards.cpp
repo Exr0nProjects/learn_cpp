@@ -1,124 +1,112 @@
 /*
-TASK: boards
-LANG: C++14
-*/
-
-/*
- * Problem boards (usaco/gold/2020jan/boards)
- * Create time: Mon 13 Apr 2020 @ 13:00 (PDT)
+ * Problem intest (spoj/intest)
+ * Create time: Sun 30 Aug 2020 @ 11:26 (PDT)
  * Accept time: [!meta:end!]
  *
  */
 
-#include <iostream>
-#include <sstream>
-#include <cstdio>
-#include <tuple>
-#include <vector>
-#include <string>
-#include <cstring>
-#include <list>
-#include <array>
-#include <queue>
-#include <stack>
-#include <set>
-#include <map>
-#include <unordered_set>
-#include <unordered_map>
-#include <cmath>
-#include <random>
-#include <chrono>
-#include <utility>
-#include <iterator>
-#include <exception>
-#include <algorithm>
-#include <functional>
+#include <bits/stdc++.h>
 
 #define ll long long
 #define dl double
-#define ca const auto &
 
-#define vi vector<int>
 #define pii pair<int, int>
-#define vii vector<pii>
-
 #define pb push_back
-#define eb emplace_back
 #define mp make_pair
-#define F first
-#define S second
-#define g(t, i) get<i>(t)
-#define mt make_tuple
+#define f first
+#define s second
+#define lb(x) ((x)&-(x))
 
-#define FOR_(i, b, e) for (long long i = (b); i < (e); ++i)
-#define FOR(i, e) FOR_(i, 0, (e))
-#define FORR_(i, b, e) for (long long i = (e)-1; i >= (b); --i)
-#define FORR(i, e) FORR_(i, 0, e)
-#define TRAV(a, x) for (auto &a : x)
+#define F(i,b) for (ll i=1; i<=(b); ++i)
+#define R(i,b) for (ll i=(b); i>=1; --i)
+//struct Edge { int f, t, n; } edges[-1]; int head[-1];
 
-void setIO(const std::string &name = "boards");
+#define _gc getchar_unlocked
+inline bool sc(ll &n)
+{
+    int neg = 1;
+    register char c;
+    do c = _gc(); while (isspace(c));
+    if (c == '-') neg = -1, c = _gc();
+    for (n=0; c >= '0' && c <= '9'; c=_gc())
+        (n *= 10) += (c-'0');
+    n *= neg;
+    return c != EOF;
+}
+#define _ilb inline bool
+_ilb sc(int &a) { ll x; bool b=sc(x); a=x; return b; }
+_ilb sc(int &a, int &b) { return sc(a)&&sc(b); }
+_ilb sc(int &a, int &b, int &c) { return sc(a, b)&&sc(c); }
+_ilb sc(int&a,int&b,int&c,int&d){return sc(a,b)&&sc(c,d);}
+_ilb sc(ll &a, ll &b) { return sc(a)&&sc(b); }
+_ilb sc(ll &a, ll &b, int &c) { return sc(a, b)&&sc(c); }
 
 using namespace std;
-const int MX = -1;
-int N, M;
-set<pair<int, int> > vis;
-pair<int, int> dst;
-map<pair<int, int>, pair<int, int> > boards;
+const int MX = 1e5+11;
 
-ll dist(pii a, pii b)
+int N, P;
+int val[100010];
+int d[MX], bit[MX<<1];
+vector<pii> y(1);
+set<int> desk;
+unordered_map<int, int> dk;
+
+typedef pair<pii, pair<bool, int> > Event; // x pos, ypos, {0: start, 1: end}, line id
+priority_queue<Event, deque<Event>, greater<Event> > pq;
+
+int bq(int x)
 {
-    return b.F-a.F + b.S-a.S;
+    int mx = 0;
+    for (; x; x-=lb(x))
+        mx = max(mx, bit[x]);
+    return mx;
+}
+void bu(int x, int v)
+{
+    for (; x<=MX; x+=lb(x))
+        bit[x] = max(bit[x], v);
 }
 
 int main()
 {
-    setIO();
-    scanf("%d%d", &N, &M);
-    dst = mp(N, N);
-    FOR(m, M)
-    {
-	int a, b, c, d;
-	scanf("%d%d%d%d", &a, &b, &c, &d);
-	boards[mp(a, b)] = mp(c, d);
-    }
+    //freopen("boards.in", "r", stdin);
+    freopen("boards.out", "w+", stdout);
+    //sc(N, P);
+    scanf("%d%d", &N, &P);
 
-    // djikstra
-    priority_queue<pair<ll, pii>, deque<pair<ll, pii> >, greater<pair<ll, pii> > > pq;
-    pq.push(mp(0, mp(0, 0)));
+    for (int i=1; i<=P; ++i)
+    {
+        int x1, y1, x2, y2;
+        //sc(x1, y1, x2, y2);
+        scanf("%d%d%d%d", &x1, &y1, &x2, &y2);
+        if (x1 < 0 || y1 < 0 || x2 > N || y2 > N)
+            { --P; continue; }
+        d[i] = abs(x1-x2) + abs(y1-y2);
+        //printf("d[%d] = %d\n", i, d[i]);
+        y.pb(mp(y1+1, y2+1));
+        pq.push(mp(mp(x1, y1), mp(0, i)));  // FIX: sort events by x and y, not just x
+        pq.push(mp(mp(x2, y2), mp(1, i)));
+        desk.insert(y1+1), desk.insert(y2+1);
+    }
+    { int i=0; for (auto v : desk) dk[v] = ++i; }
+    //i = 0;
+    for (auto p : y) p.f = dk[p.f], p.s = dk[p.s];
+
     while (!pq.empty())
     {
-	auto cur = pq.top(); pq.pop();
-
-	if (vis.count(cur.S)) continue;
-	vis.insert(cur.S);
-
-	// printf("%lld @ (%d %d)\n", cur.F, cur.S.F, cur.S.S);
-	if (cur.S.F == N && cur.S.S == N)
-	{
-	    printf("%lld\n", cur.F);
-	    break;
-	}
-
-	cur.S = boards[cur.S]; // use the springboard
-
-	TRAV(p, boards)
-	{
-	    if (p.F.F >= cur.S.F && p.F.S >= cur.S.S)
-		pq.push(mp(cur.F + dist(cur.S, p.F), p.F));
-	    pq.push(mp(cur.F + dist(cur.S, dst), dst)); // walk all the way to the end
-	}
+        Event cur = pq.top(); pq.pop();
+        //printf("event %d %d at %d\n", cur.s.f, cur.s.s, cur.f);
+        if (cur.s.f)
+        {
+            bu(dk[y[cur.s.s].s], val[cur.s.s]);
+        }
+        else
+        {
+            val[cur.s.s] = bq(dk[y[cur.s.s].f]) + d[cur.s.s];   // FIX: use the dk array
+            //printf("val %d = %d\n", cur.s.s, val[cur.s.s]);
+        }
     }
-
-    return 0;
+    for (int i=1; i<=P; ++i) val[i] = max(val[i], val[i-1]);
+    printf("%d\n", N+N-val[P]);
 }
 
-void setIO(const string &name)
-{
-    ios_base::sync_with_stdio(0);
-    cin.tie(0); // fast cin/cout
-    if (fopen((name + ".in").c_str(), "r") != nullptr)
-    {
-        freopen((name + ".in").c_str(), "r", stdin);
-        freopen((name + ".out").c_str(), "w+", stdout);
-    }
-}
