@@ -39,6 +39,8 @@ ll query(int x)
 
 int main()
 {
+    freopen("haircut.in", "r", stdin);
+    freopen("haircut.out", "w+", stdout);
     scanf("%d", &N);
     for (int i=1; i<=N; ++i) scanf("%d", c+i);
     for (int i=1; i<=N; ++i) c[i] += 1;

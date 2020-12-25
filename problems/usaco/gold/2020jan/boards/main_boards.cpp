@@ -13,6 +13,7 @@
 #define pii pair<int, int>
 #define pb push_back
 #define mp make_pair
+#define mt make_tuple
 #define f first
 #define s second
 #define lb(x) ((x)&-(x))
@@ -47,11 +48,11 @@ const int MX = 1e5+11;
 int N, P;
 int val[100010];
 int d[MX], bit[MX<<1];
-vector<pii> y(1);
+vector<pii> ay(1);
 set<int> desk;
 unordered_map<int, int> dk;
 
-typedef pair<pii, pair<bool, int> > Event; // x pos, ypos, {0: start, 1: end}, line id
+typedef tuple<ll, ll, bool, ll> Event; // x pos, ypos, {1: start, 0: end}, line id
 priority_queue<Event, deque<Event>, greater<Event> > pq;
 
 int bq(int x)
@@ -79,32 +80,29 @@ int main()
         int x1, y1, x2, y2;
         //sc(x1, y1, x2, y2);
         scanf("%d%d%d%d", &x1, &y1, &x2, &y2);
-        if (x1 < 0 || y1 < 0 || x2 > N || y2 > N)
-            { --P; continue; }
+        //if (x1 < 0 || y1 < 0 || x2 > N || y2 > N) // no data satisfies this
+        //    { --P; --i; printf("WEWOWEWO\n"); continue; }
         d[i] = abs(x1-x2) + abs(y1-y2);
         //printf("d[%d] = %d\n", i, d[i]);
-        y.pb(mp(y1+1, y2+1));
-        pq.push(mp(mp(x1, y1), mp(0, i)));  // FIX: sort events by x and y, not just x
-        pq.push(mp(mp(x2, y2), mp(1, i)));
+        ay.pb(mp(y1+1, y2+1));
+        pq.push(mt(x1, y1, 1, i));  // FIX: sort events by x and y, not just x
+        pq.push(mt(x2, y2, 0, i));
         desk.insert(y1+1), desk.insert(y2+1);
     }
     { int i=0; for (auto v : desk) dk[v] = ++i; }
     //i = 0;
-    for (auto p : y) p.f = dk[p.f], p.s = dk[p.s];
+    for (auto p : ay) p.f = dk[p.f], p.s = dk[p.s];
 
     while (!pq.empty())
     {
-        Event cur = pq.top(); pq.pop();
-        //printf("event %d %d at %d\n", cur.s.f, cur.s.s, cur.f);
-        if (cur.s.f)
+        ll x, y, i; bool t; tie(x, y, t, i) = pq.top(); pq.pop();
+        //printf("event %d %d at %d\n", i, t, y, x);
+        if (t)
         {
-            bu(dk[y[cur.s.s].s], val[cur.s.s]);
-        }
-        else
-        {
-            val[cur.s.s] = bq(dk[y[cur.s.s].f]) + d[cur.s.s];   // FIX: use the dk array
+            val[i] = bq(dk[ay[i].f]) + d[i];   // FIX: use the dk array
             //printf("val %d = %d\n", cur.s.s, val[cur.s.s]);
         }
+        else bu(dk[ay[i].s], val[i]);
     }
     for (int i=1; i<=P; ++i) val[i] = max(val[i], val[i-1]);
     printf("%d\n", N+N-val[P]);
