@@ -1,7 +1,7 @@
 /*
  * Problem 1053 (usaco/gold/2020dec/1053)
  * Create time: Sat 19 Dec 2020 @ 12:51 (PST)
- * Accept time: [!meta:end!]
+ * Accept time: Thu 24 Dec 2020 @ 17:59 (PST)
  *
  */
 #include <bits/stdc++.h>
@@ -54,6 +54,7 @@ int main()
     {
         ll d; pair<ll, ll> c;
         tie(d, c) = hq.front(); hq.pop();
+        //printf("at %d %d %d\n", d, c.f, c.s);
         //db("at %d %d for %d, size %d\n", c.f, c.s, d, hq.size());
         if (near[c.f][c.s]) continue; near[c.f][c.s] = d;
         for (int n=0; n<4; ++n)
@@ -63,11 +64,13 @@ int main()
                 hq.push(mp(d+1, mp(nx, ny)));
         }
     }
+    printf("starting sq2\n");
     //for (int i=1; i<=N; ++i) { for (int j=1; j<=N; ++j) db("%3d", near[i][j]); db("\n"); }
     while (sq2.size())
     {
         ll d, x, y; tie(d, x, y) = sq2.front(); sq2.pop();
-        if (vis[x][y] > d) continue; vis[x][y] = d;
+        //printf("sq2 %d %d %d\n", x, y, d);
+        if (vis[x][y]) continue; vis[x][y] = 1; // FIX: vis is bool, treat it like one
         //db("at %d %d %d %d\n", d, x, y, n);
         smx[x][y] = max(smx[x][y], d/D+1);
         if (d % D == 0) if (near[x][y] < d/D+1) { --smx[x][y]; continue; } // replication would hit wall
@@ -77,6 +80,7 @@ int main()
             if (grid[x+_x[n]][y+_y[n]] == '.' && near[x+_x[n]][y+_y[n]] >= d/D+1 && vis[x+_x[n]][y+_y[n]] < d+1)
                 sq2.push(mt(d+1, x+_x[n], y+_y[n]));
     }
+    printf("starting mxfq\n");
 
     ll mxfq = 0;
     for (int i=1; i<=N; ++i) for (int j=1; j<=N; ++j) if (smx[i][j])
@@ -84,12 +88,16 @@ int main()
 
     for (; mxfq; --mxfq)
     {
+        //printf("mxfq %d size %d\n", mxfq, fq[mxfq].size());
         while (fq[mxfq].size())
         {
             ll x, y; tie(x, y) = fq[mxfq].front(); fq[mxfq].pop();
-            smx[x][y] = mxfq;
-            for (ll n=0; n<4; ++n) if (grid[x+_x[n]][y+_y[n]] == '.' && !smx[x+_x[n]][y+_y[n]])
-                fq[mxfq-1].push(mp(x+_x[n], y+_y[n]));
+            //printf("at %d %d\n", x, y);
+            if (smx[x][y] > mxfq) continue; smx[x][y] = mxfq;
+            for (ll n=0; n<4; ++n)
+                if (grid[x+_x[n]][y+_y[n]] == '.' && !smx[x+_x[n]][y+_y[n]])
+                    smx[x+_x[n]][y+_y[n]] = mxfq-1, // FIX: set bound to avoid pushing same node many times
+                    fq[mxfq-1].push(mp(x+_x[n], y+_y[n]));
         }
         //db("after queue %d:\n", mxfq); for (int i=1; i<=N; ++i) { for (int j=1; j<=N; ++j) if (smx[i][j]) db("%3d", smx[i][j]); else db("  ."); db("\n"); }
     }
