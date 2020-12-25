@@ -1,24 +1,33 @@
 #include <ctime>
 #include <cstdio>
 #include <cstdlib>
-#define rand(l,h) (rand()%(h-l+1)+l)
+#include <random>
+#include <chrono>
+#define ll long long
+#define db(...) fprintf(stderr, __VA_ARGS__)
+#define rand(l,h) (rng()%(h-l+1)+l)
 
-const int N = 1e9;
-const int P = 3e1;
-//const int N = 1e9;
-//const int P = 1e5;
+const ll N = 2e1;
+const ll P = 1e1;
+//const ll N = 1e9;
+//const ll P = 1e5;
+
+bool vis[N][N];
 
 int main()
 {
-    srand(time(0));
-    printf("%d\n", rand(0, (int)1e9));
-
-    //printf("%d %d\n", N, P);
-    //for (int i=1; i<=P; ++i)
-    //{
-    //    int x = rand(1, N), y = rand(1, N);
-    //    printf("%d %d %d %d\n", x, y, rand(x, N), rand(y, N));
-    //}
+    std::mt19937_64 rng(std::chrono::steady_clock::now().time_since_epoch().count());
+    //while (true) printf("%d\n", rand(1, 20));
+    printf("%d %d\n", N, P);
+    for (int i=1; i<=P; ++i)
+    {
+        ll x1, y1, x2, y2;
+        do db("%d %d %d\n", i, x1, y1), x1 = rand(0, N), y1 = rand(0, N); while (vis[x1][y1]);
+        vis[x1][y1] = 1;
+        do db("%d %d %d\n", i, x2, y2), x2 = rand(x1, N), y2 = rand(y1, N); while (vis[x2][y2]);
+        vis[x2][y2] = 1;
+        printf("%d %d %d %d\n", x1, y1, x2, y2);
+    }
 
     return 0;
 }
