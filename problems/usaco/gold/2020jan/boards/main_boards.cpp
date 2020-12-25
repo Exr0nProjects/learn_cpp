@@ -43,26 +43,26 @@ _ilb sc(ll &a, ll &b) { return sc(a)&&sc(b); }
 _ilb sc(ll &a, ll &b, int &c) { return sc(a, b)&&sc(c); }
 
 using namespace std;
-const int MX = 1e5+11;
+const ll MX = 1e5+11;
 
-int N, P;
-int val[100010];
-int d[MX], bit[MX<<1];
+ll N, P;
+ll val[100010];
+ll d[MX], bit[MX<<1];
 vector<pii> ay(1);
-set<int> desk;
-unordered_map<int, int> dk;
+set<ll> desk;
+unordered_map<ll, ll> dk;
 
 typedef tuple<ll, ll, bool, ll> Event; // x pos, ypos, {1: start, 0: end}, line id
 priority_queue<Event, deque<Event>, greater<Event> > pq;
 
-int bq(int x)
+ll bq(ll x)
 {
-    int mx = 0;
+    ll mx = 0;
     for (; x; x-=lb(x))
         mx = max(mx, bit[x]);
     return mx;
 }
-void bu(int x, int v)
+void bu(ll x, ll v)
 {
     for (; x<=MX; x+=lb(x))
         bit[x] = max(bit[x], v);
@@ -71,15 +71,15 @@ void bu(int x, int v)
 int main()
 {
     //freopen("boards.in", "r", stdin);
-    freopen("boards.out", "w+", stdout);
+    //freopen("boards.out", "w+", stdout);
     //sc(N, P);
-    scanf("%d%d", &N, &P);
+    scanf("%lld%lld", &N, &P);
 
-    for (int i=1; i<=P; ++i)
+    for (ll i=1; i<=P; ++i)
     {
-        int x1, y1, x2, y2;
+        ll x1, y1, x2, y2;
         //sc(x1, y1, x2, y2);
-        scanf("%d%d%d%d", &x1, &y1, &x2, &y2);
+        scanf("%lld%lld%lld%lld", &x1, &y1, &x2, &y2);
         //if (x1 < 0 || y1 < 0 || x2 > N || y2 > N) // no data satisfies this
         //    { --P; --i; printf("WEWOWEWO\n"); continue; }
         d[i] = abs(x1-x2) + abs(y1-y2);
@@ -89,7 +89,7 @@ int main()
         pq.push(mt(x2, y2, 0, i));
         desk.insert(y1+1), desk.insert(y2+1);
     }
-    { int i=0; for (auto v : desk) dk[v] = ++i; }
+    { ll i=0; for (auto v : desk) dk[v] = ++i; }
     //i = 0;
     for (auto p : ay) p.f = dk[p.f], p.s = dk[p.s];
 
@@ -104,7 +104,7 @@ int main()
         }
         else bu(dk[ay[i].s], val[i]);
     }
-    for (int i=1; i<=P; ++i) val[i] = max(val[i], val[i-1]);
-    printf("%d\n", N+N-val[P]);
+    for (ll i=1; i<=P; ++i) val[i] = max(val[i], val[i-1]);
+    printf("%lld\n", N+N-val[P]);
 }
 
