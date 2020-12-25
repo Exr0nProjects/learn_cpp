@@ -1,7 +1,7 @@
 /*
  * Problem 6 (contests/post2020dec/23/6)
  * Create time: Thu 24 Dec 2020 @ 12:26 (PST)
- * Accept time: [!meta:end!]
+ * Accept time: Thu 24 Dec 2020 @ 16:44 (PST)
  *
  */
 #include <bits/stdc++.h>
@@ -9,13 +9,19 @@
 #define ord(c) (c - 'A' +1)
 #define db(...) fprintf(stdout, __VA_ARGS__)
 //#define db(...)
+#define f first
+#define s second
+#define pb push_back
+#define mp make_pair
 using namespace std;
 
 const ll MX = 110;
 const ll MXE = 10010;
 
 ll N, M, Q;
-ll adj[30][30], dp[MX][MX];
+ll adj[30][30];
+vector<pair<ll, ll> > radj[MX];
+char dp[MX][MX][30];
 vector<ll> tail[MX];
 ll dp2[MX];
 char buf[MX];
@@ -28,23 +34,20 @@ ll dbm(ll mask)
     return mask;
 }
 
-ll op(ll i, ll j) // inc exc
+bool op(ll i, ll j, ll c) // inc exc
 {
-    ll &ret = dp[i][j];
-    if (i == j) ret = 1<<ord(buf[i]);
-    if (i+1 == j) ret = adj[ord(buf[i])][ord(buf[j-1])];
-    if (!ret)
+    if (~dp[i][j][c]) return dp[i][j][c];
+    if (i == j) return ord(buf[i]) == c;
+    if (i+1 == j) return adj[ord(buf[i])][ord(buf[j])]>>c&1;
+    char &ret = dp[i][j][c]; ret = 0;
+    //db("%d %d %d\n", i, j, c);
     for (int k=i; k<j; ++k)
-    {
-        ll l = op(i, k), r = op(k+1, j);
-        //db("l "); dbm(l); db("r "); dbm(r);
-        if (!l || !r) continue;
-        for (int xl=1; xl<27; ++xl) if (l>>xl & 1)
-        for (int xr=1; xr<27; ++xr) if (r>>xr & 1)
-            ret |= adj[xl][xr];
-    }
+        for (auto p : radj[c])
+            //db("trying k = %d (%d, %d)\n", k, p.f, p.s),
+            ret |= op(i, k, p.f) && op(k+1, j, p.s);
+    //db("%d %d %d got %d\n" ,i, j, c, ret);
     //db("%d..%d got ", i, j); dbm(ret); db("(%d)\n", ret>>ord('S')&1);
-    if (ret>>ord('S')&1) tail[j].push_back(i);
+    if (c == ord('S') && ret) tail[j].pb(i);
     return ret;
 }
 
@@ -55,6 +58,7 @@ int main()
     {
         char u, a, b; scanf("\n%c%c%c", &u, &a, &b);
         adj[ord(a)][ord(b)] |= (1<<ord(u)); // FIX: |= to 1<< ord not just ord smah
+        radj[ord(u)].pb(mp(ord(a), ord(b)));
     }
 
     scanf("%d", &Q);
@@ -63,17 +67,20 @@ int main()
         scanf("%s", buf+1);
         N = strlen(buf+1);
 
-        memset(dp, 0, sizeof dp);
+        memset(dp, -1, sizeof dp);
         for (int i=1; i<=N; ++i) tail[i].clear();
-        op(1, N);
+        //op(1, N, ord('S'));  // doesn't matter what letter we want it to be anyway
 
         //for (int i=1; i<=N; ++i) db("tail %d has %d\n", i, tail[i].size());
 
         memset(dp2, 0x3f, sizeof dp2);
         dp2[0] = 0;
         for (int j=1; j<=N; ++j)
-            for (ll i : tail[j])
-                dp2[j] = min(dp2[j], dp2[i-1]+1);
+            for (int i=1; i<=j; ++i)
+                if (op(i, j, ord('S')))
+                    dp2[j] = min(dp2[j], dp2[i-1]+1);
+            //for (ll i : tail[j])
+            //    dp2[j] = min(dp2[j], dp2[i-1]+1);
 
         if (dp2[N] >= 1e9) printf("NIE\n");
         else printf("%lld\n", dp2[N]);
