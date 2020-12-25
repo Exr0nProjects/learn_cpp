@@ -21,7 +21,7 @@ ll N, D, ans=0;
 char grid[MX][MX];
 
 ll smx[MX][MX], near[MX][MX];
-bool vis[MX][MX][4];
+bool vis[MX][MX];
 
 queue<pair<ll, ll> > fq[MX];
 
@@ -43,12 +43,12 @@ int main()
     memset(grid, '#', sizeof grid);
     for (int i=1; i<=N; ++i) scanf("%s", grid[i]+1);
     queue<pair<ll, pair<ll, ll> > > sq, hq;
-    queue<tuple<ll, ll, ll, ll> > sq2;
+    queue<tuple<ll, ll, ll> > sq2;
     for (int i=1; i<=N; ++i) for (int j=1; j<=N; ++j)
         //if (grid[i][j] == 'S') sq.push(mp(0, mp(i, j))); else
         if (grid[i][j] == '#') hq.push(mp(0, mp(i, j))); else
-        if (grid[i][j] == 'S') for (int n=0; n<4; ++n)
-            grid[i][j] = '.', sq2.push(mt(0, i, j, n)); // FIX: typo -- grid[i][j] not grid[j][j]
+        if (grid[i][j] == 'S')
+            grid[i][j] = '.', sq2.push(mt(0, i, j)); // FIX: typo -- grid[i][j] not grid[j][j]
 
     while (hq.size())
     {
@@ -66,40 +66,17 @@ int main()
     //for (int i=1; i<=N; ++i) { for (int j=1; j<=N; ++j) db("%3d", near[i][j]); db("\n"); }
     while (sq2.size())
     {
-        ll d, x, y, n; tie(d, x, y, n) = sq2.front(); sq2.pop();
-        if (vis[x][y][n] > d) continue; vis[x][y][n] = d;
+        ll d, x, y; tie(d, x, y) = sq2.front(); sq2.pop();
+        if (vis[x][y] > d) continue; vis[x][y] = d;
         //db("at %d %d %d %d\n", d, x, y, n);
         smx[x][y] = max(smx[x][y], d/D+1);
         if (d % D == 0) if (near[x][y] < d/D+1) { --smx[x][y]; continue; } // replication would hit wall
         //db("to %d,%d gets %d >= %d and %d < %d\n", x+_x[n], y+_y[n], near[x+_x[n]][y+_y[n]], d/D+1, vis[x+_x[n]][y+_y[n]][n], d+1);
         //if (x+_x[n] == 7 && y+_y[n] == 7) db("grid '%c' near %d %d vis %d %d\n", grid[x+_x[n]][y+_y[n]], near[x+_x[n]][y+_y[n]], d/D+1, vis[x+_x[n]][y+_y[n]][n], d+1);
-        if (grid[x+_x[n]][y+_y[n]] == '.' && near[x+_x[n]][y+_y[n]] >= d/D+1 && vis[x+_x[n]][y+_y[n]][n] < d+1)
-            sq2.push(mt(d+1, x+_x[n], y+_y[n], n));
+        for (int n=0; n<4; ++n)
+            if (grid[x+_x[n]][y+_y[n]] == '.' && near[x+_x[n]][y+_y[n]] >= d/D+1 && vis[x+_x[n]][y+_y[n]] < d+1)
+                sq2.push(mt(d+1, x+_x[n], y+_y[n]));
     }
-
-
-    ////ll ans2=0;
-    ////for (int i=1; i<=N; ++i) for (int j=1; j<=N; ++j)
-    ////    if (smx[i][j]) flood(i, j, smx[i][j]), ++ans2;
-    //
-    ////db("ans %d ans2 %d\n", ans, ans2);
-    //
-    //typedef tuple<ll, ll, ll> St;
-    //priority_queue<St, deque<St>, greater<St> > pq;
-    //for (int i=1; i<=N; ++i) for (int j=1; j<=N; ++j)
-    //    if (smx[i][j]) pq.push(mt(smx[i][j], i, j));
-    //for (; pq.size();)
-    //{
-    //    ll d, x, y; tie(d, x, y) = pq.top(); pq.pop();
-    //    //db("at %d %d %d\n", d, x, y);
-    //    if (smx[x][y] > d) continue;
-    //    smx[x][y] = d; ++ans;
-    //    grid[x][y] = 'x';
-    //    for (int n=0; n<4; ++n) if (smx[x+_x[n]][y+_y[n]] < d-1)
-    //        pq.push(mt(d-1, x+_x[n], y+_y[n]));
-    //}
-    ////for (int i=1; i<=N; ++i) { for (int j=1; j<=N; ++j) if (smx[i][j]) db("%3d", smx[i][j]); else db("  ."); db("\n"); }
-    ////for (int i=1; i<=N; ++i) { for (int j=1; j<=N; ++j) db("%3c", grid[i][j]); db("\n"); }
 
     ll mxfq = 0;
     for (int i=1; i<=N; ++i) for (int j=1; j<=N; ++j) if (smx[i][j])
