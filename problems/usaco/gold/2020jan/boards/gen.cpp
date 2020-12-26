@@ -15,8 +15,12 @@ const ll P = 1e1;
 
 bool vis[N][N];
 
-ll tsum[N<<2], lc[N<<2], rc[N<<2], rt=0, tcnt=0;
-void update(ll q, ll v, ll &k=rt, ll tl=1, ll tr=N)
+ll tsum[P<<6], lc[P<<6], rc[P<<6], sub[P<<6], rt=0, tcnt=0;
+void update(ll qx, ll qy, ll &k=rt, ll tl=1, ll tr=N)
+{
+    if (!k) k = ++tcnt;
+    if (tl == tr)
+void updatesub(ll q, ll v, ll &k=rt, ll tl=1, ll tr=N)
 {
     if (!k) k = ++tcnt;
     printf("update %d %d at %d (%d..%d)\n", q, v, k, tl, tr);
@@ -26,14 +30,22 @@ void update(ll q, ll v, ll &k=rt, ll tl=1, ll tr=N)
     else update(q, v, rc[k], mid+1, tr);
     tsum[k] = tsum[lc[k]] + tsum[rc[k]];
 }
-ll pquery(ll p, ll &k=rt, ll tl=1, ll tr=N)
+ll pquery(ll p, ll k=rt, ll tl=1, ll tr=N)
+{
+    if (!k) return tl*N-N + p;
+    if (tl == tr) return pquerysub(p, sub[k], 1, N);
+    ll mid = tl + (tr-tl>>1);
+    if (p < (mid-tl+1)*N - tsum[lc[k]]) return pquery(p, lc[k], tl, mid);
+    else return pquery(p-(mid-tl+1)*N+tsum[lc[k]], rc[k], mid+1, tr);
+}
+ll pquerysub(ll p, ll &k=rt, ll tl=1, ll tr=N)
 {
     printf("pquery %d at %d (%d..%d)\n", p, k, tl, tr);
     if (!k) return tl+p-1;  // FIX: tl + p -1 not just p bc need to account for left
     if (tl == tr) return tl;
     ll mid = tl + (tr-tl>>1);
-    if (p <= mid-tl+1-tsum[lc[k]]) return pquery(p, lc[k], tl, mid);
-    else return pquery(p-(mid-tl+1-tsum[lc[k]]), rc[k], mid+1, tr);
+    if (p <= mid-tl+1-tsum[lc[k]]) return pquerysub(p, lc[k], tl, mid);
+    else return pquerysub(p-(mid-tl+1-tsum[lc[k]]), rc[k], mid+1, tr);
 }
 
 int main()
