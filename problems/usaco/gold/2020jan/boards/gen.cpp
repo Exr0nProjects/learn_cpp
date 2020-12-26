@@ -10,7 +10,7 @@
 #define s second
 #define mp make_pair
 #define db(...) fprintf(stderr, __VA_ARGS__)
-#define rand(l,h) (uniform_int_distribution<ll>(l,h)(rng))
+#define rand(l,h) (uniform_int_distribution<int>(l,h)(rng))
 using namespace std;
 // 2d sparse segtree binary search in a casegen :/
 
@@ -25,7 +25,7 @@ ll tsum[P<<6], lc[P<<6], rc[P<<6], sub[P<<6], rt=0, tcnt=0;
 void updatesub(ll q, ll v, ll &k=rt, ll tl=1, ll tr=N)
 {
     if (!k) k = ++tcnt;
-    printf("updatesub %d %d at %d (%d..%d)\n", q, v, k, tl, tr);
+    //printf("updatesub %d %d at %d (%d..%d)\n", q, v, k, tl, tr);
     if (tl == tr) return tsum[k] = v, void();
     ll mid = tl + (tr-tl>>1);
     if (q <= mid) updatesub(q, v, lc[k], tl, mid);
@@ -35,7 +35,7 @@ void updatesub(ll q, ll v, ll &k=rt, ll tl=1, ll tr=N)
 void update(ll qx, ll qy, ll &k=rt, ll tl=1, ll tr=N)
 {
     if (!k) k = ++tcnt;
-    printf("update %d %d at %d (%d..%d)\n", qx, qy, rt, tl, tr);
+    //printf("update %d %d at %d (%d..%d)\n", qx, qy, rt, tl, tr);
     if (tl == tr) return updatesub(qy, 1, sub[k]), tsum[k] = tsum[sub[k]], void();
     ll mid = tl + (tr-tl>>1);
     if (qx <= mid) update(qx, qy, lc[k], tl, mid);
@@ -45,7 +45,7 @@ void update(ll qx, ll qy, ll &k=rt, ll tl=1, ll tr=N)
 }
 ll querysub(ll q, ll k=1, ll tl=1, ll tr=N)
 {
-    printf("querysub %d @ %d (%d..%d)\n", q, k, tl, tr);
+    //printf("querysub %d @ %d (%d..%d)\n", q, k, tl, tr);
     if (tl == tr) return tsum[k];
     ll mid = tl + (tr-tl>>1);
     if (q <= tl) return querysub(q, lc[k], tl, mid);
@@ -53,7 +53,7 @@ ll querysub(ll q, ll k=1, ll tl=1, ll tr=N)
 }
 ll pquerysub(ll p, ll &k=rt, ll tl=1, ll tr=N)
 {
-    printf("pquerysub %d at %d (%d..%d)\n", p, k, tl, tr);
+    //printf("pquerysub %d at %d (%d..%d)\n", p, k, tl, tr);
     if (!k) return tl+p-1;  // FIX: tl + p -1 not just p bc need to account for left
     if (tl == tr) return tl;
     ll mid = tl + (tr-tl>>1);
@@ -62,7 +62,7 @@ ll pquerysub(ll p, ll &k=rt, ll tl=1, ll tr=N)
 }
 pair<ll, ll> pquery(ll px, ll py, ll k=rt, ll tl=1, ll tr=N)
 {
-    printf("query %d,%d at %d (%d..%d)\n", px, py, k, tl, tr);
+    //printf("query %d,%d at %d (%d..%d)\n", px, py, k, tl, tr);
     if (!k) return mp(tl-1 + px, py);
     if (tl == tr) return mp(tl, pquerysub(py, sub[k]));
     ll mid = tl + (tr-tl>>1);
@@ -73,7 +73,7 @@ pair<ll, ll> pquery(ll px, ll py, ll k=rt, ll tl=1, ll tr=N)
 
 int main()
 {
-    std::mt19937_64 rng(std::chrono::steady_clock::now().time_since_epoch().count());
+    std::mt19937 rng(std::chrono::steady_clock::now().time_since_epoch().count());
     //while (true)
     //{
     //    ll t, x, y;
@@ -86,26 +86,15 @@ int main()
     for (int i=1; i<=P; ++i)
     {
         ll x1, y1, x2, y2;
-        printf("um\n");
-        x1 = rand(1, N-2*i), x2 = rand(1, N-2*i),
-        y1 = rand(1, N-2*i), y2 = rand(1, N-2*i);
-        printf("um\n");
+        x1 = rand(1, N-i), x2 = rand(1, N-i),
+        y1 = rand(1, N-i), y2 = rand(1, N-i);
+        //printf("index %d %d %d %d\n", x1, x2, y1, y2);
         if (x1 > x2) swap(x1, x2);
         if (y1 > y2) swap(y1, y2);
-        printf("um\n");
 
         tie(x1, y1) = pquery(x1, y1);
         tie(x2, y2) = pquery(x2, y2);
         update(x1, y1); update(x2, y2);
-        //do
-        //    x1 = rand(0 , N), y1 = rand(0 , N),
-        //    x2 = rand(x1, N), y2 = rand(y1, N),
-        //    db("%d %d %d %d\n", x1, y1, x2, y2);
-        //while (!vis[x1][y1] && !vis[x2][y2]);
-        //do db("%d %d %d\n", i, x1, y1), x1 = rand(0, N), y1 = rand(0, N); while (vis[x1][y1]);
-        //vis[x1][y1] = 1;
-        //do db("%d %d %d\n", i, x2, y2), x2 = rand(x1, N), y2 = rand(y1, N); while (vis[x2][y2]);
-        //vis[x2][y2] = 1;
         printf("%d %d %d %d\n", x1, y1, x2, y2);
     }
 
