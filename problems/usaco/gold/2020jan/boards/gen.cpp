@@ -10,7 +10,7 @@
 #define s second
 #define mp make_pair
 #define db(...) fprintf(stderr, __VA_ARGS__)
-#define rand(l,h) (rng()%(h-l+1)+l)
+#define rand(l,h) (uniform_int_distribution<ll>(l,h)(rng))
 using namespace std;
 // 2d sparse segtree binary search in a casegen :/
 
@@ -74,22 +74,25 @@ pair<ll, ll> pquery(ll px, ll py, ll k=rt, ll tl=1, ll tr=N)
 int main()
 {
     std::mt19937_64 rng(std::chrono::steady_clock::now().time_since_epoch().count());
-    while (true)
-    {
-        ll t, x, y;
-        scanf("%lld%lld%lld", &t, &x, &y);
-        if (~t) update(x, y);
-        else { auto p = pquery(x, y); printf("%d, %d\n", p.f, p.s); }
-    }
+    //while (true)
+    //{
+    //    ll t, x, y;
+    //    scanf("%lld%lld%lld", &t, &x, &y);
+    //    if (~t) update(x, y);
+    //    else { auto p = pquery(x, y); printf("%d, %d\n", p.f, p.s); }
+    //}
     //while (true) printf("%d\n", rand(1, 20));
     printf("%d %d\n", N, P);
     for (int i=1; i<=P; ++i)
     {
         ll x1, y1, x2, y2;
+        printf("um\n");
         x1 = rand(1, N-2*i), x2 = rand(1, N-2*i),
         y1 = rand(1, N-2*i), y2 = rand(1, N-2*i);
-        if (x1 > x2) x1 ^= x2 ^= x1 ^= x2;
-        if (y1 > y2) y1 ^= y2 ^= y1 ^= y2;
+        printf("um\n");
+        if (x1 > x2) swap(x1, x2);
+        if (y1 > y2) swap(y1, y2);
+        printf("um\n");
 
         tie(x1, y1) = pquery(x1, y1);
         tie(x2, y2) = pquery(x2, y2);
