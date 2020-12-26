@@ -25,7 +25,7 @@ ll tsum[P<<6], lc[P<<6], rc[P<<6], sub[P<<6], rt=0, tcnt=0;
 void updatesub(ll q, ll v, ll &k=rt, ll tl=1, ll tr=N)
 {
     if (!k) k = ++tcnt;
-    //printf("updatesub %d %d at %d (%d..%d)\n", q, v, k, tl, tr);
+    printf("updatesub %d %d at %d (%d..%d)\n", q, v, k, tl, tr);
     if (tl == tr) return tsum[k] = v, void();
     ll mid = tl + (tr-tl>>1);
     if (q <= mid) updatesub(q, v, lc[k], tl, mid);
@@ -35,16 +35,25 @@ void updatesub(ll q, ll v, ll &k=rt, ll tl=1, ll tr=N)
 void update(ll qx, ll qy, ll &k=rt, ll tl=1, ll tr=N)
 {
     if (!k) k = ++tcnt;
-    //printf("update %d %d at %d (%d..%d)\n", qx, qy, rt, tl, tr);
+    printf("update %d %d at %d (%d..%d)\n", qx, qy, rt, tl, tr);
     if (tl == tr) return updatesub(qy, 1, sub[k]), tsum[k] = tsum[sub[k]], void();
     ll mid = tl + (tr-tl>>1);
     if (qx <= mid) update(qx, qy, lc[k], tl, mid);
     else update(qx, qy, rc[k], mid+1, tr);
+    updatesub(qy, 1, sub[k]);
     tsum[k] = tsum[lc[k]] + tsum[rc[k]];
+}
+ll querysub(ll q, ll k=1, ll tl=1, ll tr=N)
+{
+    printf("querysub %d @ %d (%d..%d)\n", q, k, tl, tr);
+    if (tl == tr) return tsum[k];
+    ll mid = tl + (tr-tl>>1);
+    if (q <= tl) return querysub(q, lc[k], tl, mid);
+    else return querysub(q, rc[k], mid+1, tr);
 }
 ll pquerysub(ll p, ll &k=rt, ll tl=1, ll tr=N)
 {
-    //printf("pquery %d at %d (%d..%d)\n", p, k, tl, tr);
+    printf("pquerysub %d at %d (%d..%d)\n", p, k, tl, tr);
     if (!k) return tl+p-1;  // FIX: tl + p -1 not just p bc need to account for left
     if (tl == tr) return tl;
     ll mid = tl + (tr-tl>>1);
@@ -53,11 +62,13 @@ ll pquerysub(ll p, ll &k=rt, ll tl=1, ll tr=N)
 }
 pair<ll, ll> pquery(ll px, ll py, ll k=rt, ll tl=1, ll tr=N)
 {
+    printf("query %d,%d at %d (%d..%d)\n", px, py, k, tl, tr);
     if (!k) return mp(tl-1 + px, py);
     if (tl == tr) return mp(tl, pquerysub(py, sub[k]));
     ll mid = tl + (tr-tl>>1);
-    if (px < mid-tl+1-tsum[lc[k]]) return pquery(px, py, lc[k], tl, mid);
-    else return pquery(px-(mid-tl+1-tsum[lc[k]]), py, rc[k], mid+1, tr);
+    ll leftsz = mid-tl+1-querysub(py, sub[lc[k]]);
+    if (px <= leftsz) return pquery(px, py, lc[k], tl, mid);
+    else return pquery(px-leftsz, py, rc[k], mid+1, tr);
 }
 
 int main()
