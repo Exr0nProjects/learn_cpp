@@ -1,7 +1,7 @@
 /*
  * Problem intest (spoj/intest)
  * Create time: Sun 30 Aug 2020 @ 11:26 (PDT)
- * Accept time: [!meta:end!]
+ * Accept time: Sat 26 Dec 2020 @ 13:33 (PST)
  *
  */
 
@@ -43,7 +43,7 @@ _ilb sc(ll &a, ll &b) { return sc(a)&&sc(b); }
 _ilb sc(ll &a, ll &b, int &c) { return sc(a, b)&&sc(c); }
 
 using namespace std;
-const ll MX = 1e5+11;
+const ll MX = 1e6+11;
 
 ll N, P;
 ll val[100010];
@@ -70,8 +70,8 @@ void bu(ll x, ll v)
 
 int main()
 {
-    //freopen("boards.in", "r", stdin);
-    //freopen("boards.out", "w+", stdout);
+    freopen("boards.in", "r", stdin);
+    freopen("boards.out", "w+", stdout);
     //sc(N, P);
     scanf("%lld%lld", &N, &P);
 
