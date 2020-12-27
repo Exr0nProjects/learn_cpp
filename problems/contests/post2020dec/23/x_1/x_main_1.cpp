@@ -1,11 +1,12 @@
 /*
  * Problem 1 (contests/post2020dec/23/1)
  * Create time: Sun 27 Dec 2020 @ 11:12 (PST)
- * Accept time: [!meta:end!]
+ * Accept time: Sun 27 Dec 2020 @ 11:30 (PST)
  * word chain, pid 1314 (trie path counting?)
  */
 #include <bits/stdc++.h>
 #define ll long long
+#define db(...) fprintf(stderr, __VA_ARGS__)
 using namespace std;
 
 const int MX = 1e4+10;
@@ -25,14 +26,16 @@ int main()
         int cur = 0, sum = 0;
         for (ll j=0; buf[j]; ++j)
         {
+            char c = buf[j] - 'a';  // FIX: typo--trie on char not j
+            if (!trie[cur].count(c)) trie[cur][c] = ++tcnt;
+            cur = trie[cur][c];
             sum += isw[cur];
-            if (!trie[cur].count(j)) trie[cur][j] = ++tcnt;
-            cur = trie[cur][j];
+            //db("after %d: at %d\n", j, cur);
         }
         isw[cur] = 1;
         //db("%s got %d\n", buf, sum);
         ans = max(ans, sum);
     }
-    printf("%lld\n", ans);
+    printf("%lld\n", ans+1);
 }
 
