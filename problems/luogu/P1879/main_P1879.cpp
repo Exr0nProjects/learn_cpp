@@ -29,6 +29,11 @@ int main()
     //for (int x=0; x<1<<MX; ++x) dp[0][0][x] = 1;
     dp[0][0][0] = 1; dp[0][0][1] = can[0]&1;
     for (int i=0; i<N; ++i) for (int j=i?0:1; j<M; ++j)
+    {
+        ll opts = (can[i] & (2<<j)-1) | (i?(can[i-1]>>j+1)<<j+1:0);
+        //ll opts = ((can[i] & (2<<j)-1)<<j+1) | (i?(can[i-1]>>j+1):0);
+        //ll opts = (can[i] & (1<<j)-1) | i?(can[i-1]>>(64-(M-2-j))):0;
+        db("%2d %2d: ", i, j); for (int k=0; k<M; ++k) db("%2c", opts>>k&1 ? '#' : '_'); db("\n");
         for (int x=0; x<(1<<(i*M+j+1)); ++x)
             //if (!(x | (can[i]>>j | i?can[i-1]<<M-j:0)))
         {
@@ -46,6 +51,7 @@ int main()
             if (~x&1 && i && can[i-1]>>j&1) (dp[i][j][x] += pre(i, j)[x>>1 | 1<<(M-1)]) %= mod;
             //if (x&1 && ~x>>1&1 && can[i]>>j&1) (dp[i][j][x] += pre(i, j)[x>>1]) %= mod;
         }
+    }
     ll ans = 0; for (int x=0; x<1<<M; ++x) (ans += dp[N-1][M-1][x]) %= mod;
     printf("%lld\n", ans);
 }
