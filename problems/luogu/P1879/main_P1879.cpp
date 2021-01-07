@@ -17,40 +17,55 @@ const ll MX = 13;
 const ll mod = 1e8;
 ll N, M, can[MX], dp[MX][MX][1<<MX];
 
+void print(ll x)
+{
+ for (int k=0; k<M; ++k) db("%2c", x>>k&1 ? '#' : '_'); db("\n");
+}
+
 int main()
 {
     scanf("%lld%lld", &N, &M);
-    for (int i=0; i<N; ++i) for (int j=0; j<M; ++j)
+    for (int i=0; i<N; ++i) for (int j=M-1; ~j; --j)
     {
         int x; scanf("%d", &x);
         if (x) can[i] |= 1<<j;
     }
     //for (int i=0; i<N; ++i) { for (int j=0; j<M; ++j) db("%3d", can[i]>>j&1); db("\n"); }
     //for (int x=0; x<1<<MX; ++x) dp[0][0][x] = 1;
-    dp[0][0][0] = 1; dp[0][0][1] = can[0]&1;
+    dp[0][0][0] = 1; dp[0][0][1] = can[0]>>M-1&1;
     for (int i=0; i<N; ++i) for (int j=i?0:1; j<M; ++j)
     {
-        ll opts = (can[i] & (2<<j)-1) | (i?(can[i-1]>>j+1)<<j+1:0);
+        ll thisans = 0;
+        ll opts = (can[i] >> (M-1-j)) | (i? (can[i-1] & ((1<<(M-1-j))-1)) << (j+1) :0);
+        // these opts = are all for left = lowbit:
+        //ll opts = (can[i] & (2<<j)-1) | (i?(can[i-1]>>j+1)<<j+1:0);
         //ll opts = ((can[i] & (2<<j)-1)<<j+1) | (i?(can[i-1]>>j+1):0);
         //ll opts = (can[i] & (1<<j)-1) | i?(can[i-1]>>(64-(M-2-j))):0;
-        db("%2d %2d: ", i, j); for (int k=0; k<M; ++k) db("%2c", opts>>k&1 ? '#' : '_'); db("\n");
-        for (int x=0; x<(1<<(i*M+j+1)); ++x)
+        db("%2d %2d: ", i, j); print(opts);
+        //db(" can[i]"); print((can[i] >> (M-1-j)));
+        //db(" prev  "); print((i? (can[i-1] & ((1<<(M-1-j))-1)) << (j+1) :0));
+        dp[i][j][0] = pre(i, j)[0] + pre(i, j)[1<<M-1];
+        for (int x=opts; x; x = (x-1)&opts)
+        //for (int x=0; x<(1<<(i*M+j+1)); ++x)
             //if (!(x | (can[i]>>j | i?can[i-1]<<M-j:0)))
         {
-            bool bad = 0;
-            for (int k=0; k<(i?M:j) && !bad; ++k)
-            {
-                if (x>>k&1 && x>>(k+1)&1) bad = 1;
-                //db("%d %d %d : %d && !(can[%d-%d]->%d >> %d : %d)\n", i, j, k, x>>k&1, i, k>j, can[i-((bool)k>j)], j-k, (can[i-((bool)k>j)]>>(j-k)&1));
-                //printf("%d and %d?\n", x>>k&1, !(can[i-((bool)k>j)]>>(j-k)&1));
-                if (x>>k&1 && !(can[i-((bool)k>j)]>>(j-k)&1)) bad = 1; // illegal mask
-            }
-            if (bad) continue;  // FIX: logic--continuing in nested loop smah, need flag var
+            //bool bad = 0;
+            //for (int k=0; k<(i?M:j) && !bad; ++k)
+            //{
+            //    if (x>>k&1 && x>>(k+1)&1) bad = 1;
+            //    //db("%d %d %d : %d && !(can[%d-%d]->%d >> %d : %d)\n", i, j, k, x>>k&1, i, k>j, can[i-((bool)k>j)], j-k, (can[i-((bool)k>j)]>>(j-k)&1));
+            //    //printf("%d and %d?\n", x>>k&1, !(can[i-((bool)k>j)]>>(j-k)&1));
+            //    if (x>>k&1 && !(can[i-((bool)k>j)]>>(j-k)&1)) bad = 1; // illegal mask
+            //}
+            //if (bad) continue;  // FIX: logic--continuing in nested loop smah, need flag var
             //db("%3d - %x\n", i*M+j, x);
-            dp[i][j][x] = pre(i, j)[x>>1];
+            db("     > "); print(x);
+            if (x%4 < 3) (dp[i][j][x] += pre(i, j)[x>>1]) %= mod;
             if (~x&1 && i && can[i-1]>>j&1) (dp[i][j][x] += pre(i, j)[x>>1 | 1<<(M-1)]) %= mod;
+            thisans += dp[i][j][x];
             //if (x&1 && ~x>>1&1 && can[i]>>j&1) (dp[i][j][x] += pre(i, j)[x>>1]) %= mod;
         }
+        db("%2d %2d finally got %d + %d\n", i, j, thisans, dp[i][j][0]);
     }
     ll ans = 0; for (int x=0; x<1<<M; ++x) (ans += dp[N-1][M-1][x]) %= mod;
     printf("%lld\n", ans);
