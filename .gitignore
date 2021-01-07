@@ -1,7 +1,6 @@
 priv*/**
 **/.DS_Store
 .ccls-cache/
-problems/.template_state/last.txt
 **/auto
 **/answer
 **/casegen
