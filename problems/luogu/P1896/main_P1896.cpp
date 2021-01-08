@@ -13,8 +13,17 @@ using namespace std;
 const ll MX = 10;
 ll N, K, dp[MX*MX][MX][MX][1<<MX];  // dp[k][i][j][x] = # ways to populate up to (i, j) using k kings and prev row has x
 
+
+ll debug[MX][MX];
+void print(ll x, char e='\n')
+{
+    for (int i=N; ~i; --i) db("%2c", x>>i&1 ? '#' : '.'); db("%c", e);
+}
+
 bool legal(ll x, ll j)
 {
+    if (__builtin_popcountll(x) > K) return 0;
+    ++j;
     for (int i=1; i<=N; ++i)
         if (i != (j?j:N) && x>>(i-1)&1 && x>>i&1)
             //return db("badnewsbears at i%d j%d\n", i, j), 0;
@@ -40,15 +49,24 @@ int main()
         dp[0][i][j][x] = 1;  // always one way to place zero kings
     dp[1][0][0][1] = 1;
 
-    for (int k=1; k<=K; ++k) for (int i=0; i<N; ++i) for (int j=i?0:1; j<N; ++j)
+    for (int k=1; k<=K; ++k) for (int i=0; i<N; ++i)
     {
-        for (int x=0; x<2<<N; ++x) if (legal(x, j))
+        for (int j=i?0:1; j<N; ++j)
+    {
+        ll localans = 0;
+        for (int x=0; x<2<<(i?N:j); ++x) if (legal(x, j))
         {
             if (x&1) dp[k][i][j][x] = dp[k-1][pre(i, j)][x>>1];
             else     dp[k][i][j][x] = dp[k  ][pre(i, j)][x>>1];
             if (~x&1 && ~x>>1&1 && ~x>>N&1 && i) dp[k][i][j][x] += dp[k][pre(i, j)][x>>1 | 1<<N];
+            db("k%2d i%2d j%2d  ", k, i, j); print(x, ' '); db("-> %d\n", dp[k][i][j][x]);
+            localans += dp[k][i][j][x];
         }
+        debug[i][j] = localans;
+        db("\n");
     }
+        db("\n");}
+    for (int i=0; i<N; ++i) { for (int j=0; j<N; ++j) db("%3d", debug[i][j]); db("\n"); }
     ll ans = 0; for (ll x=0; x<2<<N; ++x) ans += dp[K][N-1][N-1][x];
     printf("%lld\n", ans);
 }
