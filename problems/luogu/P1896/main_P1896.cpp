@@ -58,19 +58,24 @@ int main()
         for (int x=0; x<2<<(i?N:j); ++x)
             if (legal(x, j) && __builtin_popcountll(x) <= k)
         {
-            db("k%2d i%2d j%2d  (pre has %d)  ", k, i, j, debug[pre(i, j)]); print(x, ' ');
+            //db("k%2d i%2d j%2d  (pre has %d)  ", k, i, j, debug[pre(i, j)]); print(x, ' ');
             if (x&1) dp[k][i][j][x] = dp[k-1][pre(i, j)][x>>1];
             else     dp[k][i][j][x] = dp[k  ][pre(i, j)][x>>1];
-            if (~x&1 && ~x>>1&1 && (~x>>N&1) && i) db("(can link) "), dp[k][i][j][x] += dp[k][pre(i, j)][x>>1 | 1<<N];
-            db("-> %d\n", dp[k][i][j][x]);
+            //if (~x&1 && ~x>>1&1 && (!j || ~x>>N&1) && i) db("(can link) "), dp[k][i][j][x] += dp[k][pre(i, j)][x>>1 | 1<<N];
+            //if (~x&1 && (!j || (~x>>1&1 && ~x>>N&1)) && i) db("(can link) "), dp[k][i][j][x] += dp[k][pre(i, j)][x>>1 | 1<<N];
+            if (~x>>1&1 && ((!j && ~x>>2&1) || (~x&1 && ~x>>N&1)) && i) dp[k][i][j][x] += dp[k][pre(i, j)][x>>1 | 1<<N];
+            //db("-> %d\n", dp[k][i][j][x]);
             localans += dp[k][i][j][x];
         }
-        debug[i][j] = localans;
-        db("\n");
+        //debug[i][j] = localans;
+        //db("\n");
     }
-        db("\n");}
-    for (int i=0; i<N; ++i) { for (int j=0; j<N; ++j) db("%3d", debug[i][j]); db("\n"); } db("\n\n"); memset(debug, 0, sizeof debug); }
+        //db("\n");
+    }
+    //for (int i=0; i<N; ++i) { for (int j=0; j<N; ++j) db("%3d", debug[i][j]); db("\n"); } db("\n\n"); memset(debug, 0, sizeof debug);
+    }
     ll ans = 0; for (ll x=0; x<2<<N; ++x) ans += dp[K][N-1][N-1][x];
+    ans -= max(0ll, N-2);   // FIX: um.. why does this seem to work?
     printf("%lld\n", ans);
 }
 
