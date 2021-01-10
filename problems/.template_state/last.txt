@@ -1,1 +1,1 @@
-luogu/P1896
+leetcode/smallest-sufficient-team
