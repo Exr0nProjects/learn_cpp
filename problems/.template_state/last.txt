@@ -1,1 +1,1 @@
-leetcode/smallest-sufficient-team
+leetcode/find-the-shortest-superstring
