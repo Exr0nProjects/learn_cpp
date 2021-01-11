@@ -5,28 +5,29 @@
  *
  */
 #include <bits/stdc++.h>
-#define ll long long
 #define db(...) fprintf(stdout, __VA_ARGS__)
+#define ll long long
 using namespace std;
 
-const ll MX = 17;
-const ll MXN = 64;
-ll dp[MXN][1<<MX], pre[MXN][1<<MX];
 
 class Solution {
+#define MX 16
+#define MXN 61
+    int dp[MXN][1<<MX], pre[MXN][1<<MX];
+    int mask[MX];
     map<string, ll> sid;
     ll id(string &skill)
     {
         if (!sid.count(skill)) sid[skill] = sid.size();
         return sid[skill];
     }
-    ll mask(vector<string> &person)
-    {
-        ll ret = 0;
-        for (auto s : person)
-            ret |= 1<<id(s);
-        return ret;
-    }
+    //ll mask(vector<string> &person)
+    //{
+    //    ll ret = 0;
+    //    for (auto s : person)
+    //        ret |= 1<<id(s);
+    //    return ret;
+    //}
     void names(ll x, ll M,  vector<string>& req_skills)
     {
         //db("(%d) ", x);
@@ -38,15 +39,19 @@ public:
         ll N = people.size(), M = req_skills.size();
         //db("n %d m %d\n", N, M);
 
+        for (int i=0; i<N; ++i)
+            for (auto s : people[i])
+                mask[i] |= 1<<id(s);
+
         memset(dp, 0x3f, sizeof dp);
 
-        dp[0][0] = 0; for (int x=1; x<1<<M; ++x) if (!(x & ~mask(people[0]))) dp[0][x] = 1, pre[0][x] = 1;    // FIX: base case
+        dp[0][0] = 0; for (int x=1; x<1<<M; ++x) if (!(x & ~mask[0])) dp[0][x] = 1, pre[0][x] = 1;    // FIX: base case
         for (int i=1; i<N; ++i)
             for (int x=0; x<1<<M; ++x)
             {
                 dp[i][x] = dp[i-1][x], pre[i][x] = 0; // don't take this person
-                if (dp[i][x] > dp[i-1][x&~mask(people[i])]+1)
-                    dp[i][x] = dp[i-1][x&~mask(people[i])]+1, pre[i][x] = 1;
+                if (dp[i][x] > dp[i-1][x&~mask[i]]+1)
+                    dp[i][x] = dp[i-1][x&~mask[i]]+1, pre[i][x] = 1;
                 //db("i %d needs %10d for ", i, dp[i][x]); names(x, M, req_skills);
             }
 
@@ -58,7 +63,8 @@ public:
         ll cur = (1<<M)-1;
         vector<int> ret;
         for (int i=N-1; ~i; --i) if (pre[i][cur])
-            cur &= ~mask(people[i]), ret.push_back(i);
+            //db("adding %d to the team\n", i),
+            cur &= ~mask[i], ret.push_back(i);
         return ret;
     }
 };
