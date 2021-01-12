@@ -19,38 +19,61 @@ const ll MXE = 1e7+10;
 ll T, N, M, S;
 ll dist[MX], ans=0;
 
-struct Edge { ll t, n; } eg[MXE<<1]; ll hd[MX], ecnt=2;
+struct Edge { int t, n; } eg[MXE]; ll hd[MX], ecnt=2;
 void addEdge(ll u=0, ll v=0)
 {
     //printf("addEdge %d %d\n", u, v);
-    if (!u) scanf("%lld%lld", &u, &v), addEdge(v, u);
+    if (!u) scanf("%d%d", &u, &v), addEdge(v, u);
     eg[ecnt] = { v, hd[u] }; hd[u] = ecnt++;
 }
 
+// ll q[MX], ql=1, qr=0;
+// void bfs()
+// {
+//    ll src, len;
+//    ql=1, qr=0;
+//    memset(q, 0, sizeof q);
+//    scanf("%lld%lld", &src, &len);
+//    //db("src %d len %d, dist set to %d\n", src, len, dist[src]);
+//    if (dist[src]) return ans = -MX, void(); else dist[src] = len+1;
+//    for (q[++qr] = src; ql-1 != qr; ++ql%=MX)
+//    {
+//        //db("queue %d..%d is %d (dist %d)\n", ql, qr, q[ql], dist[q[ql]]);
+//        ++ans;
+//        if (dist[q[ql]] == 1) continue; // FIX: typo continue not return
+//        for (int e=hd[q[ql]]; e; e=eg[e].n)
+// 	       if (!~dist[eg[e].t]) { ans=-MX; return; }
+//            else if (!dist[eg[e].t])
+//                //db("going %d->%d\n", q[ql], eg[e].t),
+//                dist[eg[e].t] = dist[q[ql]]-1,
+//                q[++qr%=MX] = eg[e].t;
+//    }
+//    for (int i=1; i<=qr; ++i)
+//        //db("    setting %d\n", i),
+//        dist[q[i]] = -1;
+// }
 ll q[MX], ql=1, qr=0;
 void bfs()
 {
-   ll src, len;
-   ql=1, qr=0;
-   memset(q, 0, sizeof q);
-   scanf("%lld%lld", &src, &len);
-   //db("src %d len %d, dist set to %d\n", src, len, dist[src]);
-   if (dist[src]) return ans = -MX, void(); else dist[src] = len+1;
-   for (q[++qr] = src; ql-1 != qr; ++ql%=MX)
-   {
-       //db("queue %d..%d is %d (dist %d)\n", ql, qr, q[ql], dist[q[ql]]);
-       ++ans;
-       if (dist[q[ql]] == 1) continue; // FIX: typo continue not return
-       for (int e=hd[q[ql]]; e; e=eg[e].n)
-	       if (!~dist[eg[e].t]) { ans=-MX; return; }
-           else if (!dist[eg[e].t])
-               //db("going %d->%d\n", q[ql], eg[e].t),
-               dist[eg[e].t] = dist[q[ql]]-1,
-               q[++qr%=MX] = eg[e].t;
-   }
-   for (int i=1; i<=qr; ++i)
-       //db("    setting %d\n", i),
-       dist[q[i]] = -1;
+    ll src, len;
+    ql=1, qr=0;
+    memset(q, 0, sizeof q); // needed?
+    scanf("%lld%lld", &src, &len);
+    if (dist[src]) return ans = -1e9, void(); else dist[src] = len+1;
+    //printf("src %d len %d, dist set to %d\n", src, len, dist[src]);
+    for (q[++qr] = src; ql-1 != qr; ++ql%=MX)
+    {
+        //printf("queue %d..%d is %d (dist %d)\n", ql, qr, q[ql], dist[q[ql]]);
+        ++ans;
+        if (dist[q[ql]] == 1) continue; // FIX: typo continue not return
+        for (int e=hd[q[ql]]; e; e=eg[e].n)
+            if (dist[eg[e].t] == -1) ans=-1e9;
+            else if (!dist[eg[e].t])
+                //db("going %d->%d\n", q[ql], eg[e].t),
+                dist[eg[e].t] = dist[q[ql]]-1,
+                q[++qr%=MX] = eg[e].t;
+    }
+    // for (int i=1; i<=qr; ++i) dist[q[i]] = -1;
 }
 // void bfs()
 // {
