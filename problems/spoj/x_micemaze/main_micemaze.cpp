@@ -17,7 +17,7 @@ struct Edge { ll t, w, n; } eg[MX*MX]; ll hd[MX], ecnt=2;
 void addEdge()
 {
 	ll u, v, w; scanf("%lld%lld%lld", &u, &v, &w);
-	eg[ecnt] = { v, w, hd[u] }; hd[u] = ecnt++;
+	eg[ecnt] = { u, w, hd[v] }; hd[v] = ecnt++; // FIX: typo-- need to reverse the edges
 }
 
 int main()
@@ -38,7 +38,7 @@ int main()
 	}
 	ll ans = 0;
 	for (int i=1; i<=N; ++i) {
-		// db("%d takes %d\n", i, dist[i]);
+		db("%d takes %d\n", i, dist[i]);
 		if (dist[i] <= T) ++ans;
 	}
 	printf("%d\n", ans);
