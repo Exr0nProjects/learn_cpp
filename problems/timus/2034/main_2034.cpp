@@ -10,9 +10,9 @@
 #define mt make_tuple
 using namespace std;
 
-const ll MX = 1e5+10;
+const ll MX = 2e5+10;
 ll N, M, S, D, R;
-struct Edge { ll t, n; } eg[MX]; ll hd[MX], ecnt=2;
+struct Edge { ll t, n; } eg[MX<<2]; ll hd[MX], ecnt=2;
 void addEdge(ll u=0, ll v=0)
 {
 	if (!u) scanf("%lld%lld", &u, &v), addEdge(v, u);
@@ -28,8 +28,8 @@ ll dijkstra(ll src, ll dst)
 	while (pq.size()) {
 		ll c, d; tie(c, d) = pq.top(); pq.pop();
 		if (dist[c] <= d) continue;
-		if (c == dst) return d;
 		dist[c] = d;
+		if (c == dst) return d;
 		for (int e=hd[c]; e; e=eg[e].n)
 			pq.push(mt(eg[e].t, d+1));
 	}
@@ -39,11 +39,11 @@ ll dijkstra(ll src, ll dst)
 bool vis[MX];
 void dfs(ll c, ll r, ll mn=1e9)
 {
-	if (vis[c]) return;
-	if (c == D) ans = max(ans, mn);
-	if (r == 0) return;
-	vis[c] = 1;
 	mn = min(mn, dist[c]);
+	if (c == D) ans = max(ans, mn); // FIX: also min with dist[c] at the end
+	if (r == 0) return;
+	if (vis[c]) return;
+	vis[c] = 1;
 	for (int e=hd[c]; e; e=eg[e].n)
 		dfs(eg[e].t, r-1, mn);
 	vis[c] = 0;
@@ -57,5 +57,6 @@ int main()
 	ll len = dijkstra(S, D);
 	dijkstra(R, -1);            // populate dist array with distance from robbers
 	dfs(S, len);
+	// for (int i=1; i<=N; ++i) db("%d takes %d\n", i, dist[i]);
 	printf("%lld\n", ans);
 }

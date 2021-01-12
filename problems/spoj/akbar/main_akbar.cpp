@@ -51,41 +51,54 @@ ll q[MX], ql=1, qr=0;
 //        //db("    setting %d\n", i),
 //        dist[q[i]] = -1;
 //}
-void bfs()
+// void bfs()
+// {
+//     ll s, d; scanf("%lld%lld", &s, &d);
+//     // db("got %d for %d\n", s, d);
+//     queue<pair<int, int> > q;
+//     vector<int> q2;
+//     q.push(mp(s, d));
+//     while (q.size())
+// 		{
+// 			ll c, d; tie(c, d) = q.front(); q.pop();
+// 			// db("at %d after %d\n", c, d);
+// 			if (dist[c] == -1) ans = -MX;
+// 			if (dist[c]) continue;
+// 			dist[c] = d;
+// 			++ans; q2.push_back(c);
+// 			if (d > 0)
+// 				for (int e=hd[c]; e; e=eg[e].n)
+// 					q.push(mp(eg[e].t, d-1));
+// 		}
+//     for (auto v : q2) dist[v] = -1;
+// }
+bool dfs(ll c=0, ll d=0)
 {
-    ll s, d; scanf("%lld%lld", &s, &d);
-    queue<pair<int, int> > q;
-    vector<int> q2;
-    q.push(mp(s, d));
-    while (q.size())
-    {
-        ll c, d; tie(c, d) = q.front(); q.pop();
-        if (dist[c] == -1) ans = -MX;
-        if (dist[c]) continue;
-        dist[c] = d;
-        ++ans; q2.push_back(c);
-        if (d > 0)
-        for (int e=hd[c]; e; e=eg[e].n)
-            q.push(mp(eg[e].t, d+1));
-    }
-    for (auto v : q2) dist[v] = -1;
+	if (!c) scanf("%lld%lld", &c, &d);
+	if (dist[c] == -1) return ans = -1e9, 1;
+	if (dist[c]) return 0;
+	dist[c] = d; ++ans;
+	if (d) for (int e=hd[c]; e; e=eg[e].n)
+		          if (dfs(eg[e].t, d-1)) return 1;
+	dist[c] = -1;
+	return 0;
 }
 
 int main()
 {
-    scanf("%lld", &T);
-    for (int i=1; i<=T; ++i)
-    {
-        scanf("%lld%lld%lld", &N, &M, &S);
-        memset(dist, 0, sizeof dist);
-        ans = 0;
-        memset(eg, 0, sizeof eg);   // FIX: clear adjlist
-        memset(hd, 0, sizeof hd);
-        ecnt = 2;
-        for (int i=1; i<=M; ++i) addEdge();
-        for (int i=1; i<=S; ++i) bfs();
-        //db("ans = %d\n", ans);
-        if (ans == N) printf("YES\n"); else printf("NO\n");
-    }
+	scanf("%lld", &T);
+	for (int i=1; i<=T; ++i)
+	{
+		scanf("%lld%lld%lld", &N, &M, &S);
+		memset(dist, 0, sizeof dist);
+		ans = 0;
+		memset(eg, 0, sizeof eg);   // FIX: clear adjlist
+		memset(hd, 0, sizeof hd);
+		ecnt = 2;
+		for (int i=1; i<=M; ++i) addEdge();
+		// for (int i=1; i<=S; ++i) bfs();
+		for (int i=1; i<=S; ++i) dfs();
+		//db("ans = %d\n", ans);
+		if (ans == N) printf("YES\n"); else printf("NO\n");
+	}
 }
-
