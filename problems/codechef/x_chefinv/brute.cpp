@@ -25,6 +25,7 @@ int main()
     printf("descretized: "); for (int i=1; i<=N; ++i) printf("%3lld", arr[i]); printf("\n");
     for (int i=1; i<=M; ++i)
     {
+	    fprintf(stderr, "on query %d of %d              \r", i, M);
         memset(bit, 0, sizeof bit);
         ll a, b; scanf("%lld%lld", &a, &b);
         swap(arr[a], arr[b]);

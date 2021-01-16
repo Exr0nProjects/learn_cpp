@@ -6,7 +6,7 @@
  */
 #include <bits/stdc++.h>
 #define ll long long
-#define db(...) fprintf(stdout, __VA_ARGS__)
+#define db(...) fprintf(stderr, __VA_ARGS__)
 #define f first
 #define s second
 using namespace std;
@@ -87,7 +87,7 @@ int main()
 	for (int i=1; i<=N; ++i) desc[arr[i]] = 0;
 	ll cnt=0; for (auto &p : desc) p.s = ++cnt;
 	for (int i=1; i<=N; ++i) arr[i] = desc[arr[i]];
-	db("descretized: "); for (int i=1; i<=N; ++i) db("%3lld", arr[i]); db("\n");
+	// db("descretized: "); for (int i=1; i<=N; ++i) db("%3lld", arr[i]); db("\n");
 	// count inversions
 //eeee
 	ll invs = 0;
