@@ -10,14 +10,14 @@
 #define mt make_tuple
 using namespace std;
 const ll MX = 5e5+10;
-const ll MXE = 1e6+10;
+const ll MXE = 2e6+10;          // FIX: bidirectional edges needs 2x storage
 
 ll N, M, Q;
 ll dist[MX];
 struct Edge { ll t, w, n; } eg[MXE]; ll hd[MX], ecnt=2;
-void addEdge(ll u=0, ll v=0, ll w=0)
+void addEdge(ll u=0, ll v=0, ll w=0, ll b=0)
 {
-	if (!u) scanf("%lld%lld%lld", &u, &v, &w), addEdge(v, u, w);
+	if (!b) scanf("%lld%lld%lld", &u, &v, &w), addEdge(v, u, w, 1); // FIX: need b=0 bc u, v, w can all be zero in the input
 	eg[ecnt] = { v+1, w, hd[u+1] }; hd[u+1] = ecnt++;
 }
 
@@ -32,8 +32,10 @@ tuple<ll, ll> dijkstra(ll src)
 		ll d, c; tie(d, c) = pq.top(); pq.pop();
 		if (dist[c] <= d) continue;
 		dist[c] = d;
-		if (d > mx) mx = d, mxcnt=1;
-		else if (d == mx) ++mxcnt;
+
+		if (d > mx) mx = d, mxcnt=0;
+		if (d == mx) ++mxcnt;
+
 		for (int e=hd[c]; e; e=eg[e].n) {
 			pq.push(mt(d + eg[e].w, eg[e].t));
 		}
