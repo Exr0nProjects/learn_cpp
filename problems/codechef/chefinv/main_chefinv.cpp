@@ -87,13 +87,13 @@ int main()
 	for (int i=1; i<=N; ++i) desc[arr[i]] = 0;
 	ll cnt=0; for (auto &p : desc) p.s = ++cnt;
 	for (int i=1; i<=N; ++i) arr[i] = desc[arr[i]];
-	// db("descretized: "); for (int i=1; i<=N; ++i) db("%3lld", arr[i]); db("\n");
+	db("descretized: "); for (int i=1; i<=N; ++i) db("%3lld", arr[i]); db("\n");
 	// count inversions
+//eeee
 	ll invs = 0;
-	for (int i=N; i; --i) {
-		// db("    invs at %d (%lld) = %lld\n", i, arr[i], bq(arr[i]-1));
-		invs += bq(arr[i]-1);
-		bu(arr[i], 1);
+	for (int k=N; k; --k) {
+		invs += bq(arr[k]-1);
+		bu(arr[k], 1);
 	}
 	// db("total inversions = %lld\n", invs);
 	// init PST
@@ -105,12 +105,15 @@ int main()
 	for (int i=1; i<=M; ++i) {
 		ll a, b; scanf("%lld%lld", &a, &b);
 		// db("got %lld %lld\n", a, b);
-		if (a == b) { printf("%lld\n", invs); continue; }
+		if (arr[a] == arr[b]) { printf("%lld\n", invs); continue; }
 		ll ans = 0, sign = -1;
 		if (arr[a] < arr[b]) sign = 1;
 		// db("rt[1] = %d\n", rt[1]);
-		ans += sign * 2 * query(min(arr[a], arr[b]), max(arr[a], arr[b]), rt[a], rt[b-1]);
-		// db("got %d + %lld = %lld\n", (a<b), ans-(a<b), ans);
-		printf("%lld\n", ans + invs + sign);
+		ll lab = max(arr[a], arr[b]), sab = min(arr[a], arr[b]);
+		ll mid = query(sab+1, lab-1, rt[a], rt[b-1]);
+		ll lo = query(arr[a], arr[a], rt[a], rt[b-1]);
+		ll hi = query(arr[b], arr[b], rt[a], rt[b-1]);
+		// db("got %lld, 2*%lld, %lld\n", lo, mid, hi);
+		printf("%lld\n", invs + sign + sign*(lo+2*mid+hi));
 	}
 }

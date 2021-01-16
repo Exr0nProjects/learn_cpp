@@ -7,8 +7,8 @@
 #define rand(l,h) std::uniform_int_distribution<ll>(l,h)(rng)
 std::mt19937_64 rng(std::chrono::high_resolution_clock::now().time_since_epoch().count());
 
-ll N = 5e0;
-ll MX = 5e0;
+ll N = 2e2;
+ll MX = 2e3;
 
 int main()
 {
