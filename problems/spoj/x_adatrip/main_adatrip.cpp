@@ -30,15 +30,16 @@ tuple<ll, ll> dijkstra(ll src)
 	pq.push(mt(0, src));
 	while (pq.size()) {
 		ll d, c; tie(d, c) = pq.top(); pq.pop();
-		if (dist[c] <= d) continue;
+		if (dist[c] < d) continue;
 		dist[c] = d;
 
 		if (d > mx) mx = d, mxcnt=0;
 		if (d == mx) ++mxcnt;
 
-		for (int e=hd[c]; e; e=eg[e].n) {
-			pq.push(mt(d + eg[e].w, eg[e].t));
-		}
+		for (int e=hd[c]; e; e=eg[e].n)
+			if (dist[eg[e].t] > d + eg[e].w)
+				dist[eg[e].t] = d + eg[e].w,
+				pq.push(mt(d + eg[e].w, eg[e].t));
 	}
 	return mt(mx, mxcnt);
 }
