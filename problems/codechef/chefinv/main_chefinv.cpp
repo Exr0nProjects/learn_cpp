@@ -28,20 +28,20 @@ void update(ll q, ll v, ll &k, ll tl=1, ll tr=N)
 {
 	if (q < tl || q > tr) return;
 	dupe(k);
-	db("update %d <- %d at %d (%d..%d)\n", q, v, k, tl, tr);
+	// db("    update %lld <- %lld at %lld (%lld..%lld)\n", q, v, k, tl, tr);
 	if (tl == tr) return tsum[k] += v, void();
-	ll mid = tl + (tr-tl>>1);
+	ll mid = tl + ((tr-tl)>>1);
 	if (q <= mid) update(q, v, lc[k], tl, mid);
 	else update(q, v, rc[k], mid+1, tr);
 	tsum[k] = tsum[lc[k]] + tsum[rc[k]];
 }
-ll query(ll ql, ll qr, ll &k1, ll &k2, ll tl=1, ll tr=N)
+ll query(ll ql, ll qr, ll k1, ll k2, ll tl=1, ll tr=N)
 {
-	db("query %d, %d @ %d, %d (%d..%d)\n", ql, qr, k1, k2, tl, tr);
 	if (qr < tl || tr < ql) return 0;
+	// db("    query %lld, %lld @ %lld, %lld (%lld..%lld) (%lld)\n", ql, qr, k1, k2, tl, tr, tsum[k2]-tsum[k1]);
 	if (ql <= tl && tr <= qr) return tsum[k2]-tsum[k1];
-	dupe(k1); dupe(k2);
-	ll mid = tl + (tr-tl>>1);
+	// dupe(k1); dupe(k2);
+	ll mid = tl + ((tr-tl)>>1);
 	return query(ql, qr, lc[k1], lc[k2], tl, mid)
 		+  query(ql, qr, rc[k1], rc[k2], mid+1, tr);
 }
@@ -74,34 +74,43 @@ void bu(ll x, ll v)
 
 int main()
 {
-	N = 10;
-	ll rt = 1, alwayszero=0;
-	while (true) {
-		ll t, k, v; scanf("%lld%lld%lld", &t, &k, &v);
-		if (t == 1) update(k, v, rt);
-		else printf("-> %lld\n", query(k, v, alwayszero, rt));
+	// N = 10;
+	// ll rt = 1, alwayszero=0;
+	// while (true) {
+	// 	ll t, k, v; scanf("%lld%lld%lld", &t, &k, &v);
+	// 	if (t == 1) update(k, v, rt);
+	// 	else printf("-> %lld\n", query(k, v, alwayszero, rt));
+	// }
+	scanf("%lld%lld", &N, &M);
+	for (int i=1; i<=N; ++i) scanf("%lld", arr+i);
+	// descretize
+	for (int i=1; i<=N; ++i) desc[arr[i]] = 0;
+	ll cnt=0; for (auto &p : desc) p.s = ++cnt;
+	for (int i=1; i<=N; ++i) arr[i] = desc[arr[i]];
+	// db("descretized: "); for (int i=1; i<=N; ++i) db("%3lld", arr[i]); db("\n");
+	// count inversions
+	ll invs = 0;
+	for (int i=N; i; --i) {
+		// db("    invs at %d (%lld) = %lld\n", i, arr[i], bq(arr[i]-1));
+		invs += bq(arr[i]-1);
+		bu(arr[i], 1);
 	}
-	// scanf("%lld%lld", &N, &M);
-	// for (int i=1; i<=N; ++i) scanf("%lld", arr+i);
-	// // descretize
-	// for (int i=1; i<=N; ++i) desc[arr[i]] = 0;
-	// ll cnt=0; for (auto &p : desc) p.s = ++cnt;
-	// for (int i=1; i<=N; ++i) arr[i] = desc[arr[i]];
-	// db("descretized: "); for (int i=1; i<=N; ++i) db("%3d", arr[i]); db("\n");
-	// // count inversions
-	// ll invs = 0;
-	// for (int i=N; i; --i) {
-	// 	db("    invs at %d (%d) = %d\n", i, arr[i], bq(arr[i]-1));
-	// 	invs += bq(arr[i]-1);
-	// 	bu(arr[i], 1);
-	// }
-	// db("total inversions = %d\n", invs);
-	// // init PST
-	// rt[0] = 0;
-	// for (int i=1; i<=N; ++i) rt[i] = rt[i-1], update(arr[i], 1, rt[i])
-	// 	                         ,
-	// 	                         dump(rt[i]), db("\n=====================\n");
-	// // answer queries
-	// for (int i=1; i<=M; ++i) {
-	// }
+	// db("total inversions = %lld\n", invs);
+	// init PST
+	rt[0] = 0;
+	for (int i=1; i<=N; ++i) rt[i] = rt[i-1], update(arr[i], 1, rt[i])
+		                         // , dump(rt[i]), db("\nrt[1] = %lld\n=====================\n", rt[1])
+		                        ;
+	// answer queries
+	for (int i=1; i<=M; ++i) {
+		ll a, b; scanf("%lld%lld", &a, &b);
+		// db("got %lld %lld\n", a, b);
+		if (a == b) { printf("%lld\n", invs); continue; }
+		ll ans = 0, sign = -1;
+		if (arr[a] < arr[b]) sign = 1;
+		// db("rt[1] = %d\n", rt[1]);
+		ans += sign * 2 * query(min(arr[a], arr[b]), max(arr[a], arr[b]), rt[a], rt[b-1]);
+		// db("got %d + %lld = %lld\n", (a<b), ans-(a<b), ans);
+		printf("%lld\n", ans + invs + sign);
+	}
 }
