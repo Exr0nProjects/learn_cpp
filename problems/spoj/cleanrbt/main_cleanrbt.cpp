@@ -41,15 +41,18 @@ int main()
 			ll d, y, x, m; tie(d, y, x, m) = q.front(); q.pop();
 			// db("at %d, %d after %d with %x\n", y, x, d, m);
 			// for (int i=0; i<=N+1; ++i) { for (int j=0; j<=M+1; ++j) db("%2c", (i==y&&j==x?'@':(grid[i][j]<10?grid[i][j]+'0' : grid[i][j]))); db("\n"); }
-			if (grid[y][x] < 10) m |= (1<<grid[y][x]);
-			else if (grid[y][x] != '.') continue;
+			// if (grid[y][x] < 10) m |= (1<<grid[y][x]);
+			// else if (grid[y][x] != '.') continue;
 			if (dist[y][x][m] <= d) continue;
 			dist[y][x][m] = d;
 			if (m+1 == 1<<cnt) { ans = d; break; }
 			for (int n=0; n<4; ++n) {
 				y+=_y[n], x+=_x[n];
+				ll _m = m;
+				if (grid[y][x] < 10) _m |= 1<<grid[y][x];
+				else if (grid[y][x] != '.') continue;;
 				// db("%lld %lld\n", y, x);
-				q.push(mt(d+1, y, x, m));
+				q.push(mt(d+1, y, x, _m));
 			}
 			// NOTE! y, x is different here
 		}
