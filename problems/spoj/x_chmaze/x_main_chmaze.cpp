@@ -1,7 +1,7 @@
 /*
  * Problem chmaze (spoj/chmaze)
  * Create time: Sun 17 Jan 2021 @ 10:37 (PST)
- * Accept time: [!meta:end!]
+ * Accept time: Sun 17 Jan 2021 @ 11:12 (PST)
  *
  */
 #include <bits/stdc++.h>
@@ -20,6 +20,7 @@ ll dist[MXC][MX][MX];
 
 int main()
 {
+	ll tt = 0;
 	while (~scanf("%lld%lld%lld", &N, &M, &K)) {
 		if (!N && !M && !K) return 0;
 		memset(grid, '1', sizeof grid);
@@ -33,13 +34,15 @@ int main()
 		while (q.size()) {
 			ll d, y, x; tie(d, y, x) = q.front(); q.pop();
 			// db("at %d, %d after %d\n", y, x, d);
-			if (y == N && x == M) { ans = d; break; }
 			if (dist[d%K][y][x] || grid[d%K][y][x] == '1') continue;
 			dist[d%K][y][x] = d;
+			if (y == N && x == M) { ans = d; break; }
 			for (int n=0; n<5; ++n)
-				if (grid[d%K][y+_y[n]][x+_x[n]] == '0')
+				// if (grid[d%K][y+_y[n]][x+_x[n]] == '0') // FIX: unclear statement -- doesn't count if cell is blocked this turn
 					q.push(mt(d+1, y+_y[n], x+_x[n]));
 		}
-		printf("%lld\n", ans);
+		printf("Case %d: Luke and Leia can", ++tt); // FIX: test case requires text output
+		if (ans < 0) printf("not escape.\n");
+		else printf(" escape in %lld steps.\n", ans);
 	}
 }
