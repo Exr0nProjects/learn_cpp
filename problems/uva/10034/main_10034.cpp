@@ -32,8 +32,8 @@ int main()
 			vis[cur] = 1;
 			ans += dist[cur];
 			dist[cur] = 1e16;
-			F(i, N) dist[i] = min(dist[i], sqrt( (x[i]-x[cur])*(x[i]-x[cur]) + (y[i]-y[cur])*(y[i]-y[cur]) ));
-			F(i, N) db("%6.3lf", dist[i]); db("\n");
+			// F(i, N) db("%6.3lf", dist[i]); db("\n");
+			F(i, N) if (i != cur) dist[i] = min(dist[i], sqrt( (x[i]-x[cur])*(x[i]-x[cur]) + (y[i]-y[cur])*(y[i]-y[cur]) )); // FIX: dont reset own dist
 			F(i, N) if (!vis[i]) if (dist[i] < dist[cur]) cur = i;
 		}
 		printf("%.2lf\n", ans);
