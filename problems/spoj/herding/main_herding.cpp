@@ -19,7 +19,7 @@ ll rec(ll y, ll x, ll a=acnt)
 {
 	if (vs[y][x]) {
 		if (vs[y][x] == a) ++acnt;
-		return grid[y][x];
+		return vs[y][x];        // FIX: typo--return vis[y][x] not grid[y][x].. grid[y][x] is the input grid smah
 	}
 	vs[y][x] = a;
 
