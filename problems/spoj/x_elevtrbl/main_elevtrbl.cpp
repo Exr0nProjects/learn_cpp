@@ -18,17 +18,13 @@ int main()
 {
 	scanf("%lld%lld%lld%lld%lld", &N, &S, &T, &A, &B);
 
-	typedef tuple<ll, ll> St;
-	queue<St> q; q.push(mt(1, S)); ds[S] = 1;
+	queue<ll> q; q.push(S);
+	ds[S] = 1;                  // FIX: init--bfs headvisiting (marking as vis before pushing to queue) requires setting start dist != unvisited_value
 	while (q.size()) {
-		ll c, d; tie(d, c) = q.front(); q.pop();
-		// ll c = q.front(); q.pop();
-		// if (ds[c]) continue; ds[c] = d;
+		ll c = q.front(); q.pop();
 		if (c == T) return printf("%lld\n", ds[c]-1), 0;
-		// if (c+A <= N) ds[c+A] = ds[c]+1, q.push(c+A);
-		// if (c-B >= 1) ds[c-B] = ds[c]+1, q.push(c-B);
-		if (c+A <= N && !ds[c+A]) ds[c+A] = ds[c]+1, q.push(mt(d+1, c+A));
-		if (c-B >= 1 && !ds[c-B]) ds[c-B] = ds[c]+1, q.push(mt(d+1, c-B));
+		if (c+A <= N && !ds[c+A]) ds[c+A] = ds[c]+1, q.push(c+A);
+		if (c-B >  0 && !ds[c-B]) ds[c-B] = ds[c]+1, q.push(c-B);
 	}
 	printf("use the stairs\n");
 }
