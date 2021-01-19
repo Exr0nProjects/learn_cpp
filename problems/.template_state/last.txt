@@ -1,1 +1,1 @@
-uva/10034
+contests/post2020dec/18jan2021/2_ccBSTRLCP
