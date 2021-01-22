@@ -1,8 +1,10 @@
 /*
  * Problem course_schedule_ii (cses/graph/course_schedule_ii)
  * Create time: Sat 05 Dec 2020 @ 21:01 (PST)
- * Accept time: [!meta:end!]
+ * Accept time: Fri 22 Jan 2021 @ 11:10 (PST)
  *
+ * reverse edges and find lexicographically largest to ensure that smallest goes first??
+ * seems like black magic..
  */
 
 #include <set>
@@ -74,24 +76,42 @@ ll gcd(ll a, ll b) { while (b^=a^=b^=a%=b); return a; }
 using namespace std;
 const int MX = 1e5+11;
 
-int N, M, vis[MX];
-vector<int> hd[MX];
-void addEdge() { int u, v; sc(u, v); hd[v].pb(u); }
+ll N, M;
+ll in[MX];
+ll ans[MX], acnt=0;
+// vector<int> hd[MX];
+// void addEdge() { int u, v; sc(u, v); hd[v].pb(u); ++in[u]; }
 
-void topo(int c)
+struct Edge { ll t, n; } eg[MX<<1]; ll hd[MX], ecnt=2;
+void addEdge()
 {
-    if (vis[c]) return;
-    vis[c] = 1;
-    for (int n : hd[c]) topo(n);
-    printf("%d ", c);
+	ll u, v; scanf("%lld%lld", &u, &v);
+	eg[ecnt] = { u, hd[v] }; hd[v] = ecnt++;
+	++in[u];
 }
+
+// void topo(int c)
+// {
+//     if (vis[c]) return;
+//     vis[c] = 1;
+//     for (int n : hd[c]) topo(n);
+//     printf("%d ", c);
+// }
 
 int main()
 {
     sc(N, M);
     F(i, M) addEdge();
-    F(i, N) sort(hd[i].begin(), hd[i].end());
-    F(i, N) topo(i);
+    // F(i, N) sort(hd[i].begin(), hd[i].end());
+    // F(i, N) topo(i);
+    priority_queue<ll> pq;
+    F(i, N) if (!in[i]) pq.push(i);
+    while (pq.size()) {
+	    ll c = pq.top(); pq.pop();
+	    // for (auto n : hd[c]) if (!--in[n]) pq.push(n);
+	    for (int e=hd[c]; e; e=eg[e].n) if (!--in[eg[e].t]) pq.push(eg[e].t);
+	    ans[++acnt] = c;
+    }
+    while (acnt) printf("%lld ", ans[acnt--]);
     printf("\n");
 }
-
