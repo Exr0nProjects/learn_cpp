@@ -1,0 +1,40 @@
+
+* editorial
+
+** https://codeforces.com/blog/entry/4108                            :source:
+   #+begin_quote
+Let's take a look at Kruskal Algorithm which solve MST in O(m log m) time. Sort the edges first in weight non-decreasing order, then process each edges. if the edge connects two different connected compoments, add this edge to MST then combine two compoments. We use disjoint-set union here to maintain connectivity.
+
+The main point is that only those edges with same weight may replace each other in MST. First of all, sort edges as what Kruskal do. To get the answer, we construct MST in weight non-decreasing order, and process all edges with same weight together. Now on each step we are to face some edges with same weight x and a forest of connected compoments.
+
+Note that for an edge, what points it connects does not matter, we only need to know what compoments it connects. Now build a new graph G', each point in G' is a connected compoment in the original forest,and edges are added to connect compoments that it connected before. Time complexity is O(|E|) here, with careful implementation.
+
+Let's answer queries on these edges. First of all, if an edge in G' is a loop(connects the same compoment), this edge must not appear in any MSTs. If after deleting an edge V in G', G's connectivity is changed (A connected compoment in G' spilt into two. We call these edges bridge), V must be in any of MST. All edges left can appear in some MSTs, but not any.
+
+What's left is to get all of V quickly. Maybe you hear about Tarjan before, he invented an algorithm based on DFS to get all bridges in an edge-undirected graph in O(|V|+|E|). Read this page on Wikipedia for detailed information: http://en.wikipedia.org/wiki/Bridge_(graph_theory)
+
+Considering those compoments which don't have any edges connected don't need to be appear in G', we have |V|<=2|E|, so time complexity for Tarjan's DFS is O(|E|), where |E| is count of edges weighted x. Because each edge will be used exactly once in G', total time complexity except sorting is O(m).
+   #+end_quote
+
+
+** questions
+
+
+*** paragraph 2: why "edges can only replace other edges of the same weight"
+
+**** TODO can't you have two edges that replace two other edges with the same combined weight
+
+
+
+
+** summary
+
+*** process edges in batches of the same weight
+
+*** in each batch, if edge
+
+**** forms a self loop, then it can be in no MSTs
+
+**** forms a bridge, then it must be in all MSTs
+
+**** else, it is in atleast one MST, but not all of them
