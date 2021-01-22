@@ -1,7 +1,7 @@
 /*
  * Problem 10034 (uva/10034)
  * Create time: Sun 17 Jan 2021 @ 21:27 (PST)
- * Accept time: [!meta:end!]
+ * Accept time: Fri 22 Jan 2021 @ 11:14 (PST)
  * dense prim
  */
 #include <bits/stdc++.h>
@@ -37,5 +37,6 @@ int main()
 			F(i, N) if (!vis[i]) if (dist[i] < dist[cur]) cur = i;
 		}
 		printf("%.2lf\n", ans);
+        if (T) printf("\n");
 	}
 }
