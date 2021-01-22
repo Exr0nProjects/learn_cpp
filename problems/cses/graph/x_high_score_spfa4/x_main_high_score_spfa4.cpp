@@ -1,7 +1,7 @@
 /*
  * Problem high_score_spfa4 (cses/graph/high_score_spfa4)
  * Create time: Fri 22 Jan 2021 @ 12:00 (PST)
- * Accept time: [!meta:end!]
+ * Accept time: Fri 22 Jan 2021 @ 12:13 (PST)
  *
  */
 #include <bits/stdc++.h>
@@ -46,9 +46,9 @@ int main()
 	ds[1] = 0; // FIX: spfa/bellman ford base case
 	for (q[++qr] = 1; ql-1 != qr; ++ql%=MX) {
 		inq[q[ql]] = 0;
-		if (vs[q[ql]]++ > N) dfs(q[ql]);
+		if (vs[q[ql]]++ > N) { dfs(q[ql]); continue; } // FIX: logic/flow-- don't continue relaxing inf loop, need to continue
 		for (int e=hd[q[ql]]; e; e=eg[e].n)
-			if (ds[eg[e].t] < ds[q[ql]] + eg[e].w) {
+			if (ds[eg[e].t] > ds[q[ql]] + eg[e].w) { // FIX: typo -- ds[n] > ds[c]+w, not ds[n] < ds[c]+w
 				ds[eg[e].t] = ds[q[ql]] + eg[e].w;
 				if (!inq[eg[e].t]) q[++qr%=MX] = eg[e].t, inq[eg[e].t] = 1;
 			}
