@@ -11,6 +11,28 @@
 #define db(...) fprintf(stderr, __VA_ARGS__)
 using namespace std;
 
+#define _gc getchar_unlocked
+inline bool sc(ll &n)
+{
+    int neg = 1;
+    register char c;
+    do c = _gc(); while (isspace(c));
+    if (c == '-') neg = -1, c = _gc();
+    for (n=0; c >= '0' && c <= '9'; c=_gc())
+        (n *= 10) += (c-'0');
+    n *= neg;
+    return c != EOF;
+}
+inline ll sc() { ll x; sc(x); return x; }
+#define _ilb inline bool
+_ilb sc(int&a){ll x;bool b=sc(x);a=x;return b;}
+_ilb sc(int&a,int&b){return sc(a)&&sc(b);}
+_ilb sc(int&a,int&b,int&c){return sc(a,b)&&sc(c);}
+_ilb sc(int&a,int&b,int&c,int&d){return sc(a,b)&&sc(c,d);}
+_ilb sc(ll&a,ll&b){return sc(a)&&sc(b);}
+_ilb sc(ll&a,ll&b,ll&c){return sc(a,b)&&sc(c);}
+_ilb sc(ll&a,ll&b,ll&c,ll&d){return sc(a,b)&&sc(c,d);}
+
 const ll MX = 5e3+10;
 ll N, M;
 ll ds[MX], vs[MX], inq[MX];
@@ -18,7 +40,8 @@ ll q[MX], ql=1, qr=0;
 struct Edge { ll t, w, n; } eg[MX<<1]; ll hd[MX], ecnt=2;
 void addEdge()
 {
-	ll u, v, w; scanf("%lld%lld%lld", &u, &v, &w);
+	//ll u, v, w; scanf("%lld%lld%lld", &u, &v, &w);
+	ll u, v, w; sc(u, v, w);
 	eg[ecnt] = { v, -w, hd[u] }; hd[u] = ecnt++;
 }
 
@@ -35,7 +58,8 @@ void dfs(ll c)
 
 int main()
 {
-	scanf("%lld%lld", &N, &M);
+	//scanf("%lld%lld", &N, &M);
+    sc(N, M);
 	F(i, M) addEdge();
 	memset(ds, 0x3f, sizeof ds);
 	// memset(vs, 0, sizeof vs);
