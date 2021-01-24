@@ -182,6 +182,11 @@ Don't make names too similar, it's easy to make typos (`djs` vs `djf`)
 - have a `vis` array that counts the number of times a vertex is visited
     - if its more than `N` times, then there is a negative cycle!
 
+### Tarjan
+- need stack, preorder time, low number, and answer arrays
+- first check `if not seen next`, then `else if (backedge) in current scc` aka in stack
+- pop `cur` from the stack at the end when reporting
+
 ## Algorithmic Paradighms
 
 - Brute Force
