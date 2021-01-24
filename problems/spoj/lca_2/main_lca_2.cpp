@@ -8,15 +8,15 @@
 #define ll long long
 #define mt make_tuple
 #define F(i, N) for (int i=1; i<=N; ++i)
-#define db(...) fprintf(stderr, __VA_ARGS__)
+#define db(...)
 using namespace std;
 
 const ll MX = 1e3+10;
 ll T, N, M;
-ll par[MX][20];
+ll par[MX][32];
 ll dep[MX];
 
-struct Edge { ll t, n; } eg[MX<<1]; ll hd[MX], ecnt=2;
+struct Edge { ll t, n; } eg[MX<<4]; ll hd[MX<<4], ecnt=2;
 
 void kdep(ll c, ll d=1)
 {
@@ -32,10 +32,12 @@ void lca()
 	if (u == v) { printf("%lld", u); return; }
 	if (dep[u] < dep[v]) swap(u, v); // u is deeper
 	for (ll i=19; i--;) {
+		db("i = %d\n", i);
 		if (dep[par[u][i]] >= dep[v])
-			i = par[u][i];
+			u = par[u][i];      // FIX: typo -- u=par[u][i] not i=par[u][i]
 	}
 	if (u == v) { printf("%lld\n", u); return; }
+	db("u = %d, v = %d, common dep = %d\n", u, v, dep[u]);
 	for (ll i=19; i--;) {
 		if (par[u][i] != par[v][i])
 			u = par[u][i], v = par[v][i];
@@ -57,14 +59,18 @@ int main()
 			}
 		}
 
+		ll rt;
+		F(i, N) if (!par[i][0]) rt = i;
+
 		F(j, 19) F(i, N) {
 			par[i][j] = par[par[i][j-1]][j-1];
 		}
+		kdep(rt);
 
 		F(i, N) { for (int j=0; j<20; ++j) db("%3d", par[i][j]); db("\n"); }
 
 		ll Q; scanf("%lld", &Q);
-		printf("Case %d\n", tt);
+		printf("Case %d:\n", tt);
 		F(i, Q) lca();
 	}
 }
