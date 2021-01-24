@@ -1,0 +1,10 @@
+#+AUTHOR: Exr0n
+#+TITLE: Timing Log
+| time | prev | next |
++------+------+------+
+| 10:20 | start                                                | reading problems  |
+| 10:26 | seem doable but no ideas yet                         | analyzing #1      |
+| 10:35 | can you greedily reletter? might as well code to try | coding #1         |
+| 10:43 | waiting for available grading server                 | its wa, analyzing |
+| 10:52 | not sure why greedy doesn't work                     | analyzing #2      |
+| 10:56 | can maybe just straight bfs, optimize if too slow    | coding #2         |

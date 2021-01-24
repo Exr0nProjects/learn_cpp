@@ -1,1 +1,1 @@
-spoj/lca_2
+usaco/gold/2021jan/1078
