@@ -1,7 +1,7 @@
 /*
  * Problem lca_2 (spoj/lca_2)
  * Create time: Sat 23 Jan 2021 @ 21:02 (PST)
- * Accept time: [!meta:end!]
+ * Accept time: Sat 23 Jan 2021 @ 21:42 (PST)
  *
  */
 #include <bits/stdc++.h>
@@ -16,34 +16,48 @@ ll T, N, M;
 ll par[MX][32];
 ll dep[MX];
 
-struct Edge { ll t, n; } eg[MX<<4]; ll hd[MX<<4], ecnt=2;
-
-void kdep(ll c, ll d=1)
+ll kdep(ll c)
 {
-	if (dep[c]) return;
-	dep[c] = d;
-	for (int e=hd[c]; e; e=eg[e].n)
-		kdep(eg[e].t, d+1);
+	if (par[c][0] && !dep[c])
+		dep[c] = kdep(par[c][0])+1;
+	return dep[c];
 }
 
 void lca()
 {
 	ll u, v; scanf("%lld%lld", &u, &v);
-	if (u == v) { printf("%lld", u); return; }
+	if (u == v) { printf("%lld\n", u); return; } // FIX: print a newline smah
 	if (dep[u] < dep[v]) swap(u, v); // u is deeper
 	for (ll i=19; i--;) {
 		db("i = %d\n", i);
 		if (dep[par[u][i]] >= dep[v])
 			u = par[u][i];      // FIX: typo -- u=par[u][i] not i=par[u][i]
 	}
-	if (u == v) { printf("%lld\n", u); return; }
-	db("u = %d, v = %d, common dep = %d\n", u, v, dep[u]);
+	// db("u = %d, v = %d, common dep = %d\n", u, v, dep[u]);
 	for (ll i=19; i--;) {
 		if (par[u][i] != par[v][i])
 			u = par[u][i], v = par[v][i];
 	}
+	if (u == v) { printf("%lld\n", u); return; }
 	printf("%lld\n", par[u][0]);
 }
+// void lca()
+// {
+// 	ll u, v; scanf("%lld%lld", &u, &v);
+//     if (dep[u] < dep[v]) swap(u, v); // u is lower
+//     //printf("u %d dep %d       v %d dep %d\n", u, dep[u], v, dep[v]);
+//     for (int i=15; ~i; --i)
+//         if (dep[par[u][i]] >= dep[v])    // FIX: lower down is >= not <=
+//             u = par[u][i];
+//     //printf("u %d dep %d       v %d dep %d\n", u, dep[u], v, dep[v]);
+//     for (int i=15; ~i; --i)
+//         if (par[u][i] != par[v][i])
+//             u = par[u][i], v = par[v][i];
+//     //printf("u %d v %d\n", u, v);
+//     if (u != v) u = par[u][0];   // FIX: don't take parent if already equal (one was ancestor of another)
+//     printf("%lld\n", u);
+// }
+
 
 int main()
 {
@@ -55,7 +69,7 @@ int main()
 			F(j, M) {
 				ll x; scanf("%lld", &x);
 				par[x][0] = i;
-				eg[ecnt] = { x, hd[i] }; hd[i] = ecnt++;
+				// eg[ecnt] = { x, hd[i] }; hd[i] = ecnt++;
 			}
 		}
 
@@ -65,7 +79,8 @@ int main()
 		F(j, 19) F(i, N) {
 			par[i][j] = par[par[i][j-1]][j-1];
 		}
-		kdep(rt);
+		dep[rt] = 1;
+		F(i, N) kdep(i);
 
 		F(i, N) { for (int j=0; j<20; ++j) db("%3d", par[i][j]); db("\n"); }
 
