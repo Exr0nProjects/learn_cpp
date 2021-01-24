@@ -11,7 +11,7 @@
 #define db(...) fprintf(stderr, __VA_ARGS__)
 using namespace std;
 
-const ll MX = 4e5+10;
+const ll MX = 4e4+10;
 const ll MXK = 64;
 
 ll N, K;
@@ -51,7 +51,6 @@ int main()
 	ll ok = 0;
 	while (pq.size()) {
 		ll d, c; tie(d, c) = pq.top(); pq.pop();
-		d = min(d, dist[c]);
 
 		// db("at %d after %d\n", c, d);
 		if (vis[c]) continue; vis[c] = 1;
@@ -65,13 +64,9 @@ int main()
 		// F(i, K) if (adj[breed[c]][i])
 		for (int i : adjl[breed[c]])
 			for (int e=bhd[i]; e; e=cows[e].n)
-				if (dist[cows[e].i] > d+abs(c-cows[e].i)) {
-					if (!vis[cows[e].i]) {
-						pq.push(mt(   d+abs(c-cows[e].i), cows[e].i));
-						vis[cows[e].i] = 1; // NVM we need to actually update d (bc its a pq)
-					}
-					dist[cows[e].i] = d+abs(c-cows[e].i);
-				}
+				if (dist[cows[e].i] > d+abs(c-cows[e].i))
+					dist[cows[e].i] = d+abs(c-cows[e].i),
+					pq.push(mt(       d+abs(c-cows[e].i), cows[e].i));
 				// if (!dist[cows[e].i])
 				// 	dist[cows[e].i] = dist[c]+abs(c-cows[e].i),
 				// 	q.push(cows[e].i);

@@ -2,9 +2,27 @@
 #+TITLE: Timing Log
 | time | prev | next |
 +------+------+------+
-| 10:20 | start                                                | reading problems  |
-| 10:26 | seem doable but no ideas yet                         | analyzing #1      |
-| 10:35 | can you greedily reletter? might as well code to try | coding #1         |
-| 10:43 | waiting for available grading server                 | its wa, analyzing |
-| 10:52 | not sure why greedy doesn't work                     | analyzing #2      |
-| 10:56 | can maybe just straight bfs, optimize if too slow    | coding #2         |
+| 10:20 | start                                                  | reading problems   |
+| 10:26 | seem doable but no ideas yet                           | analyzing #1       |
+| 10:35 | can you greedily reletter? might as well code to try   | coding #1          |
+| 10:43 | waiting for available grading server                   | its wa, analyzing  |
+| 10:52 | not sure why greedy doesn't work                       | analyzing #2       |
+| 10:56 | can maybe just straight bfs, optimize if too slow      | coding #2          |
+| 11:10 | coded #2 awaiting grader                               | optimizing #2      |
+| 11:18 | WA and RE #2.. not sure why                            | debugging #2       |
+| 11:27 | TLE #2 only 5 cases...                                 | analyzing #1       |
+| 11:34 | writing brute force #1 to help test greedy hypothesis  | coding brute #1    |
+| 11:47 | brute force taking a bit to write                      | coding brute #1    |
+| 11:54 | brute force coded                                      | case genning       |
+| 12:17 | not sure what the pattern is, maybe can binsearch?     | analyzing #1       |
+| 12:24 | no not really, also don't know how to write equations  | analyzing #3       |
+| 12:34 | not sure how to do it, v stressed                      | walk               |
+| 12:37 | try to focus harder                                    | analyzing #3       |
+| 12:46 | should code brute force                                | coding brute #3    |
+| 13:01 | confused about how to merge across permutations        | coding brute #3    |
+| 13:25 | brute seems to work, but WA TLE 2/20                   | debugging brute #3 |
+| 13:39 | need to store where each number ends up after kchain   | coding brute #3    |
+| 13:54 | just calculate again ig, its brute force WA/TLE 3/20   | debugging brute #3 |
+| 13:59 | chain broke bc 3 need to bfs not dfs ..?               | debugging brute #2 |
+| 14:15 | TLE 12/13 #2 it was bounds the whole time >:(          | opt #2             |
+| 14:19 | hold up, i had lots of WAs for #3 should've tried that | welp too late      |

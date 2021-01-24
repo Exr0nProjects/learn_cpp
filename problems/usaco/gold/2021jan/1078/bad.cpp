@@ -11,7 +11,7 @@
 #define db(...) fprintf(stderr, __VA_ARGS__)
 using namespace std;
 
-const ll MX = 4e5+10;
+const ll MX = 6e4+10;
 const ll MXK = 64;
 
 ll N, K;
@@ -40,8 +40,8 @@ int main()
 	F(i, N) addCow(i);
 	// F(i, K) { for (int c=bhd[i]; c; c=cows[c].n) db("%3d", cows[c].i); db("\n"); }
 	F(i, K) scanf("%s", adj[i]+1);
-	// F(i, K) F(j, K) adj[i][j] -= '0';
-	F(i, K) F(j, K) if (adj[i][j] == '1') adjl[i].push_back(j);
+	F(i, K) F(j, K) adj[i][j] -= '0';
+	// F(i, K) F(j, K) if (adj[i][j] == '1') adjl[i].push_back(j);
 	// F(i, K) { F(j, K) db("%3d", adj[i][j]); db("\n"); }
 
 	memset(dist, 0x3f, sizeof dist);
@@ -51,7 +51,6 @@ int main()
 	ll ok = 0;
 	while (pq.size()) {
 		ll d, c; tie(d, c) = pq.top(); pq.pop();
-		d = min(d, dist[c]);
 
 		// db("at %d after %d\n", c, d);
 		if (vis[c]) continue; vis[c] = 1;
@@ -62,16 +61,12 @@ int main()
 
 		if (c == N) { printf("%lld\n", d-1); ok = 1; break; }
 
-		// F(i, K) if (adj[breed[c]][i])
-		for (int i : adjl[breed[c]])
+		F(i, K) if (adj[breed[c]][i])
+		// for (int i : adjl[breed[c]])
 			for (int e=bhd[i]; e; e=cows[e].n)
-				if (dist[cows[e].i] > d+abs(c-cows[e].i)) {
-					if (!vis[cows[e].i]) {
-						pq.push(mt(   d+abs(c-cows[e].i), cows[e].i));
-						vis[cows[e].i] = 1; // NVM we need to actually update d (bc its a pq)
-					}
-					dist[cows[e].i] = d+abs(c-cows[e].i);
-				}
+				if (dist[cows[e].i] > d+abs(c-cows[e].i))
+					dist[cows[e].i] = d+abs(c-cows[e].i),
+					pq.push(mt(       d+abs(c-cows[e].i), cows[e].i));
 				// if (!dist[cows[e].i])
 				// 	dist[cows[e].i] = dist[c]+abs(c-cows[e].i),
 				// 	q.push(cows[e].i);
