@@ -10,6 +10,8 @@
 14:45 | scuffed as heck but should work | coding #2
 15:05 | getting scuffed on the codes | coding #2
 15:18 | first 1 mil work, but broke.. | debug #2
+15:27 | computer brick + still broke | debug #2
+15:42 | i really got beat up by the implementation | end
 
 ## Contest Reflection
 

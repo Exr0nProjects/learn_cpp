@@ -1,1 +1,1 @@
-usaco/gold/2021jan/1079
+contests/post2020dec/cses_set_1/2_2431

@@ -16,12 +16,13 @@ int main()
 {
 	scanf("%lld", &Q);
 	F(q, Q) {
-		ll x; scanf("%lld", &x);
-		ll n = 1, shift=9, nines=9;
+		ll _x; scanf("%lld", &_x);
+		__int128 x = _x;
+		__int128 n = 1, shift=9, nines=9;
 		while (x > shift) {
 			// db("    x = %lld shift = %lld n = %lld\n", x, shift, n);
 			x-=shift;
-			shift = 9*(n+1)*pow(10, n);
+			shift = 9*(n+1)*pow((double)10, n);
 			// db("    -> shift = %lld\n", shift);
 			(nines *= 10) += 9;
 			++n;
@@ -29,8 +30,8 @@ int main()
 		nines /= 10;
 		nines += (x-1)/n+1;
 		// db("n=%lld  nines %lld      x %lld\n", n, nines, x);
-		nines /= pow(10, n-(x%n ? x%n : n));
+		nines /= pow((double)10, n-(x%n ? x%n : n));
 		nines %= 10;
-		printf("%lld\n", nines);
+		printf("%lld\n", (ll)nines);
 	}
 }
