@@ -1,5 +1,6 @@
 # TODO
 
+lol that was a while ago
 1. 401 test #1 travesral with stack (standard-xjoi/1425)
 1. 501 test (segtree 1) 06/12/2020 (12 June 2020)
 1. Extra BIT test: 52:83 contest/1405
