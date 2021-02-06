@@ -1,5 +1,11 @@
 # TODO
 
+##
+https://cses.fi/problemset/task/1652
+https://cses.fi/problemset/task/2431
+https://cses.fi/problemset/task/1653
+https://cses.fi/problemset/task/1750
+
 lol that was a while ago
 1. 401 test #1 travesral with stack (standard-xjoi/1425)
 1. 501 test (segtree 1) 06/12/2020 (12 June 2020)
