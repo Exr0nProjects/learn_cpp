@@ -26,3 +26,15 @@
 | 13:59 | chain broke bc 3 need to bfs not dfs ..?               | debugging brute #2 |
 | 14:15 | TLE 12/13 #2 it was bounds the whole time >:(          | opt #2             |
 | 14:19 | hold up, i had lots of WAs for #3 should've tried that | welp too late      |
+
+Problem 1:
+I thought it was possible to greedy, but realized that it didn't work. I did notice that the letter limit was lower than 20, but didn't think of bitmask DP even though I had specifically reviewed that before hand. Basically, struggled to forget my previous thinking.
+
+Problem 2:
+I had an edge optimization that I thought would work, but it actually didn't do much. (removing edges from a list instead of iterating and checking if it was used already). My array bounds were too low but I thought I had MLE, so I spent some time optimizing memory when I should have just checked array bounds. Also could have been avoided with a calmer mindset.
+
+Problem 3:
+Tried to code simulation brute force but the coding was scuffed. Could have gotten 8-10 test cases if it was not WA though..
+
+Past months: 
+I spent a lot of time practicing the basic algorithms and things, but I think I'm still not familiar enough with them. The new concepts are difficult but mostly distracting and hard to apply (its easier to apply it wrong and waste time there during the contest). I need to solidify the foundations more and work on staying collected and efficient during the contest.
