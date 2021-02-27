@@ -1,8 +1,10 @@
+from tqdm import tqdm
+
 with open('test.out', 'r') as rf:
     count = 0
     c = 1
     s = str(c)
-    for line in rf:
+    for line in tqdm(rf):
         count += 1
         if len(s) == 0:
             c += 1
